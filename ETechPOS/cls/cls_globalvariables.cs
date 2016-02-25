@@ -1,0 +1,572 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+using System.Windows.Forms;
+using System.IO;
+
+namespace ETech.cls
+{
+    public static class cls_globalvariables
+    {
+        public static decimal vat = 0.12M;
+        public static decimal senior = 0.20M;
+        public static decimal senior5 = 0.05M;
+
+        public static int dchead_customdiscounttype = -1;
+        public static int dchead_adjusttype = 0;
+        public static int dchead_discounttype = 1;
+        public static int dchead_membertype = 2;
+        public static int dchead_pospromotype = 3;
+
+        public static int dcdetail_customdiscounttype = -1;
+        public static int dcdetail_adjusttype = 0;
+        public static int dcdetail_discounttype = 1;
+        public static int dcdetail_senior = 2;
+        public static int dcdetail_nonvat = 3;
+        public static int dcdetail_promoqty = 4;
+        public static int dcdetail_senior5 = 5;
+
+        public static int previewmul = 1;
+        public static int POSmode = 1;
+
+        public static int dchead_defaultcustom = 10;
+        public static DateTime companystartdate = new DateTime(2013, 1, 1, 0, 0, 0);
+        public static DateTime companymaxdate = new DateTime(3000, 12, 31, 0, 0, 0);
+
+        public static string settingspath = Application.StartupPath + "/settings.txt";
+
+        public static string mydocumentpath = createDirIfNotExists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\ETECH POS\");
+
+        public static string createDirIfNotExists(string directory)
+        {
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            return directory;
+        }
+
+        public static string systemlogpath = mydocumentpath + "ETechPOS_SystemLogs.txt";
+
+        public static string OfflineXMLpath = mydocumentpath + "OfflineTransactions.XML";
+
+        private static bool showCompleteOR = true;
+        public static bool showCompleteOR_v
+        {
+            get { return showCompleteOR; }
+            set { showCompleteOR = value; }
+        }
+
+        private static string posname = "ETECH POS SYSTEM";
+        public static string posname_v
+        {
+            get { return posname; }
+            set { posname = value; }
+        }
+
+        private static string version = "1.5.7";
+        public static string version_v
+        {
+            get { return version; }
+            set { version = value; }
+        }
+
+        private static string isvat = "";
+        public static string isvat_v
+        {
+            get { return isvat; }
+            set { isvat = value; }
+        }
+
+        private static string terminalno = "";
+        public static string terminalno_v
+        {
+            get { return terminalno; }
+            set { terminalno = value; }
+        }
+
+        private static string com = "";
+        public static string com_v
+        {
+            get { return com; }
+            set { com = value; }
+        }
+
+        private static string disp1 = "";
+        public static string disp1_v
+        {
+            get { return disp1; }
+            set { disp1 = value; }
+        }
+
+        private static string disp2 = "";
+        public static string disp2_v
+        {
+            get { return disp2; }
+            set { disp2 = value; }
+        }
+
+        private static string server = "";
+        public static string server_v
+        {
+            get { return server; }
+            set { server = value; }
+        }
+
+        private static string userid = "";
+        public static string userid_v
+        {
+            get { return userid; }
+            set { userid = value; }
+        }
+
+        private static string password = "";
+        public static string password_v
+        {
+            get { return password; }
+            set { password = value; }
+        }
+
+        private static string database = "";
+        public static string database_v
+        {
+            get { return database; }
+            set { database = value; }
+        }
+
+        private static string terminaldigit = "";
+        public static string terminaldigit_v
+        {
+            get { return terminaldigit; }
+            set { terminaldigit = value; }
+        }
+
+        public static int branchidlen_v = 2;
+        private static string branchid = "";
+        public static string branchid_v
+        {
+            get { return branchid; }
+            set { branchid = value; }
+        }
+
+        private static string BusinessName = "";
+        public static string BusinessName_v
+        {
+            get { return BusinessName; }
+            set { BusinessName = value; }
+        }
+
+        private static string Owner = "";
+        public static string Owner_v
+        {
+            get { return Owner; }
+            set { Owner = value; }
+        }
+
+        private static string TIN = "";
+        public static string TIN_v
+        {
+            get { return TIN; }
+            set { TIN = value; }
+        }
+
+        private static string Address = "";
+        public static string Address_v
+        {
+            get { return Address; }
+            set { Address = value; }
+        }
+
+        private static string PermitNo = "";
+        public static string PermitNo_v
+        {
+            get { return PermitNo; }
+            set { PermitNo = value; }
+        }
+
+        private static string ACC = "";
+        public static string ACC_v
+        {
+            get { return ACC; }
+            set { ACC = value; }
+        }
+
+        private static string Serial = "";
+        public static string Serial_v
+        {
+            get { return Serial; }
+            set { Serial = value; }
+        }
+
+        private static string MIN = "";
+        public static string MIN_v
+        {
+            get { return MIN; }
+            set { MIN = value; }
+        }
+
+        public static int qty_places = 2;
+        public static int print_receipt_buffer = 0;
+        public static int print_receipt_actual = 0;
+        public static int print_receipt_limit = 0;
+        public static int print_receipt_linespacing = 0;
+
+        public static string PosProviderName_v;
+        public static string PosProviderAddress_v;
+        public static string PosProviderTIN_v;
+        public static string ACC_date_v;
+
+        private static int posd_percent = 100;
+        public static int posd_percent_v
+        {
+            get { return posd_percent; }
+            set { posd_percent = value; }
+        }
+
+        private static int posdminamt = 0;
+        public static int posdminamt_v
+        {
+            get { return posdminamt; }
+            set { posdminamt = value; }
+        }
+
+        private static int posdmaxamt = 0;
+        public static int posdmaxamt_v
+        {
+            get { return posdmaxamt; }
+            set { posdmaxamt = value; }
+        }
+
+        private static string orfooter1 = "";
+        public static string orfooter1_v
+        {
+            get { return orfooter1; }
+            set { orfooter1 = value; }
+        }
+
+        private static string orfooter2 = "";
+        public static string orfooter2_v
+        {
+            get { return orfooter2; }
+            set { orfooter2 = value; }
+        }
+
+        private static string orfooter3 = "";
+        public static string orfooter3_v
+        {
+            get { return orfooter3; }
+            set { orfooter3 = value; }
+        }
+
+        private static string orfooter4 = "";
+        public static string orfooter4_v
+        {
+            get { return orfooter4; }
+            set { orfooter4 = value; }
+        }
+
+        private static string colortheme = "";
+        public static string colortheme_v
+        {
+            get { return colortheme; }
+            set { colortheme = value; }
+        }
+
+        private static string avoidinvalidpprice = "";
+        public static string avoidinvalidpprice_v
+        {
+            get { return avoidinvalidpprice; }
+            set { avoidinvalidpprice = value; }
+        }
+
+        private static string posdautoxz = "";
+        public static string posdautoxz_v
+        {
+            get { return posdautoxz; }
+            set { posdautoxz = value; }
+        }
+
+        private static string posdautoswitch = "";
+        public static string posdautoswitch_v
+        {
+            get { return posdautoswitch; }
+            set { posdautoswitch = value; }
+        }
+
+        private static string print_receipt_format = "";
+        public static string print_receipt_format_v
+        {
+            get { return print_receipt_format; }
+            set { print_receipt_format = value; }
+        }
+
+        private static string xzdesign_unite = "";
+        public static string xzdesign_unite_v
+        {
+            get { return xzdesign_unite; }
+            set { xzdesign_unite = value; }
+        }
+
+        private static string hide_reprintreceipt = "";
+        public static string hide_reprintreceipt_v
+        {
+            get { return hide_reprintreceipt; }
+            set { hide_reprintreceipt = value; }
+        }
+
+        private static string allowZeroPrice = "";
+        public static string allowZeroPrice_v
+        {
+            get { return allowZeroPrice; }
+            set { allowZeroPrice = value; }
+        }
+
+        private static int readDateRange = 1;
+        public static int readDateRange_v
+        {
+            get { return readDateRange; }
+            set { readDateRange = value; }
+        }
+
+        private static string grossmethod = "";
+        public static string grossmethod_v
+        {
+            get { return grossmethod; }
+            set { grossmethod = value; }
+        }
+
+        private static int ORPrintCount = 1;
+        public static int ORPrintCount_v
+        {
+            get { return ORPrintCount; }
+            set { ORPrintCount = value; }
+        }
+
+        private static decimal ServiceCharge = 0;
+        public static decimal ServiceCharge_v
+        {
+            get { return ServiceCharge; }
+            set { ServiceCharge = value; }
+        }
+
+        private static decimal LocalTax = 0;
+        public static decimal LocalTax_v
+        {
+            get { return LocalTax; }
+            set { LocalTax = value; }
+        }
+
+        private static string showdetailCCinZRead = "";
+        public static string showdetailCCinZRead_v
+        {
+            get { return showdetailCCinZRead; }
+            set { showdetailCCinZRead = value; }
+        }
+
+        private static string TermAcct = "0";
+        public static string TermAcct_v
+        {
+            get { return TermAcct; }
+            set { TermAcct = value; }
+        }
+
+        private static string enableprintposdsummary = "0";
+        public static string enableprintposdsummary_v
+        {
+            get { return enableprintposdsummary; }
+            set { enableprintposdsummary = value; }
+        }
+
+        private static string posddisableswitch = "0";
+        public static string posddisableswitch_v
+        {
+            get { return posddisableswitch; }
+            set { posddisableswitch = value; }
+        }
+
+        private static string posdreceiptautoswitch = "";
+        public static string posdreceiptautoswitch_v
+        {
+            get { return posdreceiptautoswitch; }
+            set { posdreceiptautoswitch = value; }
+        }
+
+        private static string testpassword = "";
+        public static string testpassword_v
+        {
+            get { return testpassword; }
+            set { testpassword = value; }
+        }
+
+        private static string RefundMemo = "0";
+        public static string RefundMemo_v
+        {
+            get { return RefundMemo; }
+            set { RefundMemo = value; }
+        }
+
+        private static string prodsearchstyle = "0";
+        public static string prodsearchstyle_v
+        {
+            get { return prodsearchstyle; }
+            set { prodsearchstyle = value; }
+        }
+
+        private static int CustomerDisplayLength = 20;
+        public static int CustomerDisplayLength_v
+        {
+            get { return CustomerDisplayLength; }
+            set { value = CustomerDisplayLength; }
+        }
+
+        //RLC---
+        private static Int64 starttime = 0;
+        private static Int64 endtime = 0;
+
+        public static Int64 starttime_v
+        { get { return starttime; } set { starttime = value; } }
+        public static Int64 endtime_v
+        { get { return endtime; } set { endtime = value; } }
+
+        private static int origwidth = 1292;
+        public static int origwidth_v
+        { get { return origwidth; } set { origwidth = value; } }
+        private static int origheight = 768;
+        public static int origheight_v
+        { get { return origheight; } set { origheight = value; } }
+        private static bool is4By3ratio;
+        public static bool is4By3ratio_v
+        { get { return is4By3ratio; } set { is4By3ratio = value; } }
+        //------
+
+        // General
+        private static string ACCRED_LocalDrivePath = "";
+        private static string ACCRED_NetworkDrivePath = "";
+        private static string ACCRED_NetworkUserName = "";
+        private static string ACCRED_NetworkPassword = "";
+        private static string ACCRED_TenantNoOrAccountNo = "0";
+        private static string ACCRED_TerminalNo = "000";
+        private static string ACCRED_FTPAddress = "";
+        private static string ACCRED_FTPUsername = "";
+        private static string ACCRED_FTPPassword = "";
+
+
+        public static string ACCRED_NetworkDrivePath_v
+        { get { return ACCRED_NetworkDrivePath; } set { ACCRED_NetworkDrivePath = value; } }
+        public static string ACCRED_NetworkUserName_v
+        { get { return ACCRED_NetworkUserName; } set { ACCRED_NetworkUserName = value; } }
+        public static string ACCRED_NetworkPassword_v
+        { get { return ACCRED_NetworkPassword; } set { ACCRED_NetworkPassword = value; } }
+        public static string ACCRED_LocalDrivePath_v
+        { get { return ACCRED_LocalDrivePath; } set { ACCRED_LocalDrivePath = value; } }
+        public static string ACCRED_TenantNoOrAccountNo_v
+        { get { return ACCRED_TenantNoOrAccountNo; } set { ACCRED_TenantNoOrAccountNo = value; } }
+        public static string ACCRED_TerminalNo_v
+        { get { return ACCRED_TerminalNo; } set { ACCRED_TerminalNo = value; } }
+        public static string ACCRED_FTPAddress_v
+        { get { return ACCRED_FTPAddress; } set { ACCRED_FTPAddress = value; } }
+        public static string ACCRED_FTPUsername_v
+        { get { return ACCRED_FTPUsername; } set { ACCRED_FTPUsername = value; } }
+        public static string ACCRED_FTPPassword_v
+        { get { return ACCRED_FTPPassword; } set { ACCRED_FTPPassword = value; } }
+
+        //
+
+        private static string DefaultPrinter = "";
+        public static string DefaultPrinter_v
+        { get { return DefaultPrinter; } set { DefaultPrinter = value; } }
+
+        private static string PrinterODByte = "";
+        public static string PrinterODByte_v
+        { get { return PrinterODByte; } set { PrinterODByte = value; } }
+
+        private static bool PreviewOR = false;
+        public static bool PreviewOR_v
+        { get { return PreviewOR; } set { PreviewOR = value; } }
+
+        private static string ads_url = "";
+        public static string ads_url_v
+        { get { return ads_url; } set { ads_url = value; } }
+
+        private static double maximum_cash_collection = 0;
+        public static double maximum_cash_collection_v
+        { get { return maximum_cash_collection; } set { maximum_cash_collection = value; } }
+
+        private static bool AutoShowKeyboard = false;
+        public static bool AutoShowKeyboard_v
+        { get { return AutoShowKeyboard; } set { AutoShowKeyboard = value; } }
+
+        private static string OfflineSecurityCode = "gMo3uRgQdKaHeFC7n2KDbA==";
+        public static string OfflineSecurityCode_v
+        { get { return OfflineSecurityCode; } set { OfflineSecurityCode = value; } }
+
+        private static string POSMacAddress = "";
+        public static string POSMacAddress_v
+        { get { return POSMacAddress; } set { POSMacAddress = value; } }
+
+        private static int DiscountDetails = 1;
+        public static int DiscountDetails_v
+        { get { return DiscountDetails; } set { DiscountDetails = value; } }
+
+        public static string warning_lack_of_payment = "There's still remaining amount due.";
+        public static string warning_refunded_transaction_cannot_be_voided = "This transaction cannot be void because it has refunded item/s. Please void the refund item/s first before void this transaction.";
+
+        public static string warning_customer_needed = "Select a registered customer first.";
+        public static string warning_bankname_needed = "Please indicated Bank Name.";
+        public static string warning_acctname_needed = "Please indicated Account Name.";
+        public static string warning_payto_needed = "Please fill up Pay To Field.";
+        public static string warning_chequeno_needed = "Please indicated Cheque Number.";
+        public static string warning_permissioncode_needed = "Please fill up permission code!";
+        public static string warning_cardholder_needed = "Please indicated Card Holder.";
+        public static string warning_invalid_amount = "Invalid Amount.";
+        public static string warning_approvalcode_needed = "Please enter Approval Code.";
+
+        public static string warning_input_invalid = "Invalid Input!";
+        public static string warning_acctno_invalid = "Invalid Account Number!";
+        public static string warning_chequedate_invalid = "Invalid Cheque Date!";
+        public static string warning_amount_invalid = "Invalid Amount!";
+        public static string warning_giftcheque_invalid = "Invalid Gift Cheque";
+        public static string warning_discount_invalid = "Invalid discount!";
+        public static string warning_cardno_invalid = "Invalid Card Number!";
+        public static string warning_monthofexp_invalid = "Invalid Month of Expiry!";
+        public static string warning_yearofexp_invalid = "Invalid Year of Expiry!";
+        public static string warning_userpass_invalid = "Invalid Username or Password.";
+        public static string warning_permissioncode_invalid = "Invalid Permission Code!";
+        public static string warning_quantity_invalid = "Invalid Quantity!";
+        public static string warning_transaction_invalid = "Invalid Transaction!";
+        public static string warning_price_invalid = "Invalid Price!";
+        public static string warning_ornumber_invalid = "Invalid OR Number!";
+        public static string warning_cashtender_invalid = "Invalid Cash Amount!";
+        public static string warning_mempointtender_invalid = "Invalid Member Point Amount!";
+
+        public static string warning_card_expired = "Card already expired!";
+        public static string warning_giftcheque_beenused = "This Gift Cheque was been used";
+        public static string warning_discount_outofrange = "Discount percentage out of range.";
+        public static string warning_samecashierchecker = "Cashier and Checker must be two different person.";
+
+        public static string warning_userpermission_denied = "User's permission denied.";
+        public static string warning_member_notregistered = "Member not yet registered.";
+        public static string warning_product_notfound = "Product not found.";
+        public static string warning_notransactionyet = "No Transaction Found.";
+        public static string warning_no_custom_payment = "There is no custom payment available.";
+
+        public static string warning_promo_notavailable = "This promo is not available.";
+        public static string warning_promo_amtnotvalid = "Current total amount does not reach the required amount to avail this promo.";
+
+        public static string confirm_logout = "";
+        public static string confirm_logout_voidtran = "Log-out and ignore all current transaction if exist?";
+        public static string confirm_logout_deletetran = "Do you want to void current transaction?";
+        public static string confirm_logout_deleteitem = "Do you want to delete selected item?";
+        public static string confirm_customer_debt = "There's still remaining amount due. Add to Customer's debt?";
+        public static string confirm_unlock_zreading = "Do you want to continue transacting?\nnote: You need to generate Zreading again \n\n 今天结账单已被打印过。\n如果再开单，要从新打印结账单。是否继续？";
+        public static string wait_sent_to_ftp_network = "Please wait while system tries to send your sales files...";
+        public static string POS_TLogs_path =
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                + @"\ETECH POS\" + DateTime.Now.ToString("yyMMdd") + @"POS" + cls_globalvariables.terminalno_v + @".T";
+        public static string POS_CSVLogs_path =
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                + @"\ETECH POS\" + DateTime.Now.ToString("yyMMdd") + @"POS" + cls_globalvariables.terminalno_v + @".C";
+        public static string CashierAcct_wid = "";
+    }
+}

@@ -1,0 +1,611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9C655C86-7814-4E73-8604-CEE22CC95AA9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ETECHPOS</RootNamespace>
+    <AssemblyName>ETECHPOS</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>imgsalesorder.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BarCode, Version=1.5.2840.25357, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.6.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Web, Version=6.6.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Printing">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cls\cls_buttonGrid.cs" />
+    <Compile Include="cls\cls_creditCardParser.cs" />
+    <Compile Include="cls\cls_CustomPaymentsInfo.cs" />
+    <Compile Include="cls\cls_discount.cs" />
+    <Compile Include="cls\cls_bankcheque.cs" />
+    <Compile Include="cls\cls_bills.cs" />
+    <Compile Include="cls\cls_cardinfo.cs" />
+    <Compile Include="cls\cls_customer.cs" />
+    <Compile Include="cls\cls_discountlist.cs" />
+    <Compile Include="cls\cls_encdec.cs" />
+    <Compile Include="cls\cls_giftchequeinfo.cs" />
+    <Compile Include="cls\cls_globalfunc.cs" />
+    <Compile Include="cls\cls_globalvariables.cs" />
+    <Compile Include="cls\cls_member.cs" />
+    <Compile Include="cls\cls_memberdiscount.cs" />
+    <Compile Include="cls\cls_NonVat.cs" />
+    <Compile Include="cls\cls_otherpaymentinfo.cs" />
+    <Compile Include="cls\cls_payment.cs" />
+    <Compile Include="cls\cls_posd.cs" />
+    <Compile Include="cls\cls_POSTransaction.cs" />
+    <Compile Include="cls\cls_POSTransDiscount.cs" />
+    <Compile Include="cls\cls_product.cs" />
+    <Compile Include="cls\cls_productDiscount.cs" />
+    <Compile Include="cls\cls_productlist.cs" />
+    <Compile Include="cls\cls_productpromo.cs" />
+    <Compile Include="cls\cls_promoproddc.cs" />
+    <Compile Include="cls\cls_qtypromo.cs" />
+    <Compile Include="cls\cls_senior.cs" />
+    <Compile Include="cls\cls_CustomPayments.cs" />
+    <Compile Include="cls\cls_user.cs" />
+    <Compile Include="cls\cls_xmlhelper.cs" />
+    <Compile Include="ctrl\ctrl_btnpanel.cs" />
+    <Compile Include="ctrl\ctrl_CustomerDisplay.cs" />
+    <Compile Include="ctrl\ctrl_otherinfo.cs" />
+    <Compile Include="ctrl\ctrl_payment.cs" />
+    <Compile Include="ctrl\ctrl_productgrid.cs" />
+    <Compile Include="fnc\fncFilter.cs" />
+    <Compile Include="fnc\fncHardware.cs" />
+    <Compile Include="fnc\fncFullScreen.cs" />
+    <Compile Include="fnc\RawPrinterHelper.cs" />
+    <Compile Include="fnc\ReceiptPrinterHelper.cs" />
+    <Compile Include="frmCustomPayments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomPayments.Designer.cs">
+      <DependentUpon>frmCustomPayments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLoad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLoad.Designer.cs">
+      <DependentUpon>frmLoad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPOSMainExt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPOSMainExt.Designer.cs">
+      <DependentUpon>frmPOSMainExt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReadingSummary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReadingSummary.Designer.cs">
+      <DependentUpon>frmReadingSummary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSalesmemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSalesmemo.Designer.cs">
+      <DependentUpon>frmSalesmemo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGenerateReadings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGenerateReadings.Designer.cs">
+      <DependentUpon>frmGenerateReadings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSearchProductButton.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSearchProductButton.Designer.cs">
+      <DependentUpon>frmSearchProductButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmChooseDiscount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChooseDiscount.Designer.cs">
+      <DependentUpon>frmChooseDiscount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCustomDiscount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomDiscount.Designer.cs">
+      <DependentUpon>frmCustomDiscount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmError.Designer.cs">
+      <DependentUpon>frmError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmChange_c.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChange_c.Designer.cs">
+      <DependentUpon>frmChange_c.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNonVatInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNonVatInfo.Designer.cs">
+      <DependentUpon>frmNonVatInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmOldData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOldData.Designer.cs">
+      <DependentUpon>frmOldData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPromo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPromo.Designer.cs">
+      <DependentUpon>frmPromo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReprintReceipt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReprintReceipt.Designer.cs">
+      <DependentUpon>frmReprintReceipt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCashDenomination.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCashDenomination.Designer.cs">
+      <DependentUpon>frmCashDenomination.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCardInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCardInfo.Designer.cs">
+      <DependentUpon>frmCardInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGiftChequeInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGiftChequeInfo.Designer.cs">
+      <DependentUpon>frmGiftChequeInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmInventory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInventory.Designer.cs">
+      <DependentUpon>frmInventory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLogIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogIn.Designer.cs">
+      <DependentUpon>frmLogIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLogInMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogInMain.Designer.cs">
+      <DependentUpon>frmLogInMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMember.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMember.Designer.cs">
+      <DependentUpon>frmMember.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMenu.Designer.cs">
+      <DependentUpon>frmMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPayment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPayment.Designer.cs">
+      <DependentUpon>frmPayment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPermissionCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPermissionCode.Designer.cs">
+      <DependentUpon>frmPermissionCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductAdjust.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductAdjust.Designer.cs">
+      <DependentUpon>frmProductAdjust.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductQuantity.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductQuantity.Designer.cs">
+      <DependentUpon>frmProductQuantity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRetail.Designer.cs">
+      <DependentUpon>frmRetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSearchCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSearchCustomer.Designer.cs">
+      <DependentUpon>frmSearchCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSearchProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSearchProduct.Designer.cs">
+      <DependentUpon>frmSearchProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSenior.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSenior.Designer.cs">
+      <DependentUpon>frmSenior.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmInventory_posd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInventory_posd.Designer.cs">
+      <DependentUpon>frmInventory_posd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetting.Designer.cs">
+      <DependentUpon>frmSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSetting2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetting2.Designer.cs">
+      <DependentUpon>frmSetting2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTransactionAdjust.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTransactionAdjust.Designer.cs">
+      <DependentUpon>frmTransactionAdjust.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTransactionDiscountList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTransactionDiscountList.Designer.cs">
+      <DependentUpon>frmTransactionDiscountList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmVoid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVoid.Designer.cs">
+      <DependentUpon>frmVoid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWholesale.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWholesale.Designer.cs">
+      <DependentUpon>frmWholesale.cs</DependentUpon>
+    </Compile>
+    <Compile Include="mySQLClass.cs" />
+    <Compile Include="mySQLFunc.cs" />
+    <Compile Include="frmORPrintPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmORPrintPreview.Designer.cs">
+      <DependentUpon>frmORPrintPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmOtherPayment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOtherPayment.Designer.cs">
+      <DependentUpon>frmOtherPayment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POSMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POSMain.Designer.cs">
+      <DependentUpon>POSMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POSMainGridview.cs" />
+    <Compile Include="frmProductDiscountList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductDiscountList.Designer.cs">
+      <DependentUpon>frmProductDiscountList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmCashDenomination.resx">
+      <DependentUpon>frmCashDenomination.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCardInfo.resx">
+      <DependentUpon>frmCardInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChooseDiscount.resx">
+      <DependentUpon>frmChooseDiscount.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCustomDiscount.resx">
+      <DependentUpon>frmCustomDiscount.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmError.resx">
+      <DependentUpon>frmError.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChange_c.resx">
+      <DependentUpon>frmChange_c.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGiftChequeInfo.resx">
+      <DependentUpon>frmGiftChequeInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInventory.resx">
+      <DependentUpon>frmInventory.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogIn.resx">
+      <DependentUpon>frmLogIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogInMain.resx">
+      <DependentUpon>frmLogInMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMember.resx">
+      <DependentUpon>frmMember.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMenu.resx">
+      <DependentUpon>frmMenu.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNonVatInfo.resx">
+      <DependentUpon>frmNonVatInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOldData.resx">
+      <DependentUpon>frmOldData.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPayment.resx">
+      <DependentUpon>frmPayment.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPermissionCode.resx">
+      <DependentUpon>frmPermissionCode.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductAdjust.resx">
+      <DependentUpon>frmProductAdjust.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductQuantity.resx">
+      <DependentUpon>frmProductQuantity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPromo.resx">
+      <DependentUpon>frmPromo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReprintReceipt.resx">
+      <DependentUpon>frmReprintReceipt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRetail.resx">
+      <DependentUpon>frmRetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSearchCustomer.resx">
+      <DependentUpon>frmSearchCustomer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSearchProduct.resx">
+      <DependentUpon>frmSearchProduct.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSenior.resx">
+      <DependentUpon>frmSenior.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInventory_posd.resx">
+      <DependentUpon>frmInventory_posd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSetting.resx">
+      <DependentUpon>frmSetting.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSetting2.resx">
+      <DependentUpon>frmSetting2.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTransactionAdjust.resx">
+      <DependentUpon>frmTransactionAdjust.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTransactionDiscountList.resx">
+      <DependentUpon>frmTransactionDiscountList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVoid.resx">
+      <DependentUpon>frmVoid.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWholesale.resx">
+      <DependentUpon>frmWholesale.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POSMain.resx">
+      <DependentUpon>POSMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductDiscountList.resx">
+      <DependentUpon>frmProductDiscountList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="resources\framdcn.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\segoeui.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="frmRefundInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRefundInfo.Designer.cs">
+      <DependentUpon>frmRefundInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SingleInstanceNoMutex.cs" />
+    <Compile Include="frmTerminalReadings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTerminalReadings.Designer.cs">
+      <DependentUpon>frmTerminalReadings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="zreadFunc.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="imgsalesorder.ico" />
+    <None Include="resources\images\arrow-left.PNG" />
+    <None Include="resources\images\arrow-right.PNG" />
+    <None Include="resources\images\close-bttn.png" />
+    <Content Include="libs\BarCode.dll" />
+    <Content Include="resources\images\diagmonds-blue.png" />
+    <Content Include="resources\images\diagmonds-forestgreen.PNG" />
+    <Content Include="resources\images\diagmonds-gold.PNG" />
+    <Content Include="resources\images\diagmonds-goodblue.PNG" />
+    <Content Include="resources\images\diagmonds-gray.PNG" />
+    <Content Include="resources\images\diagmonds-green.png" />
+    <Content Include="resources\images\diagmonds-paleblue.PNG" />
+    <Content Include="resources\images\diagmonds-red.PNG" />
+    <Content Include="resources\images\diagmonds.png" />
+    <Content Include="tools\Keypad.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libs\MySql.Data.dll" />
+    <Content Include="libs\MySql.Web.dll" />
+    <Content Include="tools\Keyboard.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="settings.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="frmCustomPayments.resx">
+      <DependentUpon>frmCustomPayments.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLoad.resx">
+      <DependentUpon>frmLoad.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPOSMainExt.resx">
+      <DependentUpon>frmPOSMainExt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReadingSummary.resx">
+      <DependentUpon>frmReadingSummary.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRefundInfo.resx">
+      <DependentUpon>frmRefundInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSalesmemo.resx">
+      <DependentUpon>frmSalesmemo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGenerateReadings.resx">
+      <DependentUpon>frmGenerateReadings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSearchProductButton.resx">
+      <DependentUpon>frmSearchProductButton.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmORPrintPreview.resx">
+      <DependentUpon>frmORPrintPreview.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOtherPayment.resx">
+      <DependentUpon>frmOtherPayment.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTerminalReadings.resx">
+      <DependentUpon>frmTerminalReadings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
