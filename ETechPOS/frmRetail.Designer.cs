@@ -34,7 +34,6 @@
             this.txtQty = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnESC = new System.Windows.Forms.Button();
-            this.btnServiceCharge = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblPrice
@@ -104,24 +103,11 @@
             this.btnESC.UseVisualStyleBackColor = false;
             this.btnESC.Click += new System.EventHandler(this.btnESC_Click);
             // 
-            // btnServiceCharge
-            // 
-            this.btnServiceCharge.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnServiceCharge.Location = new System.Drawing.Point(227, 71);
-            this.btnServiceCharge.Name = "btnServiceCharge";
-            this.btnServiceCharge.Size = new System.Drawing.Size(206, 38);
-            this.btnServiceCharge.TabIndex = 106;
-            this.btnServiceCharge.Text = "Service Charge (F2)";
-            this.btnServiceCharge.UseVisualStyleBackColor = false;
-            this.btnServiceCharge.Visible = false;
-            this.btnServiceCharge.Click += new System.EventHandler(this.btnServiceCharge_Click);
-            // 
             // frmRetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(442, 163);
-            this.Controls.Add(this.btnServiceCharge);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.txtQty);
@@ -150,6 +136,5 @@
         private System.Windows.Forms.TextBox txtQty;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnESC;
-        private System.Windows.Forms.Button btnServiceCharge;
     }
 }

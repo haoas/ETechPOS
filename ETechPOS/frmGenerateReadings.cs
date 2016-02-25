@@ -15,12 +15,10 @@ namespace ETech
     {
         public int process = 0;
         //1 - Generate Ungenerated Zreadings
-        //2 - Offline XML to SQL
 
         public frmGenerateReadings()
         {
             InitializeComponent();
-            cls_xmlhelper.create_xml_if_missing();
             fncFilter.set_theme_color(this);
         }
 
@@ -32,11 +30,6 @@ namespace ETech
             {
                 label1.Text = "Please Wait while POS generates previously ungenerated Zreadings";
                 BGW.RunWorkerAsync();
-            }
-            else if (process == 2 && !BGW_XmlToSql.IsBusy)
-            {
-                label1.Text = "Please Wait while POS Transfers your Offline Transaction to Database";
-                BGW_XmlToSql.RunWorkerAsync();
             }
         }
 
@@ -50,21 +43,7 @@ namespace ETech
 
         private void BGW_XmlToSql_DoWork(object sender, DoWorkEventArgs e)
         {
-            cls_POSTransaction tran = new cls_POSTransaction();
-            tran  = cls_xmlhelper.Get_FirstTrans_from_OfflineXML();
-            while (tran != null)
-            {
-                if (cls_xmlhelper.SaveOfflineTransToDB(tran))
-                    cls_xmlhelper.Delete_FirstTrans_In_OfflineXML();
-                else
-                {
-                    fncFilter.alert("Failed to save offline trans to database");
-                    cls_xmlhelper.hasxmlerror = true;
-                    break;
-                }
-                tran = cls_xmlhelper.Get_FirstTrans_from_OfflineXML();
-            }
-            cls_xmlhelper.hasxmlerror = false;
+            
         }
 
         private void BGW_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

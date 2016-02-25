@@ -43,7 +43,6 @@
             this.btnL = new System.Windows.Forms.Button();
             this.btnM = new System.Windows.Forms.Button();
             this.btnS = new System.Windows.Forms.Button();
-            this.btnA = new System.Windows.Forms.Button();
             this.btnY = new System.Windows.Forms.Button();
             this.btnH = new System.Windows.Forms.Button();
             this.btnF3 = new System.Windows.Forms.Button();
@@ -255,19 +254,6 @@
             this.btnS.UseVisualStyleBackColor = false;
             this.btnS.Click += new System.EventHandler(this.btnS_Click);
             // 
-            // btnA
-            // 
-            this.btnA.AutoSize = true;
-            this.btnA.BackColor = System.Drawing.Color.Navy;
-            this.btnA.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnA.ForeColor = System.Drawing.Color.White;
-            this.btnA.Location = new System.Drawing.Point(210, 91);
-            this.btnA.Name = "btnA";
-            this.btnA.Size = new System.Drawing.Size(93, 73);
-            this.btnA.TabIndex = 30;
-            this.btnA.Text = "A\r\nAccreditation\r\nReports";
-            this.btnA.UseVisualStyleBackColor = false;
-            // 
             // btnY
             // 
             this.btnY.BackColor = System.Drawing.Color.Navy;
@@ -331,7 +317,6 @@
             this.Controls.Add(this.btnF3);
             this.Controls.Add(this.btnH);
             this.Controls.Add(this.btnY);
-            this.Controls.Add(this.btnA);
             this.Controls.Add(this.btnS);
             this.Controls.Add(this.btnM);
             this.Controls.Add(this.btnL);
@@ -359,7 +344,6 @@
             this.Leave += new System.EventHandler(this.frmMenu_Leave);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMenu_KeyDown);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -380,7 +364,6 @@
         private System.Windows.Forms.Button btnL;
         private System.Windows.Forms.Button btnM;
         private System.Windows.Forms.Button btnS;
-        private System.Windows.Forms.Button btnA;
         private System.Windows.Forms.Button btnY;
         private System.Windows.Forms.Button btnH;
         private System.Windows.Forms.Button btnF3;

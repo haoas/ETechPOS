@@ -32,7 +32,7 @@ namespace ETech.cls
         public static int POSmode = 1;
 
         public static int dchead_defaultcustom = 10;
-        public static DateTime companystartdate = new DateTime(2013, 1, 1, 0, 0, 0);
+        public static DateTime companystartdate = new DateTime(2016, 1, 1, 0, 0, 0);
         public static DateTime companymaxdate = new DateTime(3000, 12, 31, 0, 0, 0);
 
         public static string settingspath = Application.StartupPath + "/settings.txt";
@@ -48,15 +48,6 @@ namespace ETech.cls
         }
 
         public static string systemlogpath = mydocumentpath + "ETechPOS_SystemLogs.txt";
-
-        public static string OfflineXMLpath = mydocumentpath + "OfflineTransactions.XML";
-
-        private static bool showCompleteOR = true;
-        public static bool showCompleteOR_v
-        {
-            get { return showCompleteOR; }
-            set { showCompleteOR = value; }
-        }
 
         private static string posname = "ETECH POS SYSTEM";
         public static string posname_v

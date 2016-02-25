@@ -204,12 +204,6 @@ namespace ETech
                 GR.process = 2;
                 GR.ShowDialog();
 
-                if (cls_xmlhelper.hasxmlerror)
-                {
-                    isLoadSuccessful = false;
-                    return;
-                }
-
                 //Check branchid
                 sql = @"Select `value` FROM config WHERE particular='branchid'";
                 DT = mySQLFunc.getdb(sql);
@@ -975,8 +969,6 @@ namespace ETech
                             LOGS.LOG_PRINT("Cash Collection Warning");
                         }
 
-                        cls_xmlhelper.setOrAndTransNoToXML(tran);
-
                         //After successful payment, create new payment if no other open transactions
                         if (Trans.Count == 0)
                             this.create_new_invoice();
@@ -1507,52 +1499,6 @@ namespace ETech
                         case "0":
                             frmSetting2 settingform2 = new frmSetting2();
                             settingform2.ShowDialog();
-                            break;
-                        case "P":
-                            LOGS.LOG_PRINT("[P] Pos Promotion");
-                            tran = this.get_curtrans();
-                            if (tran == null) return true;
-
-                            frmPromo promoform = new frmPromo();
-                            promoform.ShowDialog();
-
-                            int promoid = promoform.promochosen;
-                            if (promoid > 0)
-                            {
-                                try
-                                {
-                                    DataTable dt = mySQLFunc.getdb(@"SELECT `amount`, `adjust`, `ismultiple` 
-                                                                 FROM `pospromotion` WHERE `wid` = " + promoid);
-
-                                    decimal amt = Convert.ToDecimal(dt.Rows[0]["amount"]);
-                                    decimal adj = Convert.ToDecimal(dt.Rows[0]["adjust"]);
-                                    bool ismultiple = (Convert.ToInt32(dt.Rows[0]["ismultiple"]) == 1);
-
-                                    decimal totalamt = tran.get_productlist().get_last_amt_before_discount(cls_globalvariables.dchead_pospromotype);
-
-                                    if (totalamt >= amt)
-                                    {
-                                        decimal promoperc = 0;
-                                        if (!ismultiple)
-                                        {
-                                            promoperc = 1 - adj / 100;
-                                        }
-                                        else
-                                        {
-                                            promoperc = ((int)(totalamt / amt)) * adj;
-                                        }
-                                        tran.get_productlist().getTransDisc().setPosPromo(promoperc, !ismultiple);
-                                        tran.get_productlist().refresh_all_discounts();
-                                    }
-                                    else
-                                        fncFilter.alert(cls_globalvariables.warning_promo_amtnotvalid);
-
-                                }
-                                catch
-                                {
-                                    fncFilter.alert(cls_globalvariables.warning_promo_notavailable);
-                                }
-                            }
                             break;
                         case "L":
                             LOGS.LOG_PRINT("[L] Discount Lists");

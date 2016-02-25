@@ -75,8 +75,6 @@ namespace ETech
                 cls_globalvariables.orfooter4_v = dic["orfooter4"];
                 try { cls_globalvariables.posname_v = dic["posname"]; }
                 catch { cls_globalvariables.posname_v = "ETECH POS SYSTEM"; }
-                try { cls_globalvariables.showCompleteOR_v = Convert.ToBoolean(dic["showCompleteOR"]); }
-                catch { cls_globalvariables.showCompleteOR_v = true; }
                 try { cls_globalvariables.avoidinvalidpprice_v = dic["avoidinvalidpprice"]; }
                 catch { cls_globalvariables.avoidinvalidpprice_v = "0"; }
                 try { cls_globalvariables.isvat_v = dic["isvat"]; }

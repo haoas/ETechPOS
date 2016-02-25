@@ -166,11 +166,7 @@ public static class zreadFunc
             generate_posxyzread(datetime_d, 1, isposd);
         //-----------------------------------------------------------
 
-        //When Generating Z reading today, add lock in OfflineXml
         DateTime now = mySQLFunc.DateTimeNow();
-        if ((Readtype == 3) && (now.Date == datetime_d.Date))
-            cls_xmlhelper.setLockedDateToXML(now.Date);
-        //-------------------------------------------------------
 
         string suffix = (isposd) ? "_posd" : "";
 

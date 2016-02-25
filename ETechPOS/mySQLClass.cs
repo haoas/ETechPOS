@@ -673,61 +673,6 @@ namespace ETech
                 transactionQueryList.Add(sSQLcd);
             }
 
-            decimal eplus = trans.getpayments().get_eplus();
-            if (eplus != 0)
-            {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
-                foreach (string str in tempStringList)
-                    transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `collectiondetail` SET
-                    `headid` = @collectionheadwid,
-                    `method` = 9, `amount` = " + eplus + @"
-                     WHERE `wid` = @wid_d";
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-            }
-
-            decimal smac = trans.getpayments().get_smac();
-            if (smac != 0)
-            {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
-                foreach (string str in tempStringList)
-                    transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `collectiondetail` SET
-                    `headid` = @collectionheadwid,
-                    `method` = 10, `amount` = " + smac + @"
-                      WHERE `wid` = @wid_d";
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-            }
-
-            decimal onlinedeal = trans.getpayments().get_onlinedeal();
-            if (onlinedeal != 0)
-            {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
-                foreach (string str in tempStringList)
-                    transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `collectiondetail` SET
-                    `headid` = @collectionheadwid,
-                    `method` = 11, `amount` = " + onlinedeal + @"
-                     WHERE `wid` = @wid_d";
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-            }
-
-            decimal coupons = trans.getpayments().get_coupons();
-            if (coupons != 0)
-            {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
-                foreach (string str in tempStringList)
-                    transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `collectiondetail` SET
-                    `headid` = @collectionheadwid,
-                    `method` = 12, `amount` = " + coupons + @"
-                     WHERE `wid` = @wid_d";
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-            }
             if (change > 0)
             {
                 tempStringList = get_next_wid_withlock_liststring("collectiondetail");

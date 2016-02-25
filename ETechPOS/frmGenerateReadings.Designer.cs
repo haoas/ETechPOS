@@ -32,7 +32,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.BGW = new System.ComponentModel.BackgroundWorker();
-            this.BGW_XmlToSql = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,11 +61,6 @@
             this.BGW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_DoWork);
             this.BGW.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_RunWorkerCompleted);
             // 
-            // BGW_XmlToSql
-            // 
-            this.BGW_XmlToSql.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_XmlToSql_DoWork);
-            this.BGW_XmlToSql.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_XmlToSql_RunWorkerCompleted);
-            // 
             // frmGenerateReadings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -91,6 +85,5 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.ComponentModel.BackgroundWorker BGW;
-        private System.ComponentModel.BackgroundWorker BGW_XmlToSql;
     }
 }

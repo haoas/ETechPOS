@@ -54,28 +54,7 @@ namespace ETech
             this.Close();
             return;
         }
-        public void done_process_servicecharge()
-        {
-            decimal price = fncFilter.getDecimalValue(txtPrice.Text);
-            if (price <= 0)
-            {
-                fncFilter.alert(cls_globalvariables.warning_input_invalid);
-                this.txtPrice.Focus();
-                this.txtPrice.SelectAll();
-                return;
-            }
 
-            this.prodprice = price;
-            this.quantity = 1;
-            this.type = "ServiceCharge";
-            this.Close();
-            return;
-        }
-
-        private void btnServiceCharge_Click(object sender, EventArgs e)
-        {
-            done_process_servicecharge();
-        }
         private void btnOK_Click(object sender, EventArgs e)
         {
             done_process();

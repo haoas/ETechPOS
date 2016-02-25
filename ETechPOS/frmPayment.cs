@@ -49,15 +49,6 @@ namespace ETech
             this.paymentdata.set_cash(cash_d);
             this.paymentdata.set_points(points_d);
 
-            decimal eplus_d = fncFilter.getDecimalValue(this.txtEplusRcv_d.Text);
-            decimal smac_d = fncFilter.getDecimalValue(this.txtSMACPtsRcv_d.Text);
-            decimal onlinedeal_d = fncFilter.getDecimalValue(this.txtOnlineDealRcv_d.Text);
-            decimal coupons_d = fncFilter.getDecimalValue(this.txtCouponsRcv_d.Text);
-            this.paymentdata.set_eplus(eplus_d);
-            this.paymentdata.set_smac(smac_d);
-            this.paymentdata.set_onlinedeal(onlinedeal_d);
-            this.paymentdata.set_coupon(coupons_d);
-
             decimal totalamt = this.paymentdata.get_totalamount();
             if(points_d >= 0)
                 lblremainingpts_d.Text = (this.totalpoints - points_d).ToString("N2");
@@ -194,17 +185,11 @@ namespace ETech
             if (cash_d > 9999999) return;
             if (cash_d < 0) cash_d = 0;
             decimal points_d = fncFilter.getDecimalValue(this.txtPointUsed_d.Text);
-            decimal eplus_d = fncFilter.getDecimalValue(this.txtEplusRcv_d.Text);
-            decimal smac_d = fncFilter.getDecimalValue(this.txtSMACPtsRcv_d.Text);
-            decimal onlinedeal_d = fncFilter.getDecimalValue(this.txtOnlineDealRcv_d.Text);
-            decimal coupons_d = fncFilter.getDecimalValue(this.txtCouponsRcv_d.Text);
-            decimal bankcheque_d = fncFilter.getDecimalValue(this.lblBankCheque_d.Text);
             decimal debitcard_d = fncFilter.getDecimalValue(this.lblDebitCard_d.Text);
             decimal creditcard_d = fncFilter.getDecimalValue(this.lblCreditCard_d.Text);
             decimal GiftCheque_d = fncFilter.getDecimalValue(this.lblGiftCheque_d.Text);
             decimal customPayments_d = fncFilter.getDecimalValue(this.lblCustomAmt_d.Text);
-            decimal allTenders_d = Math.Round(cash_d + points_d + eplus_d + smac_d + onlinedeal_d + coupons_d +
-                bankcheque_d + debitcard_d + creditcard_d + GiftCheque_d + customPayments_d, 2, MidpointRounding.AwayFromZero);
+            decimal allTenders_d = Math.Round(cash_d + points_d + debitcard_d + creditcard_d + GiftCheque_d + customPayments_d, 2, MidpointRounding.AwayFromZero);
 
             decimal Non_GC_tender_d = allTenders_d - GiftCheque_d;
             decimal Non_Cash_tender_d = allTenders_d - cash_d;
@@ -225,10 +210,6 @@ namespace ETech
 
             this.paymentdata.set_cash(cash_d);
             this.paymentdata.set_points(points_d);
-            this.paymentdata.set_eplus(eplus_d);
-            this.paymentdata.set_smac(smac_d);
-            this.paymentdata.set_onlinedeal(onlinedeal_d);
-            this.paymentdata.set_coupon(coupons_d);
             changeupdated = true;
 
             this.Close();
@@ -272,21 +253,12 @@ namespace ETech
 
             decimal cash_d = this.paymentdata.get_cash();
             decimal points_d = this.paymentdata.get_points();
-            decimal eplus_d = this.paymentdata.get_eplus();
-            decimal smac_d = this.paymentdata.get_smac();
-            decimal onlinedeal_d = this.paymentdata.get_onlinedeal();
-            decimal coupons_d = this.paymentdata.get_coupons();
 
             this.txtCashRcv_d.Text = cash_d.ToString("N2");
-            this.txtEplusRcv_d.Text = eplus_d.ToString("N2");
-            this.txtSMACPtsRcv_d.Text = smac_d.ToString("N2");
-            this.txtOnlineDealRcv_d.Text = onlinedeal_d.ToString("N2");
-            this.txtCouponsRcv_d.Text = coupons_d.ToString("N2");
             this.lblCreditCard_d.Text = this.paymentdata.get_creditamount().ToString("N2");
             this.lblDebitCard_d.Text = this.paymentdata.get_debitamount().ToString("N2");
             this.lblGiftCheque_d.Text = (Convert.ToDecimal(this.paymentdata.get_giftchequeamount()) +
                                          Convert.ToDecimal(this.paymentdata.get_giftchequenewamount())).ToString("N2");
-            this.lblBankCheque_d.Text = this.paymentdata.get_bankchequeamount().ToString("N2");
             this.txtPointUsed_d.Text = points_d.ToString("N2");
             this.lblCustomAmt_d.Text = this.paymentdata.get_custompaymentamount().ToString("N2");
 

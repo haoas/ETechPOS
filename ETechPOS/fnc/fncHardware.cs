@@ -372,7 +372,7 @@ namespace ETech.fnc
 
             decimal t_vat_sale = Math.Round(all_vatable_sale + all_vatable_return, 2, MidpointRounding.AwayFromZero);
             decimal t_gross_vatable_sale = t_vat_sale;
-            decimal t_vatable_sale = Math.Round(t_gross_vatable_sale / (1 + cls_globalvariables.vat), 2,MidpointRounding.AwayFromZero);
+            decimal t_vatable_sale = Math.Round(t_gross_vatable_sale / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
             t_vatable_sale = (cls_globalvariables.isvat_v == "0") ? t_gross_vatable_sale : t_vatable_sale;
             decimal t_vat = t_gross_vatable_sale - t_vatable_sale;
 
@@ -1487,7 +1487,7 @@ namespace ETech.fnc
                     and `date` between '" + datetime_d.ToString("yyyy-MM-dd") + "' and '" + datetime_d.ToString("yyyy-MM-dd") + " 23:59:59';";
 
             decimal t_senior_disc = 0;
-            if(t_senior_sale != 0)
+            if (t_senior_sale != 0)
                 decimal.TryParse(mySQLFunc.getdb(sql).Rows[0]["senior_disc"].ToString(), out t_senior_disc);
             //(t_senior_sale / (1 - cls_globalvariables.senior)) * cls_globalvariables.senior;
 
@@ -1654,7 +1654,7 @@ namespace ETech.fnc
             dt_header1.Rows.Add(sPermitNo);
             dt_header1.Rows.Add(sSerial);
             dt_header1.Rows.Add(sMIN);
-            if(isvoid || isreprint)
+            if (isvoid || isreprint)
                 dt_header1.Rows.Add("PRINTED: " + DateTime.Now);
 
             DataTable dt_header2 = new DataTable();
@@ -1809,10 +1809,6 @@ namespace ETech.fnc
             decimal tendered_gift = tran.getpayments().get_giftchequeamount() + tran.getpayments().get_giftchequenewamount();
             decimal tendered_cheque = tran.getpayments().get_bankchequeamount();
             decimal tendered_mempoints = tran.getpayments().get_points();
-            decimal tendered_eplus = tran.getpayments().get_eplus();
-            decimal tendered_smac = tran.getpayments().get_smac();
-            decimal tendered_onlinedeals = tran.getpayments().get_onlinedeal();
-            decimal tendered_coupons = tran.getpayments().get_coupons();
             decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
             decimal dept = tran.getpayments().get_dept();
             decimal tendered_total = tran.getpayments().get_totalamount();
@@ -1860,11 +1856,6 @@ namespace ETech.fnc
             }
             if (tendered_cheque != 0) { dt_tendered.Rows.Add("Bank Cheque:", tendered_cheque.ToString("N2")); cnt_item_t++; }
             if (tendered_mempoints != 0) { dt_tendered.Rows.Add("Mem. Pts:", tendered_mempoints.ToString("N2")); cnt_item_t++; }
-
-            if (tendered_eplus != 0) { dt_tendered.Rows.Add("E-plus:", tendered_eplus.ToString("N2")); cnt_item_t++; }
-            if (tendered_smac != 0) { dt_tendered.Rows.Add("SMAC:", tendered_smac.ToString("N2")); cnt_item_t++; }
-            if (tendered_onlinedeals != 0) { dt_tendered.Rows.Add("Online Deals:", tendered_onlinedeals.ToString("N2")); cnt_item_t++; }
-            if (tendered_coupons != 0) { dt_tendered.Rows.Add("Coupons:", tendered_coupons.ToString("N2")); cnt_item_t++; }
 
             if (tendered_custompayments != 0 || tran.getpayments().get_custompayments().Count > 0)
             {
@@ -2014,7 +2005,7 @@ namespace ETech.fnc
                 rect_item = fncHardware.create_rect_list(nX, nY, new int[] { 30, 10, 130, 70 });
             else if (printformat == 57)
                 rect_item = fncHardware.create_rect_list(nX, nY, new int[] { 25, 5, 90, 60 });
-            else if(printformat == 762)
+            else if (printformat == 762)
                 rect_item = fncHardware.create_rect_list(nX, nY, new int[] { 30, 10, 133, 80 });
             else //80mm
                 rect_item = fncHardware.create_rect_list(nX, nY, new int[] { 30, 20, 150, 80 });
@@ -2031,7 +2022,7 @@ namespace ETech.fnc
                 //discounts
                 if (printformat == 76)
                     rect_disc = fncHardware.create_rect_list(nX, nY, new int[] { 120, 50, 70 });
-                else if(printformat == 762)
+                else if (printformat == 762)
                     rect_disc = fncHardware.create_rect_list(nX, nY, new int[] { 133, 50, 70 });
                 else
                     rect_disc = fncHardware.create_rect_list(nX, nY, new int[] { 160, 50, 70 });
@@ -2133,7 +2124,7 @@ namespace ETech.fnc
             printer.CPI12();
 
             // Header
-            if(cls_globalvariables.BusinessName_v != "")
+            if (cls_globalvariables.BusinessName_v != "")
                 printer.WriteLines(cls_globalvariables.BusinessName_v);
             if (cls_globalvariables.Owner_v != "")
                 printer.WriteLines(cls_globalvariables.Owner_v);
@@ -2242,7 +2233,7 @@ namespace ETech.fnc
                 printer.WriteTable(
                     tempDataTable,
                     new StringAlignment[] { StringAlignment.Near, StringAlignment.Far, StringAlignment.Far },
-                    new int[] { printer.StringWidth / 2, printer.StringWidth / 4, printer.StringWidth / 4}
+                    new int[] { printer.StringWidth / 2, printer.StringWidth / 4, printer.StringWidth / 4 }
                 );
             }
 
@@ -2282,7 +2273,7 @@ namespace ETech.fnc
             printer.LargeFont();
             printer.CPI12();
             printer.WriteRow(
-                new string[]{ "AMOUNT DUE:", tran.get_productlist().get_totalsale().ToString("N2") },
+                new string[] { "AMOUNT DUE:", tran.get_productlist().get_totalsale().ToString("N2") },
                 new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
                 new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
             );
@@ -2296,10 +2287,6 @@ namespace ETech.fnc
             decimal tendered_gift = tran.getpayments().get_giftchequeamount() + tran.getpayments().get_giftchequenewamount();
             decimal tendered_cheque = tran.getpayments().get_bankchequeamount();
             decimal tendered_mempoints = tran.getpayments().get_points();
-            decimal tendered_eplus = tran.getpayments().get_eplus();
-            decimal tendered_smac = tran.getpayments().get_smac();
-            decimal tendered_onlinedeals = tran.getpayments().get_onlinedeal();
-            decimal tendered_coupons = tran.getpayments().get_coupons();
             decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
             decimal debt = tran.getpayments().get_dept();
             decimal tendered_total = tran.getpayments().get_totalamount();
@@ -2354,26 +2341,6 @@ namespace ETech.fnc
             if (tendered_mempoints != 0)
             {
                 tempDataTable.Rows.Add("Mem. Pts:", tendered_mempoints.ToString("N2"));
-                cnt_item_t++;
-            }
-            if (tendered_eplus != 0)
-            { 
-                tempDataTable.Rows.Add("E-plus:", tendered_eplus.ToString("N2"));
-                cnt_item_t++; 
-            }
-            if (tendered_smac != 0)
-            { 
-                tempDataTable.Rows.Add("SMAC:", tendered_smac.ToString("N2"));
-                cnt_item_t++; 
-            }
-            if (tendered_onlinedeals != 0) 
-            {
-                tempDataTable.Rows.Add("Online Deals:", tendered_onlinedeals.ToString("N2"));
-                cnt_item_t++;
-            }
-            if (tendered_coupons != 0)
-            {
-                tempDataTable.Rows.Add("Coupons:", tendered_coupons.ToString("N2"));
                 cnt_item_t++;
             }
             if (tendered_custompayments != 0 || tran.getpayments().get_custompayments().Count > 0)
@@ -2480,7 +2447,7 @@ namespace ETech.fnc
             // Based on BIR Revenue Regulations No. 10-2015
             printer.LargeFont();
             printer.CPI12();
-            if(cls_globalvariables.isvat_v != "1" || tran.get_productlist().get_isnonvat())
+            if (cls_globalvariables.isvat_v != "1" || tran.get_productlist().get_isnonvat())
                 printer.WriteLines("THIS DOCUMENT IS NOT VALID FOR CLAIM OF INPUT TAX.");
             printer.NormalFont();
             printer.CPI12();
@@ -2767,10 +2734,7 @@ namespace ETech.fnc
                 string ornumber_only = ornumber.Substring(ornumber.Length - length_of_transno);
                 string branchterminal = ornumber.Substring(0, ornumber.Length - length_of_transno);
 
-                if (cls_globalvariables.showCompleteOR_v)
-                    return branchterminal + "/" + ornumber_only;
-                else
-                    return ornumber_only;
+                return ornumber_only;
             }
             catch (Exception)
             {
@@ -2785,10 +2749,7 @@ namespace ETech.fnc
                 string ornumber_only = transactionno.Substring(transactionno.Length - length_of_transno);
                 string terminal = transactionno.Substring(0, transactionno.Length - length_of_transno);
 
-                if (cls_globalvariables.showCompleteOR_v)
-                    return terminal + "/" + ornumber_only;
-                else
-                    return ornumber_only;
+                return ornumber_only;
             }
             catch (Exception)
             {

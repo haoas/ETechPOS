@@ -18,10 +18,6 @@ namespace ETech.cls
         private decimal cash;
         private decimal dept;
         private decimal points;
-        private decimal eplus;
-        private decimal smac;
-        private decimal onlinedeal;
-        private decimal coupons;
         private string memo;
 
         public cls_payment()
@@ -35,10 +31,6 @@ namespace ETech.cls
             this.cash = 0;
             this.dept = 0;
             this.points = 0;
-            this.eplus = 0;
-            this.smac = 0;
-            this.onlinedeal = 0;
-            this.coupons = 0;
             this.memo = "";
         }
 
@@ -55,10 +47,6 @@ namespace ETech.cls
             this.cash = 0;
             this.dept = 0;
             this.points = 0;
-            this.eplus = 0;
-            this.smac = 0;
-            this.onlinedeal = 0;
-            this.coupons = 0;
             this.memo = "";
 
             string sSQL = @"SELECT D.*,H.`memo` 
@@ -96,10 +84,6 @@ namespace ETech.cls
                         if (amt > 0)
                             this.points += amt;
                         break;
-                    case 9: this.eplus += amt; break;
-                    case 10: this.smac += amt; break;
-                    case 11: this.onlinedeal += amt; break;
-                    case 12: this.coupons += amt; break;
                     case 13:
                         this.giftchequenew.Add(new cls_otherpaymentinfo(dwid, 13));
                         break;
@@ -157,26 +141,6 @@ namespace ETech.cls
             this.dept = dept_d;
         }
 
-        public void set_eplus(decimal eplus_d)
-        {
-            this.eplus = eplus_d;
-        }
-
-        public void set_smac(decimal smac_d)
-        {
-            this.smac = smac_d;
-        }
-
-        public void set_onlinedeal(decimal onlinedeal_d)
-        {
-            this.onlinedeal = onlinedeal_d;
-        }
-
-        public void set_coupon(decimal coupon_d)
-        {
-            this.coupons = coupon_d;
-        }
-
         public void set_custompayments(List<cls_CustomPaymentsInfo> custompayments_d)
         {
             this.list_custompayment = custompayments_d;
@@ -192,10 +156,6 @@ namespace ETech.cls
         public decimal get_cash() { return this.cash; }
         public decimal get_dept() { return this.dept; }
         public decimal get_points() { return this.points; }
-        public decimal get_eplus() { return this.eplus; }
-        public decimal get_smac() { return this.smac; }
-        public decimal get_onlinedeal() { return this.onlinedeal; }
-        public decimal get_coupons() { return this.coupons; }
 
         public decimal get_creditamount()
         {
@@ -265,10 +225,6 @@ namespace ETech.cls
                     this.get_giftchequeamount() +
                     this.get_bankchequeamount() +
                     this.get_custompaymentamount() +
-                    this.get_eplus() +
-                    this.get_smac() +
-                    this.get_onlinedeal() +
-                    this.get_coupons() +
                     this.get_cash() +
                     this.get_points();
         }
