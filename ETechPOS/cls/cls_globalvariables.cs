@@ -431,39 +431,6 @@ namespace ETech.cls
         { get { return is4By3ratio; } set { is4By3ratio = value; } }
         //------
 
-        // General
-        private static string ACCRED_LocalDrivePath = "";
-        private static string ACCRED_NetworkDrivePath = "";
-        private static string ACCRED_NetworkUserName = "";
-        private static string ACCRED_NetworkPassword = "";
-        private static string ACCRED_TenantNoOrAccountNo = "0";
-        private static string ACCRED_TerminalNo = "000";
-        private static string ACCRED_FTPAddress = "";
-        private static string ACCRED_FTPUsername = "";
-        private static string ACCRED_FTPPassword = "";
-
-
-        public static string ACCRED_NetworkDrivePath_v
-        { get { return ACCRED_NetworkDrivePath; } set { ACCRED_NetworkDrivePath = value; } }
-        public static string ACCRED_NetworkUserName_v
-        { get { return ACCRED_NetworkUserName; } set { ACCRED_NetworkUserName = value; } }
-        public static string ACCRED_NetworkPassword_v
-        { get { return ACCRED_NetworkPassword; } set { ACCRED_NetworkPassword = value; } }
-        public static string ACCRED_LocalDrivePath_v
-        { get { return ACCRED_LocalDrivePath; } set { ACCRED_LocalDrivePath = value; } }
-        public static string ACCRED_TenantNoOrAccountNo_v
-        { get { return ACCRED_TenantNoOrAccountNo; } set { ACCRED_TenantNoOrAccountNo = value; } }
-        public static string ACCRED_TerminalNo_v
-        { get { return ACCRED_TerminalNo; } set { ACCRED_TerminalNo = value; } }
-        public static string ACCRED_FTPAddress_v
-        { get { return ACCRED_FTPAddress; } set { ACCRED_FTPAddress = value; } }
-        public static string ACCRED_FTPUsername_v
-        { get { return ACCRED_FTPUsername; } set { ACCRED_FTPUsername = value; } }
-        public static string ACCRED_FTPPassword_v
-        { get { return ACCRED_FTPPassword; } set { ACCRED_FTPPassword = value; } }
-
-        //
-
         private static string DefaultPrinter = "";
         public static string DefaultPrinter_v
         { get { return DefaultPrinter; } set { DefaultPrinter = value; } }
@@ -487,10 +454,6 @@ namespace ETech.cls
         private static bool AutoShowKeyboard = false;
         public static bool AutoShowKeyboard_v
         { get { return AutoShowKeyboard; } set { AutoShowKeyboard = value; } }
-
-        private static string OfflineSecurityCode = "gMo3uRgQdKaHeFC7n2KDbA==";
-        public static string OfflineSecurityCode_v
-        { get { return OfflineSecurityCode; } set { OfflineSecurityCode = value; } }
 
         private static string POSMacAddress = "";
         public static string POSMacAddress_v

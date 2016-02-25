@@ -112,10 +112,10 @@ namespace ETech.fnc
                 isVoid = Convert.ToBoolean(mySQLFunc.getdb(checkIfVoidSql).Rows[0]["cnt"]);
             }
             RawPrinterHelper.OpenCashDrawer(true);
-            printpage_receipt_new(null, null, null, tran, isVoid, isReprint);
-            //PrintDocument pd = new PrintDocument();
-            //pd.PrintPage += (sender, e) => { printpage_receipt(sender, e, null, tran, isVoid, isReprint); };
-            //start_print(pd);
+            //printpage_receipt_new(null, null, null, tran, isVoid, isReprint);
+            PrintDocument pd = new PrintDocument();
+            pd.PrintPage += (sender, e) => { printpage_receipt(sender, e, null, tran, isVoid, isReprint); };
+            start_print(pd);
         }
 
         public static void void_transaction(cls_POSTransaction tran)

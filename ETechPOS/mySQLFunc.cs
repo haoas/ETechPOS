@@ -143,11 +143,6 @@ namespace ETech
                 try { cls_globalvariables.maximum_cash_collection_v = Convert.ToDouble(dic["MaximumCashCollection"]); }
                 catch { cls_globalvariables.maximum_cash_collection_v = 0; }
 
-                try { cls_globalvariables.OfflineSecurityCode_v = dic["OfflineSecurityCode"]; }
-                catch { }
-                if (cls_globalvariables.OfflineSecurityCode_v == "")
-                    cls_globalvariables.OfflineSecurityCode_v = "gMo3uRgQdKaHeFC7n2KDbA==";
-
                 try { cls_globalvariables.POSMacAddress_v = dic["POSMacAddress"]; }
                 catch { cls_globalvariables.POSMacAddress_v = ""; }
 

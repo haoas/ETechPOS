@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Security.Cryptography;
 using ETech.cls;
-using ETech.cls;
 using MySql.Data.MySqlClient;
 using str_encode_decode;
 using System.Threading;
@@ -133,17 +132,8 @@ namespace ETech
         {
             try_connection();
             txtUsername.Text = txtUsername.Text.Trim();
-            string dec_OfflineSecurityCode = cls_encdec.Decrypt(cls_globalvariables.OfflineSecurityCode_v);
-            if (!isconnected && txtUsername.Text != "" && txtPassword.Text == dec_OfflineSecurityCode)
-            {
-                List<int> offlineperm = new List<int>();
-                offlineperm.Add(100);
-                this.cashier.setcls_user("0000", txtUsername.Text, offlineperm, 2);
-                tmrConnecting.Enabled = false;
-                this.Close();
-                return;
-            }
-            else if (!isconnected)
+            
+            if (!isconnected)
             {
                 fncFilter.alert("This device is not connected to the server.");
                 this.Close();

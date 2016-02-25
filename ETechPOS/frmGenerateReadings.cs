@@ -41,16 +41,7 @@ namespace ETech
             zreadFunc.generate_ungenerated_readings(3, false);
         }
 
-        private void BGW_XmlToSql_DoWork(object sender, DoWorkEventArgs e)
-        {
-            
-        }
-
         private void BGW_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            this.Close();
-        }
-        private void BGW_XmlToSql_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.Close();
         }

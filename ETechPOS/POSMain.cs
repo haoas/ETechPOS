@@ -54,8 +54,6 @@ namespace ETech
             if (!isLoadSuccessful)
                 return;
 
-            Install_Fonts();
-
             //add directories
             cls_globalfunc.CreateIfMissing(@"EOD Reports\");
             cls_globalfunc.CreateIfMissing(@"TEMP\");
@@ -68,11 +66,8 @@ namespace ETech
 
             this.Trans = new List<cls_POSTransaction>();
             this.ctrlproductgridview = new ctrl_productgrid(this.dgvProduct);
-            this.ctrlpaymentlabel = new ctrl_payment(this.gbTotal, this.gbTendered, this.gbRemaining, this.gbDiscounts,
-                                                this.lblTotal, this.lblTendered, this.lblRemaining,
-                                                this.gbProductInfo, this.lblProductBarcode_d, this.lblProductDesc_d, this.lblProductPrice_d,
-                                                this.lblQuantity_d, this.lblAmount_d, this.lblSwitchPack,
-                                                this.lbl_regdisc, this.lbl_memberdisc, this.lbl_adjustments, this.lbl_pospromodiscount);
+            this.ctrlpaymentlabel = new ctrl_payment(this.gbTotal, this.gbTendered, this.gbRemaining,
+                                                this.lblTotal, this.lblTendered, this.lblRemaining);
             this.ctrlbtnpanel = new ctrl_btnpanel(btnlist, this);
             this.ctrlOther = new ctrl_otherinfo(this.pnlOtherInfo, this.lblClerk_d, this.lblChecker_d,
                                                 this.lblMode_d, this.lblCustomer_d, this.lblCustomermemo_d,
@@ -187,8 +182,6 @@ namespace ETech
                     return;
                 }
 
-
-
                 //add offlineuser if not existing
                 DataTable DTO = mySQLFunc.getdb(@"SELECT `wid` FROM `user` WHERE wid=2 LIMIT 1");
                 if (DTO.Rows.Count <= 0)
@@ -198,11 +191,6 @@ namespace ETech
                                 VALUES ('2', 'offline user', 'offline user', '1', '1', '1', '0000', 'offlineuser',NOW(),NOW(),NOW())";
                     mySQLFunc.setdb(sqlO);
                 }
-
-                //Save Offline XML to SQL
-                frmGenerateReadings GR = new frmGenerateReadings();
-                GR.process = 2;
-                GR.ShowDialog();
 
                 //Check branchid
                 sql = @"Select `value` FROM config WHERE particular='branchid'";
@@ -296,7 +284,7 @@ namespace ETech
                 }
 
                 //autogenerate previous readings
-                GR = new frmGenerateReadings();
+                frmGenerateReadings GR = new frmGenerateReadings();
                 GR.process = 1;
                 GR.ShowDialog();
 
@@ -1985,13 +1973,6 @@ namespace ETech
             {
                 fncHardware.print_zread(datefrom, cur_cashier.getwid());
             }
-        }
-        public void Install_Fonts()
-        {
-            //if (!File.Exists(cls_globalvariables.windowsfont1path))
-            //    File.Copy(cls_globalvariables.font1path, cls_globalvariables.windowsfont1path);
-            //if (!File.Exists(cls_globalvariables.windowsfont2path))
-            //    File.Copy(cls_globalvariables.font1path, cls_globalvariables.windowsfont2path);
         }
     }
 

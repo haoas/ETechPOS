@@ -29,11 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvProduct = new System.Windows.Forms.DataGridView();
+            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtBarcode = new System.Windows.Forms.TextBox();
             this.lblORNumber = new System.Windows.Forms.Label();
             this.lblORNumber_d = new System.Windows.Forms.Label();
@@ -79,40 +83,13 @@
             this.lbltransaction_d = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lbltransaction_total = new System.Windows.Forms.Label();
-            this.gbProductInfo = new System.Windows.Forms.GroupBox();
-            this.lblSwitchPack = new System.Windows.Forms.Label();
-            this.lblAmount_d = new System.Windows.Forms.Label();
-            this.lblProductPrice_d = new System.Windows.Forms.Label();
-            this.lblProductPrice = new System.Windows.Forms.Label();
-            this.lblAmount = new System.Windows.Forms.Label();
-            this.lblProductDesc_d = new System.Windows.Forms.Label();
-            this.lblProductDesc = new System.Windows.Forms.Label();
-            this.lblQuantity_d = new System.Windows.Forms.Label();
-            this.lblProductBarcode_d = new System.Windows.Forms.Label();
-            this.lblQuantity = new System.Windows.Forms.Label();
-            this.lblProductBarcode = new System.Windows.Forms.Label();
             this.spcustdisp = new System.IO.Ports.SerialPort(this.components);
-            this.gbDiscounts = new System.Windows.Forms.GroupBox();
-            this.lbl_pospromodiscount = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lbl_adjustments = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lbl_regdisc = new System.Windows.Forms.Label();
-            this.lbl_memberdisc = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.tmrcheckposdsetting = new System.Windows.Forms.Timer(this.components);
-            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).BeginInit();
             this.pnlOtherInfo.SuspendLayout();
             this.gbTotal.SuspendLayout();
             this.gbTendered.SuspendLayout();
             this.gbRemaining.SuspendLayout();
-            this.gbProductInfo.SuspendLayout();
-            this.gbDiscounts.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvProduct
@@ -137,6 +114,61 @@
             this.dgvProduct.Size = new System.Drawing.Size(662, 554);
             this.dgvProduct.TabIndex = 1;
             this.dgvProduct.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProduct_CellClick);
+            // 
+            // description
+            // 
+            this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.description.DataPropertyName = "productname";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.description.DefaultCellStyle = dataGridViewCellStyle5;
+            this.description.FillWeight = 200F;
+            this.description.HeaderText = "Description";
+            this.description.MinimumWidth = 300;
+            this.description.Name = "description";
+            this.description.ReadOnly = true;
+            // 
+            // qty
+            // 
+            this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.qty.DataPropertyName = "qty";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.qty.DefaultCellStyle = dataGridViewCellStyle6;
+            this.qty.FillWeight = 46.81124F;
+            this.qty.HeaderText = "Qty";
+            this.qty.MinimumWidth = 100;
+            this.qty.Name = "qty";
+            this.qty.ReadOnly = true;
+            // 
+            // price
+            // 
+            this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.price.DataPropertyName = "price";
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.price.DefaultCellStyle = dataGridViewCellStyle7;
+            this.price.FillWeight = 61.91541F;
+            this.price.HeaderText = "Price";
+            this.price.MinimumWidth = 100;
+            this.price.Name = "price";
+            this.price.ReadOnly = true;
+            // 
+            // amount
+            // 
+            this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.amount.DataPropertyName = "amount";
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.amount.DefaultCellStyle = dataGridViewCellStyle8;
+            this.amount.HeaderText = "Amount";
+            this.amount.MinimumWidth = 100;
+            this.amount.Name = "amount";
+            this.amount.ReadOnly = true;
             // 
             // txtBarcode
             // 
@@ -657,235 +689,9 @@
             this.lbltransaction_total.TabIndex = 28;
             this.lbltransaction_total.Text = "-";
             // 
-            // gbProductInfo
-            // 
-            this.gbProductInfo.Controls.Add(this.lblSwitchPack);
-            this.gbProductInfo.Controls.Add(this.lblAmount_d);
-            this.gbProductInfo.Controls.Add(this.lblProductPrice_d);
-            this.gbProductInfo.Controls.Add(this.lblProductPrice);
-            this.gbProductInfo.Controls.Add(this.lblAmount);
-            this.gbProductInfo.Controls.Add(this.lblProductDesc_d);
-            this.gbProductInfo.Controls.Add(this.lblProductDesc);
-            this.gbProductInfo.Controls.Add(this.lblQuantity_d);
-            this.gbProductInfo.Controls.Add(this.lblProductBarcode_d);
-            this.gbProductInfo.Controls.Add(this.lblQuantity);
-            this.gbProductInfo.Controls.Add(this.lblProductBarcode);
-            this.gbProductInfo.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbProductInfo.Location = new System.Drawing.Point(685, 156);
-            this.gbProductInfo.Name = "gbProductInfo";
-            this.gbProductInfo.Size = new System.Drawing.Size(584, 229);
-            this.gbProductInfo.TabIndex = 2;
-            this.gbProductInfo.TabStop = false;
-            this.gbProductInfo.Text = "PRODUCT INFO";
-            // 
-            // lblSwitchPack
-            // 
-            this.lblSwitchPack.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblSwitchPack.ForeColor = System.Drawing.Color.Black;
-            this.lblSwitchPack.Location = new System.Drawing.Point(18, 189);
-            this.lblSwitchPack.Name = "lblSwitchPack";
-            this.lblSwitchPack.Size = new System.Drawing.Size(554, 30);
-            this.lblSwitchPack.TabIndex = 13;
-            this.lblSwitchPack.Text = "F10 - Switch to per Package";
-            this.lblSwitchPack.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblAmount_d
-            // 
-            this.lblAmount_d.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblAmount_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblAmount_d.Location = new System.Drawing.Point(395, 160);
-            this.lblAmount_d.Name = "lblAmount_d";
-            this.lblAmount_d.Size = new System.Drawing.Size(177, 24);
-            this.lblAmount_d.TabIndex = 12;
-            // 
-            // lblProductPrice_d
-            // 
-            this.lblProductPrice_d.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblProductPrice_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblProductPrice_d.Location = new System.Drawing.Point(124, 102);
-            this.lblProductPrice_d.Name = "lblProductPrice_d";
-            this.lblProductPrice_d.Size = new System.Drawing.Size(449, 58);
-            this.lblProductPrice_d.TabIndex = 6;
-            // 
-            // lblProductPrice
-            // 
-            this.lblProductPrice.AutoSize = true;
-            this.lblProductPrice.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblProductPrice.ForeColor = System.Drawing.Color.Black;
-            this.lblProductPrice.Location = new System.Drawing.Point(8, 102);
-            this.lblProductPrice.Name = "lblProductPrice";
-            this.lblProductPrice.Size = new System.Drawing.Size(59, 22);
-            this.lblProductPrice.TabIndex = 5;
-            this.lblProductPrice.Text = "Price:";
-            // 
-            // lblAmount
-            // 
-            this.lblAmount.AutoSize = true;
-            this.lblAmount.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblAmount.ForeColor = System.Drawing.Color.Black;
-            this.lblAmount.Location = new System.Drawing.Point(309, 160);
-            this.lblAmount.Name = "lblAmount";
-            this.lblAmount.Size = new System.Drawing.Size(80, 22);
-            this.lblAmount.TabIndex = 11;
-            this.lblAmount.Text = "Amount:";
-            // 
-            // lblProductDesc_d
-            // 
-            this.lblProductDesc_d.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblProductDesc_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblProductDesc_d.Location = new System.Drawing.Point(124, 70);
-            this.lblProductDesc_d.Name = "lblProductDesc_d";
-            this.lblProductDesc_d.Size = new System.Drawing.Size(448, 24);
-            this.lblProductDesc_d.TabIndex = 4;
-            // 
-            // lblProductDesc
-            // 
-            this.lblProductDesc.AutoSize = true;
-            this.lblProductDesc.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblProductDesc.ForeColor = System.Drawing.Color.Black;
-            this.lblProductDesc.Location = new System.Drawing.Point(7, 70);
-            this.lblProductDesc.Name = "lblProductDesc";
-            this.lblProductDesc.Size = new System.Drawing.Size(111, 22);
-            this.lblProductDesc.TabIndex = 3;
-            this.lblProductDesc.Text = "Description:";
-            // 
-            // lblQuantity_d
-            // 
-            this.lblQuantity_d.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblQuantity_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblQuantity_d.Location = new System.Drawing.Point(118, 160);
-            this.lblQuantity_d.Name = "lblQuantity_d";
-            this.lblQuantity_d.Size = new System.Drawing.Size(178, 24);
-            this.lblQuantity_d.TabIndex = 10;
-            // 
-            // lblProductBarcode_d
-            // 
-            this.lblProductBarcode_d.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblProductBarcode_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblProductBarcode_d.Location = new System.Drawing.Point(124, 40);
-            this.lblProductBarcode_d.Name = "lblProductBarcode_d";
-            this.lblProductBarcode_d.Size = new System.Drawing.Size(310, 25);
-            this.lblProductBarcode_d.TabIndex = 8;
-            // 
-            // lblQuantity
-            // 
-            this.lblQuantity.AutoSize = true;
-            this.lblQuantity.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblQuantity.ForeColor = System.Drawing.Color.Black;
-            this.lblQuantity.Location = new System.Drawing.Point(8, 160);
-            this.lblQuantity.Name = "lblQuantity";
-            this.lblQuantity.Size = new System.Drawing.Size(83, 22);
-            this.lblQuantity.TabIndex = 9;
-            this.lblQuantity.Text = "Quantity:";
-            // 
-            // lblProductBarcode
-            // 
-            this.lblProductBarcode.AutoSize = true;
-            this.lblProductBarcode.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lblProductBarcode.ForeColor = System.Drawing.Color.Black;
-            this.lblProductBarcode.Location = new System.Drawing.Point(8, 41);
-            this.lblProductBarcode.Name = "lblProductBarcode";
-            this.lblProductBarcode.Size = new System.Drawing.Size(87, 22);
-            this.lblProductBarcode.TabIndex = 7;
-            this.lblProductBarcode.Text = "Barcode:";
-            // 
             // spcustdisp
             // 
             this.spcustdisp.PortName = "COM3";
-            // 
-            // gbDiscounts
-            // 
-            this.gbDiscounts.Controls.Add(this.lbl_pospromodiscount);
-            this.gbDiscounts.Controls.Add(this.label5);
-            this.gbDiscounts.Controls.Add(this.lbl_adjustments);
-            this.gbDiscounts.Controls.Add(this.label6);
-            this.gbDiscounts.Controls.Add(this.lbl_regdisc);
-            this.gbDiscounts.Controls.Add(this.lbl_memberdisc);
-            this.gbDiscounts.Controls.Add(this.label3);
-            this.gbDiscounts.Controls.Add(this.label1);
-            this.gbDiscounts.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbDiscounts.Location = new System.Drawing.Point(684, 388);
-            this.gbDiscounts.Name = "gbDiscounts";
-            this.gbDiscounts.Size = new System.Drawing.Size(584, 84);
-            this.gbDiscounts.TabIndex = 14;
-            this.gbDiscounts.TabStop = false;
-            this.gbDiscounts.Text = "Transaction Discounts";
-            // 
-            // lbl_pospromodiscount
-            // 
-            this.lbl_pospromodiscount.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_pospromodiscount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lbl_pospromodiscount.Location = new System.Drawing.Point(160, 53);
-            this.lbl_pospromodiscount.Name = "lbl_pospromodiscount";
-            this.lbl_pospromodiscount.Size = new System.Drawing.Size(128, 20);
-            this.lbl_pospromodiscount.TabIndex = 19;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(12, 53);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(111, 22);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "Pos Promo:";
-            // 
-            // lbl_adjustments
-            // 
-            this.lbl_adjustments.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_adjustments.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lbl_adjustments.Location = new System.Drawing.Point(463, 24);
-            this.lbl_adjustments.Name = "lbl_adjustments";
-            this.lbl_adjustments.Size = new System.Drawing.Size(116, 25);
-            this.lbl_adjustments.TabIndex = 17;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(303, 24);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(120, 22);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Adjustments:";
-            // 
-            // lbl_regdisc
-            // 
-            this.lbl_regdisc.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_regdisc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lbl_regdisc.Location = new System.Drawing.Point(469, 49);
-            this.lbl_regdisc.Name = "lbl_regdisc";
-            this.lbl_regdisc.Size = new System.Drawing.Size(109, 26);
-            this.lbl_regdisc.TabIndex = 15;
-            // 
-            // lbl_memberdisc
-            // 
-            this.lbl_memberdisc.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_memberdisc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lbl_memberdisc.Location = new System.Drawing.Point(201, 27);
-            this.lbl_memberdisc.Name = "lbl_memberdisc";
-            this.lbl_memberdisc.Size = new System.Drawing.Size(87, 20);
-            this.lbl_memberdisc.TabIndex = 14;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(303, 52);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(170, 22);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Custom Discounts:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 27);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(164, 22);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Member Discount:";
             // 
             // tmrcheckposdsetting
             // 
@@ -893,71 +699,14 @@
             this.tmrcheckposdsetting.Interval = 5000;
             this.tmrcheckposdsetting.Tick += new System.EventHandler(this.tmrcheckposdsetting_Tick);
             // 
-            // description
-            // 
-            this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.description.DataPropertyName = "productname";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.description.DefaultCellStyle = dataGridViewCellStyle1;
-            this.description.FillWeight = 200F;
-            this.description.HeaderText = "Description";
-            this.description.MinimumWidth = 300;
-            this.description.Name = "description";
-            this.description.ReadOnly = true;
-            // 
-            // qty
-            // 
-            this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.qty.DataPropertyName = "qty";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.qty.DefaultCellStyle = dataGridViewCellStyle2;
-            this.qty.FillWeight = 46.81124F;
-            this.qty.HeaderText = "Qty";
-            this.qty.MinimumWidth = 100;
-            this.qty.Name = "qty";
-            this.qty.ReadOnly = true;
-            // 
-            // price
-            // 
-            this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.price.DataPropertyName = "price";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.price.DefaultCellStyle = dataGridViewCellStyle3;
-            this.price.FillWeight = 61.91541F;
-            this.price.HeaderText = "Price";
-            this.price.MinimumWidth = 100;
-            this.price.Name = "price";
-            this.price.ReadOnly = true;
-            // 
-            // amount
-            // 
-            this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.amount.DataPropertyName = "amount";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.amount.DefaultCellStyle = dataGridViewCellStyle4;
-            this.amount.HeaderText = "Amount";
-            this.amount.MinimumWidth = 100;
-            this.amount.Name = "amount";
-            this.amount.ReadOnly = true;
-            // 
             // POSMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1020, 730);
-            this.Controls.Add(this.gbProductInfo);
+            this.ClientSize = new System.Drawing.Size(1280, 772);
             this.Controls.Add(this.dgvProduct);
-            this.Controls.Add(this.gbDiscounts);
             this.Controls.Add(this.lbltransaction_total);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lbltransaction_d);
@@ -1000,10 +749,6 @@
             this.gbTotal.PerformLayout();
             this.gbTendered.ResumeLayout(false);
             this.gbRemaining.ResumeLayout(false);
-            this.gbProductInfo.ResumeLayout(false);
-            this.gbProductInfo.PerformLayout();
-            this.gbDiscounts.ResumeLayout(false);
-            this.gbDiscounts.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1052,28 +797,7 @@
         private System.Windows.Forms.Label lbltransaction_d;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lbltransaction_total;
-        private System.Windows.Forms.GroupBox gbProductInfo;
-        private System.Windows.Forms.Label lblProductDesc_d;
-        private System.Windows.Forms.Label lblProductDesc;
-        private System.Windows.Forms.Label lblProductPrice_d;
-        private System.Windows.Forms.Label lblProductPrice;
-        private System.Windows.Forms.Label lblProductBarcode_d;
-        private System.Windows.Forms.Label lblProductBarcode;
         private System.IO.Ports.SerialPort spcustdisp;
-        private System.Windows.Forms.Label lblAmount_d;
-        private System.Windows.Forms.Label lblAmount;
-        private System.Windows.Forms.Label lblQuantity_d;
-        private System.Windows.Forms.Label lblQuantity;
-        private System.Windows.Forms.Label lblSwitchPack;
-        private System.Windows.Forms.GroupBox gbDiscounts;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label lbl_regdisc;
-        private System.Windows.Forms.Label lbl_memberdisc;
-        private System.Windows.Forms.Label lbl_adjustments;
-        private System.Windows.Forms.Label lbl_pospromodiscount;
-        private System.Windows.Forms.Label label5;
         public System.Windows.Forms.DataGridView dgvProduct;
         public System.Windows.Forms.TextBox txtBarcode;
         private System.Windows.Forms.Label lblCustomermemo_d;
