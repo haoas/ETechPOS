@@ -121,7 +121,7 @@ namespace ETech.cls
                 SELECT H.`wid`
                      FROM `saleshead` AS H
                      WHERE H.`show` = 1 AND H.`status` = 1
-                      AND H.`branchid` = " + cls_globalvariables.branchid_v + @" AND H.`customerid` = " + wid;
+                      AND H.`branchid` = " + cls_globalvariables.BranchCode + @" AND H.`customerid` = " + wid;
                 DataTable tempDataTable = mySQLFunc.getdb(sSQL);
                 string groupConcat = "";
                 foreach (DataRow row in tempDataTable.Rows)

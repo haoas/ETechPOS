@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvProduct = new System.Windows.Forms.DataGridView();
             this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,7 +50,6 @@
             this.btnF7 = new System.Windows.Forms.Button();
             this.btnF8 = new System.Windows.Forms.Button();
             this.btnF9 = new System.Windows.Forms.Button();
-            this.btnF10 = new System.Windows.Forms.Button();
             this.btnF11 = new System.Windows.Forms.Button();
             this.btnF12 = new System.Windows.Forms.Button();
             this.pnlOtherInfo = new System.Windows.Forms.Panel();
@@ -119,8 +118,8 @@
             // 
             this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.description.DataPropertyName = "productname";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.description.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.description.DefaultCellStyle = dataGridViewCellStyle1;
             this.description.FillWeight = 200F;
             this.description.HeaderText = "Description";
             this.description.MinimumWidth = 300;
@@ -131,8 +130,8 @@
             // 
             this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.qty.DataPropertyName = "qty";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.qty.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.qty.DefaultCellStyle = dataGridViewCellStyle2;
             this.qty.FillWeight = 46.81124F;
             this.qty.HeaderText = "Qty";
             this.qty.MinimumWidth = 100;
@@ -143,15 +142,15 @@
             // 
             this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.price.DataPropertyName = "price";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.price.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.price.DefaultCellStyle = dataGridViewCellStyle3;
             this.price.FillWeight = 61.91541F;
             this.price.HeaderText = "Price";
             this.price.MinimumWidth = 100;
@@ -162,9 +161,9 @@
             // 
             this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.amount.DataPropertyName = "amount";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.amount.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.amount.DefaultCellStyle = dataGridViewCellStyle4;
             this.amount.HeaderText = "Amount";
             this.amount.MinimumWidth = 100;
             this.amount.Name = "amount";
@@ -318,19 +317,6 @@
             this.btnF9.TabIndex = 14;
             this.btnF9.Text = "F9\r\nRetail";
             this.btnF9.UseVisualStyleBackColor = false;
-            // 
-            // btnF10
-            // 
-            this.btnF10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF10.Enabled = false;
-            this.btnF10.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF10.ForeColor = System.Drawing.Color.White;
-            this.btnF10.Location = new System.Drawing.Point(954, 687);
-            this.btnF10.Name = "btnF10";
-            this.btnF10.Size = new System.Drawing.Size(99, 73);
-            this.btnF10.TabIndex = 15;
-            this.btnF10.Text = "F10\r\nPackage";
-            this.btnF10.UseVisualStyleBackColor = false;
             // 
             // btnF11
             // 
@@ -719,7 +705,6 @@
             this.Controls.Add(this.pnlOtherInfo);
             this.Controls.Add(this.btnF12);
             this.Controls.Add(this.btnF11);
-            this.Controls.Add(this.btnF10);
             this.Controls.Add(this.btnF9);
             this.Controls.Add(this.btnF8);
             this.Controls.Add(this.btnF7);
@@ -767,7 +752,6 @@
         private System.Windows.Forms.Button btnF7;
         private System.Windows.Forms.Button btnF8;
         private System.Windows.Forms.Button btnF9;
-        private System.Windows.Forms.Button btnF10;
         private System.Windows.Forms.Button btnF11;
         private System.Windows.Forms.Button btnF12;
         private System.Windows.Forms.Panel pnlOtherInfo;

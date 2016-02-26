@@ -78,9 +78,6 @@ namespace ETech
                 }
             }
 
-            if (cls_globalvariables.TermAcct_v == "1")
-                this.Size = new Size(this.Width, (int)(this.Height * 2.5));
-
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
         }

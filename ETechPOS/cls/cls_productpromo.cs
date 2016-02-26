@@ -58,7 +58,7 @@ namespace ETech.cls
                     WHERE `productid` = " + productWid + @" 
                         AND (`datefrom` <= " + dateBasis + @" OR `datefrom` = '0000-00-00 00:00:00' )
                         AND (`dateto` >= " + dateBasis + @" OR `dateto` = '0000-00-00 00:00:00' )
-                        AND `tobranchid` = " + cls_globalvariables.branchid_v + (salesDetailWid == 0 ? @" 
+                        AND `tobranchid` = " + cls_globalvariables.BranchCode + (salesDetailWid == 0 ? @" 
                         AND `show` = 1" : "") + @"
                     ORDER BY `datefrom`, `dateto`, `show` DESC";
             try
@@ -146,7 +146,7 @@ namespace ETech.cls
                         SELECT *
                         FROM `promoqty`
                         WHERE `productid` = " + pwid + @"
-	                        AND `forbranchid` = " + cls_globalvariables.branchid_v + ((salesDetailWid == 0) ? @" 
+	                        AND `forbranchid` = " + cls_globalvariables.BranchCode + ((salesDetailWid == 0) ? @" 
 	                        AND `show` = 1" : "");
             try
             {

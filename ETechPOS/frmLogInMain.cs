@@ -202,15 +202,15 @@ namespace ETech
             this.cashier.setcls_user(code, fullname, permissions, Convert.ToInt32(wid));
 
             //Does not continue if Mac address is incorrect
-            if (!cls_globalfunc.CheckMacAddress() && cashier.getwid() != 0 && cashier.getwid() != 1)
-            {
-                fncFilter.alert("INCORRECT MAC Address SETUP!");
-                cashier = new cls_user();
-                txtUsername.Focus();
-                txtUsername.SelectAll();
-                btnLogIn.Enabled = true;
-                return;
-            }
+            //if (!cls_globalfunc.CheckMacAddress() && cashier.getwid() != 0 && cashier.getwid() != 1)
+            //{
+            //    fncFilter.alert("INCORRECT MAC Address SETUP!");
+            //    cashier = new cls_user();
+            //    txtUsername.Focus();
+            //    txtUsername.SelectAll();
+            //    btnLogIn.Enabled = true;
+            //    return;
+            //}
 
             this.Close();
         }
@@ -232,7 +232,7 @@ namespace ETech
                 conn.Open();
                 conn.Close();
 
-                string branchid = cls_globalvariables.branchid_v;
+                string branchid = cls_globalvariables.BranchCode;
                 string sql = "Select Now() AS `now`, `name` as 'branchname' FROM branch WHERE `wid`=" + branchid;
                 DataTable dt = mySQLFunc.getdb(sql);
                 if (dt != null && dt.Rows.Count <= 0)

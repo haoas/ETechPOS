@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtTerminalNo = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -54,47 +52,13 @@
             this.txtFooter2 = new System.Windows.Forms.TextBox();
             this.txtFooter3 = new System.Windows.Forms.TextBox();
             this.txtFooter4 = new System.Windows.Forms.TextBox();
-            this.chkIsVAT = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.num_orprintcnt = new System.Windows.Forms.NumericUpDown();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnESC = new System.Windows.Forms.Button();
             this.btnTestPrinter = new System.Windows.Forms.Button();
-            this.txtOfflineSecurity = new System.Windows.Forms.TextBox();
-            this.lblOfflineSecurity = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.txtTerminalNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_orprintcnt)).BeginInit();
             this.SuspendLayout();
-            // 
-            // txtTerminalNo
-            // 
-            this.txtTerminalNo.Enabled = false;
-            this.txtTerminalNo.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTerminalNo.Location = new System.Drawing.Point(91, 10);
-            this.txtTerminalNo.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.txtTerminalNo.Name = "txtTerminalNo";
-            this.txtTerminalNo.Size = new System.Drawing.Size(48, 25);
-            this.txtTerminalNo.TabIndex = 0;
-            this.txtTerminalNo.Tag = "num";
-            this.txtTerminalNo.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Terminal:";
             // 
             // label2
             // 
@@ -347,17 +311,6 @@
             this.txtFooter4.TabIndex = 14;
             this.txtFooter4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFooter4_KeyPress);
             // 
-            // chkIsVAT
-            // 
-            this.chkIsVAT.AutoSize = true;
-            this.chkIsVAT.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkIsVAT.Location = new System.Drawing.Point(93, 242);
-            this.chkIsVAT.Name = "chkIsVAT";
-            this.chkIsVAT.Size = new System.Drawing.Size(67, 21);
-            this.chkIsVAT.TabIndex = 10;
-            this.chkIsVAT.Text = "Is VAT";
-            this.chkIsVAT.UseVisualStyleBackColor = true;
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -425,37 +378,16 @@
             this.btnTestPrinter.UseVisualStyleBackColor = false;
             this.btnTestPrinter.Click += new System.EventHandler(this.btnTestPrinter_Click);
             // 
-            // txtOfflineSecurity
-            // 
-            this.txtOfflineSecurity.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOfflineSecurity.Location = new System.Drawing.Point(91, 453);
-            this.txtOfflineSecurity.Name = "txtOfflineSecurity";
-            this.txtOfflineSecurity.Size = new System.Drawing.Size(383, 25);
-            this.txtOfflineSecurity.TabIndex = 106;
-            // 
-            // lblOfflineSecurity
-            // 
-            this.lblOfflineSecurity.AutoSize = true;
-            this.lblOfflineSecurity.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOfflineSecurity.Location = new System.Drawing.Point(12, 462);
-            this.lblOfflineSecurity.Name = "lblOfflineSecurity";
-            this.lblOfflineSecurity.Size = new System.Drawing.Size(69, 17);
-            this.lblOfflineSecurity.TabIndex = 107;
-            this.lblOfflineSecurity.Text = "Offline M:";
-            // 
             // frmSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(485, 530);
-            this.Controls.Add(this.txtOfflineSecurity);
-            this.Controls.Add(this.lblOfflineSecurity);
             this.Controls.Add(this.btnTestPrinter);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.num_orprintcnt);
-            this.Controls.Add(this.chkIsVAT);
             this.Controls.Add(this.txtFooter4);
             this.Controls.Add(this.txtFooter3);
             this.Controls.Add(this.txtFooter2);
@@ -480,8 +412,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtTerminalNo);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
@@ -491,7 +421,6 @@
             this.Text = "Setting";
             this.Load += new System.EventHandler(this.frmSetting_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmSetting_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.txtTerminalNo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_orprintcnt)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -500,8 +429,6 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown txtTerminalNo;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -526,13 +453,10 @@
         private System.Windows.Forms.TextBox txtFooter2;
         private System.Windows.Forms.TextBox txtFooter3;
         private System.Windows.Forms.TextBox txtFooter4;
-        private System.Windows.Forms.CheckBox chkIsVAT;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.NumericUpDown num_orprintcnt;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnESC;
         private System.Windows.Forms.Button btnTestPrinter;
-        private System.Windows.Forms.TextBox txtOfflineSecurity;
-        private System.Windows.Forms.Label lblOfflineSecurity;
     }
 }

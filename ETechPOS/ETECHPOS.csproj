@@ -73,7 +73,6 @@
     <Compile Include="cls\cls_NonVat.cs" />
     <Compile Include="cls\cls_otherpaymentinfo.cs" />
     <Compile Include="cls\cls_payment.cs" />
-    <Compile Include="cls\cls_posd.cs" />
     <Compile Include="cls\cls_POSTransaction.cs" />
     <Compile Include="cls\cls_POSTransDiscount.cs" />
     <Compile Include="cls\cls_product.cs" />
@@ -95,6 +94,7 @@
     <Compile Include="fnc\fncFullScreen.cs" />
     <Compile Include="fnc\RawPrinterHelper.cs" />
     <Compile Include="fnc\ReceiptPrinterHelper.cs" />
+    <Compile Include="FormatDesigner\LDatagridView.cs" />
     <Compile Include="frmCustomPayments.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -275,23 +275,11 @@
     <Compile Include="frmSenior.Designer.cs">
       <DependentUpon>frmSenior.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmInventory_posd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmInventory_posd.Designer.cs">
-      <DependentUpon>frmInventory_posd.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmSetting.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSetting.Designer.cs">
       <DependentUpon>frmSetting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmSetting2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSetting2.Designer.cs">
-      <DependentUpon>frmSetting2.cs</DependentUpon>
     </Compile>
     <Compile Include="frmTransactionAdjust.cs">
       <SubType>Form</SubType>
@@ -438,16 +426,8 @@
       <DependentUpon>frmSenior.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmInventory_posd.resx">
-      <DependentUpon>frmInventory_posd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmSetting.resx">
       <DependentUpon>frmSetting.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmSetting2.resx">
-      <DependentUpon>frmSetting2.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTransactionAdjust.resx">

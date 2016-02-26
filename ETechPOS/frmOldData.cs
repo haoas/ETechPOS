@@ -39,14 +39,10 @@ namespace ETech
         private void frmOldData_Load(object sender, EventArgs e)
         {
             string terminalno = cls_globalvariables.terminalno_v;
-            if (cls_globalvariables.terminaldigit_v == "2" && terminalno.Length == 1)
-            {
-                terminalno = "0" + terminalno;
-            }
 
             textBox1.Text = terminalno;
             textBox2.Text = textBox1.Text;
-            textBox3.Text = cls_globalvariables.branchid_v;
+            textBox3.Text = cls_globalvariables.BranchCode;
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();

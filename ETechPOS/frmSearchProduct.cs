@@ -145,41 +145,25 @@ namespace ETech
             }
 
             string allowZeroPrice = "";
-            string allowZeroPrice_package = "";
             if (cls_globalvariables.allowZeroPrice_v != "1")
             {
                 allowZeroPrice = " AND B.`sellingprice` > 0 AND B.`wholesaleprice` > 0";
-                allowZeroPrice_package = " AND B.`packagesellingprice` > 0 AND B.`packagewholesaleprice` > 0";
             }
 
-            string SQL = @"
-                            SELECT A.*, format(I.inv,0) as inv FROM (
-                                SELECT P.`wid` as 'productwid', P.`product` AS 'productname', 
-	                                P.`barcode` AS 'productbarcode',
-	                                P.`stockno`, B.`sellingprice` AS 'price', 
-	                                B.`wholesaleprice` AS 'wholesaleprice',
-                                    P.`description` as 'desc', P.`memo`
-                                FROM `product` AS P, `branchprice` AS B 
-                                WHERE B.`branchid` = " + cls_globalvariables.branchid_v + @" AND B.`productid` = P.`wid` AND 
-	                                P.`show` = 1 and P.`status` = 1 " + allowZeroPrice + @" AND
-	                                CONCAT(P.`product`, ' ', P.`barcode`, ' ', P.`stockno`,' ',
-                                        P.`clientbarcode`,' ',P.`clientbarcode2`) LIKE @str_param
-                                LIMIT 100
-                                UNION ALL
-                                SELECT P.`wid` as 'productwid', P.`product` AS 'productname', 
-	                                P.`packbarcode` AS 'productbarcode',
-	                                P.`stockno`, B.`packagesellingprice` AS 'price', 
-	                                B.`packagewholesaleprice` AS 'wholesaleprice',
-                                    P.`description` as 'desc', P.`memo`
-                                FROM `product` AS P, `branchprice` AS B 
-                                WHERE B.`branchid` = " + cls_globalvariables.branchid_v + @" AND B.`productid` = P.`wid` AND 
-	                                P.`show` = 1 and P.`status` = 1 " + allowZeroPrice_package + @" AND B.`ispackage` = 1 AND
-	                                CONCAT(P.`product`, ' ', P.`packbarcode`, ' ', P.`stockno`,' ',P.`packbarcode2`) LIKE @str_param
-                                LIMIT 100
-                            ) A LEFT JOIN productbranchinventory as I on I.productid = A.productwid and I.branchid = " + cls_globalvariables.branchid_v;
+            string SQL = @"SELECT A.* FROM (
+                            SELECT P.`wid` as 'productwid', P.`product` AS 'productname', 
+                                P.`barcode` AS 'productbarcode',
+                                P.`stockno`, B.`sellingprice` AS 'price', 
+                                B.`wholesaleprice` AS 'wholesaleprice',
+                                P.`description` as 'desc', P.`memo`
+                            FROM `product` AS P, `branchprice` AS B 
+                            WHERE B.`branchid` = " + cls_globalvariables.BranchCode + @" AND B.`productid` = P.`wid` AND 
+                                P.`show` = 1 and P.`status` = 1 " + allowZeroPrice + @" AND
+                                CONCAT(P.`product`, ' ', P.`barcode`, ' ', P.`stockno`,' ',
+                                    P.`clientbarcode`,' ',P.`clientbarcode2`) LIKE @str_param
+                            LIMIT 50)A ";
 
             //SQL = sqlsearchstring();
-
 
             List<string> parameters = new List<string>();
             List<string> values = new List<string>();

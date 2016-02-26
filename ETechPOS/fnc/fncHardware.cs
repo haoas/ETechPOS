@@ -107,7 +107,7 @@ namespace ETech.fnc
             if (isReprint)
             {
                 string terminalno = cls_globalvariables.terminalno_v;
-                string branchid = cls_globalvariables.branchid_v;
+                string branchid = cls_globalvariables.BranchCode;
                 string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`show`=0 OR `status`=0) AND `wid` = '" + tran.getWid() + @"'";
                 isVoid = Convert.ToBoolean(mySQLFunc.getdb(checkIfVoidSql).Rows[0]["cnt"]);
             }
@@ -205,7 +205,7 @@ namespace ETech.fnc
         public static List<DataTable> get_summary_data(bool isTerminalaccountability, int type, DateTime datetime_d, DateTime datetimeTO_d)
         {
             List<DataTable> dt_list = new List<DataTable>();
-            string sBranchid = cls_globalvariables.branchid_v;
+            string sBranchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
 
             string sdateFROM = datetime_d.ToString("yyyy-MM-dd");
@@ -373,7 +373,6 @@ namespace ETech.fnc
             decimal t_vat_sale = Math.Round(all_vatable_sale + all_vatable_return, 2, MidpointRounding.AwayFromZero);
             decimal t_gross_vatable_sale = t_vat_sale;
             decimal t_vatable_sale = Math.Round(t_gross_vatable_sale / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
-            t_vatable_sale = (cls_globalvariables.isvat_v == "0") ? t_gross_vatable_sale : t_vatable_sale;
             decimal t_vat = t_gross_vatable_sale - t_vatable_sale;
 
             decimal t_nonvat_sale = all_net_sale_af_return - t_gross_vatable_sale; //all_net_sale_af_return - t_gross_vatable_sale - t_vat; //all_nonvat_sale + all_nonvat_return;
@@ -491,7 +490,7 @@ namespace ETech.fnc
 	                                  `collectiondetail` as D,
 	                                  `paymentmethod` as P
                                 WHERE H.`wid`=D.`headid` AND P.`wid`=D.`method` 
-	                                AND H.`show`=1 AND H.`status`=1 AND H.`branchid`=" + cls_globalvariables.branchid_v
+	                                AND H.`show`=1 AND H.`status`=1 AND H.`branchid`=" + cls_globalvariables.BranchCode
                                    + zreadFunc.GetSQLDateRange("H.`collectiondate`", datetime_d, datetimeTO_d) + @"
 	                                AND D.`method` >= 100
                                 GROUP BY D.`method`";
@@ -539,7 +538,7 @@ namespace ETech.fnc
 
         private static Graphics printpage_xread(object sender, PrintPageEventArgs e, Bitmap bmp, DateTime datetime_d, int userwid)
         {
-            string sBranchid = cls_globalvariables.branchid_v;
+            string sBranchid = cls_globalvariables.BranchCode;
             string sBusinessName = cls_globalvariables.BusinessName_v;
             string sOwner = cls_globalvariables.Owner_v;
             string sAddress = cls_globalvariables.Address_v;
@@ -718,7 +717,7 @@ namespace ETech.fnc
             if (printtype == 2 && cls_globalvariables.CashierAcct_wid != "")
                 cashieracctcond = " WHERE U.`wid` = " + cls_globalvariables.CashierAcct_wid + @" ";
 
-            string sBranchid = cls_globalvariables.branchid_v;
+            string sBranchid = cls_globalvariables.BranchCode;
             string sBusinessName = cls_globalvariables.BusinessName_v;
             string sOwner = cls_globalvariables.Owner_v;
             string sAddress = cls_globalvariables.Address_v;
@@ -1101,7 +1100,7 @@ namespace ETech.fnc
         {
             string suffix = (isposd) ? "_posd" : "";
 
-            string sBranchid = cls_globalvariables.branchid_v;
+            string sBranchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
             string sdate = datetime_d.ToString("yyyy-MM-dd");
             string stime = datetime_d.ToString("HH:mm:ss");
@@ -1190,7 +1189,7 @@ namespace ETech.fnc
         public static DataRow get_cashflow_data(DateTime datetime_d)
         {
 
-            string sBranchid = cls_globalvariables.branchid_v;
+            string sBranchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
             string sdate = datetime_d.ToString("yyyy-MM-dd");
 
@@ -1217,7 +1216,7 @@ namespace ETech.fnc
         public static decimal get_old_grandtotal(int readtype, DateTime dDateTime)
         {
             string terminalno = cls_globalvariables.terminalno_v;
-            string sBranchid = cls_globalvariables.branchid_v;
+            string sBranchid = cls_globalvariables.BranchCode;
 
             string prev_date = dDateTime.AddDays(-1).ToString("yyyy-MM-dd");
             string this_date = dDateTime.ToString("yyyy-MM-dd");
@@ -1790,14 +1789,12 @@ namespace ETech.fnc
                 dt_subtotal.Rows.Add("Subtotal Non-VAT:", subtotal_non_vat.ToString("N2"));
             int cnt_item_v = 0;
 
-            if (cls_globalvariables.isvat_v == "1")
-            {
-                if (vatable_sale != 0) { dt_subtotal.Rows.Add("VATable Sale:", vatable_sale.ToString("N2")); cnt_item_v++; }
-                if (vatable_return != 0) { dt_subtotal.Rows.Add("VATable Return:", vatable_return.ToString("N2")); cnt_item_v++; }
-                if (cnt_item_v >= 2)
-                    dt_subtotal.Rows.Add("Subtotal VATable:", subtotal_vatable.ToString("N2"));
-                dt_subtotal.Rows.Add("VAT 12%:", vat.ToString("N2"));
-            }
+            if (vatable_sale != 0) { dt_subtotal.Rows.Add("VATable Sale:", vatable_sale.ToString("N2")); cnt_item_v++; }
+            if (vatable_return != 0) { dt_subtotal.Rows.Add("VATable Return:", vatable_return.ToString("N2")); cnt_item_v++; }
+            if (cnt_item_v >= 2)
+                dt_subtotal.Rows.Add("Subtotal VATable:", subtotal_vatable.ToString("N2"));
+            dt_subtotal.Rows.Add("VAT 12%:", vat.ToString("N2"));
+
 
             DataTable dt_total = new DataTable();
             dt_total.Columns.Add(); dt_total.Columns.Add();
@@ -2014,8 +2011,7 @@ namespace ETech.fnc
             nY += 5;
             g.DrawLine(new Pen(fncHardware.brush_Black), nX, nY, maxwidth * cls_globalvariables.previewmul, nY); nY += 5;
 
-            if (dt_discounts.Rows.Count > 0 && printformat != 57 &&
-                cls_globalvariables.isvat_v != "0" && cls_globalvariables.DiscountDetails_v == 1)
+            if (dt_discounts.Rows.Count > 0 && printformat != 57 && cls_globalvariables.DiscountDetails_v == 1)
             {
                 List<Rectangle> rect_disc;
                 List<StringFormat> sf_disc = fncHardware.create_stringformat_list(new int[] { 1, 3, 3 });
@@ -2128,8 +2124,7 @@ namespace ETech.fnc
                 printer.WriteLines(cls_globalvariables.BusinessName_v);
             if (cls_globalvariables.Owner_v != "")
                 printer.WriteLines(cls_globalvariables.Owner_v);
-            printer.WriteLines((cls_globalvariables.isvat_v == "1") ?
-                ("VAT REG. " + cls_globalvariables.TIN_v) : ("NON VAT REG."));
+            printer.WriteLines("VAT REG. " + cls_globalvariables.TIN_v);
             if (cls_globalvariables.MIN_v != "")
                 printer.WriteLines(cls_globalvariables.MIN_v);
             if (cls_globalvariables.Serial_v != "")
@@ -2249,22 +2244,21 @@ namespace ETech.fnc
                 tempDataTable.Rows.Add("VAT EXEMPT RETURN:", tran.get_productlist().get_nonvatreturn().ToString("N2"));
             if (tran.get_productlist().get_nonvatsale() != 0 && tran.get_productlist().get_nonvatreturn() != 0)
                 tempDataTable.Rows.Add("VAT EXEMPT SUBTOTAL:", tran.get_productlist().get_subtotal_nonvat().ToString("N2"));
-            if (cls_globalvariables.isvat_v == "1")
-            {
-                // VATable
-                decimal vatable_sale = Math.Round(tran.get_productlist().get_vatablesale() / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
-                decimal vatable_return = Math.Round(tran.get_productlist().get_vatablereturn() / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
-                decimal vatableSubtotal = vatable_sale + vatable_return;
-                if (vatable_sale != 0)
-                    tempDataTable.Rows.Add("VATABLE SALE:", vatable_sale.ToString("N2"));
-                if (vatable_return != 0)
-                    tempDataTable.Rows.Add("VATABLE RETURN:", vatable_return.ToString("N2"));
-                if (vatable_sale != 0 && vatable_return != 0)
-                    tempDataTable.Rows.Add("VATABLE SUBTOTAL:", vatableSubtotal.ToString("N2"));
-                printer.WriteRepeatingCharacterLine('=');
-                // VAT
-                tempDataTable.Rows.Add("VAT 12%:", (tran.get_productlist().get_subtotal_vat() - vatableSubtotal).ToString("N2"));
-            }
+
+            // VATable
+            decimal vatable_sale = Math.Round(tran.get_productlist().get_vatablesale() / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
+            decimal vatable_return = Math.Round(tran.get_productlist().get_vatablereturn() / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
+            decimal vatableSubtotal = vatable_sale + vatable_return;
+            if (vatable_sale != 0)
+                tempDataTable.Rows.Add("VATABLE SALE:", vatable_sale.ToString("N2"));
+            if (vatable_return != 0)
+                tempDataTable.Rows.Add("VATABLE RETURN:", vatable_return.ToString("N2"));
+            if (vatable_sale != 0 && vatable_return != 0)
+                tempDataTable.Rows.Add("VATABLE SUBTOTAL:", vatableSubtotal.ToString("N2"));
+            printer.WriteRepeatingCharacterLine('=');
+            // VAT
+            tempDataTable.Rows.Add("VAT 12%:", (tran.get_productlist().get_subtotal_vat() - vatableSubtotal).ToString("N2"));
+
             printer.WriteTable(
                 tempDataTable,
                 new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
@@ -2447,7 +2441,7 @@ namespace ETech.fnc
             // Based on BIR Revenue Regulations No. 10-2015
             printer.LargeFont();
             printer.CPI12();
-            if (cls_globalvariables.isvat_v != "1" || tran.get_productlist().get_isnonvat())
+            if (tran.get_productlist().get_isnonvat())
                 printer.WriteLines("THIS DOCUMENT IS NOT VALID FOR CLAIM OF INPUT TAX.");
             printer.NormalFont();
             printer.CPI12();
@@ -2535,7 +2529,7 @@ namespace ETech.fnc
             string sPermitNo = cls_globalvariables.PermitNo_v;
             string sSerial = cls_globalvariables.Serial_v;
             string sMIN = cls_globalvariables.MIN_v;
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
 
             DataTable dt_header1 = new DataTable();
@@ -2784,7 +2778,7 @@ namespace ETech.fnc
 
         private static Graphics printpage_pickupcash(object sender, PrintPageEventArgs e, Bitmap bmp, DateTime datetime_d, int userwid)
         {
-            string sBranchid = cls_globalvariables.branchid_v;
+            string sBranchid = cls_globalvariables.BranchCode;
             string sBusinessName = cls_globalvariables.BusinessName_v;
             string sOwner = cls_globalvariables.Owner_v;
             string sAddress = cls_globalvariables.Address_v;

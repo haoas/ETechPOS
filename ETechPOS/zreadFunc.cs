@@ -22,7 +22,7 @@ public static class zreadFunc
             posxyzread = "`posxyzread_posd`";
         }
 
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
 
         string GetMinDateInSalesHead =
@@ -59,7 +59,7 @@ public static class zreadFunc
     {
         try
         {
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
 
             DataTable dt = mySQLFunc.getdb(@"SELECT * FROM `posxyzread`
@@ -89,7 +89,7 @@ public static class zreadFunc
 
     public static DateTime GetMaxDateTimeFromPosXYZRead()
     {
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
         string SQL =
         @"SELECT COALESCE(DATE(max(`date`)), DATE_ADD(DATE(NOW()),INTERVAL -1 DAY)) as 'maxdate'  
@@ -107,7 +107,7 @@ public static class zreadFunc
     public static string Zread_getBatch(DateTime date, int leftpadding)
     {
         string terminalno = cls_globalvariables.terminalno_v;
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
 
         string sqlDate = date.ToString("yyyy-MM-dd");
         string SQLgetBatch = @"SELECT `batch` FROM `posxyzread` 
@@ -131,7 +131,7 @@ public static class zreadFunc
         if (isposd) tbl_posxyzread = "`posxyzread_posd`";
 
         string terminalno = cls_globalvariables.terminalno_v;
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
 
         string sqlDate = date.ToString("yyyy-MM-dd");
         string SQLexist =
@@ -149,7 +149,7 @@ public static class zreadFunc
             FROM
 	            `posxyzread`
             WHERE
-	            `branchid` = " + cls_globalvariables.branchid_v + @"
+	            `branchid` = " + cls_globalvariables.BranchCode + @"
                 AND `terminalno`= " + cls_globalvariables.terminalno_v + @"
                 AND `readtype` = '3'
                 AND `lock` = 1
@@ -177,7 +177,7 @@ public static class zreadFunc
             return true;
         }
 
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
 
         DateTime yesterdaydatetime = datetime_d.AddDays(-1);
@@ -298,7 +298,7 @@ public static class zreadFunc
     public static decimal get_currenttotal_data(DateTime datetime_d, bool isposd)
     {
         string suffix = (isposd) ? "_posd" : "";
-        string sBranchid = cls_globalvariables.branchid_v;
+        string sBranchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
         string sdate = datetime_d.ToString("yyyy-MM-dd");
 
@@ -322,7 +322,7 @@ public static class zreadFunc
                 FROM `saleshead`
                 WHERE `type` = 3
                     AND `ornumber` <> 0
-                    AND `branchid` = " + cls_globalvariables.branchid_v + @"
+                    AND `branchid` = " + cls_globalvariables.BranchCode + @"
                     AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
                     AND `date`
                         BETWEEN '" + datetimeFrom.ToString("yyyy-MM-dd") + @" 00:00:00'
@@ -348,7 +348,7 @@ public static class zreadFunc
                 FROM `saleshead`
                 WHERE `type` = 3
                     AND `ornumber` <> 0
-                    AND `branchid` = " + cls_globalvariables.branchid_v + @"
+                    AND `branchid` = " + cls_globalvariables.BranchCode + @"
                     AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
                     AND `date`
                         BETWEEN '" + datetimeFrom.ToString("yyyy-MM-dd") + @" 00:00:00'
@@ -361,7 +361,7 @@ public static class zreadFunc
     public static decimal get_newgrandtotal_from_posxyzread(DateTime datetime_d, int readtype, bool isposd)
     {
         string suffix = (isposd || (cls_globalvariables.posdautoxz_v == "1")) ? "_posd" : "";
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
 
         string sql = @"SELECT COALESCE(`newgrandtotal`,0) as 'newgrandtotal'
@@ -382,7 +382,7 @@ public static class zreadFunc
     public static DataRow get_values_from_posxyzread(DateTime datetime_d, DateTime datetimeTO_d, int readtype, bool isposd)
     {
         string suffix = (isposd) ? "_posd" : "";
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
 
         string sql = @"SELECT 
@@ -423,7 +423,7 @@ public static class zreadFunc
     public static DataRow get_values_from_posxyzread(DateTime datetime_d, int readtype, bool isposd)
     {
         string suffix = (isposd) ? "_posd" : "";
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
 
         string sql = @"SELECT 
@@ -467,7 +467,7 @@ public static class zreadFunc
     public static void generate_posxyzread_firstday(int ReadType, bool isposd)
     {
         string suffix = (isposd) ? "_posd" : "";
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
         DateTime firstday = GetMinSalesDate(isposd);
 
@@ -559,7 +559,7 @@ public static class zreadFunc
         DateTime generateFrom = generateUntil;
         string suffix = (isposd) ? "_posd" : "";
         generateUntil = generateUntil.Date;
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
 
         string maxdatesql =
@@ -592,7 +592,7 @@ public static class zreadFunc
 
         string suffix = (isposd) ? "_posd" : "";
         DateTime temp_datetime = DateTime.Now.Date;
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
 
         string maxdatesql =
@@ -620,7 +620,7 @@ public static class zreadFunc
 
     public static Int64 get_max_OR_in_posxyzread()
     {
-        string sql = @"SELECT max(`endor`) as `maxORWithZread` FROM `posxyzread` WHERE `readtype`=3 AND branchid=" + cls_globalvariables.branchid_v + " AND terminalno=" + cls_globalvariables.terminalno_v;
+        string sql = @"SELECT max(`endor`) as `maxORWithZread` FROM `posxyzread` WHERE `readtype`=3 AND branchid=" + cls_globalvariables.BranchCode + " AND terminalno=" + cls_globalvariables.terminalno_v;
         DataTable DT = mySQLFunc.getdb(sql);
         if (DT.Rows.Count > 0)
             return Convert.ToInt64(DT.Rows[0]["maxORWithZread"].ToString());
@@ -630,7 +630,7 @@ public static class zreadFunc
 
     public static decimal get_all_in_oldgrand(DateTime datetime)
     {
-        string branchid = cls_globalvariables.branchid_v;
+        string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
         string datetimestr = datetime.ToString("yyyy-MM-dd 00:00:00");
         string sql = @"SELECT 

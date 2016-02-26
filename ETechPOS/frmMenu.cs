@@ -134,15 +134,6 @@ namespace ETech
             this.Close();
             return;
         }
-        public void Y()
-        {
-            if (cls_globalvariables.enableprintposdsummary_v == "1")
-            {
-                this.commandentered = "Y";
-                this.Close();
-            }
-            return;
-        }
         public void H()
         {
             this.commandentered = "H";
@@ -228,9 +219,6 @@ namespace ETech
                 case Keys.M: 
                     M(); 
                     break;
-                case Keys.Y: 
-                    Y(); 
-                    break;
                 case Keys.Escape:
                     Escape();
                     break;
@@ -303,10 +291,6 @@ namespace ETech
         {
             M();
         }
-        private void btnY_Click(object sender, EventArgs e)
-        {
-            Y();
-        }
         private void btnH_Click(object sender, EventArgs e)
         {
             H();
@@ -330,18 +314,11 @@ namespace ETech
                 btnP.Enabled = true;
                 btnL.Enabled = true;
                 btnM.Enabled = true;
-                btnY.Enabled = true;
                 btnH.Enabled = true;
             }
 
             if (cls_globalvariables.hide_reprintreceipt_v == "1")
                 btnF4.Visible = false;
-            
-            if (cls_globalvariables.enableprintposdsummary_v == "0") 
-                btnY.Visible = false;
-
-            if (cls_globalvariables.isvat_v == "0")
-                btnF9.Enabled = false;
 
             if (cls_globalvariables.posdautoxz_v == "0")
                 btnF3.Text = "F3\nOther Readings";

@@ -204,7 +204,7 @@ namespace ETech.cls
             DataTable discs = mySQLFunc.getdb(@"select T.wid, T.`type`, T.particular, H.position, H.basis, T.`value` 
                                             from discounttype as T, discounthierarchy as H
                                             where `headdetail` = 0 and `status` = 1 
-                                                and branchid = " + cls_globalvariables.branchid_v.ToString() + @"
+                                                and branchid = " + cls_globalvariables.BranchCode.ToString() + @"
 	                                            and H.discountid = T.wid
                                             order by H.`position`");
             this.dt = new DataTable();

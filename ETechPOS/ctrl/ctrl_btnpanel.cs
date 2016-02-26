@@ -26,21 +26,20 @@ namespace ETech.ctrl
             this.btnlist[6].Click += new System.EventHandler(this.btnF7_Click);
             this.btnlist[7].Click += new System.EventHandler(this.btnF8_Click);
             this.btnlist[8].Click += new System.EventHandler(this.btnF9_Click);
-            this.btnlist[9].Click += new System.EventHandler(this.btnF10_Click);
-            this.btnlist[10].Click += new System.EventHandler(this.btnF11_Click);
-            this.btnlist[11].Click += new System.EventHandler(this.btnF12_Click);
+            this.btnlist[9].Click += new System.EventHandler(this.btnF11_Click);
+            this.btnlist[10].Click += new System.EventHandler(this.btnF12_Click);
         }
 
 
         public void initial_display()
         {
-            int[] btnen = { 0, 2, 5, 11 };
+            int[] btnen = { 0, 2, 5, 10 };
             foreach (int i in btnen)
             {
                 btnlist[i].Enabled = true;
             }
 
-            int [] btndis = {1,3,4,6,7,8,9,10};
+            int [] btndis = {1,3,4,6,7,8,9};
             foreach(int i in btndis)
             {
                 btnlist[i].Enabled = false;
@@ -57,13 +56,13 @@ namespace ETech.ctrl
 
         public void mode_invoicecreated()
         {
-            int[] btnen = { 1, 2, 3, 7, 8, 11 };
+            int[] btnen = { 1, 2, 3, 7, 8, 10 };
             foreach (int i in btnen)
             {
                 btnlist[i].Enabled = true;
             }
 
-            int[] btndis = { 0, 4, 6, 9, 10 };
+            int[] btndis = { 0, 4, 6, 9 };
             foreach (int i in btndis)
             {
                 btnlist[i].Enabled = false;
@@ -72,7 +71,7 @@ namespace ETech.ctrl
 
         public void mode_product_existed()
         {
-            int[] btnen = { 1, 2, 3, 4, 6, 7, 8, 9, 10, 11 };
+            int[] btnen = { 1, 2, 3, 4, 6, 7, 8, 9, 10 };
             foreach (int i in btnen)
             {
                 btnlist[i].Enabled = true;

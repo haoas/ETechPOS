@@ -224,7 +224,7 @@ namespace ETech
 
         public DataTable getdb_main(string SQL)
         {
-            if (cls_globalvariables.branchid_v != "10")
+            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -254,7 +254,7 @@ namespace ETech
 
         public Boolean setdb_main(string SQL)
         {
-            if (cls_globalvariables.branchid_v != "10")
+            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -284,7 +284,7 @@ namespace ETech
 
         public decimal get_totalcashcollect()
         {
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
 
             string sSQL = @"SELECT COALESCE(SUM(`amount`),0) AS 'totalcash'
@@ -312,7 +312,7 @@ namespace ETech
 
         public string get_nexttransactionno()
         {
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
             string terminalno = string.Format("{0:00}", cls_globalvariables.terminalno_v);
 
             string sSQLtransno = @"SELECT COALESCE(MAX(`transactionno`),0) AS 'transactionno' FROM saleshead
@@ -334,13 +334,8 @@ namespace ETech
 
         public string get_nextornumber()
         {
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
-
-            if (cls_globalvariables.terminaldigit_v == "2" && terminalno.Length == 1)
-            {
-                terminalno = "0" + terminalno;
-            }
 
             string sSQLtransno = @"SELECT COALESCE(MAX(`ornumber`),0) AS 'ornumber' FROM saleshead
                                 WHERE `terminalno` = " + terminalno + @"
@@ -362,7 +357,7 @@ namespace ETech
         public int create_invoice(cls_POSTransaction trans)
         {
             string datetime_d = trans.getdatetime().ToString("yyyy-MM-dd HH:mm:ss");
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
 
             int userwid = trans.getclerk().getwid();
@@ -393,7 +388,7 @@ namespace ETech
 
         public void update_synctable(string table_name, int wid)
         {
-            if (cls_globalvariables.branchid_v == "10")
+            if (cls_globalvariables.BranchCode == "10")
                 return;
 
             //delete old data if exists
@@ -409,7 +404,7 @@ namespace ETech
         public List<string> update_synctable_liststring(string table_name, string wid)
         {
             List<string> tempStringList = new List<string>();
-            if (cls_globalvariables.branchid_v == "10")
+            if (cls_globalvariables.BranchCode == "10")
                 return tempStringList;
             //delete old data if exists
             string sSQL = "DELETE FROM `sync` WHERE `tablename` = '" + table_name + "' AND `wid` = " + wid;
@@ -433,7 +428,7 @@ namespace ETech
             string tbl_receivecheck = "receivecheck";
 
             string datetime_d = trans.getdatetime().ToString("yyyy-MM-dd HH:mm:ss");
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
             int salesheadwid = trans.getWid();
             int customerid = trans.getcustomer().getwid();
             string customername = trans.getcustomer().getfullname();
@@ -544,7 +539,7 @@ namespace ETech
                         `memberid` = " + memberid + @", 
                         `checkerid` = " + checkerid + @",
                         `iswholesale` = " + iswholesale + @",
-                        `isnonvat` = " + ((cls_globalvariables.isvat_v == "0") ? "1" : isnonvat.ToString()) + @"
+                        `isnonvat` = " +  isnonvat.ToString() + @"
                         WHERE `wid` = " + salesheadwid;
 
             //Console.WriteLine(sSQL);
@@ -556,7 +551,6 @@ namespace ETech
                 string qty = prod.getQty().ToString("G29");
                 string price = (prod.getPrice()).ToString();
                 string vat = prod.getVat().ToString();
-                vat = (cls_globalvariables.isvat_v == "0") ? "0" : vat;
 
                 cls_user soldby = (cls_user)prod.getSoldBy();
                 int soldbywid = 0;
@@ -1069,7 +1063,7 @@ namespace ETech
         }
         public string exec_trans_main(List<string> SQL, int retryMax)
         {
-            if (cls_globalvariables.branchid_v != "10")
+            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -1107,12 +1101,12 @@ namespace ETech
         {
             List<string> ls = new List<string>();
             ls.Add("SET @wid_d = 0;");
-            ls.Add(@"SELECT coalesce(MAX(`wid`)," + cls_globalvariables.branchid_v + "0000000) INTO @wid_d FROM `" + tablename + @"` 
-                                WHERE `wid` >= " + cls_globalvariables.branchid_v + @"0000000 
-                                    AND `wid` <= " + cls_globalvariables.branchid_v + @"9999999 FOR UPDATE;");
+            ls.Add(@"SELECT coalesce(MAX(`wid`)," + cls_globalvariables.BranchCode + "0000000) INTO @wid_d FROM `" + tablename + @"` 
+                                WHERE `wid` >= " + cls_globalvariables.BranchCode + @"0000000 
+                                    AND `wid` <= " + cls_globalvariables.BranchCode + @"9999999 FOR UPDATE;");
             ls.Add(@"INSERT into `" + tablename + @"` (`wid`)
-                             VALUES ( IF(@wid_d = 0,'" + cls_globalvariables.branchid_v + @"0000001',@wid_d+1) );");
-            ls.Add(@"select IF(@wid_d = 0,'" + cls_globalvariables.branchid_v + @"0000001',@wid_d+1) AS 'wid';");
+                             VALUES ( IF(@wid_d = 0,'" + cls_globalvariables.BranchCode + @"0000001',@wid_d+1) );");
+            ls.Add(@"select IF(@wid_d = 0,'" + cls_globalvariables.BranchCode + @"0000001',@wid_d+1) AS 'wid';");
             return Convert.ToInt32(exec_trans(ls));
         }
 
@@ -1147,12 +1141,12 @@ namespace ETech
         {
             List<string> ls = new List<string>();
             ls.Add("SET @wid_d = 0;");
-            ls.Add(@"SELECT coalesce(MAX(`wid`)," + cls_globalvariables.branchid_v + "0000000) INTO @wid_d FROM `" + tablename + @"` 
-                                WHERE `wid` >= " + cls_globalvariables.branchid_v + @"0000000 
-                                    AND `wid` <= " + cls_globalvariables.branchid_v + @"9999999 FOR UPDATE;");
+            ls.Add(@"SELECT coalesce(MAX(`wid`)," + cls_globalvariables.BranchCode + "0000000) INTO @wid_d FROM `" + tablename + @"` 
+                                WHERE `wid` >= " + cls_globalvariables.BranchCode + @"0000000 
+                                    AND `wid` <= " + cls_globalvariables.BranchCode + @"9999999 FOR UPDATE;");
             ls.Add(@"INSERT into `" + tablename + @"` (`wid`)
-                             VALUES ( IF(@wid_d = 0,'" + cls_globalvariables.branchid_v + @"0000001',@wid_d+1) );");
-            ls.Add(@"SET @wid_d = IF(@wid_d = 0,'" + cls_globalvariables.branchid_v + @"0000001', @wid_d + 1);");
+                             VALUES ( IF(@wid_d = 0,'" + cls_globalvariables.BranchCode + @"0000001',@wid_d+1) );");
+            ls.Add(@"SET @wid_d = IF(@wid_d = 0,'" + cls_globalvariables.BranchCode + @"0000001', @wid_d + 1);");
             //ls.Add(@"select IF(@wid_d = 0,'" + cls_globalvariables.branchid_v + @"0000001',@wid_d+1) AS 'wid';");
             return ls;
         }

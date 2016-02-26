@@ -121,7 +121,7 @@ namespace ETech.cls
 
             mySQLClass mysqlclass = new mySQLClass();
 
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
             int userwid = cashier.getwid();
             int wid = mysqlclass.get_next_wid_withlock("poscashdenomination");
@@ -151,7 +151,7 @@ namespace ETech.cls
         }
         public void get_cashdenomination(cls_user cashier, int type)
         {
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
             int userwid = cashier.getwid();
 

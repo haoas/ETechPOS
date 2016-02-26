@@ -78,7 +78,6 @@ namespace ETech.cls
                         this.remove_product(i);
                         return i;
                     }
-                    list_product[i].setRetailWholesalePrice(prod.getRetailWholesalePrice());
                     list_product[i].setQty(qty);
                     list_product[i].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
                     this.sync_product_row(i);
@@ -402,7 +401,6 @@ namespace ETech.cls
             if (row_index < 0 || row_index >= this.list_product.Count)
                 return;
 
-            this.list_product[row_index].setRetail_or_pack(retail_package);
             this.list_product[row_index].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             this.sync_product_row(row_index);
         }
@@ -447,24 +445,18 @@ namespace ETech.cls
                 cls_product prod;
                 if (pwid == 0)
                 {
-                    //prod = new cls_product(Convert.ToDecimal(dr_d["aprice"]), Convert.ToDecimal(dr_d["quantity"]));
                     prod = new cls_product(0, false, false);
                     prod.setProductName(dr_d["product"].ToString());
-                    prod.setPackSellingPrice(Convert.ToDecimal(dr_d["oprice"]));
-                    prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
                 }
                 else if (pwid == 1)
                 {
                     prod = new cls_product(1, false, true);
                     prod.setProductName("Service Charge: " + cls_globalvariables.ServiceCharge_v + "%");
-                    prod.setPackSellingPrice(Convert.ToDecimal(dr_d["oprice"]));
-                    prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
                 }
                 else if (pwid == 2)
                 {
                     prod = new cls_product(2, false, true);
                     prod.setProductName("Local Tax: " + cls_globalvariables.LocalTax_v + "%");
-                    prod.setPackSellingPrice(Convert.ToDecimal(dr_d["oprice"]));
                     prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
                 }
                 else if (pwid != 0 && Convert.ToDecimal(dr_d["bigquantity"]) > 1) //check if package
@@ -507,7 +499,7 @@ namespace ETech.cls
                 {
                     oprice_temp = (oprice * (1 - cls_globalvariables.senior5));
                 }
-                else if (this.isnonvat && prod.getIsVat() && cls_globalvariables.isvat_v == "1")
+                else if (this.isnonvat && prod.getIsVat())
                 {
                     oprice_temp = oprice / (1 + cls_globalvariables.vat);
                 }
@@ -631,7 +623,7 @@ namespace ETech.cls
                     decimal amt = Convert.ToDecimal(dr["amt"]);
                     string name = dr["name"].ToString();
 
-                    if (type == disc.get_type() 
+                    if (type == disc.get_type()
                         && ((type != cls_globalvariables.dcdetail_customdiscounttype && choice == 1) || name.Equals(disc.get_name())))
                     {
                         dr["value"] = 0;

@@ -72,7 +72,7 @@ namespace ETech
                               from `discounttype` as T, discounthierarchy as H 
                               where H.discountid = T.wid and T.headdetail = "+this.headdetail+@" and T.`status` = 1
                                 and (T.`type` < 0 or T.`type` >= " + cls_globalvariables.dchead_defaultcustom .ToString()+ @")
-                                and T.`branchid` = " + cls_globalvariables.branchid_v.ToString() + @" 
+                                and T.`branchid` = " + cls_globalvariables.BranchCode.ToString() + @" 
                               order by H.`position`";
 
             DataTable dt = mySQLFunc.getdb(query);

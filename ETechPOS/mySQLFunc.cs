@@ -31,8 +31,7 @@ namespace ETech
                 cls_globalvariables.password_v = cls_encdec.Decrypt(dic["password"]);
                 cls_globalvariables.database_v = dic["database"];
                 cls_globalvariables.colortheme_v = dic["colortheme"];
-                cls_globalvariables.branchid_v = dic["branchid"];
-                cls_globalvariables.terminaldigit_v = dic["terminaldigit"];
+                cls_globalvariables.BranchCode = dic["branchcode"];
                 cls_globalvariables.BusinessName_v = dic["BusinessName"];
                 cls_globalvariables.Owner_v = dic["Owner"];
                 cls_globalvariables.TIN_v = dic["TIN"];
@@ -56,18 +55,6 @@ namespace ETech
                 catch { cls_globalvariables.print_receipt_linespacing = 0; }
 
                 cls_globalvariables.ACC_date_v = dic["ACC_date"];
-                try
-                {
-                    cls_globalvariables.posd_percent_v = Convert.ToInt32(dic["posdpercent"]);
-                    cls_globalvariables.posdminamt_v = Convert.ToInt32(dic["posdminamt"]);
-                    cls_globalvariables.posdmaxamt_v = Convert.ToInt32(dic["posdmaxamt"]);
-                }
-                catch
-                {
-                    cls_globalvariables.posd_percent_v = 100;
-                    cls_globalvariables.posdminamt_v = 0;
-                    cls_globalvariables.posdmaxamt_v = 0;
-                }
 
                 cls_globalvariables.orfooter1_v = dic["orfooter1"];
                 cls_globalvariables.orfooter2_v = dic["orfooter2"];
@@ -77,8 +64,6 @@ namespace ETech
                 catch { cls_globalvariables.posname_v = "ETECH POS SYSTEM"; }
                 try { cls_globalvariables.avoidinvalidpprice_v = dic["avoidinvalidpprice"]; }
                 catch { cls_globalvariables.avoidinvalidpprice_v = "0"; }
-                try { cls_globalvariables.isvat_v = dic["isvat"]; }
-                catch { cls_globalvariables.isvat_v = "1"; }
                 try { cls_globalvariables.posdautoxz_v = dic["posdautoxz"]; }
                 catch { cls_globalvariables.posdautoxz_v = "0"; }
                 try { cls_globalvariables.posdautoswitch_v = dic["posdautoswitch"]; }
@@ -97,8 +82,6 @@ namespace ETech
                 catch { cls_globalvariables.showdetailCCinZRead_v = "0"; }
                 try { cls_globalvariables.readDateRange_v = Convert.ToInt16(dic["readDateRange"]); }
                 catch { cls_globalvariables.readDateRange_v = 1; }
-                try { cls_globalvariables.enableprintposdsummary_v = dic["enableprintposdsummary"]; }
-                catch { cls_globalvariables.enableprintposdsummary_v = "0"; }
                 try { cls_globalvariables.posdreceiptautoswitch_v = dic["posdreceiptautoswitch"]; }
                 catch { cls_globalvariables.posdreceiptautoswitch_v = "0"; }
                 try { cls_globalvariables.posddisableswitch_v = dic["posddisableswitch"]; }
@@ -116,9 +99,6 @@ namespace ETech
                 catch { }
                 try { cls_globalvariables.LocalTax_v = Convert.ToDecimal(dic["LocalTax"]); }
                 catch { }
-
-                try { cls_globalvariables.TermAcct_v = dic["TermAcct"]; }
-                catch { cls_globalvariables.TermAcct_v = "0"; }
 
                 try { cls_globalvariables.RefundMemo_v = dic["RefundMemo"]; }
                 catch { cls_globalvariables.RefundMemo_v = "0"; }
@@ -149,17 +129,12 @@ namespace ETech
                 try { cls_globalvariables.DiscountDetails_v = Convert.ToInt16(dic["DiscountDetails"]); }
                 catch { cls_globalvariables.DiscountDetails_v = 1; }
 
-                if (cls_globalvariables.terminaldigit_v != "1")
-                    cls_globalvariables.terminaldigit_v = "2";
-
-                cls_globalvariables.branchidlen_v = cls_globalvariables.branchid_v.Length;
-
                 cls_globalvariables.starttime_v = 0;
                 cls_globalvariables.endtime_v = 0;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in settings \n" + ex.Message.ToString());
+                MessageBox.Show("Error in settings \n" + ex.ToString());
                 return false;
             }
 
@@ -237,11 +212,7 @@ namespace ETech
 
             MySqlDataAdapter da = new MySqlDataAdapter(cmd);
             da.Fill(dataTable);
-            /*
-            using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
-            {
-                da.Fill(dataTable);
-            }*/
+
             myconn.Close();
             return dataTable;
         }
@@ -374,7 +345,7 @@ namespace ETech
 
         public static DataTable getdb_main(string SQL)
         {
-            if (cls_globalvariables.branchid_v != "10")
+            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -404,7 +375,7 @@ namespace ETech
 
         public static Boolean setdb_main(string SQL)
         {
-            if (cls_globalvariables.branchid_v != "10")
+            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -503,7 +474,7 @@ namespace ETech
         }
         public static bool check_connection_main()
         {
-            if (cls_globalvariables.branchid_v != "10")
+            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";

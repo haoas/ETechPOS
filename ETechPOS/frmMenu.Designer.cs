@@ -43,7 +43,6 @@
             this.btnL = new System.Windows.Forms.Button();
             this.btnM = new System.Windows.Forms.Button();
             this.btnS = new System.Windows.Forms.Button();
-            this.btnY = new System.Windows.Forms.Button();
             this.btnH = new System.Windows.Forms.Button();
             this.btnF3 = new System.Windows.Forms.Button();
             this.btnESC = new System.Windows.Forms.Button();
@@ -254,19 +253,6 @@
             this.btnS.UseVisualStyleBackColor = false;
             this.btnS.Click += new System.EventHandler(this.btnS_Click);
             // 
-            // btnY
-            // 
-            this.btnY.BackColor = System.Drawing.Color.Navy;
-            this.btnY.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnY.ForeColor = System.Drawing.Color.White;
-            this.btnY.Location = new System.Drawing.Point(705, 92);
-            this.btnY.Name = "btnY";
-            this.btnY.Size = new System.Drawing.Size(93, 73);
-            this.btnY.TabIndex = 40;
-            this.btnY.Text = "Y\r\nSummary";
-            this.btnY.UseVisualStyleBackColor = false;
-            this.btnY.Click += new System.EventHandler(this.btnY_Click);
-            // 
             // btnH
             // 
             this.btnH.BackColor = System.Drawing.Color.Navy;
@@ -316,7 +302,6 @@
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.btnF3);
             this.Controls.Add(this.btnH);
-            this.Controls.Add(this.btnY);
             this.Controls.Add(this.btnS);
             this.Controls.Add(this.btnM);
             this.Controls.Add(this.btnL);
@@ -364,7 +349,6 @@
         private System.Windows.Forms.Button btnL;
         private System.Windows.Forms.Button btnM;
         private System.Windows.Forms.Button btnS;
-        private System.Windows.Forms.Button btnY;
         private System.Windows.Forms.Button btnH;
         private System.Windows.Forms.Button btnF3;
         private System.Windows.Forms.Button btnESC;

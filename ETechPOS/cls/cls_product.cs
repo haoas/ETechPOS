@@ -11,16 +11,10 @@ namespace ETech.cls
         private int wid;
         private string barcode;
         private string singlebarcode;
-        private string packbarcode;
         private string productname;
 
         private decimal retailpprice;
         private decimal retailprice;
-        private decimal retailwholesaleprice;
-        private decimal packpprice;
-        private decimal packsellingprice;
-        private decimal packwholesaleprice;
-        private decimal packqty;
 
         private decimal pprice;
         private decimal origprice;
@@ -31,8 +25,6 @@ namespace ETech.cls
         private decimal discount;
         private string memo;
 
-        private int retail_or_pack;
-        private bool ispackage;
         private bool isvat;
         private int issenior;
         private decimal qty;
@@ -54,7 +46,6 @@ namespace ETech.cls
 
         public cls_productpromo productpromo;
 
-        //private cls_productDiscount productdiscount;
         public cls_discountlist productdiscount;
 
         private bool is_history;
@@ -75,7 +66,6 @@ namespace ETech.cls
             this.wid = 0;
             this.barcode = "";
             this.singlebarcode = "";
-            this.packbarcode = "";
             this.productname = "";
             this.qty = 1;
             this.bigqty = 1;
@@ -88,15 +78,8 @@ namespace ETech.cls
             this.pricee = 0;
             this.memo = "";
 
-            this.retail_or_pack = 0;
-
             this.retailpprice = 0;
             this.retailprice = 0;
-            this.retailwholesaleprice = 0;
-            this.packpprice = 0;
-            this.packsellingprice = 0;
-            this.packwholesaleprice = 0;
-            this.packqty = 1;
 
             this.amount = 0;
             this.pprice = 0;
@@ -106,7 +89,6 @@ namespace ETech.cls
             this.productname_prefix = "";
             this.productname_suffix = "";
             this.price_suffix = "";
-            this.ispackage = false;
             this.isvat = true;
             this.issenior = 0;
             this.adjust = 0;
@@ -168,7 +150,7 @@ namespace ETech.cls
 
                 sSQL = @"SELECT P.`wid` FROM `product` AS P, `branchprice` AS B 
                             WHERE P.`show` = 1 AND P.`status` = 1 AND P.`wid` = B.`productid` 
-                                AND B.`ispackage` = 1 AND B.`branchid` = " + cls_globalvariables.branchid_v + @"
+                                AND B.`ispackage` = 1 AND B.`branchid` = " + cls_globalvariables.BranchCode + @"
                                 AND ( P.`packbarcode` = @barcode_d 
                                     OR P.`packbarcode2` = @barcode_d )";
                 dt = mySQLFunc.getdb(sSQL,
@@ -204,7 +186,7 @@ namespace ETech.cls
             //search for package barcode
             sSQL = @"SELECT P.`wid` FROM `product` AS P, `branchprice` AS B 
                             WHERE P.`show` = 1 AND P.`status` = 1 AND P.`wid` = B.`productid` 
-                                AND B.`ispackage` = 1 AND B.`branchid` = " + cls_globalvariables.branchid_v + @"
+                                AND B.`ispackage` = 1 AND B.`branchid` = " + cls_globalvariables.BranchCode + @"
                                 AND ( P.`packbarcode` LIKE @barcode_d_like 
                                     OR P.`packbarcode2` LIKE @barcode_d_like )";
             dt = mySQLFunc.getdb(sSQL,
@@ -266,7 +248,7 @@ namespace ETech.cls
                     COALESCE(B.`sellingprice`, " + price_d + @") AS 'oprice'
                     FROM `product` AS P
                     LEFT JOIN `branchprice` AS B ON B.`productid`=P.`wid` AND
-                        B.`branchid` = " + cls_globalvariables.branchid_v + @" 
+                        B.`branchid` = " + cls_globalvariables.BranchCode + @" 
                     WHERE (P.`barcode` = '" + barcode_d + @"' OR P.`clientbarcode` = '" + barcode_d + @"')";
 
             Console.WriteLine(sSQL);
@@ -287,7 +269,6 @@ namespace ETech.cls
             this.price = price_d;
             this.origprice = price_d;
             this.retailprice = price_d;
-            this.retailwholesaleprice = price_d;
             this.wholesaleprice = price_d;
             this.pricea = price_d;
             this.priceb = price_d;
@@ -307,7 +288,7 @@ namespace ETech.cls
             {
                 this.qty = qty_d;
                 this.vat = calculate_vat(this.isvat, price_d);
-                this.isvat = (cls_globalvariables.isvat_v == "1");
+                this.isvat = true;
             }
             else if (this.wid == 1)
             {
@@ -353,15 +334,10 @@ namespace ETech.cls
                             COALESCE(B.`pricec`, 0) AS 'pricec',
                             COALESCE(B.`priced`, 0) AS 'priced',
                             COALESCE(B.`pricee`, 0) AS 'pricee',
-                            COALESCE(B.`purchaseprice`, 0) AS 'pprice',
-                            COALESCE(B.`packageqty`, 1) AS 'packageqty',
-                            COALESCE(B.`packagesellingprice`, 0) AS 'packprice', 
-                            COALESCE(B.`packagewholesaleprice`, 0) AS 'packwholesaleprice', 
-                            COALESCE(B.`packagepurchaseprice`, 0) AS 'packpprice',
-                            COALESCE(B.`ispackage`, 0) AS 'ispackage'
+                            COALESCE(B.`purchaseprice`, 0) AS 'pprice'
                         FROM `product` AS P
                         LEFT JOIN `branchprice` AS B ON B.`productid` = P.`wid` 
-                            AND B.`branchid` = " + cls_globalvariables.branchid_v + @" 
+                            AND B.`branchid` = " + cls_globalvariables.BranchCode + @" 
                         WHERE P.`wid` = " + wid_d;
 
             if (cls_globalvariables.allowZeroPrice_v.ToString() != "1")
@@ -381,54 +357,27 @@ namespace ETech.cls
             DataRow dr = dt.Rows[0];
             this.wid = wid_d;
             this.singlebarcode = dr["barcode"].ToString();
-            this.packbarcode = dr["packbarcode"].ToString();
             this.productname = dr["productname"].ToString();
 
             this.retailpprice = Convert.ToDecimal(dr["pprice"]);
-            this.retailwholesaleprice = Convert.ToDecimal(dr["wholesaleprice"]);
             this.retailprice = Convert.ToDecimal(dr["price"]);
             this.pricea = Convert.ToDecimal(dr["pricea"]);
             this.priceb = Convert.ToDecimal(dr["priceb"]);
             this.pricec = Convert.ToDecimal(dr["pricec"]);
             this.priced = Convert.ToDecimal(dr["priced"]);
             this.pricee = Convert.ToDecimal(dr["pricee"]);
-            this.pricea = (this.pricea == 0) ? this.retailwholesaleprice : this.pricea;
-            this.priceb = (this.priceb == 0) ? this.retailwholesaleprice : this.priceb;
-            this.pricec = (this.pricec == 0) ? this.retailwholesaleprice : this.pricec;
-            this.priced = (this.priced == 0) ? this.retailwholesaleprice : this.priced;
-            this.pricee = (this.pricee == 0) ? this.retailwholesaleprice : this.pricee;
-            this.packqty = Convert.ToDecimal(dr["packageqty"]);
-            this.packpprice = Convert.ToDecimal(dr["packpprice"]);
-            this.packwholesaleprice = Convert.ToDecimal(dr["packwholesaleprice"]);
-            this.packsellingprice = Convert.ToDecimal(dr["packprice"]);
-            this.ispackage = Convert.ToInt32(dr["ispackage"]) == 1;
-            if (this.packwholesaleprice <= 0 || this.packsellingprice <= 0)
-                this.ispackage = false;
 
-            this.isvat = (cls_globalvariables.isvat_v == "0")? false : Convert.ToInt32(dr["isvat"]) == 1;
+            this.isvat = (Convert.ToInt32(dr["isvat"]) == 1);
             this.issenior = Convert.ToInt32(dr["senior"]);
 
             if (!is_package)
             {
-                this.retail_or_pack = 0;
                 this.barcode = this.singlebarcode;
                 this.bigqty = 1;
                 this.pprice = this.retailpprice;
-                this.wholesaleprice = this.retailwholesaleprice;
                 this.origprice = this.retailprice;
                 this.price = this.retailprice;
                 this.amount = this.retailprice;
-            }
-            else
-            {
-                this.retail_or_pack = 1;
-                this.barcode = this.packbarcode;
-                this.bigqty = this.packqty;
-                this.pprice = this.packpprice;
-                this.wholesaleprice = this.packwholesaleprice;
-                this.origprice = this.packsellingprice;
-                this.price = this.packsellingprice;
-                this.amount = this.packsellingprice;
             }
 
             this.vat = calculate_vat(this.isvat, price);
@@ -439,71 +388,49 @@ namespace ETech.cls
 
         public void reset_data_by_mode(bool isnonvat_d, bool issenior_d, bool iswholesale, int pricingtype, decimal pricingrate, cls_customer customer)
         {
-            if (this.retail_or_pack == 0)
-            {
-                this.barcode = this.singlebarcode;
-                this.bigqty = 1;
-                this.pprice = this.retailpprice;
-                this.wholesaleprice = this.retailwholesaleprice;
-                this.origprice = this.retailprice;
-                this.price = this.retailprice;
+            this.barcode = this.singlebarcode;
+            this.bigqty = 1;
+            this.pprice = this.retailpprice;
+            this.origprice = this.retailprice;
+            this.price = this.retailprice;
 
-                if (iswholesale && this.wid != 0)
-                {
-                    if (pricingtype == 0 && customer.getItemPriceDictionary().ContainsKey(wid))
-                    {
-                        this.origprice = wholesaleprice;
-                        this.price = wholesaleprice;
-                        if (!this.customerHistoricalPricingFlag)
-                        {
-                            getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[wid] - this.origprice, false);
-                            customerHistoricalPricingFlag = true;
-                        }
-                    }
-                    else
-                    {
-                        if (pricingtype == 2) this.origprice = Math.Round(this.pprice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
-                        else if (pricingtype == 3) this.origprice = Math.Round(this.wholesaleprice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
-                        else if (pricingtype == 4) this.origprice = this.pricea;
-                        else if (pricingtype == 5) this.origprice = this.priceb;
-                        else if (pricingtype == 6) this.origprice = this.pricec;
-                        else if (pricingtype == 7) this.origprice = this.priced;
-                        else if (pricingtype == 8) this.origprice = this.pricee;
-                        else if (pricingtype == 9) this.origprice = this.retailprice;
-                        else this.origprice = this.wholesaleprice;
-                        this.price = this.origprice;
-                        if (this.customerHistoricalPricingFlag)
-                        {
-                            getProductDiscountList().disable_all_discounts();
-                            customerHistoricalPricingFlag = false;
-                        }
-                    }
-                }
-                else if (this.customerHistoricalPricingFlag)
-                {
-                    getProductDiscountList().disable_all_discounts();
-                    customerHistoricalPricingFlag = false;
-                }
-            }
-            else
+            if (iswholesale && this.wid != 0)
             {
-                this.barcode = this.packbarcode;
-                this.bigqty = this.packqty;
-                this.pprice = this.packpprice;
-                this.wholesaleprice = this.packwholesaleprice;
-                this.origprice = this.packsellingprice;
-                this.price = this.packsellingprice;
-                if (iswholesale)
+                if (pricingtype == 0 && customer.getItemPriceDictionary().ContainsKey(wid))
                 {
-                    this.origprice = this.packwholesaleprice;
-                    this.price = this.packwholesaleprice;
+                    this.origprice = wholesaleprice;
+                    this.price = wholesaleprice;
+                    if (!this.customerHistoricalPricingFlag)
+                    {
+                        getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[wid] - this.origprice, false);
+                        customerHistoricalPricingFlag = true;
+                    }
                 }
-                if (this.customerHistoricalPricingFlag)
+                else
                 {
-                    getProductDiscountList().disable_all_discounts();
-                    customerHistoricalPricingFlag = false;
+                    if (pricingtype == 2) this.origprice = Math.Round(this.pprice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
+                    else if (pricingtype == 3) this.origprice = Math.Round(this.wholesaleprice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
+                    else if (pricingtype == 4) this.origprice = this.pricea;
+                    else if (pricingtype == 5) this.origprice = this.priceb;
+                    else if (pricingtype == 6) this.origprice = this.pricec;
+                    else if (pricingtype == 7) this.origprice = this.priced;
+                    else if (pricingtype == 8) this.origprice = this.pricee;
+                    else if (pricingtype == 9) this.origprice = this.retailprice;
+                    else this.origprice = this.wholesaleprice;
+                    this.price = this.origprice;
+                    if (this.customerHistoricalPricingFlag)
+                    {
+                        getProductDiscountList().disable_all_discounts();
+                        customerHistoricalPricingFlag = false;
+                    }
                 }
             }
+            else if (this.customerHistoricalPricingFlag)
+            {
+                getProductDiscountList().disable_all_discounts();
+                customerHistoricalPricingFlag = false;
+            }
+
             Console.WriteLine("reset_data_by_mode discount : " + this.discount);
             Console.WriteLine("reset_data_by_mode adjust : " + this.adjust);
             Console.WriteLine("reset_data_by_mode 1: oprice: " + this.origprice);
@@ -534,15 +461,13 @@ namespace ETech.cls
             if (!this.is_history && !iswholesale)
             {
                 decimal promo_qty = this.productpromo.get_qtypromo_price(this.qty);
-                if (this.ispackage)
-                    promo_qty = 0;
                 decimal promo_proddc = this.productpromo.get_PromoProdDiscount_price();
                 Console.WriteLine("reset_data_by_mode 3A: oprice: " + this.origprice);
 
                 if (promo_qty > 0 && (promo_proddc < 0 || promo_proddc > 0 && promo_qty < promo_proddc))
                     this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_promoqty, promo_qty - this.origprice, false);
                 else if (promo_proddc > 0)
-                    this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_promoqty, promo_proddc/this.origprice, true);
+                    this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_promoqty, promo_proddc / this.origprice, true);
 
                 Console.WriteLine("reset_data_by_mode 3C oprice: " + this.origprice);
             }
@@ -619,28 +544,11 @@ namespace ETech.cls
 
         public void reprint_reset_data_by_mode(bool isnonvat_d, bool issenior_d, bool iswholesale, int pricingtype)
         {
-            if (this.retail_or_pack == 0)
-            {
-                this.barcode = this.singlebarcode;
-                this.bigqty = 1;
-                this.pprice = this.retailpprice;
-                this.wholesaleprice = this.retailwholesaleprice;
-                this.origprice = this.retailprice;
-            }
-            else
-            {
-                this.barcode = this.packbarcode;
-                this.bigqty = this.packqty;
-                this.pprice = this.packpprice;
-                this.wholesaleprice = this.packwholesaleprice;
-                this.origprice = this.packsellingprice;
-                this.price = this.packsellingprice;
-                if (iswholesale)
-                {
-                    this.origprice = this.packwholesaleprice;
-                    this.price = this.packwholesaleprice;
-                }
-            }
+            this.barcode = this.singlebarcode;
+            this.bigqty = 1;
+            this.pprice = this.retailpprice;
+            this.origprice = this.retailprice;
+
             Console.WriteLine("reset_data_by_mode discount : " + this.discount);
             Console.WriteLine("reset_data_by_mode adjust : " + this.adjust);
             Console.WriteLine("reset_data_by_mode 1: oprice: " + this.origprice);
@@ -674,9 +582,6 @@ namespace ETech.cls
 
                 Console.WriteLine("reset_data_by_mode 3C oprice: " + this.origprice);
             }
-
-            /*-------------------------------------------------*/
-            //ROBI
 
             Console.WriteLine("reset_data_by_mode price: " + this.price);
             Console.WriteLine("reset_data_by_mode discount : " + this.discount);
@@ -723,11 +628,6 @@ namespace ETech.cls
                 this.transaction_mode = "vatable_sale";
         }
 
-        public void setPackSellingPrice(decimal val)
-        {
-            this.packsellingprice = val;
-        }
-
         public void setRetailPrice(decimal val)
         {
             this.retailprice = val;
@@ -752,17 +652,6 @@ namespace ETech.cls
         public void setOrigPrice(decimal origprice_d)
         {
             this.origprice = origprice_d;
-        }
-
-        public void setRetailWholesalePrice(decimal wholesaleprice_d)
-        {
-            //this.wholesaleprice = wholesaleprice_d;
-            this.retailwholesaleprice = wholesaleprice_d;
-        }
-
-        public void setRetail_or_pack(int retail_pack)
-        {
-            this.retail_or_pack = retail_pack;
         }
 
         public void setVat(decimal vat_d)
@@ -851,28 +740,9 @@ namespace ETech.cls
             return Math.Round(this.origprice, 2, MidpointRounding.AwayFromZero);
         }
 
-        public decimal getRetailWholesalePrice()
-        {
-            return Math.Round(this.retailwholesaleprice, 2, MidpointRounding.AwayFromZero);
-        }
         public decimal getWholesalePrice()
         {
             return Math.Round(this.wholesaleprice, 2, MidpointRounding.AwayFromZero);
-        }
-
-        public int getRetail_or_pack()
-        {
-            return this.retail_or_pack;
-        }
-
-        public bool getIsPackage()
-        {
-            return this.ispackage;
-        }
-
-        public decimal getPackQty()
-        {
-            return this.packqty;
         }
 
         public decimal getVat()

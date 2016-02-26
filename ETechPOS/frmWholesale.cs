@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
-using ETech.cls;
 using ETech.fnc;
 
 namespace ETech
@@ -30,9 +29,9 @@ namespace ETech
         private void frmWholesale_Load(object sender, EventArgs e)
         {
             lblProduct_d.Text = cproduct.getProductName();
-            lblUnitPrice_d.Text = cproduct.getRetailWholesalePrice().ToString("N2");
+            lblUnitPrice_d.Text = "0";
             txtQty.Text = "1";
-            txtPrice.Text = cproduct.getRetailWholesalePrice().ToString("N2");
+            txtPrice.Text = "0";
 
             txtQty.Focus();
             txtQty.SelectAll();
@@ -82,8 +81,7 @@ namespace ETech
                 return;
             }
 
-            this.cproduct.setQty(new_qty);
-            this.cproduct.setRetailWholesalePrice(new_price);            
+            this.cproduct.setQty(new_qty);        
 
             this.Close();
             return;

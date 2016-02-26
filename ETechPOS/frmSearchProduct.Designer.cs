@@ -40,7 +40,6 @@
             this.colStockNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSellingPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colProduct = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colProductWid = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -104,7 +103,6 @@
             this.colStockNo,
             this.colSellingPrice,
             this.colProduct,
-            this.inv,
             this.description,
             this.memo,
             this.colProductWid});
@@ -172,14 +170,6 @@
             this.colProduct.ReadOnly = true;
             this.colProduct.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
-            // inv
-            // 
-            this.inv.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.inv.DataPropertyName = "inv";
-            this.inv.FillWeight = 99.49682F;
-            this.inv.HeaderText = "Inv.";
-            this.inv.Name = "inv";
-            // 
             // description
             // 
             this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -241,7 +231,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colStockNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSellingPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProduct;
-        private System.Windows.Forms.DataGridViewTextBoxColumn inv;
         private System.Windows.Forms.DataGridViewTextBoxColumn description;
         private System.Windows.Forms.DataGridViewTextBoxColumn memo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProductWid;

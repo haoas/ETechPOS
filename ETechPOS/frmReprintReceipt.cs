@@ -108,7 +108,7 @@ namespace ETech
             string sSQL =
                 @"SELECT `ornumber` FROM `saleshead`
                 WHERE `terminalno` = " + cls_globalvariables.terminalno_v + @"
-                    AND `branchid` = " + cls_globalvariables.branchid_v + @"
+                    AND `branchid` = " + cls_globalvariables.BranchCode + @"
                     AND `status`=1
                 ORDER BY `ornumber` DESC
                 LIMIT 1;";

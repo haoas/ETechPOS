@@ -59,7 +59,7 @@ namespace ETech
             string datefrom = Ddatefrom.ToString("yyyy-MM-dd 00:00:00");
             string dateto = Ddateto.ToString("yyyy-MM-dd 23:59:59");
             string terminalno = cls_globalvariables.terminalno_v;
-            string branchid = cls_globalvariables.branchid_v;
+            string branchid = cls_globalvariables.BranchCode;
 
             string sql = @"
             SELECT '' as `wid`,'ALL' as `fullname`
@@ -160,7 +160,7 @@ namespace ETech
                 FROM saleshead as SH, salesdetail as SD
                 WHERE SH.`show`= 1 AND SH.`status` = 1
                 AND SD.price <> 0
-                AND SH.branchid = " + cls_globalvariables.branchid_v + @"
+                AND SH.branchid = " + cls_globalvariables.BranchCode + @"
                 AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
                 AND SD.`headid` = SH.`wid`
                 AND SH.`date` >= '" + datefrom + @" 00:00:00'
@@ -176,7 +176,7 @@ namespace ETech
                 FROM saleshead as SH, salesdetail as SD
                 WHERE SH.`show`= 1 AND SH.`status` = 1
                 AND SD.price <> 0
-                AND SH.branchid = " + cls_globalvariables.branchid_v + @"
+                AND SH.branchid = " + cls_globalvariables.BranchCode + @"
                 AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
                 AND SD.`headid` = SH.`wid`
                 AND SH.`date` >= '" + datefrom + @" 00:00:00'
@@ -197,7 +197,7 @@ namespace ETech
                     LEFT JOIN product as P on P.`wid` = SD.`productid`
                     LEFT JOIN department as D on P.`departmentid` = D.`wid`
                     WHERE SH.`show`= 1 AND SH.`status` = 1  
-                    AND SH.branchid = " + cls_globalvariables.branchid_v + @"
+                    AND SH.branchid = " + cls_globalvariables.BranchCode + @"
                     AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
                     AND SD.`headid` = SH.`wid`
                     AND SH.`date` >= '" + datefrom + @" 00:00:00'
@@ -221,7 +221,7 @@ namespace ETech
 	                        FROM saleshead as SH, salesdetail as SD, product as P
 	                        WHERE SH.`show`= 1 AND SH.`status` = 1  
                             AND SD.price <> 0
-                            AND SH.branchid = " + cls_globalvariables.branchid_v + @"
+                            AND SH.branchid = " + cls_globalvariables.BranchCode + @"
 	                        AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
 	                        AND SD.`headid` = SH.`wid`
 	                        AND SH.`date` BETWEEN '" + datefrom + @" 00:00:00' AND '" + dateto + @" 23:59:59'

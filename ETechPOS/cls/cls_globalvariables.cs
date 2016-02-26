@@ -10,6 +10,8 @@ namespace ETech.cls
 {
     public static class cls_globalvariables
     {
+        public static string MainBranchCode = "10"; //Lester: to change to 1000
+
         public static decimal vat = 0.12M;
         public static decimal senior = 0.20M;
         public static decimal senior5 = 0.05M;
@@ -56,25 +58,24 @@ namespace ETech.cls
             set { posname = value; }
         }
 
-        private static string version = "1.5.7";
+        private static string version = "1.0.0";
         public static string version_v
         {
             get { return version; }
             set { version = value; }
         }
 
-        private static string isvat = "";
-        public static string isvat_v
-        {
-            get { return isvat; }
-            set { isvat = value; }
-        }
-
-        private static string terminalno = "";
+        private static string terminalno = "01";
         public static string terminalno_v
         {
             get { return terminalno; }
-            set { terminalno = value; }
+            set
+            {
+                if (value.Length != 2)
+                    throw new Exception("Invalid Terminal no");
+                else
+                    terminalno = value;
+            }
         }
 
         private static string com = "";
@@ -126,19 +127,12 @@ namespace ETech.cls
             set { database = value; }
         }
 
-        private static string terminaldigit = "";
-        public static string terminaldigit_v
-        {
-            get { return terminaldigit; }
-            set { terminaldigit = value; }
-        }
-
         public static int branchidlen_v = 2;
-        private static string branchid = "";
-        public static string branchid_v
+        private static string branchcode = "";
+        public static string BranchCode
         {
-            get { return branchid; }
-            set { branchid = value; }
+            get { return branchcode; }
+            set { branchcode = value; }
         }
 
         private static string BusinessName = "";
@@ -207,27 +201,6 @@ namespace ETech.cls
         public static string PosProviderAddress_v;
         public static string PosProviderTIN_v;
         public static string ACC_date_v;
-
-        private static int posd_percent = 100;
-        public static int posd_percent_v
-        {
-            get { return posd_percent; }
-            set { posd_percent = value; }
-        }
-
-        private static int posdminamt = 0;
-        public static int posdminamt_v
-        {
-            get { return posdminamt; }
-            set { posdminamt = value; }
-        }
-
-        private static int posdmaxamt = 0;
-        public static int posdmaxamt_v
-        {
-            get { return posdmaxamt; }
-            set { posdmaxamt = value; }
-        }
 
         private static string orfooter1 = "";
         public static string orfooter1_v
@@ -353,20 +326,6 @@ namespace ETech.cls
         {
             get { return showdetailCCinZRead; }
             set { showdetailCCinZRead = value; }
-        }
-
-        private static string TermAcct = "0";
-        public static string TermAcct_v
-        {
-            get { return TermAcct; }
-            set { TermAcct = value; }
-        }
-
-        private static string enableprintposdsummary = "0";
-        public static string enableprintposdsummary_v
-        {
-            get { return enableprintposdsummary; }
-            set { enableprintposdsummary = value; }
         }
 
         private static string posddisableswitch = "0";

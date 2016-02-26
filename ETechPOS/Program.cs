@@ -29,7 +29,18 @@ namespace ETech
                 }
 
                 GC.Collect();
-                cls_globalvariables.is4By3ratio_v = ((double)Screen.PrimaryScreen.Bounds.Width / (double)Screen.PrimaryScreen.Bounds.Height) == 1.3333333333333333;
+
+                //try
+                //{
+                //    cls_globalvariables.is4By3ratio_v = ((double)Screen.PrimaryScreen.Bounds.Width / (double)Screen.PrimaryScreen.Bounds.Height) == 1.3333333333333333;
+                
+                //}
+                //catch (Exception ex )
+                //{
+                //    MessageBox.Show(ex.ToString());
+                //    throw;
+                //}
+                
                 Application.Run(new POSMain());
             }
         }

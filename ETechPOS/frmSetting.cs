@@ -35,7 +35,6 @@ namespace ETech
         private void frmSetting_Load(object sender, EventArgs e)
         {
             this.num_orprintcnt.Value = Convert.ToInt32(cls_globalvariables.ORPrintCount_v);
-            this.txtTerminalNo.Value = Convert.ToDecimal(cls_globalvariables.terminalno_v);
             this.txtBusinessName.Text = cls_globalvariables.BusinessName_v;
             this.txtOwner.Text = cls_globalvariables.Owner_v;
             this.txtAddress.Text = cls_globalvariables.Address_v;
@@ -45,7 +44,6 @@ namespace ETech
             this.txtSerialNo.Text = cls_globalvariables.Serial_v;
             this.txtMIN.Text = cls_globalvariables.MIN_v;
             this.txtTIN.Text = cls_globalvariables.TIN_v;
-            this.chkIsVAT.Checked = (cls_globalvariables.isvat_v == "1");
 
             this.txtFooter1.Text = cls_globalvariables.orfooter1_v;
             this.txtFooter2.Text = cls_globalvariables.orfooter2_v;
@@ -76,7 +74,6 @@ namespace ETech
             reader.Close();
 
             content = Regex.Replace(content, "ORPrintCount=.*", "ORPrintCount=" + num_orprintcnt.Value.ToString() + "\r");
-            content = Regex.Replace(content, "terminal=.*", "terminal=" + txtTerminalNo.Value.ToString() + "\r");
             content = Regex.Replace(content, "BusinessName=.*", "BusinessName=" + txtBusinessName.Text + "\r");
             content = Regex.Replace(content, "Owner=.*", "Owner=" + txtOwner.Text + "\r");
             content = Regex.Replace(content, "Address=" + cls_globalvariables.Address_v, "Address=" + txtAddress.Text);
@@ -86,19 +83,16 @@ namespace ETech
             content = Regex.Replace(content, "Serial=.*", "Serial=" + txtSerialNo.Text + "\r");
             content = Regex.Replace(content, "MIN=.*", "MIN=" + txtMIN.Text + "\r");
             content = Regex.Replace(content, "TIN=.*", "TIN=" + txtTIN.Text + "\r");
-            content = Regex.Replace(content, "isvat=.*", "isvat=" + (chkIsVAT.Checked ? "1" : "0") + "\r");
 
             content = Regex.Replace(content, "orfooter1=.*", "orfooter1=" + txtFooter1.Text + "\r");
             content = Regex.Replace(content, "orfooter2=.*", "orfooter2=" + txtFooter2.Text + "\r");
             content = Regex.Replace(content, "orfooter3=.*", "orfooter3=" + txtFooter3.Text + "\r");
             content = Regex.Replace(content, "orfooter4=.*", "orfooter4=" + txtFooter4.Text + "\r");
-            content = Regex.Replace(content, "OfflineSecurityCode=.*", "OfflineSecurityCode=" + cls_encdec.Encrypt(txtOfflineSecurity.Text) + "\r");
 
             StreamWriter writer = new StreamWriter(cls_globalvariables.settingspath);
             writer.Write(content);
             writer.Close();
 
-            cls_globalvariables.terminalno_v = this.txtTerminalNo.Value.ToString();
             cls_globalvariables.BusinessName_v = this.txtBusinessName.Text;
             cls_globalvariables.Owner_v = this.txtOwner.Text;
             cls_globalvariables.Address_v = this.txtAddress.Text;
@@ -108,7 +102,6 @@ namespace ETech
             cls_globalvariables.Serial_v = this.txtSerialNo.Text;
             cls_globalvariables.MIN_v = this.txtMIN.Text;
             cls_globalvariables.TIN_v = this.txtTIN.Text;
-            cls_globalvariables.isvat_v = (this.chkIsVAT.Checked ? "1" : "0");
 
             cls_globalvariables.orfooter1_v = this.txtFooter1.Text;
             cls_globalvariables.orfooter2_v = this.txtFooter2.Text;

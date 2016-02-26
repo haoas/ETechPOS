@@ -14,6 +14,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using ETech.fnc;
+using ETECHPOS.FormatDesigner;
 
 namespace ETech
 {
@@ -48,6 +49,9 @@ namespace ETech
         {
             InitializeComponent();
 
+            dgvProduct.Standardize();
+            dgvProduct.FillColumn(new List<string> { "Description" });
+
             LOGS.CLEAR();
             isLoadSuccessful = mySQLFunc.initialize_global_variables();
 
@@ -62,7 +66,7 @@ namespace ETech
             btnlist.Add(this.btnF1); btnlist.Add(this.btnF2); btnlist.Add(this.btnF3);
             btnlist.Add(this.btnF4); btnlist.Add(this.btnF5); btnlist.Add(this.btnF6);
             btnlist.Add(this.btnF7); btnlist.Add(this.btnF8); btnlist.Add(this.btnF9);
-            btnlist.Add(this.btnF10); btnlist.Add(this.btnF11); btnlist.Add(this.btnF12);
+            btnlist.Add(this.btnF11); btnlist.Add(this.btnF12);
 
             this.Trans = new List<cls_POSTransaction>();
             this.ctrlproductgridview = new ctrl_productgrid(this.dgvProduct);
@@ -201,28 +205,18 @@ namespace ETech
                     isLoadSuccessful = false;
                     return;
                 }
-                if (cls_globalvariables.branchid_v != DT.Rows[0]["value"].ToString())
+                if (cls_globalvariables.BranchCode != DT.Rows[0]["value"].ToString())
                 {
                     MessageBox.Show("Branchid in Config is not the same in settings!");
                     isLoadSuccessful = false;
                     return;
                 }
 
-                //procedure checker
-                // DT = mySQLFunc.getdb(@"SELECT COUNT(*) as cnt FROM INFORMATION_SCHEMA.ROUTINES 
-                // WHERE ROUTINE_TYPE='PROCEDURE' AND ROUTINE_SCHEMA='" + cls_globalvariables.database_v + @"';");
-                // if (Convert.ToInt16(DT.Rows[0]["cnt"]) <= 15)
-                // {
-                //     MessageBox.Show("Incomplete Procedures");
-                //     isLoadSuccessful = false;
-                //     return;
-                // }
-
                 //refresh discounttype and discountthierarchy tables
                 sql = @"SELECT SUM(A.A) AS 'A' FROM(
-                        Select IF(Count(*)=12,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.branchid_v + @" AND `status`=1 AND `headdetail`=0 AND (`type`=2 OR `type`=3 OR (`type`>=10 AND `type`<=19))
+                        Select IF(Count(*)=12,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.BranchCode + @" AND `status`=1 AND `headdetail`=0 AND (`type`=2 OR `type`=3 OR (`type`>=10 AND `type`<=19))
                         UNION ALL
-                        Select IF(Count(*)=4,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.branchid_v + @" AND `status`=1 AND `headdetail`=1 AND (`type`>=2 AND `type`<=5)
+                        Select IF(Count(*)=4,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.BranchCode + @" AND `status`=1 AND `headdetail`=1 AND (`type`>=2 AND `type`<=5)
                         )A";
                 DT = mySQLFunc.getdb(sql);
                 if (Convert.ToInt16(DT.Rows[0]["A"]) != 2)
@@ -231,8 +225,8 @@ namespace ETech
                     mySQLFunc.setdb(sql);
                     sql = @"DELETE FROM discounthierarchy";
                     mySQLFunc.setdb(sql);
-                    Int64 basewid = (Convert.ToInt64(cls_globalvariables.branchid_v) * 10000000);
-                    string branchid = cls_globalvariables.branchid_v;
+                    Int64 basewid = (Convert.ToInt64(cls_globalvariables.BranchCode) * 10000000);
+                    string branchid = cls_globalvariables.BranchCode;
                     sql = @"INSERT INTO `discounthierarchy` (`discountid`,`position`,`basis`) VALUES
 			                (" + (basewid + 1) + @",0,-1),
                             (" + (basewid + 2) + @",1,0),
@@ -271,9 +265,9 @@ namespace ETech
                     mySQLFunc.setdb(sql);
                 }
                 sql = @"SELECT SUM(A.A) AS 'A' FROM(
-                        Select IF(Count(*)=12,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.branchid_v + @" AND `status`=1 AND `headdetail`=0 AND (`type`=2 OR `type`=3 OR (`type`>=10 AND `type`<=19))
+                        Select IF(Count(*)=12,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.BranchCode + @" AND `status`=1 AND `headdetail`=0 AND (`type`=2 OR `type`=3 OR (`type`>=10 AND `type`<=19))
                         UNION ALL
-                        Select IF(Count(*)=4,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.branchid_v + @" AND `status`=1 AND `headdetail`=1 AND (`type`>=2 AND `type`<=5)
+                        Select IF(Count(*)=4,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.BranchCode + @" AND `status`=1 AND `headdetail`=1 AND (`type`>=2 AND `type`<=5)
                         )A";
                 DT = mySQLFunc.getdb(sql);
                 if (Convert.ToInt16(DT.Rows[0]["A"]) != 2)
@@ -425,8 +419,6 @@ namespace ETech
                 return;
             }
 
-            set_app_name();
-
             if (cur_cashier.getwid() == 0)
                 this.Close();
 
@@ -478,7 +470,7 @@ namespace ETech
              * 1 - payment info
              */
             int mode = 0;
-            cls_posd posdclass = new cls_posd();
+
             cls_user permissiongiver = new cls_user();
             switch (e.KeyCode)
             {
@@ -773,8 +765,6 @@ namespace ETech
 
                             fncHardware.void_transaction(temp_tran);
                             fncHardware.print_receipt(temp_tran, false, true);
-
-                            posdclass.void_transaction_posd(temp_tran);
                         }
                     }
                     frmposmainext.AfterTran();
@@ -1006,21 +996,6 @@ namespace ETech
                     refresh_productlist_data(tran);
                     //frmposmainext.UpdateDGV(tran);
                     isdetected = true; break;
-                case Keys.F10: if (btnF10.Enabled == false) return true; //switch package
-                    tran = this.get_curtrans();
-                    if (tran == null) return true;
-
-                    int f10row_index = this.ctrlproductgridview.get_currentrow().Index;
-                    cls_product f10prod = tran.get_productlist().get_product(f10row_index);
-                    int retail_package = f10prod.getRetail_or_pack();
-                    if (retail_package == 0 && f10prod.getIsPackage())
-                        tran.get_productlist().set_retail_or_package(f10row_index, 1);
-                    else if (retail_package == 1)
-                        tran.get_productlist().set_retail_or_package(f10row_index, 0);
-
-                    refresh_productlist_data(tran);
-                    e.Handled = true;
-                    isdetected = true; break;
                 case Keys.F11: if (btnF11.Enabled == false) return true; //product adjust or discount
                     tran = this.get_curtrans();
 
@@ -1145,111 +1120,34 @@ namespace ETech
                                 MessageBox.Show("Please Void Current Transaction First! (F6 - Void)");
                                 break;
                             }
-                            if (cls_globalvariables.posdautoswitch_v == "1")
+                            frmInventory invform = new frmInventory();
+                            invform.cur_permissions = this.cur_cashier.getpermission();
+                            invform.ShowDialog();
+                            string inv_cmd = invform.commandentered;
+                            DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
+                            DateTime datetimeTO_d = zreadFunc.getZreadDate(invform.datetimeTO_d);
+                            switch (inv_cmd)
                             {
-                                frmInventory_posd invform_posd = new frmInventory_posd();
-                                invform_posd.cur_permissions = this.cur_cashier.getpermission();
-                                invform_posd.ShowDialog();
-                                string invposd_cmd = invform_posd.commandentered;
-                                DateTime datetime_posd_d = zreadFunc.getZreadDate(invform_posd.datetime_d);
-                                DateTime datetimeTO_posd_d = zreadFunc.getZreadDate(invform_posd.datetimeTO_d);
-                                switch (invposd_cmd)
-                                {
-                                    case "F1": posdclass.print_reading_posd(datetime_posd_d, 1, cur_cashier.getwid()); break;
-                                    case "F2":
-                                        Print_Date_Ranged_Zreadposd(datetime_posd_d, datetimeTO_posd_d);
-                                        break;
-                                    case "H":
-                                        if (cls_globalvariables.posddisableswitch_v == "1")
-                                            break;
-                                        frmInventory invform = new frmInventory();
-                                        invform.cur_permissions = this.cur_cashier.getpermission();
-                                        invform.ShowDialog();
-                                        string inv_cmd = invform.commandentered;
-                                        DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
-                                        DateTime datetimeTO_d = zreadFunc.getZreadDate(invform.datetimeTO_d);
-                                        switch (inv_cmd)
-                                        {
-                                            case "F1":
-                                                LOGS.LOG_PRINT("[F1] Open Drawer");
-                                                RawPrinterHelper.OpenCashDrawer(false);
-                                                frmCashDenomination cashcheckform = new frmCashDenomination();
-                                                cashcheckform.cash_bills = new cls_bills();
-                                                cashcheckform.ShowDialog();
-                                                cls_bills end_bills = cashcheckform.cash_bills;
-                                                end_bills.set_type(3);
-                                                end_bills.save_cashdenomination(this.cur_cashier);
+                                case "F1":
+                                    LOGS.LOG_PRINT("[F1] Open Drawer");
 
-                                                LOGS.LOG_PRINT("[F1] Print X-Reading: " + datetime_d.ToString());
-                                                fncHardware.print_xread(datetime_d, cur_cashier.getwid());
-                                                break;
-                                            case "F2":
-                                                LOGS.LOG_PRINT("[F2] Print Z-Reading: " + datetime_d.ToString());
-                                                Print_Date_Ranged_Zread(datetime_d, datetimeTO_d);
-                                                break;
-                                            case "none": break;
-                                        }
-                                        break;
-                                    case "none": break;
-                                }
-                            }
-                            else
-                            {
-                                frmInventory invform = new frmInventory();
-                                invform.cur_permissions = this.cur_cashier.getpermission();
-                                invform.ShowDialog();
-                                string inv_cmd = invform.commandentered;
-                                DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
-                                DateTime datetimeTO_d = zreadFunc.getZreadDate(invform.datetimeTO_d);
-                                switch (inv_cmd)
-                                {
-                                    case "F1":
-                                        LOGS.LOG_PRINT("[F1] Open Drawer");
+                                    RawPrinterHelper.OpenCashDrawer(false);
 
-                                        RawPrinterHelper.OpenCashDrawer(false);
+                                    frmCashDenomination cashcheckform = new frmCashDenomination();
+                                    cashcheckform.cash_bills = new cls_bills();
+                                    cashcheckform.ShowDialog();
+                                    cls_bills end_bills = cashcheckform.cash_bills;
+                                    end_bills.set_type(3);
+                                    end_bills.save_cashdenomination(this.cur_cashier);
 
-                                        frmCashDenomination cashcheckform = new frmCashDenomination();
-                                        cashcheckform.cash_bills = new cls_bills();
-                                        cashcheckform.ShowDialog();
-                                        cls_bills end_bills = cashcheckform.cash_bills;
-                                        end_bills.set_type(3);
-                                        end_bills.save_cashdenomination(this.cur_cashier);
-
-                                        LOGS.LOG_PRINT("[F1] Print X-Reading: " + datetime_d.ToString());
-                                        fncHardware.print_xread(datetime_d, cur_cashier.getwid());
-                                        break;
-                                    case "F2":
-                                        LOGS.LOG_PRINT("[F2] Print Z-Reading: " + datetime_d.ToString());
-                                        Print_Date_Ranged_Zread(datetime_d, datetimeTO_d);
-                                        break;
-                                    case "F4":
-                                        if (cls_globalvariables.TermAcct_v == "1")
-                                        {
-                                            LOGS.LOG_PRINT("[F4] Print Terminal Accountability");
-                                            fncHardware.print_zread(1, datetime_d, datetimeTO_d, 0);
-                                        }
-                                        break;
-                                    case "H":
-                                        if (cls_globalvariables.posddisableswitch_v == "1")
-                                            break;
-                                        frmInventory_posd invform_posd = new frmInventory_posd();
-                                        invform_posd.cur_permissions = this.cur_cashier.getpermission();
-                                        invform_posd.ShowDialog();
-                                        string invposd_cmd = invform_posd.commandentered;
-                                        DateTime datetime_posd_d = zreadFunc.getZreadDate(invform_posd.datetime_d);
-                                        DateTime datetimeTO_posd_d = zreadFunc.getZreadDate(invform_posd.datetimeTO_d);
-                                        Console.WriteLine(datetime_posd_d.ToString("MM/dd/yyyy HH:mm:ss"));
-                                        switch (invposd_cmd)
-                                        {
-                                            case "F1": posdclass.print_reading_posd(datetime_posd_d, 1, cur_cashier.getwid()); break;
-                                            case "F2":
-                                                Print_Date_Ranged_Zreadposd(datetime_posd_d, datetimeTO_posd_d);
-                                                break;
-                                            case "none": break;
-                                        }
-                                        break;
-                                    case "none": break;
-                                }
+                                    LOGS.LOG_PRINT("[F1] Print X-Reading: " + datetime_d.ToString());
+                                    fncHardware.print_xread(datetime_d, cur_cashier.getwid());
+                                    break;
+                                case "F2":
+                                    LOGS.LOG_PRINT("[F2] Print Z-Reading: " + datetime_d.ToString());
+                                    Print_Date_Ranged_Zread(datetime_d, datetimeTO_d);
+                                    break;
+                                case "none": break;
                             }
                             break;
                         case "F2": //open drawer
@@ -1484,10 +1382,6 @@ namespace ETech
                             frmSetting settingform = new frmSetting();
                             settingform.ShowDialog();
                             break;
-                        case "0":
-                            frmSetting2 settingform2 = new frmSetting2();
-                            settingform2.ShowDialog();
-                            break;
                         case "L":
                             LOGS.LOG_PRINT("[L] Discount Lists");
                             tran = this.get_curtrans();
@@ -1510,15 +1404,6 @@ namespace ETech
                             tran.setchecker(loggedsalesman.salesman);
 
                             isdetected = true;
-                            break;
-                        case "Y":
-                            frmReadingSummary readSummary = new frmReadingSummary();
-                            readSummary.ShowDialog();
-                            string readSummary_reply = readSummary.commandentered;
-                            if (readSummary_reply == "print")
-                            {
-                                posdclass.print_reading_summary(readSummary.datetime_from_d, readSummary.datetime_to_d);
-                            }
                             break;
                         case "H":
                             tran = this.get_curtrans();
@@ -1831,11 +1716,6 @@ namespace ETech
         {
             mySQLClass sqlclass = new mySQLClass();
             int x = sqlclass.save_transaction(tran);
-            if (x == 0)
-            {
-                cls_posd posdclass = new cls_posd();
-                posdclass.save_transaction_posd(tran);
-            }
             return x;
         }
         private void tmrCheckPosdSettingTicked()
@@ -1845,18 +1725,7 @@ namespace ETech
                 var dic = File.ReadAllLines(cls_globalvariables.settingspath)
                          .Select(l => l.Split(new[] { '=' }))
                          .ToDictionary(s => s[0].Trim(), s => s[1].Trim());
-                try
-                {
-                    cls_globalvariables.posd_percent_v = Convert.ToInt32(dic["posdpercent"]);
-                    cls_globalvariables.posdminamt_v = Convert.ToInt32(dic["posdminamt"]);
-                    cls_globalvariables.posdmaxamt_v = Convert.ToInt32(dic["posdmaxamt"]);
-                }
-                catch
-                {
-                    cls_globalvariables.posd_percent_v = 100;
-                    cls_globalvariables.posdminamt_v = 0;
-                    cls_globalvariables.posdmaxamt_v = 0;
-                }
+
                 try { cls_globalvariables.posdautoxz_v = dic["posdautoxz"]; }
                 catch { cls_globalvariables.posdautoxz_v = "0"; }
                 try { cls_globalvariables.posdautoswitch_v = dic["posdautoswitch"]; }
@@ -1865,37 +1734,8 @@ namespace ETech
                 catch { cls_globalvariables.xzdesign_unite_v = "0"; }
                 try { cls_globalvariables.hide_reprintreceipt_v = dic["hide_reprintreceipt"]; }
                 catch { cls_globalvariables.hide_reprintreceipt_v = "0"; }
-                try { cls_globalvariables.enableprintposdsummary_v = dic["enableprintposdsummary"]; }
-                catch { cls_globalvariables.enableprintposdsummary_v = "0"; }
                 try { cls_globalvariables.posdreceiptautoswitch_v = dic["posdreceiptautoswitch"]; }
                 catch { cls_globalvariables.posdreceiptautoswitch_v = "0"; }
-            }
-            catch
-            {
-            }
-            set_app_name();
-        }
-        private void set_app_name()
-        {
-            string posd_settings = cls_globalvariables.posd_percent_v + "." + cls_globalvariables.posdminamt_v;
-            try
-            {
-                var dic = File.ReadAllLines("posdcode.txt")
-                         .Select(l => l.Split(new[] { '=' }))
-                         .ToDictionary(s => s[0].Trim(), s => s[1].Trim());
-
-                StringBuilder sb_posd_settings = new StringBuilder(posd_settings);
-                for (int i = 0; i < sb_posd_settings.Length; i++)
-                {
-                    string replacedvalue = dic[sb_posd_settings[i].ToString()].ToString();
-
-                    sb_posd_settings.Remove(i, 1);
-                    sb_posd_settings.Insert(i, replacedvalue);
-
-                    i += replacedvalue.Length - 1;
-                }
-
-                this.Text = cls_globalvariables.posname_v + " Version " + cls_globalvariables.version_v + sb_posd_settings.ToString() + " " + cls_globalvariables.Serial_v;
             }
             catch
             {
@@ -1914,7 +1754,7 @@ namespace ETech
                 FROM
                     `saleshead`
                 WHERE
-                    `branchid` = " + cls_globalvariables.branchid_v + @" AND
+                    `branchid` = " + cls_globalvariables.BranchCode + @" AND
                     `terminalno` = " + cls_globalvariables.terminalno_v;
             DataTable x = mySQLFunc.getdb(SQLSelect);
 
@@ -1933,7 +1773,7 @@ namespace ETech
                     saleshead 
                 WHERE
                     `status`=0 AND `show`=0 AND 
-                    `branchid` = " + cls_globalvariables.branchid_v + @" AND
+                    `branchid` = " + cls_globalvariables.BranchCode + @" AND
                     `terminalno` = " + cls_globalvariables.terminalno_v + @" AND 
                     `wid` = '" + tran.getWid() + @"'
                 ORDER BY `id` DESC
@@ -1941,23 +1781,7 @@ namespace ETech
             mySQLFunc.setdb(SQLDelete);
             LOGS.LOG_PRINT("DELETED1 in saleshead or = " + tran.getORnumber());
         }
-        public void Print_Date_Ranged_Zreadposd(DateTime datefrom, DateTime dateto)
-        {
-            cls_posd posdclass = new cls_posd();
-            if (cls_globalvariables.readDateRange_v == 2)
-            {
-                DateTime datetimeToZread = datefrom;
-                while (datetimeToZread.Date <= dateto.Date)
-                {
-                    posdclass.print_reading_posd(datetimeToZread, 3, 0);
-                    datetimeToZread = datetimeToZread.AddDays(1);
-                }
-            }
-            else
-            {
-                posdclass.print_reading_posd(datefrom, 3, cur_cashier.getwid());
-            }
-        }
+
         public void Print_Date_Ranged_Zread(DateTime datefrom, DateTime dateto)
         {
             if (cls_globalvariables.readDateRange_v == 2)
