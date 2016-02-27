@@ -245,12 +245,6 @@ namespace ETech
         }
         public void frmPayment_Load(object sender, EventArgs e)
         {
-            if (cls_globalvariables.posdautoxz_v == "1")
-            {
-                btnCustomPayment.Visible = false;
-                lblCustomAmt_d.Visible = false;
-            }
-
             decimal cash_d = this.paymentdata.get_cash();
             decimal points_d = this.paymentdata.get_points();
 

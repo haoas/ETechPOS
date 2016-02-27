@@ -13,7 +13,6 @@ namespace ETech.cls
         private List<cls_cardinfo> debitcard;
         private List<cls_otherpaymentinfo> giftchequenew;
         private List<cls_giftchequeinfo> giftcheque;
-        private List<cls_bankcheque> bankcheque;
         private List<cls_CustomPaymentsInfo> list_custompayment;
         private decimal cash;
         private decimal dept;
@@ -26,7 +25,6 @@ namespace ETech.cls
             this.debitcard = new List<cls_cardinfo>();
             this.giftchequenew = new List<cls_otherpaymentinfo>();
             this.giftcheque = new List<cls_giftchequeinfo>();
-            this.bankcheque = new List<cls_bankcheque>();
             this.list_custompayment = new List<cls_CustomPaymentsInfo>();
             this.cash = 0;
             this.dept = 0;
@@ -34,15 +32,12 @@ namespace ETech.cls
             this.memo = "";
         }
 
-        public cls_payment(int salesheadwid, bool is_posd)
+        public cls_payment(int salesheadwid)
         {
-            string posdsuffix = is_posd ? "_posd" : "";
-
             this.creditcard = new List<cls_cardinfo>();
             this.debitcard = new List<cls_cardinfo>();
             this.giftchequenew = new List<cls_otherpaymentinfo>();
             this.giftcheque = new List<cls_giftchequeinfo>();
-            this.bankcheque = new List<cls_bankcheque>();
             this.list_custompayment = new List<cls_CustomPaymentsInfo>();
             this.cash = 0;
             this.dept = 0;
@@ -50,8 +45,8 @@ namespace ETech.cls
             this.memo = "";
 
             string sSQL = @"SELECT D.*,H.`memo` 
-                    FROM `collectionhead" + posdsuffix + @"` AS H, `collectionsales" + posdsuffix + @"` AS S, 
-                        `collectiondetail" + posdsuffix + @"` AS D 
+                    FROM `collectionhead` AS H, `collectionsales` AS S, 
+                        `collectiondetail` AS D 
                     WHERE H.`wid` = S.`headid` AND H.`wid` = D.`headid` 
 	                   AND S.`saleswid` = " + salesheadwid;
             DataTable dt = mySQLFunc.getdb(sSQL);
@@ -68,14 +63,11 @@ namespace ETech.cls
                         if (amt > 0)
                             this.cash += amt;
                         break;
-                    case 2:
-                        this.bankcheque.Add(new cls_bankcheque(dwid, is_posd));
-                        break;
                     case 5:
-                        this.creditcard.Add(new cls_cardinfo(dwid, 0, is_posd));
+                        this.creditcard.Add(new cls_cardinfo(dwid, 0));
                         break;
                     case 6:
-                        this.debitcard.Add(new cls_cardinfo(dwid, 1, is_posd));
+                        this.debitcard.Add(new cls_cardinfo(dwid, 1));
                         break;
                     case 7:
                         this.giftcheque.Add(new cls_giftchequeinfo(dwid));
@@ -121,11 +113,6 @@ namespace ETech.cls
             this.giftcheque = giftcheque_d;
         }
 
-        public void set_bankcheque(List<cls_bankcheque> bankcheque_d)
-        {
-            this.bankcheque = bankcheque_d;
-        }
-
         public void set_cash(decimal cash_d)
         {
             this.cash = cash_d;
@@ -151,7 +138,6 @@ namespace ETech.cls
         public List<cls_cardinfo> get_debitcard() { return this.debitcard; }
         public List<cls_otherpaymentinfo> get_giftchequenew() { return this.giftchequenew; }
         public List<cls_giftchequeinfo> get_giftcheque() { return this.giftcheque; }
-        public List<cls_bankcheque> get_bankcheque() { return this.bankcheque; }
         public List<cls_CustomPaymentsInfo> get_custompayments() { return this.list_custompayment; }
         public decimal get_cash() { return this.cash; }
         public decimal get_dept() { return this.dept; }
@@ -197,16 +183,6 @@ namespace ETech.cls
             return amt;
         }
 
-        public decimal get_bankchequeamount()
-        {
-            decimal amt = 0;
-            foreach (cls_bankcheque bcheck in this.bankcheque)
-            {
-                amt += bcheck.getamount();
-            }
-            return amt;
-        }
-
         public decimal get_custompaymentamount()
         {
             decimal amt = 0;
@@ -223,7 +199,6 @@ namespace ETech.cls
                     this.get_debitamount() +
                     this.get_giftchequenewamount() +
                     this.get_giftchequeamount() +
-                    this.get_bankchequeamount() +
                     this.get_custompaymentamount() +
                     this.get_cash() +
                     this.get_points();
@@ -236,7 +211,6 @@ namespace ETech.cls
             payment_clone.set_debitcard(this.debitcard.Select(i => i.ShallowCopy()).ToList());
             payment_clone.set_giftchequenew(this.giftchequenew.Select(i => i.ShallowCopy()).ToList());
             payment_clone.set_giftcheque(this.giftcheque.Select(i => i.ShallowCopy()).ToList());
-            payment_clone.set_bankcheque(this.bankcheque.Select(i => i.ShallowCopy()).ToList());
             payment_clone.set_custompayments(this.list_custompayment.Select(i => i.ShallowCopy()).ToList());
             return payment_clone;
         }

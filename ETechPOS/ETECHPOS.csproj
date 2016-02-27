@@ -59,7 +59,6 @@
     <Compile Include="cls\cls_creditCardParser.cs" />
     <Compile Include="cls\cls_CustomPaymentsInfo.cs" />
     <Compile Include="cls\cls_discount.cs" />
-    <Compile Include="cls\cls_bankcheque.cs" />
     <Compile Include="cls\cls_bills.cs" />
     <Compile Include="cls\cls_cardinfo.cs" />
     <Compile Include="cls\cls_customer.cs" />

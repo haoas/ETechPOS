@@ -15,7 +15,6 @@ namespace ETech
     {
         public string or_number;
         public string currenttrans_ornumber;
-        public bool is_switch_posd;
         public List<int> cur_permissions;
         public frmPermissionCode frmpermcode;
 
@@ -29,8 +28,6 @@ namespace ETech
 
             this.or_number = "";
             this.cur_permissions = new List<int>();
-            this.is_switch_posd = (cls_globalvariables.posdreceiptautoswitch_v == "1");
-            this.Text = this.is_switch_posd ? "Reprint Receipt" : "Reprint Receipt_";
         }
 
         public void btnOK_Click(object sender, EventArgs e)
@@ -49,12 +46,6 @@ namespace ETech
                 done_process();
             else if (e.KeyCode == Keys.H)
             {
-                if (cls_globalvariables.posddisableswitch_v == "1")
-                    return;
-                if (Check_ReprintReceiptPermission(true))
-                {
-                    ChangePosd();
-                }
                 e.Handled = true;
             }
             else if (e.KeyCode == Keys.Escape)
@@ -142,38 +133,16 @@ namespace ETech
             }
         }
 
-        private void ChangePosd()
-        {
-            this.or_number = "";
-            this.is_switch_posd = !this.is_switch_posd;
-            this.Text = this.is_switch_posd ? "Reprint Receipt" : "Reprint Receipt_";
-        }
-
         private bool Check_ReprintReceiptPermission(bool isSwitch)
         {
-            if (isSwitch ? !this.is_switch_posd : this.is_switch_posd)
-            {
-                bool permcheck_reprintreceipt_posd = false;
-                if (fncFilter.check_permission_reprint_posd(this.cur_permissions))
-                    permcheck_reprintreceipt_posd = true;
-                else
-                {
-                    permcheck_reprintreceipt_posd = isInput_permission_code(fncFilter.get_permission_reprint_posd());
-                }
-
-                return permcheck_reprintreceipt_posd;
-            }
+            bool permcheck_reprintreceipt = false;
+            if (fncFilter.check_permission_reprint(this.cur_permissions))
+                permcheck_reprintreceipt = true;
             else
             {
-                bool permcheck_reprintreceipt = false;
-                if (fncFilter.check_permission_reprint(this.cur_permissions))
-                    permcheck_reprintreceipt = true;
-                else
-                {
-                    permcheck_reprintreceipt = isInput_permission_code(fncFilter.get_permission_reprint());
-                }
-                return permcheck_reprintreceipt;
+                permcheck_reprintreceipt = isInput_permission_code(fncFilter.get_permission_reprint());
             }
+            return permcheck_reprintreceipt;
         }
     }
 }

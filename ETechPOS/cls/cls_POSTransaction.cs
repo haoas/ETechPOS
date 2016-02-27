@@ -142,12 +142,11 @@ namespace ETech.cls
             return (change > 0) ? change : 0;
         }
 
-        public void set_transaction_by_wid(int wid, bool is_history, bool is_posd)
+        public void set_transaction_by_wid(int wid, bool is_history)
         {
             this.wid = wid;
-            string posdsuffix = is_posd ? "_posd" : "";
 
-            string sSQL = "SELECT * FROM `saleshead" + posdsuffix + @"` WHERE `wid` = " + wid;
+            string sSQL = "SELECT * FROM `saleshead` WHERE `wid` = " + wid;
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {
@@ -171,10 +170,10 @@ namespace ETech.cls
             this.checker = new cls_user(Convert.ToInt32(dr["checkerid"]), is_history);
             this.customer = new cls_customer(Convert.ToInt32(dr["customerid"]), is_history);
             this.member = new cls_member(Convert.ToInt32(dr["memberid"]), is_history);
-            this.payments = new cls_payment(wid, is_posd);
+            this.payments = new cls_payment(wid);
 
             this.productlist = new cls_productlist();
-            this.productlist.set_productlist_by_wid(wid, is_history, is_posd);
+            this.productlist.set_productlist_by_wid(wid, is_history);
 
             //--------------------------------------------------------
             //get discounts
@@ -230,13 +229,10 @@ namespace ETech.cls
 
         }
 
-        public void set_transaction_by_ornumber(string or_num, bool is_posd)
+        public void set_transaction_by_ornumber(string or_num)
         {
-            //used only for reprint or void
-            string posdsuffix = is_posd ? "_posd" : "";
-
             //get wid by or number
-            string sSQL = @"SELECT `wid` FROM `saleshead" + posdsuffix + @"`
+            string sSQL = @"SELECT `wid` FROM `saleshead`
                             WHERE `ornumber` = '" + or_num.Replace("'", "''") + @"'
                             ORDER BY `id` DESC LIMIT 1";
             Console.WriteLine(sSQL);
@@ -248,7 +244,7 @@ namespace ETech.cls
             }
 
             int wid_d = Convert.ToInt32(dt.Rows[0]["wid"]);
-            set_transaction_by_wid(wid_d, true, is_posd);
+            set_transaction_by_wid(wid_d, true);
         }
 
         public decimal get_memberpoint_earn()

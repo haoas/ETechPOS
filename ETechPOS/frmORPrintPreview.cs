@@ -19,7 +19,6 @@ namespace ETech
     {
         public string or_number;
         public string currenttrans_ornumber;
-        public bool is_switch_posd;
         public List<int> cur_permissions;
         public frmPermissionCode frmpermcode;
         public int origwidth = 296;
@@ -36,8 +35,6 @@ namespace ETech
 
             this.or_number = "";
             this.cur_permissions = new List<int>();
-            this.is_switch_posd = (cls_globalvariables.posdreceiptautoswitch_v == "1");
-            this.Text = this.is_switch_posd ? "Reprint Receipt" : "Reprint Receipt_";
 
             pbPreview.Width = origwidth;
             pbPreview.Height = origheight;
@@ -115,7 +112,6 @@ namespace ETech
         }
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            LOGS.LOG_PRINT("isposd: " + this.is_switch_posd);
             done_process();
         }
         private void btnESC_Click(object sender, EventArgs e)
@@ -146,12 +142,7 @@ namespace ETech
 
             this.Close();
         }
-        private void ChangePosd()
-        {
-            this.or_number = "";
-            this.is_switch_posd = !this.is_switch_posd;
-            this.Text = this.is_switch_posd ? "Reprint Receipt" : "Reprint Receipt_";
-        }
+
         private void LoadReceipt(string or_num)
         {
             or_num = or_num.Trim().Replace("/", "");
@@ -162,7 +153,7 @@ namespace ETech
                 return;
             }
             cls_POSTransaction temp_tran = new cls_POSTransaction();
-            temp_tran.set_transaction_by_ornumber(or_num, is_switch_posd);
+            temp_tran.set_transaction_by_ornumber(or_num);
 
             if (((temp_tran.getShow() == 0) && (temp_tran.getStatus() == 0)) ||
                 (temp_tran.getWid() == 0))
@@ -204,29 +195,14 @@ namespace ETech
         }
         private bool Check_ReprintReceiptPermission(bool isSwitch)
         {
-            if (isSwitch ? !this.is_switch_posd : this.is_switch_posd)
-            {
-                bool permcheck_reprintreceipt_posd = false;
-                if (fncFilter.check_permission_reprint_posd(this.cur_permissions))
-                    permcheck_reprintreceipt_posd = true;
-                else
-                {
-                    permcheck_reprintreceipt_posd = isInput_permission_code(fncFilter.get_permission_reprint_posd());
-                }
-
-                return permcheck_reprintreceipt_posd;
-            }
+            bool permcheck_reprintreceipt = false;
+            if (fncFilter.check_permission_reprint(this.cur_permissions))
+                permcheck_reprintreceipt = true;
             else
             {
-                bool permcheck_reprintreceipt = false;
-                if (fncFilter.check_permission_reprint(this.cur_permissions))
-                    permcheck_reprintreceipt = true;
-                else
-                {
-                    permcheck_reprintreceipt = isInput_permission_code(fncFilter.get_permission_reprint());
-                }
-                return permcheck_reprintreceipt;
+                permcheck_reprintreceipt = isInput_permission_code(fncFilter.get_permission_reprint());
             }
+            return permcheck_reprintreceipt;
         }
         private void ClearGraphics(Control control)
         {

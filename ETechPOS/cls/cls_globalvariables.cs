@@ -244,20 +244,6 @@ namespace ETech.cls
             set { avoidinvalidpprice = value; }
         }
 
-        private static string posdautoxz = "";
-        public static string posdautoxz_v
-        {
-            get { return posdautoxz; }
-            set { posdautoxz = value; }
-        }
-
-        private static string posdautoswitch = "";
-        public static string posdautoswitch_v
-        {
-            get { return posdautoswitch; }
-            set { posdautoswitch = value; }
-        }
-
         private static string print_receipt_format = "";
         public static string print_receipt_format_v
         {
@@ -326,20 +312,6 @@ namespace ETech.cls
         {
             get { return showdetailCCinZRead; }
             set { showdetailCCinZRead = value; }
-        }
-
-        private static string posddisableswitch = "0";
-        public static string posddisableswitch_v
-        {
-            get { return posddisableswitch; }
-            set { posddisableswitch = value; }
-        }
-
-        private static string posdreceiptautoswitch = "";
-        public static string posdreceiptautoswitch_v
-        {
-            get { return posdreceiptautoswitch; }
-            set { posdreceiptautoswitch = value; }
         }
 
         private static string testpassword = "";

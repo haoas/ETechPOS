@@ -455,7 +455,6 @@ namespace ETech
             List<cls_cardinfo> debitcards = trans.getpayments().get_debitcard();
             List<cls_otherpaymentinfo> giftchequesnew = trans.getpayments().get_giftchequenew();
             List<cls_giftchequeinfo> giftcheques = trans.getpayments().get_giftcheque();
-            List<cls_bankcheque> bankcheques = trans.getpayments().get_bankcheque();
             List<cls_CustomPaymentsInfo> custompaymentsinfo = trans.getpayments().get_custompayments();
             string sSQLcd = "";
             List<string> tempStringList = new List<string>();
@@ -816,41 +815,6 @@ namespace ETech
                                 `method` = 7, 
                                 `amount` = " + unusedgiftchequeamt + @"
                            WHERE `wid` = @wid_d";
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-            }
-
-            foreach (cls_bankcheque bankcheque in bankcheques)
-            {
-
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
-                foreach (string str in tempStringList)
-                    transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
-                                `headid` = @collectionheadwid,
-                                `method` = 2,
-                                `amount` = " + bankcheque.getamount() + @"
-                           WHERE `wid` = @wid_d";
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-                transactionQueryList.Add("SET @collectiondetailwid = @wid_d");
-
-                tempStringList = get_next_wid_withlock_liststring(tbl_receivecheck);
-                foreach (string str in tempStringList)
-                    transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_receivecheck + @"` SET
-                            `reference` = '1', 
-                            `referenceno` = @collectiondetailwid, 
-                            `checkno` = '" + bankcheque.getchequeno() + @"', 
-                            `checkbank` = '" + escapeString(bankcheque.getbank()) + @"', 
-                            `checkdate` = '" + bankcheque.getchequedate().ToString("yyyy-MM-dd") + @"', 
-                            `status` = '1',
-                            `amount` = '" + bankcheque.getamount() + @"', 
-                            `receivedate` = NOW(), 
-                            `istransfer` = '0'
-                           WHERE `wid` = @wid_d";
-
-                //Console.WriteLine(sSQLcd);
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
             }

@@ -64,10 +64,6 @@ namespace ETech
                 catch { cls_globalvariables.posname_v = "ETECH POS SYSTEM"; }
                 try { cls_globalvariables.avoidinvalidpprice_v = dic["avoidinvalidpprice"]; }
                 catch { cls_globalvariables.avoidinvalidpprice_v = "0"; }
-                try { cls_globalvariables.posdautoxz_v = dic["posdautoxz"]; }
-                catch { cls_globalvariables.posdautoxz_v = "0"; }
-                try { cls_globalvariables.posdautoswitch_v = dic["posdautoswitch"]; }
-                catch { cls_globalvariables.posdautoswitch_v = "0"; }
                 try { cls_globalvariables.print_receipt_format_v = dic["print_receipt_format"]; }
                 catch { cls_globalvariables.print_receipt_format_v = ""; }
                 try { cls_globalvariables.xzdesign_unite_v = dic["xzdesign_unite"]; }
@@ -82,10 +78,6 @@ namespace ETech
                 catch { cls_globalvariables.showdetailCCinZRead_v = "0"; }
                 try { cls_globalvariables.readDateRange_v = Convert.ToInt16(dic["readDateRange"]); }
                 catch { cls_globalvariables.readDateRange_v = 1; }
-                try { cls_globalvariables.posdreceiptautoswitch_v = dic["posdreceiptautoswitch"]; }
-                catch { cls_globalvariables.posdreceiptautoswitch_v = "0"; }
-                try { cls_globalvariables.posddisableswitch_v = dic["posddisableswitch"]; }
-                catch { cls_globalvariables.posddisableswitch_v = "0"; }
                 try { cls_globalvariables.prodsearchstyle_v = dic["prodsearchstyle"]; }
                 catch { cls_globalvariables.prodsearchstyle_v = "0"; }
                 try { cls_globalvariables.CustomerDisplayLength_v = int.Parse(dic["CustomerDisplayLength"]); }

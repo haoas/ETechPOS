@@ -27,23 +27,21 @@ namespace ETech.cls
             this.approvalcode = "";
         }
 
-        public cls_cardinfo(int wid_d, int type_d, bool is_posd)
+        public cls_cardinfo(int wid_d, int type_d)
         {
-            string posdsuffix = is_posd ? "_posd" : "";
-
             this.name = "";
             this.cardno = "";
             this.cardname = "";
             this.expdate = new DateTime();
             this.amount = 0;
 
-            string SQLcardno = @"SELECT * FROM `poscardpayment" + posdsuffix + @"` 
+            string SQLcardno = @"SELECT * FROM `poscardpayment` 
                             WHERE `type` = " + type_d + " AND `collectiondetailid` = " + wid_d;
             string cardno = mySQLFunc.getdb(SQLcardno).Rows[0]["cardno"].ToString();
 
             string sSQL = @"SELECT *,
                      '" + cls_globalfunc.getcardname(cardno) + @"' as cardtype
-                     FROM `poscardpayment" + posdsuffix + @"` 
+                     FROM `poscardpayment` 
                      WHERE `type` = " + type_d + " AND `collectiondetailid` = " + wid_d;
             Console.WriteLine(sSQL);
             DataTable dt = mySQLFunc.getdb(sSQL);

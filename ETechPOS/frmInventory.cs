@@ -109,11 +109,6 @@ namespace ETech
                 case Keys.F4:
                     F4();
                     break;
-                case Keys.H:
-                    if (cls_globalvariables.posddisableswitch_v == "1")
-                        break;
-                    H();
-                    break;
                 case Keys.D:
                     if (cls_globalvariables.readDateRange_v == 1)
                         this.Size = new Size(this.Width, (int)(this.Height * 1.5));

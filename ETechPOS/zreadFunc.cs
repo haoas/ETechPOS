@@ -360,12 +360,11 @@ public static class zreadFunc
 
     public static decimal get_newgrandtotal_from_posxyzread(DateTime datetime_d, int readtype, bool isposd)
     {
-        string suffix = (isposd || (cls_globalvariables.posdautoxz_v == "1")) ? "_posd" : "";
         string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
 
         string sql = @"SELECT COALESCE(`newgrandtotal`,0) as 'newgrandtotal'
-                FROM `posxyzread" + suffix + @"`
+                FROM `posxyzread`
                 WHERE `branchid` = " + branchid + @" 
                     AND `terminalno` = " + terminalno + @"
                     AND `readtype` = " + readtype +

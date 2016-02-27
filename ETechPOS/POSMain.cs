@@ -742,7 +742,7 @@ namespace ETech
                             }
 
                             cls_POSTransaction temp_tran = new cls_POSTransaction();
-                            temp_tran.set_transaction_by_ornumber(or_num, false);
+                            temp_tran.set_transaction_by_ornumber(or_num);
                             temp_tran.set_permissiongiver(permissiongiver);
                             if (temp_tran.getWid() == 0)
                             {
@@ -1157,9 +1157,6 @@ namespace ETech
 
                             break;
                         case "F3":
-                            if (cls_globalvariables.posdautoxz_v == "1")
-                                break;
-
                             tran = this.get_curtrans();
                             if (tran != null)
                             {
@@ -1207,10 +1204,10 @@ namespace ETech
                                     return;
 
                                 cls_POSTransaction temp_tran = new cls_POSTransaction();
-                                temp_tran.set_transaction_by_ornumber(or_num, reprintfrm.is_switch_posd);
+                                temp_tran.set_transaction_by_ornumber(or_num);
 
-                                if ((reprintfrm.is_switch_posd) && (temp_tran.getWid() == 0))
-                                    temp_tran.set_transaction_by_ornumber(or_num, false);
+                                if (temp_tran.getWid() == 0)
+                                    temp_tran.set_transaction_by_ornumber(or_num);
 
                                 if (temp_tran.getWid() == 0)
                                 {
@@ -1726,16 +1723,10 @@ namespace ETech
                          .Select(l => l.Split(new[] { '=' }))
                          .ToDictionary(s => s[0].Trim(), s => s[1].Trim());
 
-                try { cls_globalvariables.posdautoxz_v = dic["posdautoxz"]; }
-                catch { cls_globalvariables.posdautoxz_v = "0"; }
-                try { cls_globalvariables.posdautoswitch_v = dic["posdautoswitch"]; }
-                catch { cls_globalvariables.posdautoswitch_v = "0"; }
                 try { cls_globalvariables.xzdesign_unite_v = dic["xzdesign_unite"]; }
                 catch { cls_globalvariables.xzdesign_unite_v = "0"; }
                 try { cls_globalvariables.hide_reprintreceipt_v = dic["hide_reprintreceipt"]; }
                 catch { cls_globalvariables.hide_reprintreceipt_v = "0"; }
-                try { cls_globalvariables.posdreceiptautoswitch_v = dic["posdreceiptautoswitch"]; }
-                catch { cls_globalvariables.posdreceiptautoswitch_v = "0"; }
             }
             catch
             {

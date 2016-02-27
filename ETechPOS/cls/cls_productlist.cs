@@ -412,12 +412,9 @@ namespace ETech.cls
             this.dtproducts.Rows.RemoveAt(row_index);
         }
 
-        public void set_productlist_by_wid(int wid_d, bool is_history, bool is_posd)
+        public void set_productlist_by_wid(int wid_d, bool is_history)
         {
-            //Only Reprint Receipt uses this
-            string posdsuffix = is_posd ? "_posd" : "";
-
-            string sSQL = "SELECT * FROM `saleshead" + posdsuffix + @"` WHERE `wid` = " + wid_d;
+            string sSQL = "SELECT * FROM `saleshead` WHERE `wid` = " + wid_d;
 
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
@@ -430,7 +427,7 @@ namespace ETech.cls
 
             sSQL = @"SELECT P.`product`, SD.`wid`,SD.`productid`, SD.`quantity`, SD.`bigquantity`, SD.`oprice`, SD.`price` AS 'aprice', 
 	                    SD.`discount1`, SD.`vat`, SD.`soldby` 
-                    FROM `salesdetail" + posdsuffix + @"` AS SD
+                    FROM `salesdetail` AS SD
                     LEFT JOIN `product` AS P
                         ON P.`wid` = SD.`productid`
                     WHERE SD.`headid` = " + wid_d + " ORDER BY SD.`id` ";

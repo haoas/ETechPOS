@@ -17,7 +17,7 @@ namespace ETech
     {
         public bool F1flag = false;
         public string commandentered = "none";
-        
+
         public frmMenu()
         {
             InitializeComponent();
@@ -167,7 +167,7 @@ namespace ETech
                     F5();
                     break;
                 case Keys.F6:
-                    if (F1flag == true)   
+                    if (F1flag == true)
                         F6();
                     break;
                 case Keys.F7:
@@ -206,7 +206,7 @@ namespace ETech
                     break;
                 case Keys.P:
                     if (F1flag == true)
-                        P(); 
+                        P();
                     break;
                 case Keys.L:
                     if (F1flag == true)
@@ -216,13 +216,13 @@ namespace ETech
                     if (F1flag == true)
                         H();
                     break;
-                case Keys.M: 
-                    M(); 
+                case Keys.M:
+                    M();
                     break;
                 case Keys.Escape:
                     Escape();
                     break;
-                default:    
+                default:
                     return;
             }
         }
@@ -320,11 +320,8 @@ namespace ETech
             if (cls_globalvariables.hide_reprintreceipt_v == "1")
                 btnF4.Visible = false;
 
-            if (cls_globalvariables.posdautoxz_v == "0")
-                btnF3.Text = "F3\nOther Readings";
-            else
-                btnF3.Text = "F3\nExit";
-            
+            btnF3.Text = "F3\nExit";
+
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
         }

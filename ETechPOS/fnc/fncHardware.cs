@@ -1804,7 +1804,6 @@ namespace ETech.fnc
             decimal tendered_credit = tran.getpayments().get_creditamount();
             decimal tendered_debit = tran.getpayments().get_debitamount();
             decimal tendered_gift = tran.getpayments().get_giftchequeamount() + tran.getpayments().get_giftchequenewamount();
-            decimal tendered_cheque = tran.getpayments().get_bankchequeamount();
             decimal tendered_mempoints = tran.getpayments().get_points();
             decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
             decimal dept = tran.getpayments().get_dept();
@@ -1851,7 +1850,6 @@ namespace ETech.fnc
                 }
                 cnt_item_t++;
             }
-            if (tendered_cheque != 0) { dt_tendered.Rows.Add("Bank Cheque:", tendered_cheque.ToString("N2")); cnt_item_t++; }
             if (tendered_mempoints != 0) { dt_tendered.Rows.Add("Mem. Pts:", tendered_mempoints.ToString("N2")); cnt_item_t++; }
 
             if (tendered_custompayments != 0 || tran.getpayments().get_custompayments().Count > 0)
@@ -2279,7 +2277,6 @@ namespace ETech.fnc
             decimal tendered_credit = tran.getpayments().get_creditamount();
             decimal tendered_debit = tran.getpayments().get_debitamount();
             decimal tendered_gift = tran.getpayments().get_giftchequeamount() + tran.getpayments().get_giftchequenewamount();
-            decimal tendered_cheque = tran.getpayments().get_bankchequeamount();
             decimal tendered_mempoints = tran.getpayments().get_points();
             decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
             decimal debt = tran.getpayments().get_dept();
@@ -2325,11 +2322,6 @@ namespace ETech.fnc
                     tempDataTable.Rows.Add("    Expiry Date: ", giftcheque.getexpdate().ToString("MM-yyyy"));
                     tempDataTable.Rows.Add("    Memo: ", giftcheque.get_memo().ToString());
                 }
-                cnt_item_t++;
-            }
-            if (tendered_cheque != 0)
-            {
-                tempDataTable.Rows.Add("Bank Cheque:", tendered_cheque.ToString("N2"));
                 cnt_item_t++;
             }
             if (tendered_mempoints != 0)
