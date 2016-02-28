@@ -70,8 +70,7 @@ namespace ETech
 
             this.Trans = new List<cls_POSTransaction>();
             this.ctrlproductgridview = new ctrl_productgrid(this.dgvProduct);
-            this.ctrlpaymentlabel = new ctrl_payment(this.gbTotal, this.gbTendered, this.gbRemaining,
-                                                this.lblTotal, this.lblTendered, this.lblRemaining);
+            this.ctrlpaymentlabel = new ctrl_payment(this.lblTotal, this.lblTendered, this.lblRemaining);
             this.ctrlbtnpanel = new ctrl_btnpanel(btnlist, this);
             this.ctrlOther = new ctrl_otherinfo(this.pnlOtherInfo, this.lblClerk_d, this.lblChecker_d,
                                                 this.lblMode_d, this.lblCustomer_d, this.lblCustomermemo_d,
@@ -1087,10 +1086,8 @@ namespace ETech
                                     cls_bills end_bills = cashcheckform.cash_bills;
                                     end_bills.set_type(3);
                                     end_bills.save_cashdenomination(this.cur_cashier);
-
-                                    LOGS.LOG_PRINT("[F1] Print X-Reading: " + datetime_d.ToString());
-                                    fncHardware.print_xread(datetime_d, cur_cashier.getwid());
                                     break;
+
                                 case "F2":
                                     LOGS.LOG_PRINT("[F2] Print Z-Reading: " + datetime_d.ToString());
                                     Print_Date_Ranged_Zread(datetime_d, datetimeTO_d);
@@ -1470,10 +1467,6 @@ namespace ETech
                 this.ctrlCustDisp.refresh_display_addproduct(row_index == -1 ? -1 : lastaddedrownumber);
                 if (ctrlproductgridview.get_productgrid().Rows.Count == 0)
                     ctrl_CustomerDisplay.initial_display();
-            }
-            else if (mode == 1)
-            {
-                this.ctrlpaymentlabel.mode_amt_display();
             }
 
             cls_POSTransaction tran = this.get_curtrans();

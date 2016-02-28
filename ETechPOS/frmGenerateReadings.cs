@@ -35,8 +35,7 @@ namespace ETech
 
         private void BGW_DoWork(object sender, DoWorkEventArgs e)
         {
-            zreadFunc.generate_ungenerated_readings(3);
-            zreadFunc.generate_ungenerated_readings(1);
+            zreadFunc.generate_ungenerated_readings();
         }
 
         private void BGW_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

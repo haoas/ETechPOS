@@ -147,14 +147,6 @@ namespace ETech.fnc
             mysqlclass.update_synctable("saleshead", tran.getWid());
         }
 
-        public static void print_xread(DateTime datetime_d, int userwid)
-        {
-            PrintDocument pd = new PrintDocument();
-            pd.PrintPage += (sender, e) => { printpage_xread(sender, e, null, datetime_d, userwid); };
-            start_print(pd);
-            RawPrinterHelper.OpenCashDrawer(true);
-        }
-
         public static void print_zread(DateTime datetime_d)
         {
             fncHardware.print_zread(datetime_d, 0);
@@ -420,7 +412,7 @@ namespace ETech.fnc
                 totalcashreceived = endcash + pickupcash - begincash;
                 cashshortover = totalcashreceived - all_cash_sales;
             }
-            decimal old_grand = get_old_grandtotal(type, datetime_d);
+            decimal old_grand = get_old_grandtotal(datetime_d);
 
             decimal cur_total = Convert.ToDecimal(mySQLFunc.getdb(@"SELECT 
                                         COALESCE(SUM(D.`quantity` * D.`price`),0) AS 'total_amount'
@@ -530,175 +522,6 @@ namespace ETech.fnc
             return dt_list;
         }
 
-        private static Graphics printpage_xread(object sender, PrintPageEventArgs e, Bitmap bmp, DateTime datetime_d, int userwid)
-        {
-            string sBranchid = cls_globalvariables.BranchCode;
-            string sBusinessName = cls_globalvariables.BusinessName_v;
-            string sOwner = cls_globalvariables.Owner_v;
-            string sAddress = cls_globalvariables.Address_v;
-            string sTIN = cls_globalvariables.TIN_v;
-            string sACC = cls_globalvariables.ACC_v;
-            string sPermitNo = cls_globalvariables.PermitNo_v;
-            string sMIN = cls_globalvariables.MIN_v;
-            string sSerial = cls_globalvariables.Serial_v;
-            string terminalno = cls_globalvariables.terminalno_v;
-            string cdate = datetime_d.ToString("MM/dd/yyyy");
-            string ctime = datetime_d.ToString("HH:mm:ss");
-
-            DataTable dt_header1 = new DataTable();
-            dt_header1.Columns.Add();
-            dt_header1.Rows.Add(sOwner);
-            dt_header1.Rows.Add(sAddress);
-            dt_header1.Rows.Add(sTIN);
-            dt_header1.Rows.Add(sACC);
-            dt_header1.Rows.Add(sPermitNo);
-            dt_header1.Rows.Add(sSerial);
-            dt_header1.Rows.Add(sMIN);
-
-            string sdate = datetime_d.ToString("yyyy-MM-dd");
-
-            mySQLFunc.setdb(@"DELETE FROM `posxyzread` 
-                                WHERE CAST(`date` AS DATE) = '" + sdate + @"' AND `readtype` = 1
-                                    AND `branchid` = " + sBranchid + @"
-                                    AND `terminalno` = " + terminalno);
-            string readcount = mySQLFunc.getdb(@"SELECT COALESCE(MAX(`readcount`)+1,1) AS 'readcount' 
-                                                FROM `posxyzread`
-                                                WHERE `branchid` = " + sBranchid + @"
-                                                    AND `terminalno` = " + terminalno + @"
-                                                    AND `readtype` = 1
-                                                    AND `date` < '" + sdate + " " + ctime + @"' ").Rows[0]["readcount"].ToString();
-
-            DataTable dt_header2 = new DataTable();
-            dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add();
-            dt_header2.Rows.Add("Date:", cdate + " ", " Time:", ctime);
-
-            DataTable dt_tblheader = new DataTable();
-            dt_tblheader.Columns.Add(); dt_tblheader.Columns.Add();
-            dt_tblheader.Rows.Add("Description", "QTY / AMOUNT");
-
-            List<DataTable> list_dtsummary = get_summary_data(1, datetime_d);
-            zreadFunc.generate_posxyzread(datetime_d, 1);
-
-            cls_bills cash_denom = new cls_bills();
-            cash_denom.get_cashdenomination(new cls_user(), 3);
-
-            DataTable dt_tbldata2 = new DataTable();
-            dt_tbldata2.Columns.Add(); dt_tbldata2.Columns.Add();
-            dt_tbldata2.Columns.Add(); dt_tbldata2.Columns.Add();
-            dt_tbldata2.Rows.Add(cash_denom.getCash_1000().ToString(), "1000 PESOS", (cash_denom.getCash_1000() * 1000).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_500().ToString(), "500 PESOS", (cash_denom.getCash_500() * 500).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_200().ToString(), "200 PESOS", (cash_denom.getCash_200() * 200).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_100().ToString(), "100 PESOS", (cash_denom.getCash_100() * 100).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_50().ToString(), "50 PESOS", (cash_denom.getCash_50() * 50).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_20().ToString(), "20 PESOS", (cash_denom.getCash_20() * 20).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_10().ToString(), "10 PESOS", (cash_denom.getCash_10() * 10).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_5().ToString(), "5 PESOS", (cash_denom.getCash_5() * 5).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_1().ToString(), "1 PESOS", (cash_denom.getCash_1() * 1).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_25c().ToString(), "25 CENTS", (cash_denom.getCash_25c() * 0.25).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_10c().ToString(), "10 CENTS", (cash_denom.getCash_10c() * 0.1).ToString("N2"), " ");
-            dt_tbldata2.Rows.Add(cash_denom.getCash_5c().ToString(), "5 CENTS", (cash_denom.getCash_5c() * 0.05).ToString("N2"), " ");
-
-            Graphics g;
-            if (bmp == null)
-                g = e.Graphics;
-            else
-            {
-                g = Graphics.FromImage(bmp);
-                cls_globalvariables.previewmul = 2;
-            }
-
-            int nY = 0;
-            int nX = 0;
-            int[] column2format = new int[] { 160, 120 };
-            int[] column4_rect_header2 = new int[] { 70, 70, 70, 70 };
-            int maxwidth = 280;
-            if (cls_globalvariables.print_receipt_format_v == "76mm")
-            {
-                column4_rect_header2 = new int[] { 50, 70, 50, 70 };
-                column2format = new int[] { 120, 120 };
-                maxwidth = 240;
-            }
-            else if (cls_globalvariables.print_receipt_format_v == "76mm_journal")
-            {
-                column4_rect_header2 = new int[] { 56, 70, 57, 70 };
-                column2format = new int[] { 133, 120 };
-                maxwidth = 253;
-            }
-
-            //business Title
-            Rectangle rect_title = new Rectangle(nX, nY, maxwidth * cls_globalvariables.previewmul, 15);
-            nY += DrawString(g, sBusinessName, fncHardware.font_Title, rect_title, fncHardware.brush_Black, fncHardware.format_center());
-
-            //header 1
-            List<Rectangle> rect_header1 = fncHardware.create_rect_list(nX, nY, new int[] { maxwidth });
-            List<StringFormat> sf_header1 = fncHardware.create_stringformat_list(new int[] { 2 });
-            List<Font> font_header1 = fncHardware.create_font_list(new int[] { 3 });
-            nY = DrawStringDataTable(g, dt_header1, font_header1, rect_header1, fncHardware.brush_Black, sf_header1);
-
-            rect_title = new Rectangle(nX, nY, maxwidth * cls_globalvariables.previewmul, 15);
-            nY += DrawString(g, "Terminal Report X-Read", fncHardware.font_Change, rect_title, fncHardware.brush_Black, fncHardware.format_center());
-            rect_title = new Rectangle(nX, nY, maxwidth * cls_globalvariables.previewmul, 15);
-            nY += DrawString(g, "Terminal Reading Counter: " + readcount, fncHardware.font_Content, rect_title, fncHardware.brush_Black, fncHardware.format_left());
-
-
-            //header 2
-            List<Rectangle> rect_header2 = fncHardware.create_rect_list(nX, nY, column4_rect_header2);
-            List<StringFormat> sf_header2 = fncHardware.create_stringformat_list(new int[] { 1, 3, 1, 3 });
-            List<Font> font_header2 = fncHardware.create_font_list(new int[] { 3, 3, 3, 3 });
-            nY = DrawStringDataTable(g, dt_header2, font_header2, rect_header2, fncHardware.brush_Black, sf_header2);
-
-            //space
-            nY += 10;
-
-            //table header
-            List<Rectangle> rect_tblheader = fncHardware.create_rect_list(nX, nY, column2format);
-            List<StringFormat> sf_tblheader = fncHardware.create_stringformat_list(new int[] { 1, 3 });
-            List<Font> font_tblheader = fncHardware.create_font_list(new int[] { 3, 3 });
-            nY = DrawStringDataTable(g, dt_tblheader, font_tblheader, rect_tblheader, fncHardware.brush_Black, sf_tblheader);
-
-            //-----------line-------------
-            nY += 5;
-            g.DrawLine(new Pen(fncHardware.brush_Black), nX, nY, maxwidth * cls_globalvariables.previewmul, nY); nY += 5;
-
-            //table data1
-            List<Rectangle> rect_tbldata1 = fncHardware.create_rect_list(nX, nY, column2format);
-            List<StringFormat> sf_tbldata1 = fncHardware.create_stringformat_list(new int[] { 1, 3 });
-            List<Font> font_tbldata1 = fncHardware.create_font_list(new int[] { 3, 3 });
-            nY = DrawStringDataTable(g, list_dtsummary[0], font_tbldata1, rect_tbldata1, fncHardware.brush_Black, sf_tbldata1);
-
-            //space
-            nY += 10;
-
-            //table data2
-
-            int[] column4denom = new int[] { 60, 120, 90, 10 };
-            if (cls_globalvariables.print_receipt_format_v == "76mm")
-            {
-                column4denom = new int[] { 40, 120, 80, 10 };
-            }
-            else if (cls_globalvariables.print_receipt_format_v == "76mm_journal")
-            {
-                column4denom = new int[] { 40, 120, 80, 13 };
-            }
-            List<Rectangle> rect_tbldata2 = fncHardware.create_rect_list(nX, nY, column4denom);
-            List<StringFormat> sf_tbldata2 = fncHardware.create_stringformat_list(new int[] { 3, 3, 3, 3 });
-            List<Font> font_tbldata2 = fncHardware.create_font_list(new int[] { 3, 3, 3, 3 });
-            nY = DrawStringDataTable(g, dt_tbldata2, font_tbldata2, rect_tbldata2, fncHardware.brush_Black, sf_tbldata2);
-
-            //-----------line-------------
-            nY += 5; g.DrawLine(new Pen(fncHardware.brush_Black), nX, nY, maxwidth * cls_globalvariables.previewmul, nY); nY += 5;
-
-            //table data3
-            List<Rectangle> rect_tbldata3 = fncHardware.create_rect_list(nX, nY, column2format);
-            List<StringFormat> sf_tbldata3 = fncHardware.create_stringformat_list(new int[] { 1, 3 });
-            List<Font> font_tbldata3 = fncHardware.create_font_list(new int[] { 3, 3 });
-            nY = DrawStringDataTable(g, list_dtsummary[1], font_tbldata3, rect_tbldata3, fncHardware.brush_Black, sf_tbldata3);
-
-            cls_globalvariables.previewmul = 1;
-
-            return g;
-        }
-
         public static Graphics printpage_zread(object sender, PrintPageEventArgs e, Bitmap bmp,
             int printtype, DateTime datetime_d, DateTime datetimeTO_d)
         {
@@ -747,7 +570,7 @@ namespace ETech.fnc
             string sdate = datetime_d.ToString("yyyy-MM-dd");
             string readcount = "0";
             if (printtype == 0)
-                readcount = zreadFunc.get_readcount(3, datetime_d).ToString();
+                readcount = zreadFunc.get_readcount(datetime_d).ToString();
 
             DataTable dt_header2 = new DataTable();
             dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add();
@@ -942,7 +765,7 @@ namespace ETech.fnc
             if (bmp == null)
             {
                 g = e.Graphics;
-                zreadFunc.generate_posxyzread(datetime_d, 3);
+                zreadFunc.generate_posxyzread(datetime_d);
             }
             else
             {
@@ -1205,7 +1028,7 @@ namespace ETech.fnc
             else return DT.Rows[0];
         }
 
-        public static decimal get_old_grandtotal(int readtype, DateTime dDateTime)
+        public static decimal get_old_grandtotal(DateTime dDateTime)
         {
             string terminalno = cls_globalvariables.terminalno_v;
             string sBranchid = cls_globalvariables.BranchCode;
@@ -1218,8 +1041,7 @@ namespace ETech.fnc
             string prev_new_grand_sql = @"SELECT COALESCE(`newgrandtotal`, 0) AS 'grandtotal' 
                                     FROM `posxyzread`
                                     WHERE `terminalno` = " + terminalno + @"
-                                        AND `branchid` = " + sBranchid + @" 
-	                                    AND `readtype` = " + readtype +
+                                        AND `branchid` = " + sBranchid +
                         zreadFunc.GetSQLDateRange("`date`", prev_date_d, prev_date_d);
             Console.WriteLine(prev_new_grand_sql);
             DataTable dt = mySQLFunc.getdb(prev_new_grand_sql);
@@ -1531,8 +1353,8 @@ namespace ETech.fnc
 
             if (type == 1)
             {
-                zreadFunc.generate_posxyzread(datetime_d, 1);
-                dr_summary = zreadFunc.get_values_from_posxyzread(datetime_d, 1);
+                zreadFunc.generate_posxyzread(datetime_d);
+                dr_summary = zreadFunc.get_values_from_posxyzread(datetime_d);
                 dr_cashflow = fncHardware.get_cashflow_data(datetime_d);
                 g = fncHardware.render_reading(e, bmp, type, datetime_d, dr_summary, dr_cashflow);
                 g.Dispose();
@@ -1540,7 +1362,7 @@ namespace ETech.fnc
             }
 
             bool zreadingexist = zreadFunc.Zread_exist(datetime_d, type);
-            DataRow posxyzreadRow = zreadFunc.get_values_from_posxyzread(datetime_d, type);
+            DataRow posxyzreadRow = zreadFunc.get_values_from_posxyzread(datetime_d);
             bool hasCashTender = Convert.ToDecimal(posxyzreadRow["cash"]) > 0;
             bool recompute = false;
             if (userwid == 1)
@@ -1559,8 +1381,8 @@ namespace ETech.fnc
             else //recomputes values to be saved in posxyzread
             {
                 //Generate Values to posxyzread
-                zreadFunc.generate_posxyzread(datetime_d, type);
-                dr_summary = zreadFunc.get_values_from_posxyzread(datetime_d, type);
+                zreadFunc.generate_posxyzread(datetime_d);
+                dr_summary = zreadFunc.get_values_from_posxyzread(datetime_d);
             }
 
             dr_cashflow = fncHardware.get_cashflow_data(datetime_d);
