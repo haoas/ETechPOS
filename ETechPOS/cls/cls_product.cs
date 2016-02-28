@@ -44,8 +44,6 @@ namespace ETech.cls
 
         private bool customerHistoricalPricingFlag;
 
-        public cls_productpromo productpromo;
-
         public cls_discountlist productdiscount;
 
         private bool is_history;
@@ -96,7 +94,6 @@ namespace ETech.cls
             this.productmode = "";
             this.transaction_mode = "vatable_sale";
 
-            this.productpromo = new cls_productpromo();
             this.productdiscount = new cls_discountlist(1);
 
             this.is_history = false;
@@ -381,9 +378,6 @@ namespace ETech.cls
             }
 
             this.vat = calculate_vat(this.isvat, price);
-
-            this.productpromo.set_qtypromo(wid_d);
-            this.productpromo.set_PromoProdDiscount(wid_d);
         }
 
         public void reset_data_by_mode(bool isnonvat_d, bool issenior_d, bool iswholesale, int pricingtype, decimal pricingrate, cls_customer customer)
@@ -458,19 +452,6 @@ namespace ETech.cls
             }
             Console.WriteLine("reset_data_by_mode 3: oprice: " + this.origprice);
 
-            if (!this.is_history && !iswholesale)
-            {
-                decimal promo_qty = this.productpromo.get_qtypromo_price(this.qty);
-                decimal promo_proddc = this.productpromo.get_PromoProdDiscount_price();
-                Console.WriteLine("reset_data_by_mode 3A: oprice: " + this.origprice);
-
-                if (promo_qty > 0 && (promo_proddc < 0 || promo_proddc > 0 && promo_qty < promo_proddc))
-                    this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_promoqty, promo_qty - this.origprice, false);
-                else if (promo_proddc > 0)
-                    this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_promoqty, promo_proddc / this.origprice, true);
-
-                Console.WriteLine("reset_data_by_mode 3C oprice: " + this.origprice);
-            }
             //detail discount
             decimal tmp_disc = this.productdiscount.get_discounts_percentage(this.origprice);
             /*-------------------------------------------------*/
@@ -569,19 +550,6 @@ namespace ETech.cls
                 this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
             }
             Console.WriteLine("reset_data_by_mode 3: oprice: " + this.origprice);
-            if (!this.is_history && !iswholesale)
-            {
-                decimal promo_qty = this.productpromo.get_qtypromo_price(this.qty);
-                decimal promo_proddc = this.productpromo.get_PromoProdDiscount_price();
-                Console.WriteLine("reset_data_by_mode 3A: oprice: " + this.origprice);
-
-                if (promo_qty > 0 && (promo_proddc < 0 || promo_proddc > 0 && promo_qty < promo_proddc))
-                    this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_promoqty, promo_qty - this.origprice, false);
-                else if (promo_proddc > 0)
-                    this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_promoqty, promo_proddc / this.origprice, true);
-
-                Console.WriteLine("reset_data_by_mode 3C oprice: " + this.origprice);
-            }
 
             Console.WriteLine("reset_data_by_mode price: " + this.price);
             Console.WriteLine("reset_data_by_mode discount : " + this.discount);

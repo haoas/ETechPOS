@@ -135,11 +135,6 @@ namespace ETech
                 F12();
             else if (e.KeyCode == Keys.Escape)
             {
-                for (int row_cnt = 0; row_cnt < paymentdata.get_giftcheque().Count; row_cnt++)
-                {
-                    string wid = paymentdata.get_giftcheque()[row_cnt].getwid().ToString();
-                    mySQLFunc.setdb(@"UPDATE `giftcheque` SET `status` = 1 WHERE wid = " + wid);
-                }
                 changeupdated = false;
                 transactiondone = false;
                 this.Close();
@@ -154,11 +149,6 @@ namespace ETech
         }
         private void btnESC_Click(object sender, EventArgs e)
         {
-            for (int row_cnt = 0; row_cnt < paymentdata.get_giftcheque().Count; row_cnt++)
-            {
-                string wid = paymentdata.get_giftcheque()[row_cnt].getwid().ToString();
-                mySQLFunc.setdb(@"UPDATE `giftcheque` SET `status` = 1 WHERE wid = " + wid);
-            }
             changeupdated = false;
             transactiondone = false;
             this.Close();
@@ -251,8 +241,7 @@ namespace ETech
             this.txtCashRcv_d.Text = cash_d.ToString("N2");
             this.lblCreditCard_d.Text = this.paymentdata.get_creditamount().ToString("N2");
             this.lblDebitCard_d.Text = this.paymentdata.get_debitamount().ToString("N2");
-            this.lblGiftCheque_d.Text = (Convert.ToDecimal(this.paymentdata.get_giftchequeamount()) +
-                                         Convert.ToDecimal(this.paymentdata.get_giftchequenewamount())).ToString("N2");
+            this.lblGiftCheque_d.Text = (Convert.ToDecimal(this.paymentdata.get_giftchequenewamount())).ToString("N2");
             this.txtPointUsed_d.Text = points_d.ToString("N2");
             this.lblCustomAmt_d.Text = this.paymentdata.get_custompaymentamount().ToString("N2");
 

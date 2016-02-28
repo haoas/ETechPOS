@@ -64,7 +64,6 @@
     <Compile Include="cls\cls_customer.cs" />
     <Compile Include="cls\cls_discountlist.cs" />
     <Compile Include="cls\cls_encdec.cs" />
-    <Compile Include="cls\cls_giftchequeinfo.cs" />
     <Compile Include="cls\cls_globalfunc.cs" />
     <Compile Include="cls\cls_globalvariables.cs" />
     <Compile Include="cls\cls_member.cs" />
@@ -77,9 +76,6 @@
     <Compile Include="cls\cls_product.cs" />
     <Compile Include="cls\cls_productDiscount.cs" />
     <Compile Include="cls\cls_productlist.cs" />
-    <Compile Include="cls\cls_productpromo.cs" />
-    <Compile Include="cls\cls_promoproddc.cs" />
-    <Compile Include="cls\cls_qtypromo.cs" />
     <Compile Include="cls\cls_senior.cs" />
     <Compile Include="cls\cls_CustomPayments.cs" />
     <Compile Include="cls\cls_user.cs" />
@@ -189,12 +185,6 @@
     </Compile>
     <Compile Include="frmCardInfo.Designer.cs">
       <DependentUpon>frmCardInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmGiftChequeInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmGiftChequeInfo.Designer.cs">
-      <DependentUpon>frmGiftChequeInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="frmInventory.cs">
       <SubType>Form</SubType>
@@ -355,10 +345,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmChange_c.resx">
       <DependentUpon>frmChange_c.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmGiftChequeInfo.resx">
-      <DependentUpon>frmGiftChequeInfo.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmInventory.resx">

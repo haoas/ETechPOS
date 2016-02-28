@@ -454,7 +454,6 @@ namespace ETech
             List<cls_cardinfo> creditcards = trans.getpayments().get_creditcard();
             List<cls_cardinfo> debitcards = trans.getpayments().get_debitcard();
             List<cls_otherpaymentinfo> giftchequesnew = trans.getpayments().get_giftchequenew();
-            List<cls_giftchequeinfo> giftcheques = trans.getpayments().get_giftcheque();
             List<cls_CustomPaymentsInfo> custompaymentsinfo = trans.getpayments().get_custompayments();
             string sSQLcd = "";
             List<string> tempStringList = new List<string>();
@@ -771,49 +770,6 @@ namespace ETech
                             `expdate` = '" + giftchequenew.getexpdate().ToString("yyyy-MM-dd") + @"', 
                             `memo` = '" + escapeString(giftchequenew.get_memo()) + @"', 
                             `amount` = '" + giftchequenew.getamount() + @"'
-                           WHERE `wid` = @wid_d";
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-            }
-
-            foreach (cls_giftchequeinfo giftcheque in giftcheques)
-            {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
-                foreach (string str in tempStringList)
-                    transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
-                                `headid` = @collectionheadwid,
-                                `method` = 7, 
-                                `amount` = " + giftcheque.getamount() + @"
-                           WHERE `wid` = @wid_d";
-
-                //Console.WriteLine(sSQLcd);
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-
-                sSQLcd = @"DELETE FROM `posgiftcheque` WHERE `chequeid` = " + giftcheque.getwid() + " LIMIT 1";
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-                sSQLcd = @"INSERT INTO `posgiftcheque`
-                            (`chequeid`, `userid`, `collectiondetailid`)
-                            VALUES 
-                            (" + giftcheque.getwid() + ", " + trans.getclerk().getwid() + ", @wid_d)";
-                //Console.WriteLine(sSQLcd);
-                //setdb(sSQLcd);
-                transactionQueryList.Add(sSQLcd);
-            }
-
-            if ((giftcheques.Count > 0) && (trans.get_changeamount() == 0))
-            {
-                decimal unusedgiftchequeamt = trans.get_productlist().get_totalamount() - trans.getpayments().get_totalamount();
-
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
-                foreach (string str in tempStringList)
-                    transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
-                                `headid` = @collectionheadwid,
-                                `method` = 7, 
-                                `amount` = " + unusedgiftchequeamt + @"
                            WHERE `wid` = @wid_d";
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);

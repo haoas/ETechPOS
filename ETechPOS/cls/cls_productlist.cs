@@ -466,9 +466,6 @@ namespace ETech.cls
                 }
 
                 int tempWid = int.TryParse(dr_d["wid"].ToString(), out tempWid) ? tempWid : 0;
-                prod.productpromo.set_qtypromo(prod.getWid(), tempWid);
-                prod.productpromo.set_PromoProdDiscount(prod.getWid(), tempWid);
-
                 prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
                 prod.setOrigPrice(Convert.ToDecimal(dr_d["oprice"]));
                 prod.setQty(Convert.ToDecimal(dr_d["quantity"]));

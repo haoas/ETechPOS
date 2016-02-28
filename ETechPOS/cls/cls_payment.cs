@@ -12,7 +12,6 @@ namespace ETech.cls
         private List<cls_cardinfo> creditcard;
         private List<cls_cardinfo> debitcard;
         private List<cls_otherpaymentinfo> giftchequenew;
-        private List<cls_giftchequeinfo> giftcheque;
         private List<cls_CustomPaymentsInfo> list_custompayment;
         private decimal cash;
         private decimal dept;
@@ -24,7 +23,6 @@ namespace ETech.cls
             this.creditcard = new List<cls_cardinfo>();
             this.debitcard = new List<cls_cardinfo>();
             this.giftchequenew = new List<cls_otherpaymentinfo>();
-            this.giftcheque = new List<cls_giftchequeinfo>();
             this.list_custompayment = new List<cls_CustomPaymentsInfo>();
             this.cash = 0;
             this.dept = 0;
@@ -37,7 +35,6 @@ namespace ETech.cls
             this.creditcard = new List<cls_cardinfo>();
             this.debitcard = new List<cls_cardinfo>();
             this.giftchequenew = new List<cls_otherpaymentinfo>();
-            this.giftcheque = new List<cls_giftchequeinfo>();
             this.list_custompayment = new List<cls_CustomPaymentsInfo>();
             this.cash = 0;
             this.dept = 0;
@@ -68,9 +65,6 @@ namespace ETech.cls
                         break;
                     case 6:
                         this.debitcard.Add(new cls_cardinfo(dwid, 1));
-                        break;
-                    case 7:
-                        this.giftcheque.Add(new cls_giftchequeinfo(dwid));
                         break;
                     case 8:
                         if (amt > 0)
@@ -108,11 +102,6 @@ namespace ETech.cls
             this.giftchequenew = giftchequenew_d;
         }
 
-        public void set_giftcheque(List<cls_giftchequeinfo> giftcheque_d)
-        {
-            this.giftcheque = giftcheque_d;
-        }
-
         public void set_cash(decimal cash_d)
         {
             this.cash = cash_d;
@@ -137,7 +126,6 @@ namespace ETech.cls
         public List<cls_cardinfo> get_creditcard() { return this.creditcard; }
         public List<cls_cardinfo> get_debitcard() { return this.debitcard; }
         public List<cls_otherpaymentinfo> get_giftchequenew() { return this.giftchequenew; }
-        public List<cls_giftchequeinfo> get_giftcheque() { return this.giftcheque; }
         public List<cls_CustomPaymentsInfo> get_custompayments() { return this.list_custompayment; }
         public decimal get_cash() { return this.cash; }
         public decimal get_dept() { return this.dept; }
@@ -173,16 +161,6 @@ namespace ETech.cls
             return amt;
         }
 
-        public decimal get_giftchequeamount()
-        {
-            decimal amt = 0;
-            foreach (cls_giftchequeinfo gcheck in this.giftcheque)
-            {
-                amt += gcheck.getamount();
-            }
-            return amt;
-        }
-
         public decimal get_custompaymentamount()
         {
             decimal amt = 0;
@@ -198,7 +176,6 @@ namespace ETech.cls
             return this.get_creditamount() +
                     this.get_debitamount() +
                     this.get_giftchequenewamount() +
-                    this.get_giftchequeamount() +
                     this.get_custompaymentamount() +
                     this.get_cash() +
                     this.get_points();
@@ -210,7 +187,6 @@ namespace ETech.cls
             payment_clone.set_creditcard(this.creditcard.Select(i => i.ShallowCopy()).ToList());
             payment_clone.set_debitcard(this.debitcard.Select(i => i.ShallowCopy()).ToList());
             payment_clone.set_giftchequenew(this.giftchequenew.Select(i => i.ShallowCopy()).ToList());
-            payment_clone.set_giftcheque(this.giftcheque.Select(i => i.ShallowCopy()).ToList());
             payment_clone.set_custompayments(this.list_custompayment.Select(i => i.ShallowCopy()).ToList());
             return payment_clone;
         }

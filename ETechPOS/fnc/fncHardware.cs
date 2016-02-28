@@ -1803,7 +1803,7 @@ namespace ETech.fnc
             decimal tendered_cash = tran.getpayments().get_cash();
             decimal tendered_credit = tran.getpayments().get_creditamount();
             decimal tendered_debit = tran.getpayments().get_debitamount();
-            decimal tendered_gift = tran.getpayments().get_giftchequeamount() + tran.getpayments().get_giftchequenewamount();
+            decimal tendered_gift =  tran.getpayments().get_giftchequenewamount();
             decimal tendered_mempoints = tran.getpayments().get_points();
             decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
             decimal dept = tran.getpayments().get_dept();
@@ -1839,7 +1839,7 @@ namespace ETech.fnc
                 }
                 cnt_item_t++;
             }
-            if (tendered_gift != 0 || (tran.getpayments().get_giftcheque().Count + tran.getpayments().get_giftchequenew().Count > 0))
+            if (tendered_gift != 0 || ( tran.getpayments().get_giftchequenew().Count > 0))
             {
                 dt_tendered.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2")); cnt_item_t++;
                 foreach (cls_otherpaymentinfo giftcheque in tran.getpayments().get_giftchequenew())
@@ -2276,7 +2276,7 @@ namespace ETech.fnc
             decimal tendered_cash = tran.getpayments().get_cash();
             decimal tendered_credit = tran.getpayments().get_creditamount();
             decimal tendered_debit = tran.getpayments().get_debitamount();
-            decimal tendered_gift = tran.getpayments().get_giftchequeamount() + tran.getpayments().get_giftchequenewamount();
+            decimal tendered_gift = tran.getpayments().get_giftchequenewamount();
             decimal tendered_mempoints = tran.getpayments().get_points();
             decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
             decimal debt = tran.getpayments().get_dept();
@@ -2313,7 +2313,7 @@ namespace ETech.fnc
                 }
                 cnt_item_t++;
             }
-            if (tendered_gift != 0 || (tran.getpayments().get_giftcheque().Count + tran.getpayments().get_giftchequenew().Count > 0))
+            if (tendered_gift != 0 || ( tran.getpayments().get_giftchequenew().Count > 0))
             {
                 tempDataTable.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2")); cnt_item_t++;
                 foreach (cls_otherpaymentinfo giftcheque in tran.getpayments().get_giftchequenew())
