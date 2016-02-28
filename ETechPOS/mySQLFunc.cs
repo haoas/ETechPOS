@@ -66,10 +66,6 @@ namespace ETech
                 catch { cls_globalvariables.avoidinvalidpprice_v = "0"; }
                 try { cls_globalvariables.print_receipt_format_v = dic["print_receipt_format"]; }
                 catch { cls_globalvariables.print_receipt_format_v = ""; }
-                try { cls_globalvariables.xzdesign_unite_v = dic["xzdesign_unite"]; }
-                catch { cls_globalvariables.xzdesign_unite_v = "0"; }
-                try { cls_globalvariables.hide_reprintreceipt_v = dic["hide_reprintreceipt"]; }
-                catch { cls_globalvariables.hide_reprintreceipt_v = "0"; }
                 try { cls_globalvariables.allowZeroPrice_v = dic["allowzeroprice"]; }
                 catch { cls_globalvariables.allowZeroPrice_v = "0"; }
                 try { cls_globalvariables.grossmethod_v = dic["grossmethod"]; }

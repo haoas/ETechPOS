@@ -1665,20 +1665,7 @@ namespace ETech
         }
         private void tmrCheckPosdSettingTicked()
         {
-            try
-            {
-                var dic = File.ReadAllLines(cls_globalvariables.settingspath)
-                         .Select(l => l.Split(new[] { '=' }))
-                         .ToDictionary(s => s[0].Trim(), s => s[1].Trim());
-
-                try { cls_globalvariables.xzdesign_unite_v = dic["xzdesign_unite"]; }
-                catch { cls_globalvariables.xzdesign_unite_v = "0"; }
-                try { cls_globalvariables.hide_reprintreceipt_v = dic["hide_reprintreceipt"]; }
-                catch { cls_globalvariables.hide_reprintreceipt_v = "0"; }
-            }
-            catch
-            {
-            }
+            //Dont delete this code
         }
         #endregion
 

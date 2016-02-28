@@ -251,20 +251,6 @@ namespace ETech.cls
             set { print_receipt_format = value; }
         }
 
-        private static string xzdesign_unite = "";
-        public static string xzdesign_unite_v
-        {
-            get { return xzdesign_unite; }
-            set { xzdesign_unite = value; }
-        }
-
-        private static string hide_reprintreceipt = "";
-        public static string hide_reprintreceipt_v
-        {
-            get { return hide_reprintreceipt; }
-            set { hide_reprintreceipt = value; }
-        }
-
         private static string allowZeroPrice = "";
         public static string allowZeroPrice_v
         {

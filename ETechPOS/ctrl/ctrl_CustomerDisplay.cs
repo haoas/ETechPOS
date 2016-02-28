@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.IO.Ports;
 using ETech.cls;
-using ETech.cls;
 using System.IO;
 using System.Threading;
 using ETech.fnc;

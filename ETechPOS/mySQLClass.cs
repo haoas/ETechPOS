@@ -425,7 +425,6 @@ namespace ETech
             string tbl_collectiondetail = "collectiondetail";
             string tbl_collectionsales = "collectionsales";
             string tbl_poscardpayment = "poscardpayment";
-            string tbl_receivecheck = "receivecheck";
 
             string datetime_d = trans.getdatetime().ToString("yyyy-MM-dd HH:mm:ss");
             string branchid = cls_globalvariables.BranchCode;

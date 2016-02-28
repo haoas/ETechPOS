@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
-using ETech.cls;
 using System.IO;
 using System.Text.RegularExpressions;
 using str_encode_decode;

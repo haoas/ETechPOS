@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
-using ETech.cls;
 using ETech.fnc;
 
 namespace ETech
@@ -22,8 +21,6 @@ namespace ETech
         public bool return_permission;
         public bool forcereturn_permission;
         public string salesdetailmemo;
-        public int salesmode = 0;
-        // 0 = online 1 = offline
 
         public frmProductQuantity()
         {
@@ -160,31 +157,17 @@ namespace ETech
 
         private void txtNewQty_d_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (salesmode == 1) //offline
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
             {
-                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
-                {
-                    e.Handled = true;
-                }
-                if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-                {
-                    e.Handled = true;
-                }
+                e.Handled = true;
             }
-            else
+            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
             {
-                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
-                {
-                    e.Handled = true;
-                }
-                if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-                {
-                    e.Handled = true;
-                }
-                if (e.KeyChar == '-' && (sender as TextBox).Text.Contains('-'))
-                {
-                    e.Handled = true;
-                }
+                e.Handled = true;
+            }
+            if (e.KeyChar == '-' && (sender as TextBox).Text.Contains('-'))
+            {
+                e.Handled = true;
             }
         }
     }

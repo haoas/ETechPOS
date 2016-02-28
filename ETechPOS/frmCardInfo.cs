@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using ETech.cls;
-using ETech.cls;
 using ETech.fnc;
 
 

@@ -500,9 +500,6 @@
     <Content Include="tools\Keyboard.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="settings.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <EmbeddedResource Include="frmCustomPayments.resx">
       <DependentUpon>frmCustomPayments.cs</DependentUpon>
       <SubType>Designer</SubType>

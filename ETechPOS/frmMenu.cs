@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
-
-using ETech.cls;
 using ETech.fnc;
 
 namespace ETech
@@ -110,12 +108,6 @@ namespace ETech
             this.Close();
             return;
         }
-        public void Settings2()
-        {
-            this.commandentered = "0";
-            this.Close();
-            return;
-        }
         public void P()
         {
             this.commandentered = "P";
@@ -200,9 +192,6 @@ namespace ETech
                     break;
                 case Keys.S:
                     Settings();
-                    break;
-                case Keys.D0:
-                    Settings2();
                     break;
                 case Keys.P:
                     if (F1flag == true)
@@ -316,9 +305,6 @@ namespace ETech
                 btnM.Enabled = true;
                 btnH.Enabled = true;
             }
-
-            if (cls_globalvariables.hide_reprintreceipt_v == "1")
-                btnF4.Visible = false;
 
             btnF3.Text = "F3\nExit";
 

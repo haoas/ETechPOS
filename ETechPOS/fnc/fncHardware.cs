@@ -150,11 +150,7 @@ namespace ETech.fnc
         public static void print_xread(DateTime datetime_d, int userwid)
         {
             PrintDocument pd = new PrintDocument();
-            if (cls_globalvariables.xzdesign_unite_v == "1")
-                pd.PrintPage += (sender, e) => { printpage_read(sender, e, null, 1, datetime_d, datetime_d, false, userwid); };
-            else
-                pd.PrintPage += (sender, e) => { printpage_xread(sender, e, null, datetime_d, userwid); };
-
+            pd.PrintPage += (sender, e) => { printpage_xread(sender, e, null, datetime_d, userwid); };
             start_print(pd);
             RawPrinterHelper.OpenCashDrawer(true);
         }
@@ -189,10 +185,8 @@ namespace ETech.fnc
             //1-terminal accountability
             //2-cashier accountability
             PrintDocument pd = new PrintDocument();
-            if (cls_globalvariables.xzdesign_unite_v == "1")
-                pd.PrintPage += (sender, e) => { printpage_read(sender, e, null, 3, datetime_d, datetimeTO_d, false, userwid); };
-            else
-                pd.PrintPage += (sender, e) => { printpage_zread(sender, e, null, printtype, datetime_d, datetimeTO_d); };
+
+            pd.PrintPage += (sender, e) => { printpage_zread(sender, e, null, printtype, datetime_d, datetimeTO_d); };
 
             start_print(pd);
             RawPrinterHelper.OpenCashDrawer(true);
@@ -1801,7 +1795,7 @@ namespace ETech.fnc
             decimal tendered_cash = tran.getpayments().get_cash();
             decimal tendered_credit = tran.getpayments().get_creditamount();
             decimal tendered_debit = tran.getpayments().get_debitamount();
-            decimal tendered_gift =  tran.getpayments().get_giftchequenewamount();
+            decimal tendered_gift = tran.getpayments().get_giftchequenewamount();
             decimal tendered_mempoints = tran.getpayments().get_points();
             decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
             decimal dept = tran.getpayments().get_dept();
@@ -1837,7 +1831,7 @@ namespace ETech.fnc
                 }
                 cnt_item_t++;
             }
-            if (tendered_gift != 0 || ( tran.getpayments().get_giftchequenew().Count > 0))
+            if (tendered_gift != 0 || (tran.getpayments().get_giftchequenew().Count > 0))
             {
                 dt_tendered.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2")); cnt_item_t++;
                 foreach (cls_otherpaymentinfo giftcheque in tran.getpayments().get_giftchequenew())
@@ -2311,7 +2305,7 @@ namespace ETech.fnc
                 }
                 cnt_item_t++;
             }
-            if (tendered_gift != 0 || ( tran.getpayments().get_giftchequenew().Count > 0))
+            if (tendered_gift != 0 || (tran.getpayments().get_giftchequenew().Count > 0))
             {
                 tempDataTable.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2")); cnt_item_t++;
                 foreach (cls_otherpaymentinfo giftcheque in tran.getpayments().get_giftchequenew())

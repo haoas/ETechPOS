@@ -308,13 +308,6 @@ namespace ETech
 
         private void frmTerminalReadings_Load(object sender, EventArgs e)
         {
-            if (cls_globalvariables.xzdesign_unite_v == "1")
-            {
-                listBox1.Items.Remove("Z-READING");
-                listBox1.Items.Remove("CASHIER ACCOUNTABILITY");
-                listBox1.Items.Remove("TERMINAL ACCOUNTABILITY");
-            }
-
             dateTimePicker1.MinDate = zreadFunc.GetMinSalesDate();
             dateTimePicker2.MinDate = zreadFunc.GetMinSalesDate();
 
@@ -406,10 +399,7 @@ namespace ETech
             int height = Convert.ToInt32(origheight * (zoompercent / (decimal)100));
             Bitmap bmp = new Bitmap(width, height);
             bmp.SetResolution(zoompercent, zoompercent);
-            if (cls_globalvariables.xzdesign_unite_v == "1")
-                fncHardware.printpage_read(null, null, bmp, 3, datetime_d, datetimeTO_d, false, userwid);
-            else
-                fncHardware.printpage_zread(null, null, bmp, printtype, datetime_d, datetimeTO_d);
+            fncHardware.printpage_zread(null, null, bmp, printtype, datetime_d, datetimeTO_d);
             bmp.Save(cls_globalvariables.mydocumentpath + "Receipt.jpg");
             bmp.Dispose();
             Bitmap bitmap;
@@ -438,15 +428,7 @@ namespace ETech
             Bitmap bmp = new Bitmap(width, height);
             bmp.SetResolution(zoompercent, zoompercent);
 
-            if (cls_globalvariables.xzdesign_unite_v == "1")
-            {
-                if (printtype == 2)
-                    fncHardware.printpage_zread(null, null, bmp, 2, datetime_d, datetimeTO_d);
-                else
-                    fncHardware.printpage_read(null, null, bmp, 3, datetime_d, datetimeTO_d, false, userwid);
-            }
-            else
-                fncHardware.printpage_zread(null, null, bmp, printtype, datetime_d, datetimeTO_d);
+            fncHardware.printpage_zread(null, null, bmp, printtype, datetime_d, datetimeTO_d);
 
             bmp.Save(cls_globalvariables.mydocumentpath + "Receipt.jpg");
             bmp.Dispose();
