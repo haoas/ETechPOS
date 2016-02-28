@@ -137,12 +137,6 @@ namespace ETech.fnc
             foreach (DataRow row in dt.Rows)
                 collectiondetail_wids.Add(row[0].ToString());
 
-            for (int i = 0; i < collectiondetail_wids.Count; i++)
-            {
-                string posgiftcheque_chequeid = @"SELECT `chequeid` FROM posgiftcheque WHERE `collectiondetailid` = (" + collectiondetail_wids[i] + ")";
-                string update_giftcheque = @"UPDATE giftcheque SET `status`=1 WHERE `wid` = (" + posgiftcheque_chequeid + ")";
-                mySQLFunc.setdb(update_giftcheque);
-            }
             mySQLClass mysqlclass = new mySQLClass();
             mysqlclass.update_synctable("saleshead", tran.getWid());
         }
@@ -201,7 +195,7 @@ namespace ETech.fnc
             string stimeTO = datetimeTO_d.ToString("HH:mm:ss");
 
             DataRow DRminmax = zreadFunc.get_max_min_OR(3, datetime_d, datetimeTO_d);
-            string ornumber_begin = zreadFunc.get_min_OR(3, datetime_d, datetimeTO_d); //DRminmax["minornumber"].ToString();
+            long ornumber_begin = zreadFunc.get_min_OR(3, datetime_d, datetimeTO_d); //DRminmax["minornumber"].ToString();
             string ornumber_end = DRminmax["maxornumber"].ToString();
 
             string SQL_dr_summary =
@@ -427,8 +421,8 @@ namespace ETech.fnc
             DataTable dt_salessummary1 = new DataTable();
             dt_salessummary1.Columns.Add(); dt_salessummary1.Columns.Add();
             dt_salessummary1.Rows.Add("TERMINAL", terminalno);
-            dt_salessummary1.Rows.Add("BEGIN OR#", format_ornumber(ornumber_begin));
-            dt_salessummary1.Rows.Add("END OR#", format_ornumber(ornumber_end));
+            dt_salessummary1.Rows.Add("BEGIN OR#", ornumber_begin);
+            dt_salessummary1.Rows.Add("END OR#", ornumber_end);
             dt_salessummary1.Rows.Add("  ", "  ");
 
             if (cls_globalvariables.grossmethod_v == "0")
@@ -1214,8 +1208,8 @@ namespace ETech.fnc
 
             string terminalno = cls_globalvariables.terminalno_v;
             dt_salessummary1.Rows.Add("TERMINAL", terminalno);
-            dt_salessummary1.Rows.Add("BEGIN OR#", format_ornumber(ornumber_begin));
-            dt_salessummary1.Rows.Add("END OR#", format_ornumber(ornumber_end));
+            dt_salessummary1.Rows.Add("BEGIN OR#", ornumber_begin);
+            dt_salessummary1.Rows.Add("END OR#", ornumber_end);
             dt_salessummary1.Rows.Add("  ", "  ");
 
             decimal all_vatable_sale = Convert.ToDecimal(dr_summary["vatable_sale"]);
@@ -1345,7 +1339,8 @@ namespace ETech.fnc
             return g;
         }
 
-        public static void printpage_read(object sender, PrintPageEventArgs e, Bitmap bmp, int type, DateTime datetime_d, DateTime datetimeTO_d, bool isposd, int userwid)
+        //Dont delete yet
+        public static void printpage_read(object sender, PrintPageEventArgs e, Bitmap bmp, int type, DateTime datetime_d, DateTime datetimeTO_d, int userwid)
         {
             DataRow dr_summary = null;
             DataRow dr_cashflow = null;
@@ -1475,7 +1470,7 @@ namespace ETech.fnc
             {
                 dt_header2.Columns.Add(); dt_header2.Columns.Add();
                 dt_header2.Rows.Add("Tran#:", format_transactionno(transactionno));
-                dt_header2.Rows.Add("OR#:", format_ornumber(ornumber));
+                dt_header2.Rows.Add("OR#:", ornumber);
                 dt_header2.Rows.Add("Date:", salesdate);
                 dt_header2.Rows.Add("Time:", salestime);
                 dt_header2.Rows.Add("TRM:", terminalno);
@@ -1508,7 +1503,7 @@ namespace ETech.fnc
             {
                 dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add();
                 dt_header2.Rows.Add("Tran#:", format_transactionno(transactionno) + "", "Date:", salesdate);
-                dt_header2.Rows.Add("OR#:", format_ornumber(ornumber) + "", "Time:", salestime);
+                dt_header2.Rows.Add("OR#:", ornumber + "", "Time:", salestime);
                 dt_header2.Rows.Add("TRM:", terminalno + " ", " ", "");
                 if (cashier != "") dt_header2.Rows.Add("Cashier:", cashier + "", "ID#:", cashiercode);
                 if (checker != "") dt_header2.Rows.Add("Checker:", checker + "", "ID#:", checkercode);
@@ -1949,7 +1944,7 @@ namespace ETech.fnc
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
             tempDataTable.Rows.Add("TERMINAL#: " + cls_globalvariables.terminalno_v, "");
-            tempDataTable.Rows.Add("SI#: " + format_ornumber(tran.getORnumber()), "TRAN#: " + format_transactionno(tran.gettransactionno()));
+            tempDataTable.Rows.Add("SI#: " + tran.getORnumber(), "TRAN#: " + format_transactionno(tran.gettransactionno()));
             tempDataTable.Rows.Add("CASHIER: " + tran.getclerk().getfullname(), "ID#: " + tran.getclerk().getusercode());
             tempDataTable.Rows.Add("DATE: " + tran.getdatetime().ToShortDateString(), "TIME: " + tran.getdatetime().ToLongTimeString());
 
@@ -2526,21 +2521,6 @@ namespace ETech.fnc
             return nY;
         }
 
-        public static string format_ornumber(string ornumber)
-        {
-            try
-            {
-                int length_of_transno = 7;
-                string ornumber_only = ornumber.Substring(ornumber.Length - length_of_transno);
-                string branchterminal = ornumber.Substring(0, ornumber.Length - length_of_transno);
-
-                return ornumber_only;
-            }
-            catch (Exception)
-            {
-                return ornumber;
-            }
-        }
         private static string format_transactionno(string transactionno)
         {
             try

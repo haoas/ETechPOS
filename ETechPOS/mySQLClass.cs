@@ -700,7 +700,7 @@ namespace ETech
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `" + tbl_poscardpayment + @"` SET
                             `collectiondetailid` = @collectiondetailwid, 
-                            `cardsettingwid` = '" + cls_globalfunc.getcardwid(creditcard.getcardno()) + @"', 
+                            `cardsettingwid` = '" + cls_globalfunc.getCreditDebiCardInfo(creditcard.getcardno()) + @"', 
                             `cardno` = '" + creditcard.getcardno() + @"', 
                             `fullname` = '" + escapeString(creditcard.getname()) + @"',
                             `expdate` = '" + creditcard.getexpdate().ToString("yyyy-MM-dd") + @"', 

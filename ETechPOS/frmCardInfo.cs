@@ -232,7 +232,7 @@ namespace ETech
         //{
         //    //CreditcardKeyPress(3, e);
         //}
-        
+
         private void done_process()
         {
             this.cardinfos.Clear();
@@ -345,7 +345,8 @@ namespace ETech
         }
         private void addcardtodgv(string cardno, decimal amt, string cardholder, string validthru_m, string validthru_y, string cc_approvalcode)
         {
-            string cardname = cls_globalfunc.getcardname(cardno);
+            string cardname = string.Empty;
+            cls_globalfunc.getCreditDebiCardInfo(cardno, out cardname);
             dgvCardInfo.Rows.Add();
             dgvCardInfo.Rows[dgvCardInfo.RowCount - 1].Cells["colCardNo"].Value = cardno;
             dgvCardInfo.Rows[dgvCardInfo.RowCount - 1].Cells["colCardType"].Value = cardname;

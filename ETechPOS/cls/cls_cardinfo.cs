@@ -39,8 +39,11 @@ namespace ETech.cls
                             WHERE `type` = " + type_d + " AND `collectiondetailid` = " + wid_d;
             string cardno = mySQLFunc.getdb(SQLcardno).Rows[0]["cardno"].ToString();
 
+            string cardname = string.Empty;
+            cls_globalfunc.getCreditDebiCardInfo(cardno, out cardname);
+
             string sSQL = @"SELECT *,
-                     '" + cls_globalfunc.getcardname(cardno) + @"' as cardtype
+                     '" + cardname + @"' as cardtype
                      FROM `poscardpayment` 
                      WHERE `type` = " + type_d + " AND `collectiondetailid` = " + wid_d;
             Console.WriteLine(sSQL);

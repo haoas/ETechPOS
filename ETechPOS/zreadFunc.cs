@@ -14,21 +14,18 @@ public static class zreadFunc
 {
     public static DateTime GetMinSalesDate()
     {
-        string saleshead = "`saleshead`";
-        string posxyzread = "`posxyzread`";
-
         string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
 
         string GetMinDateInSalesHead =
         @"SELECT COALESCE(min(`date`),NOW()) as mindate 
-            FROM " + saleshead + @" WHERE `branchid` = " + branchid +
+            FROM `saleshead` WHERE `branchid` = " + branchid +
         " AND `terminalno` = " + terminalno + " AND `type` = 3";
         DateTime DTMinDateInSaleshead = Convert.ToDateTime(mySQLFunc.getdb(GetMinDateInSalesHead).Rows[0]["mindate"]);
         DTMinDateInSaleshead = zreadFunc.getZreadDate(DTMinDateInSaleshead);
 
         string GetMinDateInPosxyzread =
-        @"SELECT COALESCE(MIN(`date`),NOW()) as mindate FROM " + posxyzread + @"
+        @"SELECT COALESCE(MIN(`date`),NOW()) as mindate FROM `posxyzread`
             WHERE terminalno=" + terminalno + " AND branchid=" + branchid;
         DateTime DTMinDateInPosxyzread = Convert.ToDateTime(mySQLFunc.getdb(GetMinDateInPosxyzread).Rows[0]["mindate"]);
 
@@ -156,8 +153,10 @@ public static class zreadFunc
         newgrandtotal = Math.Round(oldgrandtotal + cur_total, 2, MidpointRounding.AwayFromZero);
 
         DataRow DRminmax = get_max_min_OR(3, datetime_d, datetime_d);
-        string ornumber_begin = zreadFunc.get_min_OR(3, datetime_d, datetime_d); //DRminmax["minornumber"].ToString();
-        string ornumber_end = DRminmax["maxornumber"].ToString();
+        long ornumber_begin = zreadFunc.get_min_OR(3, datetime_d, datetime_d);
+        long ornumber_end = 0;
+        long.TryParse(DRminmax["maxornumber"].ToString(), out ornumber_end);
+
         string sdatetime = DRminmax["maxdatetime"].ToString();
 
         string SQLexist =
@@ -249,13 +248,11 @@ public static class zreadFunc
         return cur_total;
     }
 
-    public static string get_min_OR(int type, DateTime datetimeFrom, DateTime datetimeTo)
+    public static long get_min_OR(int type, DateTime datetimeFrom, DateTime datetimeTo)
     {
         string sql =
                 @"SELECT 
-                    COALESCE(MAX(`ornumber`), 0) AS `maxornumber`,
                     COALESCE(MIN(`ornumber`), 0) AS `minornumber`,
-                    DATE(`date`) AS `date`
                 FROM `saleshead`
                 WHERE `type` = 3
                     AND `ornumber` <> 0
@@ -266,11 +263,16 @@ public static class zreadFunc
                         AND '" + datetimeTo.ToString("yyyy-MM-dd") + @" 23:59:59'";
         DataTable DTMinOrNumber = mySQLFunc.getdb(sql);
         if (DTMinOrNumber == null)
-            return "000000000";
+            return 0;
         else if (DTMinOrNumber.Rows.Count <= 0)
-            return "000000000";
+            return 0;
         else
-            return DTMinOrNumber.Rows[0]["minornumber"].ToString();
+        {
+            long StartORNumber = 0;
+            long.TryParse(DTMinOrNumber.Rows[0]["minornumber"].ToString(), out StartORNumber);
+            return StartORNumber;
+        }
+            
     }
 
     public static DataRow get_max_min_OR(int type, DateTime datetimeFrom, DateTime datetimeTo)
@@ -403,7 +405,7 @@ public static class zreadFunc
         DateTime firstday = GetMinSalesDate();
 
         DataRow DRminmax = get_max_min_OR(3, firstday, firstday);
-        string ornumber_begin = zreadFunc.get_min_OR(3, firstday, firstday); //DRminmax["minornumber"].ToString();
+        long ornumber_begin = zreadFunc.get_min_OR(3, firstday, firstday); //DRminmax["minornumber"].ToString();
         string ornumber_end = DRminmax["maxornumber"].ToString();
         string sdatetime = DRminmax["maxdatetime"].ToString();
 

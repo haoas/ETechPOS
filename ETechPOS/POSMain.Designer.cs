@@ -622,7 +622,7 @@
             // 
             this.tmrcheckposdsetting.Enabled = true;
             this.tmrcheckposdsetting.Interval = 5000;
-            this.tmrcheckposdsetting.Tick += new System.EventHandler(this.tmrcheckposdsetting_Tick);
+            this.tmrcheckposdsetting.Tick += new System.EventHandler(this.TimerRefreshSettings_Tick);
             // 
             // label1
             // 

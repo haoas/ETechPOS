@@ -439,5 +439,6 @@ namespace ETech.cls
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 + @"\ETECH POS\" + DateTime.Now.ToString("yyMMdd") + @"POS" + cls_globalvariables.terminalno_v + @".C";
         public static string CashierAcct_wid = "";
+
     }
 }

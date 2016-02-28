@@ -30,24 +30,44 @@ namespace ETech.cls
         private static double keyboard_ratio = 2.76;
         private static double keypad_ratio = 0.7076923076923077;
 
-        public static string getcardname(string cardno)
+        public static int getCreditDebiCardInfo(string cardno)
         {
-            string cardlengthtocheck = (cardno[0] == '3') ? "2" : "1";
-            string SQL = @"SELECT `cardname` FROM cardsettings WHERE `cardnostart` = SUBSTRING('" + cardno + "',1," + cardlengthtocheck + @")";
-            Console.WriteLine(SQL);
-            DataTable dt = mySQLFunc.getdb(SQL);
-            if (dt.Rows.Count == 0)
-                return "OTHER CARD";
-            return mySQLFunc.getdb(SQL).Rows[0]["cardname"].ToString();
+            string tempstr = string.Empty;
+            return getCreditDebiCardInfo(cardno, out tempstr);
         }
-        public static int getcardwid(string cardno)
+        public static int getCreditDebiCardInfo(string cardno, out string CardName)
         {
-            string cardlengthtocheck = (cardno[0] == '3') ? "2" : "1";
-            string SQL = @"SELECT `cardwid` FROM cardsettings WHERE `cardnostart` = SUBSTRING('" + cardno + "',1," + cardlengthtocheck + @")";
-            Console.WriteLine(SQL);
-            DataTable dt = mySQLFunc.getdb(SQL);
-            if (dt.Rows.Count == 0) return 0;
-            return Convert.ToInt32(mySQLFunc.getdb(SQL).Rows[0]["cardwid"]);
+            if (cardno.StartsWith("5"))
+            {
+                CardName = "MASTERCARD";
+                return 5;
+            }
+            else if (cardno.StartsWith("4"))
+            {
+                CardName = "VISA";
+                return 4;
+            }
+            else if (cardno.StartsWith("35"))
+            {
+                CardName = "JCB";
+                return 2;
+            }
+            else if (cardno.StartsWith("34") || cardno.StartsWith("37"))
+            {
+                CardName = "AMEX";
+                return 3;
+            }
+            else if (cardno.StartsWith("2") || cardno.StartsWith("30")
+                  || cardno.StartsWith("33") || cardno.StartsWith("36") || cardno.StartsWith("39"))
+            {
+                CardName = "DINERS";
+                return 1;
+            }
+            else
+            {
+                CardName = "OTHER CARDS";
+                return 0;
+            }
         }
 
         public static void database_validator()
@@ -66,10 +86,6 @@ namespace ETech.cls
             sql = @"SELECT `wid` FROM `PRODUCT` WHERE `wid`=2";
             if (mySQLFunc.getdb(sql).Rows.Count < 1)
                 msg = msg + "Local Tax Not Implemented in your POS!\n";
-
-            sql = @"SELECT `cardwid` FROM `cardsettings`";
-            if (mySQLFunc.getdb(sql).Rows.Count < 10)
-                msg = msg + "CardSettings are Not Completely Implemented in your database!\n";
 
             sql = @"SELECT `wid` FROM `paymentmethod`";
             if (mySQLFunc.getdb(sql).Rows.Count < 12)

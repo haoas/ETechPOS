@@ -401,9 +401,10 @@ namespace ETech
             }
         }
 
-        private void tmrcheckposdsetting_Tick(object sender, EventArgs e)
+        //Do not delete
+        private void TimerRefreshSettings_Tick(object sender, EventArgs e)
         {
-            tmrCheckPosdSettingTicked();
+            TimerRefreshSettings();
         }
         #endregion
 
@@ -1656,7 +1657,7 @@ namespace ETech
             int x = sqlclass.save_transaction(tran);
             return x;
         }
-        private void tmrCheckPosdSettingTicked()
+        private void TimerRefreshSettings()
         {
             //Dont delete this code
         }
