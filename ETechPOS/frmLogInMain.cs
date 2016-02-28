@@ -19,7 +19,6 @@ namespace ETech
     public partial class frmLogInMain : Form
     {
         private string serverDateTime;
-        private string branchNameTerminalNumber;
         private bool isconnected;
         public cls_user cashier;
 
@@ -28,12 +27,11 @@ namespace ETech
             InitializeComponent();
 
             serverDateTime = "";
-            branchNameTerminalNumber = "";
             isconnected = false;
             cashier = null;
 
-            fncFilter.set_theme_color(this);
-            cls_globalfunc.formaddkbkpevent(this);
+            //fncFilter.set_theme_color(this);
+            //cls_globalfunc.formaddkbkpevent(this);
         }
 
         private void frmLogInMain_KeyDown(object sender, KeyEventArgs e)
@@ -48,13 +46,12 @@ namespace ETech
                 this.Close();
                 return;
             }
-            else if (e.Alt && e.KeyCode == Keys.F8)
-                lblApplicationVersion.Visible = lblApplicationVersion.Visible ? false : true;
         }
         private void frmLogInMain_Load(object sender, EventArgs e)
         {
             try_connection();
-            updateConnectionControls();
+
+            RefreshServerDateTime();
 
             txtUsername.Focus();
             txtUsername.SelectAll();
@@ -62,12 +59,10 @@ namespace ETech
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
 
-            lblApplicationVersion.Text = "v" + Application.ProductVersion;
             string logInImagePath = Application.StartupPath + "/resources/images/Log In Image.jpg";
             if (File.Exists(logInImagePath))
             {
                 Bitmap bitmap = new Bitmap(logInImagePath);
-                pbLogo.Image = bitmap;
             }
         }
 
@@ -119,7 +114,7 @@ namespace ETech
         }
         private void bgwConnecting_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            updateConnectionControls();
+            RefreshServerDateTime();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -132,7 +127,7 @@ namespace ETech
         {
             try_connection();
             txtUsername.Text = txtUsername.Text.Trim();
-            
+
             if (!isconnected)
             {
                 fncFilter.alert("This device is not connected to the server.");
@@ -245,7 +240,10 @@ namespace ETech
                 string branchName = dt.Rows[0]["branchname"].ToString();
                 string terminalNumber = cls_globalvariables.terminalno_v;
                 serverDateTime = dateTime.ToString("MMM dd, yyyy hh:mm tt, ") + dateTime.DayOfWeek.ToString();
-                branchNameTerminalNumber = branchName + @" POS: " + terminalNumber;
+
+                lbl_BranchCode.Text = "Branch: " + cls_globalvariables.BranchCode + @"-" + branchName + @"";
+                lbl_Terminalno.Text = "Terminal#: " + cls_globalvariables.terminalno_v + @"";
+
                 isconnected = true;
             }
             catch (Exception ex)
@@ -255,22 +253,10 @@ namespace ETech
                 isconnected = false;
             }
         }
-        private void updateConnectionControls()
+
+        private void RefreshServerDateTime()
         {
-            if (isconnected)
-            {
-                lblStatus_d.Text = "Online";
-                lblStatus_d.ForeColor = Color.Green;
-                lblServerDateTime.Text = serverDateTime;
-                lblBranchNameTerminalNumber.Text = branchNameTerminalNumber;
-            }
-            else
-            {
-                lblStatus_d.Text = "Offline";
-                lblStatus_d.ForeColor = Color.Red;
-                lblServerDateTime.Text = "MMM dd, yyyy hh:mm tt, wwwww";
-                lblBranchNameTerminalNumber.Text = "BRANCH / POS";
-            }
+            lblServerDateTime.Text = DateTime.Now.ToString("MMM dd, yyyy hh:mm tt, ") + DateTime.Now.DayOfWeek.ToString();
         }
     }
 }

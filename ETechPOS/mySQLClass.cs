@@ -452,7 +452,7 @@ namespace ETech
             decimal change = trans.get_changeamount();
             List<cls_cardinfo> creditcards = trans.getpayments().get_creditcard();
             List<cls_cardinfo> debitcards = trans.getpayments().get_debitcard();
-            List<cls_otherpaymentinfo> giftchequesnew = trans.getpayments().get_giftchequenew();
+            List<cls_giftcheque> giftchequesnew = trans.getpayments().get_giftchequenew();
             List<cls_CustomPaymentsInfo> custompaymentsinfo = trans.getpayments().get_custompayments();
             string sSQLcd = "";
             List<string> tempStringList = new List<string>();
@@ -745,7 +745,7 @@ namespace ETech
                 transactionQueryList.Add(sSQLcd);
             }
 
-            foreach (cls_otherpaymentinfo giftchequenew in giftchequesnew)
+            foreach (cls_giftcheque giftchequenew in giftchequesnew)
             {
                 tempStringList = get_next_wid_withlock_liststring("collectiondetail");
                 foreach (string str in tempStringList)

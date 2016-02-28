@@ -1651,7 +1651,7 @@ namespace ETech.fnc
             if (tendered_gift != 0 || (tran.getpayments().get_giftchequenew().Count > 0))
             {
                 dt_tendered.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2")); cnt_item_t++;
-                foreach (cls_otherpaymentinfo giftcheque in tran.getpayments().get_giftchequenew())
+                foreach (cls_giftcheque giftcheque in tran.getpayments().get_giftchequenew())
                 {
                     dt_tendered.Rows.Add(giftcheque.get_referenceno().ToString(), giftcheque.getamount().ToString("N2"));
                     dt_tendered.Rows.Add("    Expiry Date: ", giftcheque.getexpdate().ToString("MM-yyyy"));
@@ -2125,7 +2125,7 @@ namespace ETech.fnc
             if (tendered_gift != 0 || (tran.getpayments().get_giftchequenew().Count > 0))
             {
                 tempDataTable.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2")); cnt_item_t++;
-                foreach (cls_otherpaymentinfo giftcheque in tran.getpayments().get_giftchequenew())
+                foreach (cls_giftcheque giftcheque in tran.getpayments().get_giftchequenew())
                 {
                     tempDataTable.Rows.Add(giftcheque.get_referenceno().ToString(), giftcheque.getamount().ToString("N2"));
                     tempDataTable.Rows.Add("    Expiry Date: ", giftcheque.getexpdate().ToString("MM-yyyy"));

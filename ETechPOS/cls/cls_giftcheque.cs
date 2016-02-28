@@ -6,7 +6,7 @@ using System.Data;
 
 namespace ETech.cls
 {
-    public class cls_otherpaymentinfo
+    public class cls_giftcheque
     {
         private string referenceno;
         private DateTime expdate;
@@ -15,7 +15,7 @@ namespace ETech.cls
         private int paymentmethod; //wid
 
         //constructor
-        public cls_otherpaymentinfo()
+        public cls_giftcheque()
         {
             this.referenceno = "";
             this.expdate = new DateTime();
@@ -24,7 +24,7 @@ namespace ETech.cls
             this.paymentmethod = 0;
         }
 
-        public cls_otherpaymentinfo(int collectiondetailwid_d, int paymentmethod)
+        public cls_giftcheque(int collectiondetailwid_d, int paymentmethod)
         {
             this.referenceno = "";
             this.expdate = new DateTime();
@@ -64,9 +64,9 @@ namespace ETech.cls
             this.paymentmethod = paymentmethod_d;
         }
 
-        public cls_otherpaymentinfo ShallowCopy()
+        public cls_giftcheque ShallowCopy()
         {
-            return (cls_otherpaymentinfo)this.MemberwiseClone();
+            return (cls_giftcheque)this.MemberwiseClone();
         }
 
         public string get_referenceno()

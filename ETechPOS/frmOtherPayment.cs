@@ -13,7 +13,7 @@ namespace ETech
 {
     public partial class frmOtherPayment : Form
     {
-        public List<cls_otherpaymentinfo> gcinfos;
+        public List<cls_giftcheque> gcinfos;
         public bool changeupdated;
 
         public frmOtherPayment()
@@ -30,7 +30,7 @@ namespace ETech
         private void OtherPayment_Load(object sender, EventArgs e)
         {
             dateTimePicker1.MinDate = DateTime.Now;
-            foreach (cls_otherpaymentinfo gc in this.gcinfos)
+            foreach (cls_giftcheque gc in this.gcinfos)
             {
                 string referenceno = gc.get_referenceno();
                 DateTime expdate = gc.getexpdate();
@@ -158,7 +158,7 @@ namespace ETech
                 DateTime expdate = Convert.ToDateTime(dgvGCInfo.Rows[row_cnt].Cells["colexpdate"].Value);
                 string memo = dgvGCInfo.Rows[row_cnt].Cells["colMemo"].Value.ToString();
 
-                cls_otherpaymentinfo gc = new cls_otherpaymentinfo();
+                cls_giftcheque gc = new cls_giftcheque();
                 gc.setotherpaymentinfo(refno, expdate, amt, memo, 13);
                 this.gcinfos.Add(gc);
             }

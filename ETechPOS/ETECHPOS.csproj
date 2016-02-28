@@ -69,7 +69,7 @@
     <Compile Include="cls\cls_member.cs" />
     <Compile Include="cls\cls_memberdiscount.cs" />
     <Compile Include="cls\cls_NonVat.cs" />
-    <Compile Include="cls\cls_otherpaymentinfo.cs" />
+    <Compile Include="cls\cls_giftcheque.cs" />
     <Compile Include="cls\cls_payment.cs" />
     <Compile Include="cls\cls_POSTransaction.cs" />
     <Compile Include="cls\cls_POSTransDiscount.cs" />
