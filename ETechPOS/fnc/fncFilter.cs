@@ -55,8 +55,6 @@ namespace ETech.fnc
         public static int get_permission_senior() { return 111; }
         public static int get_permission_debt() { return 112; }
         public static int get_permission_retail() { return 113; }
-        public static int get_permission_reprint_posd() { return 114; }
-        public static int get_permission_collectioncash_posd() { return 115; }
         public static int get_permission_forcereturn() { return 116; }
 
         public static bool check_permission_login(List<int> permissions)
@@ -135,18 +133,6 @@ namespace ETech.fnc
         {
             if (permissions.Contains(100)) return true;
             if (permissions.Contains(113)) return true;
-            return false;
-        }
-        public static bool check_permission_reprint_posd(List<int> permissions)
-        {
-            if (permissions.Contains(100)) return true;
-            if (permissions.Contains(114)) return true;
-            return false;
-        }
-        public static bool check_permission_collectioncash_posd(List<int> permissions)
-        {
-            if (permissions.Contains(100)) return true;
-            if (permissions.Contains(115)) return true;
             return false;
         }
         public static bool check_permission_forcereturn(List<int> permissions)

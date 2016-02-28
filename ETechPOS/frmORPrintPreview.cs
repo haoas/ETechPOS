@@ -71,14 +71,6 @@ namespace ETech
         {
             if (e.KeyCode == Keys.F1)
                 done_process();
-            //else if (e.KeyCode == Keys.H)
-            //{
-            //    if (Check_ReprintReceiptPermission(true))
-            //    {
-            //        ChangePosd();
-            //    }
-            //    e.Handled = true;
-            //}
             else if (e.KeyCode == Keys.Escape)
             {
                 this.or_number = "";

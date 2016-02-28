@@ -583,7 +583,7 @@ namespace ETech.fnc
             dt_tblheader.Rows.Add("Description", "QTY / AMOUNT");
 
             List<DataTable> list_dtsummary = get_summary_data(1, datetime_d);
-            zreadFunc.generate_posxyzread(datetime_d, 1, false);
+            zreadFunc.generate_posxyzread(datetime_d, 1);
 
             cls_bills cash_denom = new cls_bills();
             cash_denom.get_cashdenomination(new cls_user(), 3);
@@ -948,7 +948,7 @@ namespace ETech.fnc
             if (bmp == null)
             {
                 g = e.Graphics;
-                zreadFunc.generate_posxyzread(datetime_d, 3, false);
+                zreadFunc.generate_posxyzread(datetime_d, 3);
             }
             else
             {
@@ -1096,10 +1096,8 @@ namespace ETech.fnc
 
             return dt_header1;
         }
-        public static DataRow get_summary_data(DateTime datetime_d, bool isposd)
+        public static DataRow get_summary_data(DateTime datetime_d)
         {
-            string suffix = (isposd) ? "_posd" : "";
-
             string sBranchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
             string sdate = datetime_d.ToString("yyyy-MM-dd");
@@ -1156,8 +1154,8 @@ namespace ETech.fnc
                                 IF(`show` = 1 AND `status` = 1, D.`quantity` * (D.`oprice` - D.`price`),0) AS 'dcamount',
                                 IF(`show` = 1 AND `status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
                                 IF(`show` = 0 or `status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
-                            FROM `saleshead" + suffix + @"` AS H 
-                            LEFT JOIN `salesdetail" + suffix + @"` AS D ON H.`wid` = D.`headid` 
+                            FROM `saleshead` AS H 
+                            LEFT JOIN `salesdetail` AS D ON H.`wid` = D.`headid` 
                             WHERE H.`type` = 3 AND H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno + @"
                                 AND H.`date` >= '" + sdate + @" 00:00:00'
                                 AND H.`date` <= '" + sdate + @" 23:59:59'
@@ -1173,9 +1171,9 @@ namespace ETech.fnc
                                 SUM(IF(D.`method` = 6,D.`amount`,0)) AS 'debitcard',
                                 SUM(IF(D.`method` = 7 OR D.`method` = 13,D.`amount`,0)) AS 'giftcheque',
                                 SUM(IF(D.`method` = 8,D.`amount`,0)) AS 'memberpoints'
-                        FROM `collectionhead" + suffix + @"` AS H, 
-                            `collectiondetail" + suffix + @"` AS D, 
-                            `collectionsales" + suffix + @"` AS S
+                        FROM `collectionhead` AS H, 
+                            `collectiondetail` AS D, 
+                            `collectionsales` AS S
                         WHERE H.`wid` = D.`headid` AND H.`wid` = S.`headid` AND H.`show` = 1 
                             AND H.`collectiondate` >= '" + sdate + @" 00:00:00'
                             AND H.`collectiondate` <= '" + sdate + @" 23:59:59'
@@ -1539,16 +1537,16 @@ namespace ETech.fnc
 
             if (type == 1)
             {
-                zreadFunc.generate_posxyzread(datetime_d, 1, isposd);
-                dr_summary = zreadFunc.get_values_from_posxyzread(datetime_d, 1, isposd);
+                zreadFunc.generate_posxyzread(datetime_d, 1);
+                dr_summary = zreadFunc.get_values_from_posxyzread(datetime_d, 1);
                 dr_cashflow = fncHardware.get_cashflow_data(datetime_d);
                 g = fncHardware.render_reading(e, bmp, type, datetime_d, dr_summary, dr_cashflow);
                 g.Dispose();
                 return;
             }
 
-            bool zreadingexist = zreadFunc.Zread_exist(datetime_d, type, isposd);
-            DataRow posxyzreadRow = zreadFunc.get_values_from_posxyzread(datetime_d, type, isposd);
+            bool zreadingexist = zreadFunc.Zread_exist(datetime_d, type);
+            DataRow posxyzreadRow = zreadFunc.get_values_from_posxyzread(datetime_d, type);
             bool hasCashTender = Convert.ToDecimal(posxyzreadRow["cash"]) > 0;
             bool recompute = false;
             if (userwid == 1)
@@ -1567,8 +1565,8 @@ namespace ETech.fnc
             else //recomputes values to be saved in posxyzread
             {
                 //Generate Values to posxyzread
-                zreadFunc.generate_posxyzread(datetime_d, type, isposd);
-                dr_summary = zreadFunc.get_values_from_posxyzread(datetime_d, type, isposd);
+                zreadFunc.generate_posxyzread(datetime_d, type);
+                dr_summary = zreadFunc.get_values_from_posxyzread(datetime_d, type);
             }
 
             dr_cashflow = fncHardware.get_cashflow_data(datetime_d);

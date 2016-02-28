@@ -118,58 +118,6 @@ namespace ETech
                     return;
                 }
 
-                DataTable table = mySQLFunc.getdb(@"
-                    SELECT *
-                    FROM `posxyzread`
-                    LIMIT 1");
-                if (table != null)
-                {
-                    if (!table.Columns.Contains("member_points_amt"))
-                    {
-                        mySQLFunc.setdb(@"ALTER TABLE `posxyzread`
-                            ADD COLUMN `member_points_amt` DOUBLE NULL DEFAULT '0'");
-                    }
-                }
-
-                table = mySQLFunc.getdb(@"
-                    SELECT *
-                    FROM `posxyzread_posd`
-                    LIMIT 1");
-                if (table != null)
-                {
-                    if (!table.Columns.Contains("member_points_amt"))
-                    {
-                        mySQLFunc.setdb(@"ALTER TABLE `posxyzread_posd`
-                            ADD COLUMN `member_points_amt` DOUBLE NULL DEFAULT '0'");
-                    }
-                }
-
-                table = mySQLFunc.getdb(@"
-                    SELECT *
-                    FROM `salesdetaildiscounts`
-                    LIMIT 1");
-                if (table != null)
-                {
-                    if (!table.Columns.Contains("discountwid"))
-                    {
-                        mySQLFunc.setdb(@"ALTER TABLE `salesdetaildiscounts`
-                            ADD COLUMN `discountwid` INT(11) DEFAULT '0'");
-                    }
-                }
-
-                table = mySQLFunc.getdb(@"
-                    SELECT *
-                    FROM `salesheaddiscounts`
-                    LIMIT 1");
-                if (table != null)
-                {
-                    if (!table.Columns.Contains("discountwid"))
-                    {
-                        mySQLFunc.setdb(@"ALTER TABLE `salesheaddiscounts`
-                            ADD COLUMN `discountwid` INT(11) DEFAULT '0'");
-                    }
-                }
-
                 cls_globalfunc.database_validator();
                 cls_globalfunc.DeleteUnusedSalesHead();
 

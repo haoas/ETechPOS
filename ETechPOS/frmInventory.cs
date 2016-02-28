@@ -26,13 +26,9 @@ namespace ETech
 
             fncFilter.set_theme_color(this);
 
-            //Do not delete***
-            DateTime MinSalesDate = zreadFunc.GetMinSalesDate(false);
+            DateTime MinSalesDate = zreadFunc.GetMinSalesDate();
             this.dateTimePicker1.MinDate = MinSalesDate;
             this.dateTimePicker2.MinDate = MinSalesDate;
-            //this.dateTimePicker1.MaxDate = DateTime.Now;
-            //this.dateTimePicker2.MaxDate = DateTime.Now;
-            //***
         }
 
         public void F1()

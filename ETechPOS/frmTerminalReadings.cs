@@ -93,7 +93,7 @@ namespace ETech
                     MessageBox.Show("Date To/From cannot be the same");
                     return;
                 }
-                if (!zreadFunc.Zread_exist(Ddateto, 3, false))
+                if (!zreadFunc.Zread_exist(Ddateto, 3))
                 {
                     MessageBox.Show("Z-reading for " + Ddateto.ToString("yyyy-MM-dd") + @" is not yet generated!.");
                     return;
@@ -315,8 +315,8 @@ namespace ETech
                 listBox1.Items.Remove("TERMINAL ACCOUNTABILITY");
             }
 
-            dateTimePicker1.MinDate = zreadFunc.GetMinSalesDate(false);
-            dateTimePicker2.MinDate = zreadFunc.GetMinSalesDate(false);
+            dateTimePicker1.MinDate = zreadFunc.GetMinSalesDate();
+            dateTimePicker2.MinDate = zreadFunc.GetMinSalesDate();
 
             dateTimePicker1.MaxDate = DateTime.Now.Date.AddDays(1).AddSeconds(-1);
             dateTimePicker2.MaxDate = DateTime.Now.Date.AddDays(1).AddSeconds(-1);
