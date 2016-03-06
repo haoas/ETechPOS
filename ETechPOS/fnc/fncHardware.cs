@@ -253,7 +253,7 @@ namespace ETech.fnc
                                 IF(`show` = 1 AND `status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
                                 IF(`show` = 0 OR  `status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
                             FROM `saleshead` AS H LEFT JOIN `salesdetail` AS D ON H.`wid` = D.`headid` 
-                            WHERE H.`type` = 3 AND H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno +
+                            WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno +
                             zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetimeTO_d) + @"
                         ) A
                         GROUP BY A.`shwid`
@@ -370,7 +370,7 @@ namespace ETech.fnc
 	                salesdetaildiscounts AS sdd
 	                ON sdd.`salesdetailwid` = sd.`wid`
                 WHERE
-	                sh.`show` = 1 and sh.`status` = 1 and sh.`type` = 3 and sdd.`type` = 2
+	                sh.`show` = 1 and sh.`status` = 1 and sdd.`type` = 2
                     and `date` between '" + datetime_d.ToString("yyyy-MM-dd") + "' and '" + datetime_d.ToString("yyyy-MM-dd") + " 23:59:59';";
 
             decimal t_senior_disc = 0;
@@ -630,7 +630,7 @@ namespace ETech.fnc
                             IF(`show` = 1 AND `status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
                             IF(`show` = 0 or `status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
                         FROM `saleshead` AS H LEFT JOIN `salesdetail` AS D ON H.`wid` = D.`headid` 
-                        WHERE H.`type` = 3 AND H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno +
+                        WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno +
                         zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetimeTO_d) + @"
                     ) A
                     GROUP BY A.`shwid`
@@ -967,7 +967,7 @@ namespace ETech.fnc
                                 IF(`show` = 0 or `status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
                             FROM `saleshead` AS H 
                             LEFT JOIN `salesdetail` AS D ON H.`wid` = D.`headid` 
-                            WHERE H.`type` = 3 AND H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno + @"
+                            WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno + @"
                                 AND H.`date` >= '" + sdate + @" 00:00:00'
                                 AND H.`date` <= '" + sdate + @" 23:59:59'
                         ) A
@@ -1284,7 +1284,7 @@ namespace ETech.fnc
 	                salesdetaildiscounts AS sdd
 	                ON sdd.`salesdetailwid` = sd.`wid`
                 WHERE
-	                sh.`show` = 1 and sh.`status` = 1 and sh.`type` = 3 and sdd.`type` = 2
+	                sh.`show` = 1 and sh.`status` = 1 and sdd.`type` = 2
                     and `date` between '" + datetime_d.ToString("yyyy-MM-dd") + "' and '" + datetime_d.ToString("yyyy-MM-dd") + " 23:59:59';";
 
             decimal t_senior_disc = 0;
@@ -1410,7 +1410,6 @@ namespace ETech.fnc
             string sACC = cls_globalvariables.ACC_v;
             string sPermitNo = cls_globalvariables.PermitNo_v;
 
-            string transactionno = tran.gettransactionno();
             string ornumber = tran.getORnumber();
             string sMIN = cls_globalvariables.MIN_v;
             string sSerial = cls_globalvariables.Serial_v;
@@ -1453,7 +1452,6 @@ namespace ETech.fnc
             if (printformat == 76 || printformat == 57)
             {
                 dt_header2.Columns.Add(); dt_header2.Columns.Add();
-                dt_header2.Rows.Add("Tran#:", format_transactionno(transactionno));
                 dt_header2.Rows.Add("OR#:", ornumber);
                 dt_header2.Rows.Add("Date:", salesdate);
                 dt_header2.Rows.Add("Time:", salestime);
@@ -1486,7 +1484,7 @@ namespace ETech.fnc
             else
             {
                 dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add();
-                dt_header2.Rows.Add("Tran#:", format_transactionno(transactionno) + "", "Date:", salesdate);
+                dt_header2.Rows.Add("","", "Date:", salesdate);
                 dt_header2.Rows.Add("OR#:", ornumber + "", "Time:", salestime);
                 dt_header2.Rows.Add("TRM:", terminalno + " ", " ", "");
                 if (cashier != "") dt_header2.Rows.Add("Cashier:", cashier + "", "ID#:", cashiercode);
@@ -1928,7 +1926,7 @@ namespace ETech.fnc
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
             tempDataTable.Rows.Add("TERMINAL#: " + cls_globalvariables.terminalno_v, "");
-            tempDataTable.Rows.Add("SI#: " + tran.getORnumber(), "TRAN#: " + format_transactionno(tran.gettransactionno()));
+            tempDataTable.Rows.Add("SI#: " + tran.getORnumber());
             tempDataTable.Rows.Add("CASHIER: " + tran.getclerk().getfullname(), "ID#: " + tran.getclerk().getusercode());
             tempDataTable.Rows.Add("DATE: " + tran.getdatetime().ToShortDateString(), "TIME: " + tran.getdatetime().ToLongTimeString());
 
@@ -2505,21 +2503,6 @@ namespace ETech.fnc
             return nY;
         }
 
-        private static string format_transactionno(string transactionno)
-        {
-            try
-            {
-                int length_of_transno = 7;
-                string ornumber_only = transactionno.Substring(transactionno.Length - length_of_transno);
-                string terminal = transactionno.Substring(0, transactionno.Length - length_of_transno);
-
-                return ornumber_only;
-            }
-            catch (Exception)
-            {
-                return transactionno;
-            }
-        }
         public static bool PulloutCashCollection()
         {
             if (cls_globalvariables.maximum_cash_collection_v == 0)

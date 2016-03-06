@@ -97,7 +97,7 @@ namespace ETech
 
             string sql = @"SELECT COALESCE(SUM(D.`quantity`),0) as `remainqty` 
             FROM Saleshead as H, Salesdetail as D
-            WHERE H.`show` = 1 AND H.`status` = 1 AND H.`type`=3 
+            WHERE H.`show` = 1 AND H.`status` = 1
                 AND H.`branchid`=" + branchid + @"
                 AND H.`wid`=D.`headid`
                 AND D.`productid`=" + productid + @" AND 

@@ -12,7 +12,6 @@ namespace ETech.cls
     {
         private int wid;
         private string ORnumber;
-        private string transactionno;
         private DateTime salesdatetime;
         private cls_user clerk;
         private cls_user checker;
@@ -37,7 +36,6 @@ namespace ETech.cls
         {
             this.wid = 0;
             this.ORnumber = "";
-            this.transactionno = "";
             this.adjust = 0;
             this.discount = 0;
             this.salesdatetime = DateTime.Now;
@@ -61,9 +59,6 @@ namespace ETech.cls
 
         public void setORnumber(string ORnumber_d) { this.ORnumber = ORnumber_d; }
         public string getORnumber() { return this.ORnumber; }
-
-        public void settransactionno(string transactionno_d) { this.transactionno = transactionno_d; }
-        public string gettransactionno() { return this.transactionno; }
 
         public void setmemo(string memo_d) { this.memo = memo_d; }
         public string getmemo() { return this.memo; }
@@ -156,7 +151,6 @@ namespace ETech.cls
 
             DataRow dr = dt.Rows[0];
             this.ORnumber = dr["ornumber"].ToString();
-            this.transactionno = dr["transactionno"].ToString();
             this.adjust = Convert.ToDecimal(dr["adjust"]);
             this.discount = Convert.ToDecimal(dr["discount1"]);
             this.salesdatetime = DateTime.Parse(dr["date"].ToString());

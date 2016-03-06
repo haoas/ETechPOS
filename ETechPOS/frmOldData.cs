@@ -39,7 +39,6 @@ namespace ETech
             string terminalno = cls_globalvariables.terminalno_v;
 
             textBox1.Text = terminalno;
-            textBox2.Text = textBox1.Text;
             textBox3.Text = cls_globalvariables.BranchCode;
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
@@ -60,21 +59,19 @@ namespace ETech
             mySQLClass mysqlclass = new mySQLClass();
 
             string ornumber = this.txtLastOR.Text;
-            string transno = this.txtLastTrans.Text;
             decimal amount = Convert.ToDecimal(this.txtAmount.Text.Trim());
             string lastdate = this.calLastDate.SelectionRange.Start.ToString("yyyy-MM-dd");
 
             string branchid = textBox3.Text;
             string terminalno = textBox1.Text;
 
-            if ((ornumber.Length != 7) || (transno.Length != 7))
+            if ((ornumber.Length != 7))
             {
-                MessageBox.Show("ornumber and transno should be 7");
+                MessageBox.Show("ornumber should be 7");
                 return;
             }
 
             ornumber = (branchid + terminalno + ornumber).TrimStart('0');
-            transno = (terminalno + transno).TrimStart('0');
 
             int next_wid = mysqlclass.get_next_wid_withlock("saleshead");
             string sSQL = @"UPDATE `saleshead` SET
@@ -85,7 +82,6 @@ namespace ETech
                                 `lastmodifiedby` = '0', 
                                 `lastmodifieddate` = NOW(), 
                                 `datecreated` = NOW(),  
-                                `transactionno` = '" + transno + @"', 
                                 `ornumber` = '" + ornumber + @"',  
                                 `terminalno` = '" + terminalno + @"',
                                 `show` = 1, `status` = 1, `customerid` = 0

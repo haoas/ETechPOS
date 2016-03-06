@@ -106,7 +106,7 @@ namespace ETech.cls
                 FROM
                     `saleshead`
                 WHERE
-                    `type` = 3 AND `branchid`=" + cls_globalvariables.BranchCode + @"
+                    `branchid`=" + cls_globalvariables.BranchCode + @"
                     AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
                     AND `date` >= '" + DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd") + @"'
                     AND `show` = 1 AND `status` = 1
@@ -120,7 +120,7 @@ namespace ETech.cls
                 FROM
                     `saleshead`
                 WHERE
-                    `type` = 3 AND `branchid`=" + cls_globalvariables.BranchCode + @"
+                    `branchid`=" + cls_globalvariables.BranchCode + @"
                     AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
                     AND `date` >= '" + DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd") + @"'
                     AND `ornumber` > " + DT.Rows[0]["ornumber"].ToString() + @"

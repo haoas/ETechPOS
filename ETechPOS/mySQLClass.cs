@@ -304,32 +304,10 @@ namespace ETech
 		                            H.`branchid` = " + branchid + @" AND
 		                            `terminalno` = " + terminalno + @" AND 
 		                            CAST(`date` AS DATE) = CAST(NOW() AS DATE)
-		                            AND `type` = 3 AND `status` = 1 AND `show` = 1
+		                            AND `status` = 1 AND `show` = 1
                             ) A";
             DataTable dt = getdb(sSQL);
             return Convert.ToDecimal(dt.Rows[0]["amount"]);
-        }
-
-        public string get_nexttransactionno()
-        {
-            string branchid = cls_globalvariables.BranchCode;
-            string terminalno = string.Format("{0:00}", cls_globalvariables.terminalno_v);
-
-            string sSQLtransno = @"SELECT COALESCE(MAX(`transactionno`),0) AS 'transactionno' FROM saleshead
-                                WHERE `terminalno` = " + terminalno + @"
-	                                AND `branchid` = " + branchid;
-
-            DataTable dt = getdb(sSQLtransno);
-            string next_transactionno = terminalno.ToString() + "0000001";
-
-            Int64 maxtransno = Convert.ToInt64(dt.Rows[0]["transactionno"]);
-
-            if ((dt.Rows.Count > 0) && (maxtransno > 0))
-            {
-                next_transactionno = (Convert.ToInt64(dt.Rows[0]["transactionno"]) + 1).ToString();
-            }
-
-            return next_transactionno;
         }
 
         public string get_nextornumber()
@@ -362,26 +340,22 @@ namespace ETech
 
             int userwid = trans.getclerk().getwid();
 
-            string next_transactionno = get_nexttransactionno();
             string next_ornumber = get_nextornumber();
 
             int next_wid = get_next_wid_withlock("saleshead");
             string sSQL = @"UPDATE `saleshead` SET
                                 `branchid` = '" + branchid + @"', 
-                                `type` = '3', 
                                 `date` = '" + datetime_d + @"', 
                                 `userid` = '" + userwid + @"', 
                                 `lastmodifiedby` = '" + userwid + @"', 
                                 `lastmodifieddate` = NOW(), 
                                 `datecreated` = NOW(),  
-                                `transactionno` = '" + next_transactionno + @"', 
                                 `ornumber` = '" + next_ornumber + @"',  
                                 `terminalno` = '" + terminalno + @"'
                             WHERE `wid` = '" + next_wid + @"'";
             setdb(sSQL);
 
             trans.setORnumber(next_ornumber);
-            trans.settransactionno(next_transactionno);
             trans.setWid(next_wid);
             return 0;
         }
@@ -419,13 +393,6 @@ namespace ETech
 
         public int save_transaction(cls_POSTransaction trans)
         {
-            string tbl_saleshead = "saleshead";
-            string tbl_salesdetail = "salesdetail";
-            string tbl_collectionhead = "collectionhead";
-            string tbl_collectiondetail = "collectiondetail";
-            string tbl_collectionsales = "collectionsales";
-            string tbl_poscardpayment = "poscardpayment";
-
             string datetime_d = trans.getdatetime().ToString("yyyy-MM-dd HH:mm:ss");
             string branchid = cls_globalvariables.BranchCode;
             int salesheadwid = trans.getWid();
@@ -514,7 +481,7 @@ namespace ETech
             List<string> transactionQueryList = new List<string>();
             string sSQL = "";
 
-            sSQL = @"UPDATE `" + tbl_saleshead + @"` SET
+            sSQL = @"UPDATE `saleshead` SET
                         `salesman` = " + trans.getsalesman().getwid().ToString() + @",
                         `status` = 1, 
                         `customerid` = " + customerid + @", 
@@ -525,10 +492,8 @@ namespace ETech
                         `seniorno` = '" + seniorno + @"', 
                         `seniorname` = '" + escapeString(seniorname) + @"',
                         `ornumber` = '" + trans.getORnumber() + @"',
-                        `transactionno` = '" + trans.gettransactionno() + @"',
                         `userid` = '" + userid + @"',
-                        `branchid` = '" + branchid + @"',
-                        `type` = 3,                        
+                        `branchid` = '" + branchid + @"',                     
                         `lastmodifiedby` = " + userid + @", 
                         `lastmodifieddate` = NOW(), 
                         `istransfer` = 0, 
@@ -557,12 +522,12 @@ namespace ETech
                 decimal addbackqty = (prod.getQty() < 0) ? -1 * prod.getQty() : 0;
                 decimal addbackbigqty = (prod.getQty() < 0) ? prod.getBigQty() : 1;
 
-                List<string> temp = get_next_wid_withlock_liststring(tbl_salesdetail);
+                List<string> temp = get_next_wid_withlock_liststring("salesdetail");
                 foreach (string str in temp)
                     transactionQueryList.Add(str);
                 transactionQueryList.Add("SET @salesdetailwid := @wid_d");
                 int issenior = (trans.getsenior().get_idnumber().Length >= 1 && prod.getIsSenior() != 0) ? prod.getIsSenior() : 0;
-                string sSQLdetail = @"UPDATE `" + tbl_salesdetail + @"` SET
+                string sSQLdetail = @"UPDATE `salesdetail` SET
                                 `headid` = '" + salesheadwid + @"', 
                                 `productid` = '" + prod.getWid().ToString() + @"',  
                                 `quantity` = '" + qty + @"',  
@@ -619,11 +584,11 @@ namespace ETech
                             VALUES " + discquery.Substring(2));
             }
 
-            tempStringList = get_next_wid_withlock_liststring(tbl_collectionhead);
+            tempStringList = get_next_wid_withlock_liststring("collectionhead");
             foreach (string str in tempStringList)
                 transactionQueryList.Add(str);
             transactionQueryList.Add(@"SET @collectionheadwid := @wid_d");
-            string sSQLch = @"UPDATE `" + tbl_collectionhead + @"` SET
+            string sSQLch = @"UPDATE `collectionhead` SET
                                 `customerid` = " + customerid + @", 
                                 `collectiondate` = NOW(), 
                                 `userid` = " + userid + @",  
@@ -641,7 +606,7 @@ namespace ETech
             //setdb(sSQLch);
             transactionQueryList.Add(sSQLch);
 
-            string sSQLcs = @"INSERT INTO `" + tbl_collectionsales + @"`
+            string sSQLcs = @"INSERT INTO `collectionsales`
                             (`headid`, `saleswid`, `amount`)
                             VALUES
                             ( @collectionheadwid, " + salesheadwid + ", " + (totalpaidamt - trans.get_changeamount()) + ")";
@@ -651,10 +616,10 @@ namespace ETech
 
             if (cash != 0)
             {
-                tempStringList = get_next_wid_withlock_liststring(tbl_collectiondetail);
+                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
+                sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 1, 
                                 `amount` = " + cash + @"
@@ -669,9 +634,9 @@ namespace ETech
                 tempStringList = get_next_wid_withlock_liststring("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
+                sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
-                                `method` = 1, 
+                                `method` = 1,
                                 `amount` = -" + change + @"
                            WHERE `wid` = @wid_d";
 
@@ -684,7 +649,7 @@ namespace ETech
                 tempStringList = get_next_wid_withlock_liststring("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
+                sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 5, 
                                 `amount` = " + creditcard.getamount() + @"
@@ -695,10 +660,10 @@ namespace ETech
                 transactionQueryList.Add(sSQLcd);
                 transactionQueryList.Add("SET @collectiondetailwid = @wid_d");
 
-                tempStringList = get_next_wid_withlock_liststring(tbl_poscardpayment);
+                tempStringList = get_next_wid_withlock_liststring("poscardpayment");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_poscardpayment + @"` SET
+                sSQLcd = @"UPDATE `poscardpayment` SET
                             `collectiondetailid` = @collectiondetailwid, 
                             `cardsettingwid` = '" + cls_globalfunc.getCreditDebiCardInfo(creditcard.getcardno()) + @"', 
                             `cardno` = '" + creditcard.getcardno() + @"', 
@@ -717,7 +682,7 @@ namespace ETech
                 tempStringList = get_next_wid_withlock_liststring("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
+                sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 6, 
                                 `amount` = " + debitcard.getamount() + @"
@@ -728,10 +693,10 @@ namespace ETech
                 transactionQueryList.Add(sSQLcd);
                 transactionQueryList.Add("SET @collectiondetailwid = @wid_d");
 
-                tempStringList = get_next_wid_withlock_liststring(tbl_poscardpayment);
+                tempStringList = get_next_wid_withlock_liststring("poscardpayment");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_poscardpayment + @"` SET
+                sSQLcd = @"UPDATE `poscardpayment` SET
                             `collectiondetailid` = @collectiondetailwid, 
                             `cardno` = '" + debitcard.getcardno() + @"', 
                             `fullname` = '" + escapeString(debitcard.getname()) + @"',
@@ -750,7 +715,7 @@ namespace ETech
                 tempStringList = get_next_wid_withlock_liststring("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
+                sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 13,
                                 `amount` = " + giftchequenew.getamount() + @"
@@ -779,7 +744,7 @@ namespace ETech
                 tempStringList = get_next_wid_withlock_liststring("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
+                sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = " + custompayment.get_paymentwid() + @", 
                                 `amount` = " + custompayment.get_amount() + @"
@@ -814,7 +779,7 @@ namespace ETech
                 tempStringList = get_next_wid_withlock_liststring("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
-                sSQLcd = @"UPDATE `" + tbl_collectiondetail + @"` SET
+                sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 8, 
                                 `amount` = " + mem_points + @"
@@ -823,11 +788,11 @@ namespace ETech
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
             }
-            tempStringList = update_synctable_liststring(tbl_saleshead, salesheadwid.ToString());
+            tempStringList = update_synctable_liststring("saleshead", salesheadwid.ToString());
             foreach (string str in tempStringList)
                 transactionQueryList.Add(str);
 
-            tempStringList = update_synctable_liststring(tbl_collectionhead, "@collectionheadwid");
+            tempStringList = update_synctable_liststring("collectionhead", "@collectionheadwid");
             foreach (string str in tempStringList)
                 transactionQueryList.Add(str);
 

@@ -33,10 +33,7 @@
             this.calLastDate = new System.Windows.Forms.MonthCalendar();
             this.label1 = new System.Windows.Forms.Label();
             this.txtLastOR = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtLastTrans = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnESC = new System.Windows.Forms.Button();
@@ -92,28 +89,6 @@
             this.txtLastOR.Text = "0000001";
             this.txtLastOR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(257, 53);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(124, 35);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Last Trans:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtLastTrans
-            // 
-            this.txtLastTrans.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLastTrans.Location = new System.Drawing.Point(436, 56);
-            this.txtLastTrans.MaxLength = 7;
-            this.txtLastTrans.Name = "txtLastTrans";
-            this.txtLastTrans.Size = new System.Drawing.Size(90, 30);
-            this.txtLastTrans.TabIndex = 2;
-            this.txtLastTrans.Tag = "num";
-            this.txtLastTrans.Text = "0000001";
-            this.txtLastTrans.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -125,18 +100,6 @@
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "1";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(399, 54);
-            this.textBox2.MaxLength = 2;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(31, 30);
-            this.textBox2.TabIndex = 12;
-            this.textBox2.Text = "1";
-            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBox3
             // 
@@ -180,10 +143,7 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.txtLastTrans);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtLastOR);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.calLastDate);
@@ -210,10 +170,7 @@
         private System.Windows.Forms.MonthCalendar calLastDate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtLastOR;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtLastTrans;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnESC;

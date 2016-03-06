@@ -20,7 +20,7 @@ public static class zreadFunc
         string GetMinDateInSalesHead =
         @"SELECT COALESCE(min(`date`),NOW()) as mindate 
             FROM `saleshead` WHERE `branchid` = " + branchid +
-        " AND `terminalno` = " + terminalno + " AND `type` = 3";
+        " AND `terminalno` = " + terminalno;
         DateTime DTMinDateInSaleshead = Convert.ToDateTime(mySQLFunc.getdb(GetMinDateInSalesHead).Rows[0]["mindate"]);
         DTMinDateInSaleshead = zreadFunc.getZreadDate(DTMinDateInSaleshead);
 
@@ -239,7 +239,7 @@ public static class zreadFunc
 
         string sql = @"SELECT SUM(ROUND(CAST(D.`price` * D.`quantity` AS DECIMAL(10,3)),2)) AS 'total_amount'
                         FROM `saleshead` AS H, `salesdetail` AS D
-                        WHERE H.`wid` = D.`headid` AND H.`show` = 1 AND H.`status` = 1 AND H.`type` = 3
+                        WHERE H.`wid` = D.`headid` AND H.`show` = 1 AND H.`status` = 1
                             AND H.`terminalno` = " + terminalno + @" AND H.`branchid` = " + sBranchid +
                         zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetime_d);
         decimal cur_total = 0;
@@ -253,8 +253,7 @@ public static class zreadFunc
                 @"SELECT 
                     COALESCE(MIN(`ornumber`), 0) AS `minornumber`,
                 FROM `saleshead`
-                WHERE `type` = 3
-                    AND `ornumber` <> 0
+                WHERE `ornumber` <> 0
                     AND `branchid` = " + cls_globalvariables.BranchCode + @"
                     AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
                     AND `date`
@@ -284,8 +283,7 @@ public static class zreadFunc
                     COALESCE(MIN(`ornumber`), 0) AS `minornumber`,
                     DATE(`date`) AS `date`
                 FROM `saleshead`
-                WHERE `type` = 3
-                    AND `ornumber` <> 0
+                WHERE `ornumber` <> 0
                     AND `branchid` = " + cls_globalvariables.BranchCode + @"
                     AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
                     AND `date`
