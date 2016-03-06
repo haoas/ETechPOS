@@ -28,7 +28,6 @@ namespace ETech.cls
         private bool isvat;
         private int issenior;
         private decimal qty;
-        private decimal bigqty;
 
         private decimal price;
         private decimal wholesaleprice;
@@ -66,7 +65,6 @@ namespace ETech.cls
             this.singlebarcode = "";
             this.productname = "";
             this.qty = 1;
-            this.bigqty = 1;
             this.price = 0;
             this.wholesaleprice = 0;
             this.pricea = 0;
@@ -147,7 +145,7 @@ namespace ETech.cls
 
                 sSQL = @"SELECT P.`wid` FROM `product` AS P, `branchprice` AS B 
                             WHERE P.`show` = 1 AND P.`status` = 1 AND P.`wid` = B.`productid` 
-                                AND B.`ispackage` = 1 AND B.`branchid` = " + cls_globalvariables.BranchCode + @"
+                                AND B.`branchid` = " + cls_globalvariables.BranchCode + @"
                                 AND ( P.`packbarcode` = @barcode_d 
                                     OR P.`packbarcode2` = @barcode_d )";
                 dt = mySQLFunc.getdb(sSQL,
@@ -177,22 +175,6 @@ namespace ETech.cls
             {
                 int pwid = Convert.ToInt32(dt.Rows[0]["wid"]);
                 this.setcls_product_by_wid(pwid);
-                return;
-            }
-
-            //search for package barcode
-            sSQL = @"SELECT P.`wid` FROM `product` AS P, `branchprice` AS B 
-                            WHERE P.`show` = 1 AND P.`status` = 1 AND P.`wid` = B.`productid` 
-                                AND B.`ispackage` = 1 AND B.`branchid` = " + cls_globalvariables.BranchCode + @"
-                                AND ( P.`packbarcode` LIKE @barcode_d_like 
-                                    OR P.`packbarcode2` LIKE @barcode_d_like )";
-            dt = mySQLFunc.getdb(sSQL,
-                                new List<string>(new string[] { "barcode_d_like" }),
-                                new List<string>(new string[] { barcode_d + "%" }));
-            if (dt.Rows.Count > 0)
-            {
-                int pwid = Convert.ToInt32(dt.Rows[0]["wid"]);
-                this.setcls_product_by_wid(pwid, true, false);
                 return;
             }
 
@@ -370,7 +352,6 @@ namespace ETech.cls
             if (!is_package)
             {
                 this.barcode = this.singlebarcode;
-                this.bigqty = 1;
                 this.pprice = this.retailpprice;
                 this.origprice = this.retailprice;
                 this.price = this.retailprice;
@@ -383,7 +364,6 @@ namespace ETech.cls
         public void reset_data_by_mode(bool isnonvat_d, bool issenior_d, bool iswholesale, int pricingtype, decimal pricingrate, cls_customer customer)
         {
             this.barcode = this.singlebarcode;
-            this.bigqty = 1;
             this.pprice = this.retailpprice;
             this.origprice = this.retailprice;
             this.price = this.retailprice;
@@ -526,7 +506,6 @@ namespace ETech.cls
         public void reprint_reset_data_by_mode(bool isnonvat_d, bool issenior_d, bool iswholesale, int pricingtype)
         {
             this.barcode = this.singlebarcode;
-            this.bigqty = 1;
             this.pprice = this.retailpprice;
             this.origprice = this.retailprice;
 
@@ -670,8 +649,6 @@ namespace ETech.cls
         {
             return this.memo;
         }
-
-        public decimal getBigQty() { return this.bigqty; }
 
         public decimal getPrice()
         {

@@ -69,7 +69,6 @@ namespace ETech.cls
             {
                 if (list_product[i].getWid() == prod.getWid()
                         && prod.getWid() != 0
-                        && list_product[i].getBigQty() == prod.getBigQty()
                         && prod.getBarcode() != "-")
                 {
                     decimal qty = list_product[i].getQty() + prod.getQty();
@@ -425,7 +424,7 @@ namespace ETech.cls
             this.iswholesale = (Convert.ToInt32(dr["iswholesale"]) == 1);
             this.issenior = (dr["seniorno"].ToString() != "");
 
-            sSQL = @"SELECT P.`product`, SD.`wid`,SD.`productid`, SD.`quantity`, SD.`bigquantity`, SD.`oprice`, SD.`price` AS 'aprice', 
+            sSQL = @"SELECT P.`product`, SD.`wid`,SD.`productid`, SD.`quantity`, SD.`oprice`, SD.`price` AS 'aprice', 
 	                    SD.`discount1`, SD.`vat`, SD.`soldby` 
                     FROM `salesdetail` AS SD
                     LEFT JOIN `product` AS P
@@ -456,7 +455,7 @@ namespace ETech.cls
                     prod.setProductName("Local Tax: " + cls_globalvariables.LocalTax_v + "%");
                     prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
                 }
-                else if (pwid != 0 && Convert.ToDecimal(dr_d["bigquantity"]) > 1) //check if package
+                else if (pwid != 0)
                 {
                     prod = new cls_product(pwid, true, true);
                 }

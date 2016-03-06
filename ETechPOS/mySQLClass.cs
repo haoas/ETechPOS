@@ -496,7 +496,6 @@ namespace ETech
                         `branchid` = '" + branchid + @"',                     
                         `lastmodifiedby` = " + userid + @", 
                         `lastmodifieddate` = NOW(), 
-                        `istransfer` = 0, 
                         `show` = 1, 
                         `memberid` = " + memberid + @", 
                         `checkerid` = " + checkerid + @",
@@ -519,9 +518,6 @@ namespace ETech
                 try { soldbywid = soldby.getwid(); }
                 catch { soldbywid = userid; }
 
-                decimal addbackqty = (prod.getQty() < 0) ? -1 * prod.getQty() : 0;
-                decimal addbackbigqty = (prod.getQty() < 0) ? prod.getBigQty() : 1;
-
                 List<string> temp = get_next_wid_withlock_liststring("salesdetail");
                 foreach (string str in temp)
                     transactionQueryList.Add(str);
@@ -530,8 +526,7 @@ namespace ETech
                 string sSQLdetail = @"UPDATE `salesdetail` SET
                                 `headid` = '" + salesheadwid + @"', 
                                 `productid` = '" + prod.getWid().ToString() + @"',  
-                                `quantity` = '" + qty + @"',  
-                                `bigquantity` = '" + prod.getBigQty() + @"',  
+                                `quantity` = '" + qty + @"',   
                                 `oprice` = '" + prod.getOrigPrice().ToString() + @"',  
                                 `discount1` = '" + prod.getDiscount().ToString() + @"', 
                                 `price` = '" + price + @"',  
@@ -539,8 +534,6 @@ namespace ETech
                                 `vat` = '" + vat + @"', 
                                 `senior` = " + issenior + @", 
                                 `soldby` = '" + soldbywid + @"',  
-                                `addbackqty` = '" + addbackqty.ToString() + @"',  
-                                `addbackbigqty` = '" + addbackbigqty.ToString() + @"',
                                 `description` = '" + prod.getMemo() + @"'
                             WHERE `wid` = @salesdetailwid";
                 //Console.WriteLine(sSQLdetail);
@@ -596,7 +589,6 @@ namespace ETech
                                 `branchid` = " + branchid + @", 
                                 `lastmodifieddate` = NOW(), 
                                 `lastmodifiedby` = " + userid + @", 
-                                `istransfer` = 0, 
                                 `datecreated` = NOW(),
                                 `memo` = '" + trans.getpayments().get_memo() + @"',
                                 `show` = 1

@@ -93,12 +93,10 @@ namespace ETech
             string sSQLdetail = @"UPDATE `salesdetail` SET
                                 `headid` = '" + next_wid + @"', 
                                 `productid` = '0',  
-                                `quantity` = '1',  
-                                `bigquantity` = '1',  
+                                `quantity` = '1',
                                 `oprice` = '" + amount.ToString() + @"',  
                                 `discount1` = '0', 
                                 `price` = '" + amount.ToString() + @"',  
-                                `istransfer` = '0',  
                                 `pprice` = '" + amount.ToString() + @"', 
                                 `vat` = '" + (amount*0.12M/1.12M).ToString() + @"', 
                                 `senior` = 0, 
@@ -117,7 +115,6 @@ namespace ETech
                                 `branchid` = " + branchid + @", 
                                 `lastmodifieddate` = NOW(), 
                                 `lastmodifiedby` = 0, 
-                                `istransfer` = 0, 
                                 `datecreated` = NOW(),
                                 `show` = 1
                             WHERE `wid` = " + collectionheadwid;
