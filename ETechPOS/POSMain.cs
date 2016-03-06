@@ -679,7 +679,7 @@ namespace ETech
                                 break;
                             }
 
-                            if (zreadFunc.Zcount())
+                            if (zreadFunc.HasZReadingToday())
                             {
                                 Int64 maxORinPosxyzread = zreadFunc.get_max_OR_in_posxyzread();
                                 if ((maxORinPosxyzread != 0) && (maxORinPosxyzread >= Convert.ToInt64(or_num)))

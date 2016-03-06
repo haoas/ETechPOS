@@ -86,12 +86,12 @@ public static class zreadFunc
         @"SELECT COALESCE(DATE(max(`date`)), DATE_ADD(DATE(NOW()),INTERVAL -1 DAY)) as 'maxdate'  
             FROM (  SELECT max(`date`) as 'date'
 	                FROM `posxyzread` as P
-	                WHERE P.`branchid`= " + branchid + @" AND P.`terminalno`=" + terminalno + @" AND P.`readtype`=3) A";
+	                WHERE P.`branchid`= " + branchid + @" AND P.`terminalno`=" + terminalno + @") A";
         Console.WriteLine(SQL);
         return Convert.ToDateTime(mySQLFunc.getdb(SQL).Rows[0]["maxdate"].ToString());
     }
 
-    public static bool Zread_exist(DateTime date, int type)
+    public static bool Zread_exist(DateTime date)
     {
         string terminalno = cls_globalvariables.terminalno_v;
         string branchid = cls_globalvariables.BranchCode;
@@ -99,12 +99,12 @@ public static class zreadFunc
         string sqlDate = date.ToString("yyyy-MM-dd");
         string SQLexist =
         @"SELECT * `FROM posxyzread` 
-            WHERE `readtype`=" + type + @" AND `terminalno`='" + terminalno +
+            WHERE `terminalno`='" + terminalno +
        "' AND `branchid`='" + branchid + "' AND DATE(`date`)='" + sqlDate + "'";
         return (mySQLFunc.getdb(SQLexist).Rows.Count > 0) ? true : false;
     }
 
-    public static bool Zcount()
+    public static bool HasZReadingToday()
     {
         string SQL =
             @"SELECT
@@ -114,7 +114,6 @@ public static class zreadFunc
             WHERE
 	            `branchid` = " + cls_globalvariables.BranchCode + @"
                 AND `terminalno`= " + cls_globalvariables.terminalno_v + @"
-                AND `readtype` = '3'
                 AND DATE(NOW()) = DATE(`date`)";
         int zcnt = Convert.ToInt32(mySQLFunc.getdb(SQL).Rows[0]["Count"].ToString());
         if (zcnt > 0) return true;
@@ -316,7 +315,7 @@ public static class zreadFunc
             return Convert.ToDecimal(DT.Rows[0]["newgrandtotal"]);
     }
 
-    public static DataRow get_values_from_posxyzread(DateTime datetime_d, DateTime datetimeTO_d, int readtype)
+    public static DataRow get_values_from_posxyzread(DateTime datetime_d, DateTime datetimeTO_d)
     {
         string branchid = cls_globalvariables.BranchCode;
         string terminalno = cls_globalvariables.terminalno_v;
@@ -348,8 +347,7 @@ public static class zreadFunc
             COALESCE(SUM(`return_qty_cnt`),0) AS 'total_return_qty'
                 FROM `posxyzread`
                 WHERE `branchid` = " + branchid + @" 
-                    AND `terminalno` = " + terminalno + @"
-                    AND `readtype` = " + readtype +
+                    AND `terminalno` = " + terminalno +
                 zreadFunc.GetSQLDateRange("`date`", datetime_d, datetimeTO_d) + @" LIMIT 1";
         Console.WriteLine(sql);
 

@@ -1061,7 +1061,7 @@ namespace ETech.fnc
             return prev_new_grand;
         }
 
-        public static Graphics render_reading(PrintPageEventArgs e, Bitmap bmp, int type, DateTime datetime_d, DataRow dr_summary, DataRow dr_cashflow)
+        public static Graphics render_reading(PrintPageEventArgs e, Bitmap bmp, DateTime datetime_d, DataRow dr_summary, DataRow dr_cashflow)
         {
             //80mm: maxwidth 280
             //76mm: maxwidth 240
@@ -1129,8 +1129,7 @@ namespace ETech.fnc
                 nY += DrawString(g, "Terminal Accountability", font_Change, rect_title, brush_Black, format_center());
             else
             {
-                string letter = (type == 1) ? "X" : "Z";
-                nY += DrawString(g, "Terminal Report " + letter + @"-Read", font_Change, rect_title, brush_Black, format_center());
+                nY += DrawString(g, "Terminal Report Z-Read", font_Change, rect_title, brush_Black, format_center());
                 rect_title = new Rectangle(nX, nY, maxwidth * cls_globalvariables.previewmul, 15);
                 nY += DrawString(g, "Terminal Reading Counter: " + readcount, fncHardware.font_Content, rect_title, fncHardware.brush_Black, fncHardware.format_left());
             }
@@ -1176,12 +1175,7 @@ namespace ETech.fnc
             List<Font> font_tblheader = fncHardware.create_font_list(new int[] { 3, 3 });
             nY = DrawStringDataTable(g, dt_tblheader, font_tblheader, rect_tblheader, fncHardware.brush_Black, sf_tblheader);
 
-            if (type == 1)
-            {
-                //-----------line-------------
-                nY += 5; g.DrawLine(new Pen(fncHardware.brush_Black), nX, nY, maxwidth, nY); nY += 5;
-            }
-            else if ((type == 3) && (!isterminalaccountability))
+            if (!isterminalaccountability)
             {
                 //space
                 nY += 10;
@@ -1340,23 +1334,13 @@ namespace ETech.fnc
         }
 
         //Dont delete yet
-        public static void printpage_read(object sender, PrintPageEventArgs e, Bitmap bmp, int type, DateTime datetime_d, DateTime datetimeTO_d, int userwid)
+        public static void printpage_read(object sender, PrintPageEventArgs e, Bitmap bmp, DateTime datetime_d, DateTime datetimeTO_d, int userwid)
         {
             DataRow dr_summary = null;
             DataRow dr_cashflow = null;
             Graphics g = null;
 
-            if (type == 1)
-            {
-                zreadFunc.generate_posxyzread(datetime_d);
-                dr_summary = zreadFunc.get_values_from_posxyzread(datetime_d);
-                dr_cashflow = fncHardware.get_cashflow_data(datetime_d);
-                g = fncHardware.render_reading(e, bmp, type, datetime_d, dr_summary, dr_cashflow);
-                g.Dispose();
-                return;
-            }
-
-            bool zreadingexist = zreadFunc.Zread_exist(datetime_d, type);
+            bool zreadingexist = zreadFunc.Zread_exist(datetime_d);
             DataRow posxyzreadRow = zreadFunc.get_values_from_posxyzread(datetime_d);
             bool hasCashTender = Convert.ToDecimal(posxyzreadRow["cash"]) > 0;
             bool recompute = false;
@@ -1381,7 +1365,7 @@ namespace ETech.fnc
             }
 
             dr_cashflow = fncHardware.get_cashflow_data(datetime_d);
-            g = fncHardware.render_reading(e, bmp, type, datetime_d, dr_summary, dr_cashflow);
+            g = fncHardware.render_reading(e, bmp, datetime_d, dr_summary, dr_cashflow);
 
             g.Dispose();
         }

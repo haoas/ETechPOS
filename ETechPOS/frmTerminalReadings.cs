@@ -93,7 +93,7 @@ namespace ETech
                     MessageBox.Show("Date To/From cannot be the same");
                     return;
                 }
-                if (!zreadFunc.Zread_exist(Ddateto, 3))
+                if (!zreadFunc.Zread_exist(Ddateto))
                 {
                     MessageBox.Show("Z-reading for " + Ddateto.ToString("yyyy-MM-dd") + @" is not yet generated!.");
                     return;
