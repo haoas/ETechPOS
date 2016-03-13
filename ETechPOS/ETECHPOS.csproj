@@ -492,6 +492,7 @@
     <Content Include="resources\images\diagmonds-paleblue.PNG" />
     <Content Include="resources\images\diagmonds-red.PNG" />
     <Content Include="resources\images\diagmonds.png" />
+    <Content Include="resources\images\etechposbg.jpg" />
     <Content Include="tools\Keypad.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

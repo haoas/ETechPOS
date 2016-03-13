@@ -39,8 +39,6 @@
             this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtBarcode = new System.Windows.Forms.TextBox();
-            this.lblORNumber = new System.Windows.Forms.Label();
-            this.lblORNumber_d = new System.Windows.Forms.Label();
             this.btnF1 = new System.Windows.Forms.Button();
             this.btnF2 = new System.Windows.Forms.Button();
             this.btnESC = new System.Windows.Forms.Button();
@@ -58,13 +56,11 @@
             this.lblCustomermemo_d = new System.Windows.Forms.Label();
             this.lblWarning = new System.Windows.Forms.Label();
             this.lblMember_d = new System.Windows.Forms.Label();
-            this.lblCustomer_d = new System.Windows.Forms.Label();
             this.lblMember = new System.Windows.Forms.Label();
             this.lblCustomer = new System.Windows.Forms.Label();
             this.lblMode_d = new System.Windows.Forms.Label();
             this.lblMode = new System.Windows.Forms.Label();
             this.lblChecker_d = new System.Windows.Forms.Label();
-            this.lblClerk_d = new System.Windows.Forms.Label();
             this.lblChecker = new System.Windows.Forms.Label();
             this.lblClerk = new System.Windows.Forms.Label();
             this.lblBarcode = new System.Windows.Forms.Label();
@@ -72,19 +68,31 @@
             this.lblQty_d = new System.Windows.Forms.Label();
             this.lblTendered = new System.Windows.Forms.Label();
             this.lblRemaining = new System.Windows.Forms.Label();
-            this.lblTransaction = new System.Windows.Forms.Label();
-            this.lbltransaction_d = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lbltransaction_total = new System.Windows.Forms.Label();
             this.spcustdisp = new System.IO.Ports.SerialPort(this.components);
             this.tmrcheckposdsetting = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.lblTerminal_d = new System.Windows.Forms.Label();
-            this.lblTerminal = new System.Windows.Forms.Label();
             this.lblTotal = new System.Windows.Forms.Label();
+            this.ssApplicationDetails = new System.Windows.Forms.StatusStrip();
+            this.tsslApplicationVersion = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslBranchCode = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslBranchName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslTerminalNumberTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslTerminalNumber = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslTransactionsTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslTransactions = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslOfficialReceiptNumberTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslOfficialReceiptNumber = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslClerkTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslClerk = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslCustomerTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslCustomer = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSpace = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslDateTime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tmrUpdateDateTime = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).BeginInit();
             this.pnlOtherInfo.SuspendLayout();
+            this.ssApplicationDetails.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvProduct
@@ -177,27 +185,6 @@
             this.txtBarcode.Tag = "";
             this.txtBarcode.Leave += new System.EventHandler(this.txtBarcode_Leave);
             this.txtBarcode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBarcode_KeyPress);
-            // 
-            // lblORNumber
-            // 
-            this.lblORNumber.AutoSize = true;
-            this.lblORNumber.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblORNumber.Location = new System.Drawing.Point(14, 651);
-            this.lblORNumber.Name = "lblORNumber";
-            this.lblORNumber.Size = new System.Drawing.Size(94, 38);
-            this.lblORNumber.TabIndex = 4;
-            this.lblORNumber.Text = "OR#:";
-            // 
-            // lblORNumber_d
-            // 
-            this.lblORNumber_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblORNumber_d.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblORNumber_d.Location = new System.Drawing.Point(114, 651);
-            this.lblORNumber_d.Name = "lblORNumber_d";
-            this.lblORNumber_d.Size = new System.Drawing.Size(111, 39);
-            this.lblORNumber_d.TabIndex = 5;
-            this.lblORNumber_d.Text = "0000";
-            this.lblORNumber_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnF1
             // 
@@ -348,13 +335,11 @@
             this.pnlOtherInfo.Controls.Add(this.lblCustomermemo_d);
             this.pnlOtherInfo.Controls.Add(this.lblWarning);
             this.pnlOtherInfo.Controls.Add(this.lblMember_d);
-            this.pnlOtherInfo.Controls.Add(this.lblCustomer_d);
             this.pnlOtherInfo.Controls.Add(this.lblMember);
             this.pnlOtherInfo.Controls.Add(this.lblCustomer);
             this.pnlOtherInfo.Controls.Add(this.lblMode_d);
             this.pnlOtherInfo.Controls.Add(this.lblMode);
             this.pnlOtherInfo.Controls.Add(this.lblChecker_d);
-            this.pnlOtherInfo.Controls.Add(this.lblClerk_d);
             this.pnlOtherInfo.Controls.Add(this.lblChecker);
             this.pnlOtherInfo.Controls.Add(this.lblClerk);
             this.pnlOtherInfo.Location = new System.Drawing.Point(12, 369);
@@ -414,16 +399,6 @@
             this.lblMember_d.Size = new System.Drawing.Size(169, 24);
             this.lblMember_d.TabIndex = 11;
             // 
-            // lblCustomer_d
-            // 
-            this.lblCustomer_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCustomer_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomer_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblCustomer_d.Location = new System.Drawing.Point(117, 72);
-            this.lblCustomer_d.Name = "lblCustomer_d";
-            this.lblCustomer_d.Size = new System.Drawing.Size(169, 24);
-            this.lblCustomer_d.TabIndex = 10;
-            // 
             // lblMember
             // 
             this.lblMember.AutoSize = true;
@@ -477,16 +452,6 @@
             this.lblChecker_d.Size = new System.Drawing.Size(169, 24);
             this.lblChecker_d.TabIndex = 3;
             // 
-            // lblClerk_d
-            // 
-            this.lblClerk_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblClerk_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblClerk_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblClerk_d.Location = new System.Drawing.Point(117, 12);
-            this.lblClerk_d.Name = "lblClerk_d";
-            this.lblClerk_d.Size = new System.Drawing.Size(169, 24);
-            this.lblClerk_d.TabIndex = 2;
-            // 
             // lblChecker
             // 
             this.lblChecker.AutoSize = true;
@@ -512,6 +477,7 @@
             // lblBarcode
             // 
             this.lblBarcode.AutoSize = true;
+            this.lblBarcode.BackColor = System.Drawing.Color.Transparent;
             this.lblBarcode.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBarcode.Location = new System.Drawing.Point(5, 57);
             this.lblBarcode.Name = "lblBarcode";
@@ -522,6 +488,7 @@
             // lblQty
             // 
             this.lblQty.AutoSize = true;
+            this.lblQty.BackColor = System.Drawing.Color.Transparent;
             this.lblQty.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblQty.Location = new System.Drawing.Point(399, 700);
             this.lblQty.Name = "lblQty";
@@ -531,6 +498,7 @@
             // 
             // lblQty_d
             // 
+            this.lblQty_d.BackColor = System.Drawing.Color.Transparent;
             this.lblQty_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblQty_d.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblQty_d.Location = new System.Drawing.Point(481, 700);
@@ -564,46 +532,6 @@
             this.lblRemaining.Text = "0.00";
             this.lblRemaining.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
-            // lblTransaction
-            // 
-            this.lblTransaction.AutoSize = true;
-            this.lblTransaction.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTransaction.Location = new System.Drawing.Point(178, 713);
-            this.lblTransaction.Name = "lblTransaction";
-            this.lblTransaction.Size = new System.Drawing.Size(112, 22);
-            this.lblTransaction.TabIndex = 25;
-            this.lblTransaction.Text = "Transaction:";
-            // 
-            // lbltransaction_d
-            // 
-            this.lbltransaction_d.AutoSize = true;
-            this.lbltransaction_d.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbltransaction_d.Location = new System.Drawing.Point(296, 713);
-            this.lbltransaction_d.Name = "lbltransaction_d";
-            this.lbltransaction_d.Size = new System.Drawing.Size(16, 22);
-            this.lbltransaction_d.TabIndex = 26;
-            this.lbltransaction_d.Text = "-";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(316, 713);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(15, 22);
-            this.label2.TabIndex = 27;
-            this.label2.Text = "/";
-            // 
-            // lbltransaction_total
-            // 
-            this.lbltransaction_total.AutoSize = true;
-            this.lbltransaction_total.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbltransaction_total.Location = new System.Drawing.Point(335, 712);
-            this.lbltransaction_total.Name = "lbltransaction_total";
-            this.lbltransaction_total.Size = new System.Drawing.Size(16, 22);
-            this.lbltransaction_total.TabIndex = 28;
-            this.lbltransaction_total.Text = "-";
-            // 
             // spcustdisp
             // 
             this.spcustdisp.PortName = "COM3";
@@ -632,28 +560,6 @@
             this.label3.TabIndex = 30;
             this.label3.Text = "Remaining";
             // 
-            // lblTerminal_d
-            // 
-            this.lblTerminal_d.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTerminal_d.ForeColor = System.Drawing.Color.Navy;
-            this.lblTerminal_d.Location = new System.Drawing.Point(105, 713);
-            this.lblTerminal_d.Name = "lblTerminal_d";
-            this.lblTerminal_d.Size = new System.Drawing.Size(34, 24);
-            this.lblTerminal_d.TabIndex = 7;
-            this.lblTerminal_d.Text = "0";
-            this.lblTerminal_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblTerminal
-            // 
-            this.lblTerminal.AutoSize = true;
-            this.lblTerminal.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTerminal.ForeColor = System.Drawing.Color.Navy;
-            this.lblTerminal.Location = new System.Drawing.Point(31, 713);
-            this.lblTerminal.Name = "lblTerminal";
-            this.lblTerminal.Size = new System.Drawing.Size(70, 18);
-            this.lblTerminal.TabIndex = 6;
-            this.lblTerminal.Text = "Terminal:";
-            // 
             // lblTotal
             // 
             this.lblTotal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
@@ -667,6 +573,171 @@
             this.lblTotal.Text = "0.00";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // ssApplicationDetails
+            // 
+            this.ssApplicationDetails.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslApplicationVersion,
+            this.tsslBranchCode,
+            this.tsslBranchName,
+            this.tsslTerminalNumberTxt,
+            this.tsslTerminalNumber,
+            this.tsslTransactionsTxt,
+            this.tsslTransactions,
+            this.tsslOfficialReceiptNumberTxt,
+            this.tsslOfficialReceiptNumber,
+            this.tsslClerkTxt,
+            this.tsslClerk,
+            this.tsslCustomerTxt,
+            this.tsslCustomer,
+            this.tsslSpace,
+            this.tsslDateTime});
+            this.ssApplicationDetails.Location = new System.Drawing.Point(0, 748);
+            this.ssApplicationDetails.Name = "ssApplicationDetails";
+            this.ssApplicationDetails.Size = new System.Drawing.Size(1280, 24);
+            this.ssApplicationDetails.SizingGrip = false;
+            this.ssApplicationDetails.TabIndex = 31;
+            this.ssApplicationDetails.Text = "Status";
+            // 
+            // tsslApplicationVersion
+            // 
+            this.tsslApplicationVersion.AutoSize = false;
+            this.tsslApplicationVersion.Name = "tsslApplicationVersion";
+            this.tsslApplicationVersion.Size = new System.Drawing.Size(55, 19);
+            this.tsslApplicationVersion.Text = "v1.0.0.0";
+            this.tsslApplicationVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslBranchCode
+            // 
+            this.tsslBranchCode.AutoSize = false;
+            this.tsslBranchCode.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslBranchCode.Name = "tsslBranchCode";
+            this.tsslBranchCode.Size = new System.Drawing.Size(55, 19);
+            this.tsslBranchCode.Text = "0000";
+            this.tsslBranchCode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslBranchName
+            // 
+            this.tsslBranchName.AutoSize = false;
+            this.tsslBranchName.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslBranchName.Name = "tsslBranchName";
+            this.tsslBranchName.Size = new System.Drawing.Size(100, 19);
+            this.tsslBranchName.Text = "Branch";
+            this.tsslBranchName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslTerminalNumberTxt
+            // 
+            this.tsslTerminalNumberTxt.AutoSize = false;
+            this.tsslTerminalNumberTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslTerminalNumberTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslTerminalNumberTxt.Name = "tsslTerminalNumberTxt";
+            this.tsslTerminalNumberTxt.Size = new System.Drawing.Size(60, 19);
+            this.tsslTerminalNumberTxt.Text = "Terminal:";
+            this.tsslTerminalNumberTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslTerminalNumber
+            // 
+            this.tsslTerminalNumber.AutoSize = false;
+            this.tsslTerminalNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslTerminalNumber.Name = "tsslTerminalNumber";
+            this.tsslTerminalNumber.Size = new System.Drawing.Size(35, 19);
+            this.tsslTerminalNumber.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslTransactionsTxt
+            // 
+            this.tsslTransactionsTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslTransactionsTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslTransactionsTxt.Name = "tsslTransactionsTxt";
+            this.tsslTransactionsTxt.Size = new System.Drawing.Size(80, 19);
+            this.tsslTransactionsTxt.Text = "Transactions:";
+            this.tsslTransactionsTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslTransactions
+            // 
+            this.tsslTransactions.AutoSize = false;
+            this.tsslTransactions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslTransactions.Name = "tsslTransactions";
+            this.tsslTransactions.Size = new System.Drawing.Size(70, 19);
+            this.tsslTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslOfficialReceiptNumberTxt
+            // 
+            this.tsslOfficialReceiptNumberTxt.AutoSize = false;
+            this.tsslOfficialReceiptNumberTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslOfficialReceiptNumberTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslOfficialReceiptNumberTxt.Name = "tsslOfficialReceiptNumberTxt";
+            this.tsslOfficialReceiptNumberTxt.Size = new System.Drawing.Size(60, 19);
+            this.tsslOfficialReceiptNumberTxt.Text = "OR No.:";
+            this.tsslOfficialReceiptNumberTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslOfficialReceiptNumber
+            // 
+            this.tsslOfficialReceiptNumber.AutoSize = false;
+            this.tsslOfficialReceiptNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslOfficialReceiptNumber.Name = "tsslOfficialReceiptNumber";
+            this.tsslOfficialReceiptNumber.Size = new System.Drawing.Size(180, 19);
+            this.tsslOfficialReceiptNumber.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslClerkTxt
+            // 
+            this.tsslClerkTxt.AutoSize = false;
+            this.tsslClerkTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslClerkTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslClerkTxt.Name = "tsslClerkTxt";
+            this.tsslClerkTxt.Size = new System.Drawing.Size(50, 19);
+            this.tsslClerkTxt.Text = "Clerk:";
+            this.tsslClerkTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslClerk
+            // 
+            this.tsslClerk.AutoSize = false;
+            this.tsslClerk.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslClerk.Name = "tsslClerk";
+            this.tsslClerk.Size = new System.Drawing.Size(100, 19);
+            this.tsslClerk.Text = "Clerk 1";
+            this.tsslClerk.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslCustomerTxt
+            // 
+            this.tsslCustomerTxt.AutoSize = false;
+            this.tsslCustomerTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslCustomerTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslCustomerTxt.Name = "tsslCustomerTxt";
+            this.tsslCustomerTxt.Size = new System.Drawing.Size(70, 19);
+            this.tsslCustomerTxt.Text = "Customer:";
+            this.tsslCustomerTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslCustomer
+            // 
+            this.tsslCustomer.AutoSize = false;
+            this.tsslCustomer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslCustomer.Name = "tsslCustomer";
+            this.tsslCustomer.Size = new System.Drawing.Size(100, 19);
+            this.tsslCustomer.Text = "Customer 1";
+            this.tsslCustomer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslSpace
+            // 
+            this.tsslSpace.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslSpace.Name = "tsslSpace";
+            this.tsslSpace.Size = new System.Drawing.Size(1, 19);
+            this.tsslSpace.Spring = true;
+            this.tsslSpace.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslDateTime
+            // 
+            this.tsslDateTime.AutoSize = false;
+            this.tsslDateTime.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslDateTime.Name = "tsslDateTime";
+            this.tsslDateTime.Size = new System.Drawing.Size(250, 19);
+            this.tsslDateTime.Text = "JANUARY 01, 2016 08:00:00 AM";
+            this.tsslDateTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tmrUpdateDateTime
+            // 
+            this.tmrUpdateDateTime.Enabled = true;
+            this.tmrUpdateDateTime.Interval = 1000;
+            this.tmrUpdateDateTime.Tick += new System.EventHandler(this.tmrUpdateDateTime_Tick);
+            // 
             // POSMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -674,18 +745,13 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(1280, 772);
-            this.Controls.Add(this.lblTerminal_d);
-            this.Controls.Add(this.lblTerminal);
+            this.Controls.Add(this.ssApplicationDetails);
             this.Controls.Add(this.lblTotal);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblRemaining);
             this.Controls.Add(this.lblTendered);
             this.Controls.Add(this.dgvProduct);
-            this.Controls.Add(this.lbltransaction_total);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.lbltransaction_d);
-            this.Controls.Add(this.lblTransaction);
             this.Controls.Add(this.lblQty_d);
             this.Controls.Add(this.lblQty);
             this.Controls.Add(this.lblBarcode);
@@ -701,21 +767,21 @@
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.btnF2);
             this.Controls.Add(this.btnF1);
-            this.Controls.Add(this.lblORNumber_d);
-            this.Controls.Add(this.lblORNumber);
             this.Controls.Add(this.txtBarcode);
             this.DoubleBuffered = true;
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "POSMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ETECH POS SYSTEM Version 1.0.0";
+            this.Text = "ETECH POS SYSTEM";
             this.Load += new System.EventHandler(this.POSMain_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.POSMain_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.POSMain_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).EndInit();
             this.pnlOtherInfo.ResumeLayout(false);
             this.pnlOtherInfo.PerformLayout();
+            this.ssApplicationDetails.ResumeLayout(false);
+            this.ssApplicationDetails.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -723,8 +789,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblORNumber;
-        private System.Windows.Forms.Label lblORNumber_d;
         private System.Windows.Forms.Button btnF1;
         private System.Windows.Forms.Button btnF2;
         private System.Windows.Forms.Button btnESC;
@@ -743,20 +807,14 @@
         private System.Windows.Forms.Label lblTendered;
         private System.Windows.Forms.Label lblRemaining;
         private System.Windows.Forms.Label lblChecker_d;
-        private System.Windows.Forms.Label lblClerk_d;
         private System.Windows.Forms.Label lblChecker;
         private System.Windows.Forms.Label lblClerk;
         private System.Windows.Forms.Label lblMode_d;
         private System.Windows.Forms.Label lblMode;
         private System.Windows.Forms.Label lblMember_d;
-        private System.Windows.Forms.Label lblCustomer_d;
         private System.Windows.Forms.Label lblMember;
         private System.Windows.Forms.Label lblCustomer;
         private System.Windows.Forms.Label lblWarning;
-        private System.Windows.Forms.Label lblTransaction;
-        private System.Windows.Forms.Label lbltransaction_d;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label lbltransaction_total;
         private System.IO.Ports.SerialPort spcustdisp;
         public System.Windows.Forms.DataGridView dgvProduct;
         public System.Windows.Forms.TextBox txtBarcode;
@@ -770,8 +828,23 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn amount;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label lblTerminal_d;
-        private System.Windows.Forms.Label lblTerminal;
         private System.Windows.Forms.Label lblTotal;
+        private System.Windows.Forms.StatusStrip ssApplicationDetails;
+        private System.Windows.Forms.ToolStripStatusLabel tsslBranchCode;
+        private System.Windows.Forms.ToolStripStatusLabel tsslBranchName;
+        private System.Windows.Forms.ToolStripStatusLabel tsslDateTime;
+        private System.Windows.Forms.ToolStripStatusLabel tsslTerminalNumber;
+        private System.Windows.Forms.ToolStripStatusLabel tsslTransactionsTxt;
+        private System.Windows.Forms.ToolStripStatusLabel tsslTransactions;
+        private System.Windows.Forms.ToolStripStatusLabel tsslOfficialReceiptNumber;
+        private System.Windows.Forms.ToolStripStatusLabel tsslOfficialReceiptNumberTxt;
+        private System.Windows.Forms.Timer tmrUpdateDateTime;
+        private System.Windows.Forms.ToolStripStatusLabel tsslApplicationVersion;
+        private System.Windows.Forms.ToolStripStatusLabel tsslTerminalNumberTxt;
+        private System.Windows.Forms.ToolStripStatusLabel tsslClerkTxt;
+        private System.Windows.Forms.ToolStripStatusLabel tsslClerk;
+        private System.Windows.Forms.ToolStripStatusLabel tsslCustomerTxt;
+        private System.Windows.Forms.ToolStripStatusLabel tsslCustomer;
+        private System.Windows.Forms.ToolStripStatusLabel tsslSpace;
     }
 }

@@ -6,7 +6,7 @@ server=127.0.0.1
 userid=root
 password=1JvGsFBgA6fydZYfuk3kEw==
 database=landlite
-colortheme=0
+colortheme=
 branchcode=10
 BusinessName=ETECH
 Owner=ETECH

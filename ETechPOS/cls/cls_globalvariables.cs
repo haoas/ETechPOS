@@ -5,11 +5,15 @@ using System.Text;
 using System.Data;
 using System.Windows.Forms;
 using System.IO;
+using System.Reflection;
 
 namespace ETech.cls
 {
     public static class cls_globalvariables
     {
+        public static string ApplicationName = Assembly.GetExecutingAssembly().GetName().Name;
+        public static string ApplicationVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(4);
+
         public static string MainBranchCode = "10"; //Lester: to change to 1000
 
         public static decimal vat = 0.12M;
@@ -132,7 +136,24 @@ namespace ETech.cls
         public static string BranchCode
         {
             get { return branchcode; }
-            set { branchcode = value; }
+            set
+            {
+                branchcode = value;
+                string selectSql =
+                    @"SELECT `name` FROM `branch`
+                    WHERE wid = '" + value + "'";
+                DataTable resultDt = mySQLFunc.getdb(selectSql);
+                if (resultDt == null || resultDt.Rows.Count <= 0)
+                    return;
+                BranchName = resultDt.Rows[0]["name"].ToString();
+            }
+        }
+
+        private static string branchname = "";
+        public static string BranchName
+        {
+            get { return branchname; }
+            set { branchname = value; }
         }
 
         private static string BusinessName = "";

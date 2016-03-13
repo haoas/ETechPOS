@@ -66,14 +66,14 @@ namespace ETech
             btnlist.Add(this.btnF1); btnlist.Add(this.btnF2); btnlist.Add(this.btnESC);
             btnlist.Add(this.btnF4); btnlist.Add(this.btnF5); btnlist.Add(this.btnF6);
             btnlist.Add(this.btnF7); btnlist.Add(this.btnF8); btnlist.Add(this.btnF9);
-            btnlist.Add(this.btnF11); btnlist.Add(this.btnF12);
+            btnlist.Add(this.btnF11); btnlist.Add(this.btnF12); btnlist.Add(this.btnESC);
 
             this.Trans = new List<cls_POSTransaction>();
             this.ctrlproductgridview = new ctrl_productgrid(this.dgvProduct);
             this.ctrlpaymentlabel = new ctrl_payment(this.lblTotal, this.lblTendered, this.lblRemaining);
             this.ctrlbtnpanel = new ctrl_btnpanel(btnlist, this);
-            this.ctrlOther = new ctrl_otherinfo(this.pnlOtherInfo, this.lblClerk_d, this.lblChecker_d,
-                                                this.lblMode_d, this.lblCustomer_d, this.lblCustomermemo_d,
+            this.ctrlOther = new ctrl_otherinfo(this.pnlOtherInfo, this.tsslClerk, this.lblChecker_d,
+                                                this.lblMode_d, this.tsslCustomer, this.lblCustomermemo_d,
                                                 this.lblMember_d, this.lblWarning);
             this.ctrlCustDisp = new ctrl_CustomerDisplay(this.spcustdisp);
 
@@ -82,13 +82,15 @@ namespace ETech
             myPrinters.SetDefaultPrinter(cls_globalvariables.DefaultPrinter_v);
 
             this.WindowState = FormWindowState.Maximized;
-            this.lblTerminal_d.Text = cls_globalvariables.terminalno_v;
+            //this.lblTerminal_d.Text = cls_globalvariables.terminalno_v;
+            this.tsslTerminalNumber.Text = cls_globalvariables.terminalno_v;
 
             this.cur_trans_index = -1;
 
             initial_display();
 
-            this.lblORNumber_d.Text = "";
+            //this.lblORNumber_d.Text = "";
+            this.tsslOfficialReceiptNumber.Text = "";
 
             // cashier log in
             this.cur_cashier = new cls_user();
@@ -369,14 +371,19 @@ namespace ETech
             if (cur_cashier.getwid() == 0)
                 this.Close();
 
-            lblClerk_d.BorderStyle = BorderStyle.None;
+            //lblClerk_d.BorderStyle = BorderStyle.None;
             lblChecker_d.BorderStyle = BorderStyle.None;
-            lblCustomer_d.BorderStyle = BorderStyle.None;
+            //lblCustomer_d.BorderStyle = BorderStyle.None;
             lblMember_d.BorderStyle = BorderStyle.None;
             lblMode_d.BorderStyle = BorderStyle.None;
             lblCustomermemo_d.BorderStyle = BorderStyle.None;
             lblWarning.BorderStyle = BorderStyle.None;
             lblSalesMemo.BorderStyle = BorderStyle.None;
+
+            //Text = cls_globalvariables.ApplicationName;
+            tsslApplicationVersion.Text = "v1.0.0.0";
+            tsslBranchCode.Text = cls_globalvariables.BranchCode;
+            tsslBranchName.Text = cls_globalvariables.BranchName;
 
             fncFilter.set_theme_color(this);
             fncFilter.set_dgv_inherit(dgvProduct);
@@ -405,6 +412,10 @@ namespace ETech
         private void TimerRefreshSettings_Tick(object sender, EventArgs e)
         {
             TimerRefreshSettings();
+        }
+        private void tmrUpdateDateTime_Tick(object sender, EventArgs e)
+        {
+            UpdateDateTime();
         }
         #endregion
 
@@ -1534,8 +1545,9 @@ namespace ETech
             this.Trans.Add(tran);
             this.cur_trans_index = this.Trans.Count - 1;
 
-            this.lbltransaction_d.Text = (this.cur_trans_index + 1).ToString();
-            this.lbltransaction_total.Text = this.Trans.Count.ToString();
+            //this.lbltransaction_d.Text = (this.cur_trans_index + 1).ToString();
+            //this.lbltransaction_total.Text = this.Trans.Count.ToString();
+            this.tsslTransactions.Text = (this.cur_trans_index + 1).ToString() + " / " + this.Trans.Count.ToString();
 
             this.display_POStran(tran);
         }
@@ -1554,8 +1566,9 @@ namespace ETech
                 this.cur_trans_index = this.Trans.Count - 1;
             }
 
-            this.lbltransaction_d.Text = (this.cur_trans_index + 1).ToString();
-            this.lbltransaction_total.Text = this.Trans.Count.ToString();
+            //this.lbltransaction_d.Text = (this.cur_trans_index + 1).ToString();
+            //this.lbltransaction_total.Text = this.Trans.Count.ToString();
+            this.tsslTransactions.Text = (this.cur_trans_index + 1).ToString() + " / " + this.Trans.Count.ToString();
             this.dispay_current_POStran();
         }
         private void view_nexttransaction()
@@ -1572,8 +1585,9 @@ namespace ETech
             }
 
             this.cur_trans_index += 1;
-            this.lbltransaction_d.Text = (this.cur_trans_index + 1).ToString();
-            this.lbltransaction_total.Text = this.Trans.Count.ToString();
+            //this.lbltransaction_d.Text = (this.cur_trans_index + 1).ToString();
+            //this.lbltransaction_total.Text = this.Trans.Count.ToString();
+            this.tsslTransactions.Text = (this.cur_trans_index + 1).ToString() + " / " + this.Trans.Count.ToString();
             this.dispay_current_POStran();
             frmposmainext.UpdateDGV(Trans[cur_trans_index]);
         }
@@ -1591,15 +1605,17 @@ namespace ETech
             }
 
             this.cur_trans_index -= 1;
-            this.lbltransaction_d.Text = (this.cur_trans_index + 1).ToString();
-            this.lbltransaction_total.Text = this.Trans.Count.ToString();
+            //this.lbltransaction_d.Text = (this.cur_trans_index + 1).ToString();
+            //this.lbltransaction_total.Text = this.Trans.Count.ToString();
+            this.tsslTransactions.Text = (this.cur_trans_index + 1).ToString() + " / " + this.Trans.Count.ToString();
             this.dispay_current_POStran();
             frmposmainext.UpdateDGV(Trans[cur_trans_index]);
         }
         private void display_POStran(cls_POSTransaction tran)
         {
             LOGS.LOG_PRINT("CURRENT OR: " + tran.getORnumber());
-            this.lblORNumber_d.Text = tran.getORnumber().ToString();
+            //this.lblORNumber_d.Text = tran.getORnumber().ToString();
+            this.tsslOfficialReceiptNumber.Text = tran.getORnumber().ToString();
             this.lblQty_d.Text = tran.get_productlist().get_totalqty().ToString();
 
             this.ctrlproductgridview.set_databinding(tran.get_productlist().get_dtproduct());
@@ -1608,7 +1624,8 @@ namespace ETech
             this.ctrlOther.set_databinding(tran);
             this.ctrlCustDisp.set_databinding(tran);
 
-            this.lblORNumber_d.Enabled = true;
+            //this.lblORNumber_d.Enabled = true;
+            this.tsslOfficialReceiptNumber.Enabled = true;
             this.lblQty_d.Enabled = true;
             this.txtBarcode.Enabled = true;
 
@@ -1630,15 +1647,18 @@ namespace ETech
         {
             this.cur_trans_index = -1;
 
-            this.lblORNumber_d.Enabled = false;
+            //this.lblORNumber_d.Enabled = false;
+            this.tsslOfficialReceiptNumber.Enabled = false;
             this.lblQty_d.Enabled = false;
             this.txtBarcode.Enabled = false;
 
-            this.lblORNumber_d.Text = "";
+            //this.lblORNumber_d.Text = "";
+            this.tsslOfficialReceiptNumber.Text = "";
             this.lblQty_d.Text = "0";
             this.txtBarcode.Text = "";
-            this.lbltransaction_d.Text = "-";
-            this.lbltransaction_total.Text = "-";
+            //this.lbltransaction_d.Text = "-";
+            //this.lbltransaction_total.Text = "-";
+            this.tsslTransactions.Text = "";
 
             this.ctrlbtnpanel.initial_display();
             this.ctrlOther.initial_display();
@@ -1657,6 +1677,11 @@ namespace ETech
         private void TimerRefreshSettings()
         {
             //Dont delete this code
+        }
+
+        private void UpdateDateTime()
+        {
+            tsslDateTime.Text = DateTime.Now.ToString("MMMMMMMMM dd, yyyy hh:mm:ss tt");
         }
         #endregion
 

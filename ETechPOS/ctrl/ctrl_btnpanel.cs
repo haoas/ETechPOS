@@ -28,6 +28,7 @@ namespace ETech.ctrl
             this.btnlist[8].Click += new System.EventHandler(this.btnF9_Click);
             this.btnlist[9].Click += new System.EventHandler(this.btnF11_Click);
             this.btnlist[10].Click += new System.EventHandler(this.btnF12_Click);
+            this.btnlist[11].Click += new System.EventHandler(this.btnEscape_Click);
         }
 
 
@@ -110,6 +111,10 @@ namespace ETech.ctrl
         }
 
 
+        private void btnEscape_Click(object sender, EventArgs e)
+        {
+            this.btnclickfnc(new KeyEventArgs(Keys.Escape));
+        }
         private void btnF1_Click(object sender, EventArgs e)
         {
             this.btnclickfnc(new KeyEventArgs(Keys.F1));
