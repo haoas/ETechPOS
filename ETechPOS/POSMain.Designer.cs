@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvProduct = new System.Windows.Forms.DataGridView();
             this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,7 +43,7 @@
             this.lblORNumber_d = new System.Windows.Forms.Label();
             this.btnF1 = new System.Windows.Forms.Button();
             this.btnF2 = new System.Windows.Forms.Button();
-            this.btnF3 = new System.Windows.Forms.Button();
+            this.btnESC = new System.Windows.Forms.Button();
             this.btnF4 = new System.Windows.Forms.Button();
             this.btnF5 = new System.Windows.Forms.Button();
             this.btnF6 = new System.Windows.Forms.Button();
@@ -70,7 +70,6 @@
             this.lblBarcode = new System.Windows.Forms.Label();
             this.lblQty = new System.Windows.Forms.Label();
             this.lblQty_d = new System.Windows.Forms.Label();
-            this.lblTotal = new System.Windows.Forms.Label();
             this.lblTendered = new System.Windows.Forms.Label();
             this.lblRemaining = new System.Windows.Forms.Label();
             this.lblTransaction = new System.Windows.Forms.Label();
@@ -83,6 +82,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblTerminal_d = new System.Windows.Forms.Label();
             this.lblTerminal = new System.Windows.Forms.Label();
+            this.lblTotal = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).BeginInit();
             this.pnlOtherInfo.SuspendLayout();
             this.SuspendLayout();
@@ -114,8 +114,8 @@
             // 
             this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.description.DataPropertyName = "productname";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.description.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.description.DefaultCellStyle = dataGridViewCellStyle13;
             this.description.FillWeight = 200F;
             this.description.HeaderText = "Description";
             this.description.MinimumWidth = 300;
@@ -126,8 +126,8 @@
             // 
             this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.qty.DataPropertyName = "qty";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.qty.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.qty.DefaultCellStyle = dataGridViewCellStyle14;
             this.qty.FillWeight = 46.81124F;
             this.qty.HeaderText = "Qty";
             this.qty.MinimumWidth = 100;
@@ -138,15 +138,15 @@
             // 
             this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.price.DataPropertyName = "price";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.price.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle15.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.price.DefaultCellStyle = dataGridViewCellStyle15;
             this.price.FillWeight = 61.91541F;
             this.price.HeaderText = "Price";
             this.price.MinimumWidth = 100;
@@ -157,9 +157,9 @@
             // 
             this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.amount.DataPropertyName = "amount";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.amount.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle16.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.amount.DefaultCellStyle = dataGridViewCellStyle16;
             this.amount.HeaderText = "Amount";
             this.amount.MinimumWidth = 100;
             this.amount.Name = "amount";
@@ -169,10 +169,10 @@
             // 
             this.txtBarcode.Enabled = false;
             this.txtBarcode.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBarcode.Location = new System.Drawing.Point(9, 82);
+            this.txtBarcode.Location = new System.Drawing.Point(12, 82);
             this.txtBarcode.MaxLength = 50;
             this.txtBarcode.Name = "txtBarcode";
-            this.txtBarcode.Size = new System.Drawing.Size(662, 35);
+            this.txtBarcode.Size = new System.Drawing.Size(408, 35);
             this.txtBarcode.TabIndex = 0;
             this.txtBarcode.Tag = "";
             this.txtBarcode.Leave += new System.EventHandler(this.txtBarcode_Leave);
@@ -182,7 +182,7 @@
             // 
             this.lblORNumber.AutoSize = true;
             this.lblORNumber.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblORNumber.Location = new System.Drawing.Point(2, 9);
+            this.lblORNumber.Location = new System.Drawing.Point(14, 651);
             this.lblORNumber.Name = "lblORNumber";
             this.lblORNumber.Size = new System.Drawing.Size(94, 38);
             this.lblORNumber.TabIndex = 4;
@@ -192,11 +192,11 @@
             // 
             this.lblORNumber_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblORNumber_d.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblORNumber_d.Location = new System.Drawing.Point(102, 9);
+            this.lblORNumber_d.Location = new System.Drawing.Point(114, 651);
             this.lblORNumber_d.Name = "lblORNumber_d";
-            this.lblORNumber_d.Size = new System.Drawing.Size(366, 39);
+            this.lblORNumber_d.Size = new System.Drawing.Size(111, 39);
             this.lblORNumber_d.TabIndex = 5;
-            this.lblORNumber_d.Text = "00000000000";
+            this.lblORNumber_d.Text = "0000";
             this.lblORNumber_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnF1
@@ -204,7 +204,7 @@
             this.btnF1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.btnF1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF1.ForeColor = System.Drawing.Color.White;
-            this.btnF1.Location = new System.Drawing.Point(9, 687);
+            this.btnF1.Location = new System.Drawing.Point(111, 132);
             this.btnF1.Name = "btnF1";
             this.btnF1.Size = new System.Drawing.Size(99, 73);
             this.btnF1.TabIndex = 6;
@@ -217,24 +217,24 @@
             this.btnF2.Enabled = false;
             this.btnF2.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF2.ForeColor = System.Drawing.Color.White;
-            this.btnF2.Location = new System.Drawing.Point(114, 687);
+            this.btnF2.Location = new System.Drawing.Point(219, 132);
             this.btnF2.Name = "btnF2";
             this.btnF2.Size = new System.Drawing.Size(99, 73);
             this.btnF2.TabIndex = 7;
             this.btnF2.Text = "F2\r\nSwitch";
             this.btnF2.UseVisualStyleBackColor = false;
             // 
-            // btnF3
+            // btnESC
             // 
-            this.btnF3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF3.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF3.ForeColor = System.Drawing.Color.White;
-            this.btnF3.Location = new System.Drawing.Point(219, 687);
-            this.btnF3.Name = "btnF3";
-            this.btnF3.Size = new System.Drawing.Size(99, 73);
-            this.btnF3.TabIndex = 8;
-            this.btnF3.Text = "F3\r\nExit";
-            this.btnF3.UseVisualStyleBackColor = false;
+            this.btnESC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.btnESC.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnESC.ForeColor = System.Drawing.Color.White;
+            this.btnESC.Location = new System.Drawing.Point(9, 132);
+            this.btnESC.Name = "btnESC";
+            this.btnESC.Size = new System.Drawing.Size(99, 73);
+            this.btnESC.TabIndex = 8;
+            this.btnESC.Text = "ESC\r\nExit\r\nPOS";
+            this.btnESC.UseVisualStyleBackColor = false;
             // 
             // btnF4
             // 
@@ -242,7 +242,7 @@
             this.btnF4.Enabled = false;
             this.btnF4.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF4.ForeColor = System.Drawing.Color.White;
-            this.btnF4.Location = new System.Drawing.Point(324, 687);
+            this.btnF4.Location = new System.Drawing.Point(321, 132);
             this.btnF4.Name = "btnF4";
             this.btnF4.Size = new System.Drawing.Size(99, 73);
             this.btnF4.TabIndex = 9;
@@ -255,7 +255,7 @@
             this.btnF5.Enabled = false;
             this.btnF5.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF5.ForeColor = System.Drawing.Color.White;
-            this.btnF5.Location = new System.Drawing.Point(429, 687);
+            this.btnF5.Location = new System.Drawing.Point(9, 211);
             this.btnF5.Name = "btnF5";
             this.btnF5.Size = new System.Drawing.Size(99, 73);
             this.btnF5.TabIndex = 10;
@@ -268,7 +268,7 @@
             this.btnF6.Enabled = false;
             this.btnF6.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF6.ForeColor = System.Drawing.Color.White;
-            this.btnF6.Location = new System.Drawing.Point(534, 687);
+            this.btnF6.Location = new System.Drawing.Point(114, 211);
             this.btnF6.Name = "btnF6";
             this.btnF6.Size = new System.Drawing.Size(99, 73);
             this.btnF6.TabIndex = 11;
@@ -281,7 +281,7 @@
             this.btnF7.Enabled = false;
             this.btnF7.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF7.ForeColor = System.Drawing.Color.White;
-            this.btnF7.Location = new System.Drawing.Point(639, 687);
+            this.btnF7.Location = new System.Drawing.Point(219, 211);
             this.btnF7.Name = "btnF7";
             this.btnF7.Size = new System.Drawing.Size(99, 73);
             this.btnF7.TabIndex = 12;
@@ -294,7 +294,7 @@
             this.btnF8.Enabled = false;
             this.btnF8.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF8.ForeColor = System.Drawing.Color.White;
-            this.btnF8.Location = new System.Drawing.Point(744, 687);
+            this.btnF8.Location = new System.Drawing.Point(324, 211);
             this.btnF8.Name = "btnF8";
             this.btnF8.Size = new System.Drawing.Size(99, 73);
             this.btnF8.TabIndex = 13;
@@ -307,11 +307,11 @@
             this.btnF9.Enabled = false;
             this.btnF9.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF9.ForeColor = System.Drawing.Color.White;
-            this.btnF9.Location = new System.Drawing.Point(849, 687);
+            this.btnF9.Location = new System.Drawing.Point(9, 290);
             this.btnF9.Name = "btnF9";
             this.btnF9.Size = new System.Drawing.Size(99, 73);
             this.btnF9.TabIndex = 14;
-            this.btnF9.Text = "F9\r\nRetail";
+            this.btnF9.Text = "F9\r\nOpen\r\nItem";
             this.btnF9.UseVisualStyleBackColor = false;
             // 
             // btnF11
@@ -320,11 +320,11 @@
             this.btnF11.Enabled = false;
             this.btnF11.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF11.ForeColor = System.Drawing.Color.White;
-            this.btnF11.Location = new System.Drawing.Point(1059, 687);
+            this.btnF11.Location = new System.Drawing.Point(114, 290);
             this.btnF11.Name = "btnF11";
             this.btnF11.Size = new System.Drawing.Size(99, 73);
             this.btnF11.TabIndex = 16;
-            this.btnF11.Text = "F11 \r\nAdjust /\r\nDiscount";
+            this.btnF11.Text = "F11 \r\nItem\r\nDiscount";
             this.btnF11.UseVisualStyleBackColor = false;
             // 
             // btnF12
@@ -332,9 +332,9 @@
             this.btnF12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.btnF12.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF12.ForeColor = System.Drawing.Color.White;
-            this.btnF12.Location = new System.Drawing.Point(1164, 687);
+            this.btnF12.Location = new System.Drawing.Point(219, 290);
             this.btnF12.Name = "btnF12";
-            this.btnF12.Size = new System.Drawing.Size(105, 73);
+            this.btnF12.Size = new System.Drawing.Size(99, 73);
             this.btnF12.TabIndex = 17;
             this.btnF12.Text = "F12\r\nMenu";
             this.btnF12.UseVisualStyleBackColor = false;
@@ -357,7 +357,7 @@
             this.pnlOtherInfo.Controls.Add(this.lblClerk_d);
             this.pnlOtherInfo.Controls.Add(this.lblChecker);
             this.pnlOtherInfo.Controls.Add(this.lblClerk);
-            this.pnlOtherInfo.Location = new System.Drawing.Point(12, 478);
+            this.pnlOtherInfo.Location = new System.Drawing.Point(12, 369);
             this.pnlOtherInfo.Name = "pnlOtherInfo";
             this.pnlOtherInfo.Size = new System.Drawing.Size(584, 203);
             this.pnlOtherInfo.TabIndex = 18;
@@ -523,7 +523,7 @@
             // 
             this.lblQty.AutoSize = true;
             this.lblQty.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQty.Location = new System.Drawing.Point(474, 9);
+            this.lblQty.Location = new System.Drawing.Point(399, 700);
             this.lblQty.Name = "lblQty";
             this.lblQty.Size = new System.Drawing.Size(76, 38);
             this.lblQty.TabIndex = 21;
@@ -533,43 +533,33 @@
             // 
             this.lblQty_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblQty_d.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQty_d.Location = new System.Drawing.Point(556, 9);
+            this.lblQty_d.Location = new System.Drawing.Point(481, 700);
             this.lblQty_d.Name = "lblQty_d";
             this.lblQty_d.Size = new System.Drawing.Size(115, 39);
             this.lblQty_d.TabIndex = 22;
             this.lblQty_d.Text = "0";
             this.lblQty_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblTotal
-            // 
-            this.lblTotal.Font = new System.Drawing.Font("Arial Black", 55F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.lblTotal.Location = new System.Drawing.Point(687, 43);
-            this.lblTotal.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(566, 103);
-            this.lblTotal.TabIndex = 0;
-            this.lblTotal.Text = "0.00";
-            this.lblTotal.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // lblTendered
             // 
-            this.lblTendered.Font = new System.Drawing.Font("Arial Black", 50F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTendered.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.lblTendered.Font = new System.Drawing.Font("Arial Black", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTendered.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblTendered.Location = new System.Drawing.Point(915, 480);
+            this.lblTendered.Location = new System.Drawing.Point(990, 575);
             this.lblTendered.Name = "lblTendered";
-            this.lblTendered.Size = new System.Drawing.Size(349, 84);
+            this.lblTendered.Size = new System.Drawing.Size(277, 73);
             this.lblTendered.TabIndex = 1;
             this.lblTendered.Text = "0.00";
             this.lblTendered.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // lblRemaining
             // 
-            this.lblRemaining.Font = new System.Drawing.Font("Arial Black", 50F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRemaining.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.lblRemaining.Font = new System.Drawing.Font("Arial Black", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRemaining.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblRemaining.Location = new System.Drawing.Point(899, 573);
+            this.lblRemaining.Location = new System.Drawing.Point(992, 658);
             this.lblRemaining.Name = "lblRemaining";
-            this.lblRemaining.Size = new System.Drawing.Size(365, 96);
+            this.lblRemaining.Size = new System.Drawing.Size(276, 73);
             this.lblRemaining.TabIndex = 2;
             this.lblRemaining.Text = "0.00";
             this.lblRemaining.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -578,7 +568,7 @@
             // 
             this.lblTransaction.AutoSize = true;
             this.lblTransaction.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTransaction.Location = new System.Drawing.Point(498, 58);
+            this.lblTransaction.Location = new System.Drawing.Point(178, 713);
             this.lblTransaction.Name = "lblTransaction";
             this.lblTransaction.Size = new System.Drawing.Size(112, 22);
             this.lblTransaction.TabIndex = 25;
@@ -588,7 +578,7 @@
             // 
             this.lbltransaction_d.AutoSize = true;
             this.lbltransaction_d.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbltransaction_d.Location = new System.Drawing.Point(616, 58);
+            this.lbltransaction_d.Location = new System.Drawing.Point(296, 713);
             this.lbltransaction_d.Name = "lbltransaction_d";
             this.lbltransaction_d.Size = new System.Drawing.Size(16, 22);
             this.lbltransaction_d.TabIndex = 26;
@@ -598,7 +588,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(636, 58);
+            this.label2.Location = new System.Drawing.Point(316, 713);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(15, 22);
             this.label2.TabIndex = 27;
@@ -608,7 +598,7 @@
             // 
             this.lbltransaction_total.AutoSize = true;
             this.lbltransaction_total.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbltransaction_total.Location = new System.Drawing.Point(655, 57);
+            this.lbltransaction_total.Location = new System.Drawing.Point(335, 712);
             this.lbltransaction_total.Name = "lbltransaction_total";
             this.lbltransaction_total.Size = new System.Drawing.Size(16, 22);
             this.lbltransaction_total.TabIndex = 28;
@@ -627,7 +617,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(807, 532);
+            this.label1.Location = new System.Drawing.Point(902, 620);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 13);
             this.label1.TabIndex = 29;
@@ -636,7 +626,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(807, 589);
+            this.label3.Location = new System.Drawing.Point(902, 676);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 13);
             this.label3.TabIndex = 30;
@@ -646,7 +636,7 @@
             // 
             this.lblTerminal_d.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTerminal_d.ForeColor = System.Drawing.Color.Navy;
-            this.lblTerminal_d.Location = new System.Drawing.Point(1235, 9);
+            this.lblTerminal_d.Location = new System.Drawing.Point(105, 713);
             this.lblTerminal_d.Name = "lblTerminal_d";
             this.lblTerminal_d.Size = new System.Drawing.Size(34, 24);
             this.lblTerminal_d.TabIndex = 7;
@@ -658,11 +648,24 @@
             this.lblTerminal.AutoSize = true;
             this.lblTerminal.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTerminal.ForeColor = System.Drawing.Color.Navy;
-            this.lblTerminal.Location = new System.Drawing.Point(1161, 9);
+            this.lblTerminal.Location = new System.Drawing.Point(31, 713);
             this.lblTerminal.Name = "lblTerminal";
             this.lblTerminal.Size = new System.Drawing.Size(70, 18);
             this.lblTerminal.TabIndex = 6;
             this.lblTerminal.Text = "Terminal:";
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.lblTotal.Font = new System.Drawing.Font("Arial Black", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.lblTotal.Location = new System.Drawing.Point(989, 488);
+            this.lblTotal.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(278, 74);
+            this.lblTotal.TabIndex = 0;
+            this.lblTotal.Text = "0.00";
+            this.lblTotal.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // POSMain
             // 
@@ -695,7 +698,7 @@
             this.Controls.Add(this.btnF6);
             this.Controls.Add(this.btnF5);
             this.Controls.Add(this.btnF4);
-            this.Controls.Add(this.btnF3);
+            this.Controls.Add(this.btnESC);
             this.Controls.Add(this.btnF2);
             this.Controls.Add(this.btnF1);
             this.Controls.Add(this.lblORNumber_d);
@@ -724,7 +727,7 @@
         private System.Windows.Forms.Label lblORNumber_d;
         private System.Windows.Forms.Button btnF1;
         private System.Windows.Forms.Button btnF2;
-        private System.Windows.Forms.Button btnF3;
+        private System.Windows.Forms.Button btnESC;
         private System.Windows.Forms.Button btnF4;
         private System.Windows.Forms.Button btnF5;
         private System.Windows.Forms.Button btnF6;
@@ -737,7 +740,6 @@
         private System.Windows.Forms.Label lblBarcode;
         private System.Windows.Forms.Label lblQty;
         private System.Windows.Forms.Label lblQty_d;
-        private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Label lblTendered;
         private System.Windows.Forms.Label lblRemaining;
         private System.Windows.Forms.Label lblChecker_d;
@@ -770,5 +772,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblTerminal_d;
         private System.Windows.Forms.Label lblTerminal;
+        private System.Windows.Forms.Label lblTotal;
     }
 }

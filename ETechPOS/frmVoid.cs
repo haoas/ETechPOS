@@ -13,7 +13,7 @@ namespace ETech
 {
     public partial class frmVoid : Form
     {
-        public string or_number;
+        public long or_number;
 
         public frmVoid()
         {
@@ -23,14 +23,14 @@ namespace ETech
             fncFilter.set_theme_color(this);
             cls_globalfunc.formaddkbkpevent(this);
 
-            this.or_number = "";
+            this.or_number = 0;
         }
 
         private void done_process()
         {
-            string or_num = this.txtORNumber_d.Text.Trim();
+            long or_num = long.Parse(this.txtORNumber_d.Text);
 
-            if (or_num.Length <= 0)
+            if (or_num == 0)
             {
                 fncFilter.alert(cls_globalvariables.warning_input_invalid);
                 this.txtORNumber_d.Focus();
@@ -48,7 +48,7 @@ namespace ETech
                 done_process();
             else if (e.KeyCode == Keys.Escape)
             {
-                this.or_number = "";
+                this.or_number = 0;
                 this.Close();
                 return;
             }
@@ -80,7 +80,7 @@ namespace ETech
         }
         private void btnESC_Click(object sender, EventArgs e)
         {
-            this.or_number = "";
+            this.or_number = 0;
             this.Close();
         }
 

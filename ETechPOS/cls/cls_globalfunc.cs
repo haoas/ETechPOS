@@ -409,7 +409,7 @@ namespace ETech.cls
 
             return true;
         }
-        public static bool isReceiptInTransList(List<cls_POSTransaction> TransactionLists, string ornumber)
+        public static bool isReceiptInTransList(List<cls_POSTransaction> TransactionLists, long ornumber)
         {
             foreach (cls_POSTransaction temptran in TransactionLists)
             {
@@ -429,24 +429,6 @@ namespace ETech.cls
         {
             //while (IsFileinUse(new FileInfo(mt.mtsystemlogpath)) == true) { }
             //File.WriteAllText(mt.mtsystemlogpath, "");
-        }
-        public static void LOG_PRINT_CSV(cls_POSTransaction tran, string issuccessful)
-        {
-            string salesornumber = tran.getORnumber();
-            string saleswid = tran.getWid().ToString();
-            string salesamount = tran.get_productlist().get_totalamount().ToString("0.00");
-            string collectionamount = (tran.getpayments().get_totalamount() - tran.get_changeamount()).ToString("0.00");
-            try
-            {
-                using (StreamWriter w = File.AppendText(cls_globalvariables.POS_CSVLogs_path))
-                {
-                    w.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "," + salesornumber + ","
-                        + saleswid + "," + issuccessful + "," + salesamount + "," + collectionamount);
-                    w.Close();
-                }
-            }
-            catch (Exception)
-            { }
         }
         public static void LOG_PRINT(string logMessage)
         {

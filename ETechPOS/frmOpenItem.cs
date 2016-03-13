@@ -11,13 +11,13 @@ using ETech.fnc;
 
 namespace ETech
 {
-    public partial class frmRetail : Form
+    public partial class frmOpenItem : Form
     {
         public decimal prodprice;
         public decimal quantity;
         public string type = "Retail";
 
-        public frmRetail()
+        public frmOpenItem()
         {
             InitializeComponent();
             mySQLFunc.initialize_global_variables();

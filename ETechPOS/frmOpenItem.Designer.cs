@@ -1,6 +1,6 @@
 ﻿namespace ETech
 {
-    partial class frmRetail
+    partial class frmOpenItem
     {
         /// <summary>
         /// Required designer variable.
@@ -103,7 +103,7 @@
             this.btnESC.UseVisualStyleBackColor = false;
             this.btnESC.Click += new System.EventHandler(this.btnESC_Click);
             // 
-            // frmRetail
+            // frmOpenItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -118,9 +118,9 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.KeyPreview = true;
             this.MaximizeBox = false;
-            this.Name = "frmRetail";
+            this.Name = "frmOpenItem";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Retail";
+            this.Text = "Open Item";
             this.Load += new System.EventHandler(this.frmRetail_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmRetail_KeyDown);
             this.ResumeLayout(false);

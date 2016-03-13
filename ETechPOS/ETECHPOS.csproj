@@ -240,11 +240,11 @@
     <Compile Include="frmProductQuantity.Designer.cs">
       <DependentUpon>frmProductQuantity.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmRetail.cs">
+    <Compile Include="frmOpenItem.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmRetail.Designer.cs">
-      <DependentUpon>frmRetail.cs</DependentUpon>
+    <Compile Include="frmOpenItem.Designer.cs">
+      <DependentUpon>frmOpenItem.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSearchCustomer.cs">
       <SubType>Form</SubType>
@@ -395,8 +395,8 @@
       <DependentUpon>frmReprintReceipt.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmRetail.resx">
-      <DependentUpon>frmRetail.cs</DependentUpon>
+    <EmbeddedResource Include="frmOpenItem.resx">
+      <DependentUpon>frmOpenItem.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSearchCustomer.resx">

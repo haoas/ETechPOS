@@ -11,7 +11,7 @@ namespace ETech.cls
     public class cls_POSTransaction
     {
         private int wid;
-        private string ORnumber;
+        private long OfficialReceiptNo;
         private DateTime salesdatetime;
         private cls_user clerk;
         private cls_user checker;
@@ -35,7 +35,7 @@ namespace ETech.cls
         public cls_POSTransaction()
         {
             this.wid = 0;
-            this.ORnumber = "";
+            this.OfficialReceiptNo = 0;
             this.adjust = 0;
             this.discount = 0;
             this.salesdatetime = DateTime.Now;
@@ -57,8 +57,8 @@ namespace ETech.cls
         public void setWid(int wid_d) { this.wid = wid_d; }
         public int getWid() { return this.wid; }
 
-        public void setORnumber(string ORnumber_d) { this.ORnumber = ORnumber_d; }
-        public string getORnumber() { return this.ORnumber; }
+        public void setORnumber(long ORnumber_d) { this.OfficialReceiptNo = ORnumber_d; }
+        public long getORnumber() { return this.OfficialReceiptNo; }
 
         public void setmemo(string memo_d) { this.memo = memo_d; }
         public string getmemo() { return this.memo; }
@@ -150,7 +150,7 @@ namespace ETech.cls
             }
 
             DataRow dr = dt.Rows[0];
-            this.ORnumber = dr["ornumber"].ToString();
+            this.OfficialReceiptNo = long.Parse(dr["ornumber"].ToString());
             this.adjust = Convert.ToDecimal(dr["adjust"]);
             this.discount = Convert.ToDecimal(dr["discount1"]);
             this.salesdatetime = DateTime.Parse(dr["date"].ToString());
@@ -223,11 +223,11 @@ namespace ETech.cls
 
         }
 
-        public void set_transaction_by_ornumber(string or_num)
+        public void set_transaction_by_ornumber(long or_num)
         {
             //get wid by or number
             string sSQL = @"SELECT `wid` FROM `saleshead`
-                            WHERE `ornumber` = '" + or_num.Replace("'", "''") + @"'
+                            WHERE `ornumber` = '" + or_num + @"'
                             ORDER BY `id` DESC LIMIT 1";
             Console.WriteLine(sSQL);
             DataTable dt = mySQLFunc.getdb(sSQL);

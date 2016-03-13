@@ -17,8 +17,8 @@ namespace ETech
 {
     public partial class frmORPrintPreview : Form
     {
-        public string or_number;
-        public string currenttrans_ornumber;
+        public long or_number;
+        public long currenttrans_ornumber;
         public List<int> cur_permissions;
         public frmPermissionCode frmpermcode;
         public int origwidth = 296;
@@ -33,7 +33,7 @@ namespace ETech
             fncFilter.set_theme_color(this);
             cls_globalfunc.formaddkbkpevent(this);
 
-            this.or_number = "";
+            this.or_number = 0;
             this.cur_permissions = new List<int>();
 
             pbPreview.Width = origwidth;
@@ -57,11 +57,12 @@ namespace ETech
                 return;
             }
 
-            string maxtenderedOR = dt.Rows[0]["ornumber"].ToString();
+            long maxtenderedOR = 0;
+            long.TryParse(dt.Rows[0]["ornumber"].ToString(), out maxtenderedOR);
             if (maxtenderedOR == this.currenttrans_ornumber)
-                maxtenderedOR = (Convert.ToInt64(maxtenderedOR) - 1).ToString();
+                maxtenderedOR = maxtenderedOR - 1;
 
-            this.txtORNumber_d.Text = maxtenderedOR;
+            this.txtORNumber_d.Text = maxtenderedOR.ToString();
             this.txtORNumber_d.Focus();
 
             if (!bgwLoadReceipt.IsBusy)
@@ -73,7 +74,7 @@ namespace ETech
                 done_process();
             else if (e.KeyCode == Keys.Escape)
             {
-                this.or_number = "";
+                this.or_number = 0;
                 this.Close();
                 return;
             }
@@ -108,21 +109,21 @@ namespace ETech
         }
         private void btnESC_Click(object sender, EventArgs e)
         {
-            this.or_number = "";
+            this.or_number = 0;
             this.Close();
             return;
         }
 
         private void bgwLoadReceipt_DoWork(object sender, DoWorkEventArgs e)
         {
-            LoadReceipt(txtORNumber_d.Text);
+            LoadReceipt(long.Parse(txtORNumber_d.Text));
         }
 
         private void done_process()
         {
-            string or_num = this.txtORNumber_d.Text.Trim().Replace("/", "");
+            long or_num = long.Parse(this.txtORNumber_d.Text.Trim());
 
-            if (or_num.Length <= 0)
+            if (or_num == 0)
             {
                 fncFilter.alert(cls_globalvariables.warning_input_invalid);
                 this.txtORNumber_d.Focus();
@@ -135,11 +136,9 @@ namespace ETech
             this.Close();
         }
 
-        private void LoadReceipt(string or_num)
+        private void LoadReceipt(long or_num)
         {
-            or_num = or_num.Trim().Replace("/", "");
-
-            if (or_num.Length <= 0)
+            if (or_num == 0)
             {
                 ClearGraphics(pbPreview);
                 return;

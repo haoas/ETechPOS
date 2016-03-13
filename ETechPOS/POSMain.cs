@@ -63,7 +63,7 @@ namespace ETech
             cls_globalfunc.CreateIfMissing(@"TEMP\");
 
             List<Button> btnlist = new List<Button>();
-            btnlist.Add(this.btnF1); btnlist.Add(this.btnF2); btnlist.Add(this.btnF3);
+            btnlist.Add(this.btnF1); btnlist.Add(this.btnF2); btnlist.Add(this.btnESC);
             btnlist.Add(this.btnF4); btnlist.Add(this.btnF5); btnlist.Add(this.btnF6);
             btnlist.Add(this.btnF7); btnlist.Add(this.btnF8); btnlist.Add(this.btnF9);
             btnlist.Add(this.btnF11); btnlist.Add(this.btnF12);
@@ -422,6 +422,10 @@ namespace ETech
             cls_user permissiongiver = new cls_user();
             switch (e.KeyCode)
             {
+                case Keys.Escape:
+                    this.Close();
+                    isdetected = true; break;
+
                 case Keys.Up:
                     this.ctrlproductgridview.select_previous();
 
@@ -506,10 +510,6 @@ namespace ETech
                         }
                     }
                     refresh_productlist_data(tran);
-                    isdetected = true; break;
-
-                case Keys.F3:   //exit
-                    this.Close();
                     isdetected = true; break;
 
                 case Keys.F4: if (btnF4.Enabled == false) return true;  //search product
@@ -668,9 +668,9 @@ namespace ETech
                         else
                         {
                             frmVoid frmvoid = new frmVoid();
-                            string or_num = frmvoid.or_number;
+                            long or_num = frmvoid.or_number;
 
-                            if (or_num.Length <= 0)
+                            if (or_num == 0)
                                 break;
 
                             if (TransactionHasRefundedItem(or_num))
@@ -922,7 +922,7 @@ namespace ETech
 
                     if (permcheck_retail)
                     {
-                        frmRetail retailform = new frmRetail();
+                        frmOpenItem retailform = new frmOpenItem();
                         retailform.ShowDialog();
 
                         decimal price = retailform.prodprice;
@@ -1116,7 +1116,7 @@ namespace ETech
                             break;
                         case "F4": //reprint receipt
 
-                            string or_num = "";
+                            long ORNumber = 0;
                             frmReprintReceipt reprintfrm = new frmReprintReceipt();
                             frmORPrintPreview frmorprintpreview = new frmORPrintPreview();
 
@@ -1131,29 +1131,26 @@ namespace ETech
                             {
                                 frmorprintpreview.cur_permissions = this.cur_cashier.getpermission();
                                 frmorprintpreview.ShowDialog();
-                                or_num = frmorprintpreview.or_number;
+                                ORNumber = frmorprintpreview.or_number;
                             }
                             else
                             {
                                 reprintfrm.cur_permissions = this.cur_cashier.getpermission();
                                 reprintfrm.ShowDialog();
-                                or_num = reprintfrm.or_number;
+                                ORNumber = reprintfrm.or_number;
                             }
-
-                            if (or_num.Length <= 0)
-                                break;
 
                             frmLoad loadForm = new frmLoad("Loading Transaction Data", "Loading Screen");
                             loadForm.BackgroundWorker.DoWork += (sender, e1) =>
                             {
-                                if (cls_globalfunc.isReceiptInTransList(Trans, or_num))
+                                if (cls_globalfunc.isReceiptInTransList(Trans, ORNumber))
                                     return;
 
                                 cls_POSTransaction temp_tran = new cls_POSTransaction();
-                                temp_tran.set_transaction_by_ornumber(or_num);
+                                temp_tran.set_transaction_by_ornumber(ORNumber);
 
                                 if (temp_tran.getWid() == 0)
-                                    temp_tran.set_transaction_by_ornumber(or_num);
+                                    temp_tran.set_transaction_by_ornumber(ORNumber);
 
                                 if (temp_tran.getWid() == 0)
                                 {
@@ -1432,7 +1429,7 @@ namespace ETech
                 return null;
             }
         }
-        private bool TransactionHasRefundedItem(string orNumber)
+        private bool TransactionHasRefundedItem(long orNumber)
         {
             string selectSql =
                 @"SELECT
@@ -1602,7 +1599,7 @@ namespace ETech
         private void display_POStran(cls_POSTransaction tran)
         {
             LOGS.LOG_PRINT("CURRENT OR: " + tran.getORnumber());
-            this.lblORNumber_d.Text = tran.getORnumber();
+            this.lblORNumber_d.Text = tran.getORnumber().ToString();
             this.lblQty_d.Text = tran.get_productlist().get_totalqty().ToString();
 
             this.ctrlproductgridview.set_databinding(tran.get_productlist().get_dtproduct());
@@ -1684,7 +1681,7 @@ namespace ETech
                 return;
 
             long.TryParse(x.Rows[0]["lastornumber"].ToString(), out latestSalesheadOrNumber);
-            long.TryParse(tran.getORnumber(), out currentTransactionOr);
+            currentTransactionOr = tran.getORnumber();
             if (latestSalesheadOrNumber == 0 || latestSalesheadOrNumber > currentTransactionOr)
                 return;
 

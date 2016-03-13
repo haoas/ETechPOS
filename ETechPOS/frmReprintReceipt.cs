@@ -13,8 +13,8 @@ namespace ETech
 {
     public partial class frmReprintReceipt : Form
     {
-        public string or_number;
-        public string currenttrans_ornumber;
+        public long or_number;
+        public long currenttrans_ornumber;
         public List<int> cur_permissions;
         public frmPermissionCode frmpermcode;
 
@@ -26,7 +26,7 @@ namespace ETech
             fncFilter.set_theme_color(this);
             cls_globalfunc.formaddkbkpevent(this);
 
-            this.or_number = "";
+            this.or_number = 0;
             this.cur_permissions = new List<int>();
         }
 
@@ -36,7 +36,7 @@ namespace ETech
         }
         private void btnESC_Click(object sender, EventArgs e)
         {
-            this.or_number = "";
+            this.or_number = 0;
             this.Close();
         }
 
@@ -50,7 +50,7 @@ namespace ETech
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                this.or_number = "";
+                this.or_number = 0;
                 this.Close();
                 return;
             }
@@ -71,9 +71,9 @@ namespace ETech
 
         private void done_process()
         {
-            string or_num = this.txtORNumber_d.Text.Trim().Replace("/", "");
+            long or_num = long.Parse(this.txtORNumber_d.Text.Trim());
 
-            if (or_num.Length <= 0)
+            if (or_num == 0)
             {
                 fncFilter.alert(cls_globalvariables.warning_input_invalid);
                 this.txtORNumber_d.Focus();
@@ -110,11 +110,14 @@ namespace ETech
                 return;
             }
 
-            string maxtenderedOR = dt.Rows[0]["ornumber"].ToString();
-            if (maxtenderedOR == this.currenttrans_ornumber)
-                maxtenderedOR = (Convert.ToInt64(maxtenderedOR) - 1).ToString();
 
-            this.txtORNumber_d.Text = maxtenderedOR;
+            long maxtenderedOR = 0;
+            long.TryParse(dt.Rows[0]["ornumber"].ToString(), out maxtenderedOR);
+
+            if (maxtenderedOR == this.currenttrans_ornumber)
+                maxtenderedOR = maxtenderedOR - 1;
+
+            this.txtORNumber_d.Text = maxtenderedOR.ToString();
             this.txtORNumber_d.Focus();
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);

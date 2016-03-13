@@ -310,7 +310,7 @@ namespace ETech
             return Convert.ToDecimal(dt.Rows[0]["amount"]);
         }
 
-        public string get_nextornumber()
+        public long get_nextornumber()
         {
             string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
@@ -318,18 +318,9 @@ namespace ETech
             string sSQLtransno = @"SELECT COALESCE(MAX(`ornumber`),0) AS 'ornumber' FROM saleshead
                                 WHERE `terminalno` = " + terminalno + @"
                                     AND `branchid` = " + branchid;
-
-            //Console.WriteLine(sSQLtransno);
             DataTable dt = getdb(sSQLtransno);
-            string next_ornumber = branchid.ToString() + terminalno.ToString() + "0000001";
-
-            Int64 maxor = Convert.ToInt64(dt.Rows[0]["ornumber"]);
-            if ((dt.Rows.Count > 0) && (maxor > 0))
-            {
-                next_ornumber = (maxor + 1).ToString();
-            }
-
-            return next_ornumber;
+            
+            return 1 + Convert.ToInt64(dt.Rows[0]["ornumber"]);
         }
 
         public int create_invoice(cls_POSTransaction trans)
@@ -340,7 +331,7 @@ namespace ETech
 
             int userwid = trans.getclerk().getwid();
 
-            string next_ornumber = get_nextornumber();
+            long next_ornumber = get_nextornumber();
 
             int next_wid = get_next_wid_withlock("saleshead");
             string sSQL = @"UPDATE `saleshead` SET
@@ -791,7 +782,6 @@ namespace ETech
             transactionQueryList.Add("select 'SUCCESS'");
 
             string returnVal = exec_trans(transactionQueryList, 5);
-            LOGS.LOG_PRINT_CSV(trans, returnVal);
             if (returnVal != "SUCCESS")
                 return -1;
             return 0;

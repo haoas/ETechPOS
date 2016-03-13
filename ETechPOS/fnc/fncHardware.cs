@@ -1410,7 +1410,7 @@ namespace ETech.fnc
             string sACC = cls_globalvariables.ACC_v;
             string sPermitNo = cls_globalvariables.PermitNo_v;
 
-            string ornumber = tran.getORnumber();
+            long ornumber = tran.getORnumber();
             string sMIN = cls_globalvariables.MIN_v;
             string sSerial = cls_globalvariables.Serial_v;
             string terminalno = cls_globalvariables.terminalno_v;
