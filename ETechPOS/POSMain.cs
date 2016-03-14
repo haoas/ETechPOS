@@ -41,7 +41,7 @@ namespace ETech
         private int lastaddedrownumber = -1;
         private bool isLoadSuccessful = true;
 
-        bool gofullscreen = false;
+        bool gofullscreen = true;
         #endregion
 
         #region Declaration
@@ -72,9 +72,9 @@ namespace ETech
             this.ctrlproductgridview = new ctrl_productgrid(this.dgvProduct);
             this.ctrlpaymentlabel = new ctrl_payment(this.lblTotal, this.lblTendered, this.lblRemaining);
             this.ctrlbtnpanel = new ctrl_btnpanel(btnlist, this);
-            this.ctrlOther = new ctrl_otherinfo(this.pnlOtherInfo, this.tsslClerk, this.lblChecker_d,
-                                                this.lblMode_d, this.tsslCustomer, this.lblCustomermemo_d,
-                                                this.lblMember_d, this.lblWarning);
+            this.ctrlOther = new ctrl_otherinfo(this.tsslClerk, this.tsslSalesMan,
+                                                this.lblMode_d, this.tsslCustomer, this.tsslCustomerMemo,
+                                                this.tsslMember, this.tsslWarning);
             this.ctrlCustDisp = new ctrl_CustomerDisplay(this.spcustdisp);
 
             frmposmainext = new frmPOSMainExt(this);
@@ -252,10 +252,6 @@ namespace ETech
                 if (cls_globalvariables.ads_url_v.Length > 0)
                     frmposmainext.Show();
             }
-            fncfullscreen = new fncFullScreen(this);
-            gofullscreen = fncfullscreen.ResizeScreen(gofullscreen);
-            this.Top = 0;
-            this.Left = 0;
         }
         #endregion
 
@@ -372,13 +368,13 @@ namespace ETech
                 this.Close();
 
             //lblClerk_d.BorderStyle = BorderStyle.None;
-            lblChecker_d.BorderStyle = BorderStyle.None;
+            //lblChecker_d.BorderStyle = BorderStyle.None;
             //lblCustomer_d.BorderStyle = BorderStyle.None;
-            lblMember_d.BorderStyle = BorderStyle.None;
+            //lblMember_d.BorderStyle = BorderStyle.None;
             lblMode_d.BorderStyle = BorderStyle.None;
-            lblCustomermemo_d.BorderStyle = BorderStyle.None;
-            lblWarning.BorderStyle = BorderStyle.None;
-            lblSalesMemo.BorderStyle = BorderStyle.None;
+            //lblCustomermemo_d.BorderStyle = BorderStyle.None;
+            //lblWarning.BorderStyle = BorderStyle.None;
+            //lblSalesMemo.BorderStyle = BorderStyle.None;
 
             //Text = cls_globalvariables.ApplicationName;
             tsslApplicationVersion.Text = "v1.0.0.0";
@@ -387,6 +383,11 @@ namespace ETech
 
             fncFilter.set_theme_color(this);
             fncFilter.set_dgv_inherit(dgvProduct);
+
+            fncfullscreen = new fncFullScreen(this);
+            gofullscreen = fncfullscreen.ResizeScreen(gofullscreen);
+            this.Top = 0;
+            this.Left = 0;
         }
 
         private void txtBarcode_KeyPress(object sender, KeyPressEventArgs e)
@@ -1363,16 +1364,16 @@ namespace ETech
                             salesmemo.salesheadwid = this.get_curtrans().getWid();
                             salesmemo.ShowDialog();
                             tran.setmemo(salesmemo.txtmemo);
-                            lblSalesMemo.Text = salesmemo.txtmemo;
+                            tsslSalesMemo.Text = salesmemo.txtmemo;
                             break;
                         case "Escape":
                             break;
                     }
                     isdetected = true; break;
 
-                case Keys.ControlKey:
-                    gofullscreen = fncfullscreen.ResizeScreen(gofullscreen);
-                    break;
+                //case Keys.ControlKey:
+                //    gofullscreen = fncfullscreen.ResizeScreen(gofullscreen);
+                //    break;
             }
 
             if (isdetected == true)
@@ -1666,7 +1667,7 @@ namespace ETech
             this.ctrlproductgridview.initial_display();
             ctrl_CustomerDisplay.initial_display();
 
-            this.lblSalesMemo.Text = "";
+            this.tsslSalesMemo.Text = "";
         }
         public static int save_transaction_thread(cls_POSTransaction tran)
         {

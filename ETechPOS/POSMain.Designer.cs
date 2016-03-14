@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvProduct = new System.Windows.Forms.DataGridView();
             this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,19 +50,8 @@
             this.btnF9 = new System.Windows.Forms.Button();
             this.btnF11 = new System.Windows.Forms.Button();
             this.btnF12 = new System.Windows.Forms.Button();
-            this.pnlOtherInfo = new System.Windows.Forms.Panel();
-            this.lbl_smemo = new System.Windows.Forms.Label();
-            this.lblSalesMemo = new System.Windows.Forms.Label();
-            this.lblCustomermemo_d = new System.Windows.Forms.Label();
-            this.lblWarning = new System.Windows.Forms.Label();
-            this.lblMember_d = new System.Windows.Forms.Label();
-            this.lblMember = new System.Windows.Forms.Label();
-            this.lblCustomer = new System.Windows.Forms.Label();
             this.lblMode_d = new System.Windows.Forms.Label();
             this.lblMode = new System.Windows.Forms.Label();
-            this.lblChecker_d = new System.Windows.Forms.Label();
-            this.lblChecker = new System.Windows.Forms.Label();
-            this.lblClerk = new System.Windows.Forms.Label();
             this.lblBarcode = new System.Windows.Forms.Label();
             this.lblQty = new System.Windows.Forms.Label();
             this.lblQty_d = new System.Windows.Forms.Label();
@@ -83,16 +72,28 @@
             this.tsslTransactions = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslOfficialReceiptNumberTxt = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslOfficialReceiptNumber = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslClerkTxt = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslClerk = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslCustomerTxt = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslCustomer = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslSpace = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSpace2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslDateTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmrUpdateDateTime = new System.Windows.Forms.Timer(this.components);
+            this.ssOtherInformation = new System.Windows.Forms.StatusStrip();
+            this.tsslClerkTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslClerk = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSalesManTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSalesMan = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslMemberTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslMember = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslCustomerTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslCustomer = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSalesMemoTxt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSalesMemo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslCustomerMemo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslWarning = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel12 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSpace1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).BeginInit();
-            this.pnlOtherInfo.SuspendLayout();
             this.ssApplicationDetails.SuspendLayout();
+            this.ssOtherInformation.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvProduct
@@ -109,7 +110,7 @@
             this.price,
             this.amount});
             this.dgvProduct.Enabled = false;
-            this.dgvProduct.Location = new System.Drawing.Point(606, 165);
+            this.dgvProduct.Location = new System.Drawing.Point(602, 12);
             this.dgvProduct.Name = "dgvProduct";
             this.dgvProduct.ReadOnly = true;
             this.dgvProduct.RowHeadersVisible = false;
@@ -122,8 +123,8 @@
             // 
             this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.description.DataPropertyName = "productname";
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.description.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.description.DefaultCellStyle = dataGridViewCellStyle1;
             this.description.FillWeight = 200F;
             this.description.HeaderText = "Description";
             this.description.MinimumWidth = 300;
@@ -134,8 +135,8 @@
             // 
             this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.qty.DataPropertyName = "qty";
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.qty.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.qty.DefaultCellStyle = dataGridViewCellStyle2;
             this.qty.FillWeight = 46.81124F;
             this.qty.HeaderText = "Qty";
             this.qty.MinimumWidth = 100;
@@ -146,15 +147,15 @@
             // 
             this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.price.DataPropertyName = "price";
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle15.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.price.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.price.DefaultCellStyle = dataGridViewCellStyle3;
             this.price.FillWeight = 61.91541F;
             this.price.HeaderText = "Price";
             this.price.MinimumWidth = 100;
@@ -165,9 +166,9 @@
             // 
             this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.amount.DataPropertyName = "amount";
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle16.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.amount.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.amount.DefaultCellStyle = dataGridViewCellStyle4;
             this.amount.HeaderText = "Amount";
             this.amount.MinimumWidth = 100;
             this.amount.Name = "amount";
@@ -177,7 +178,7 @@
             // 
             this.txtBarcode.Enabled = false;
             this.txtBarcode.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBarcode.Location = new System.Drawing.Point(12, 82);
+            this.txtBarcode.Location = new System.Drawing.Point(12, 37);
             this.txtBarcode.MaxLength = 50;
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Size = new System.Drawing.Size(408, 35);
@@ -191,7 +192,7 @@
             this.btnF1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.btnF1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF1.ForeColor = System.Drawing.Color.White;
-            this.btnF1.Location = new System.Drawing.Point(111, 132);
+            this.btnF1.Location = new System.Drawing.Point(111, 87);
             this.btnF1.Name = "btnF1";
             this.btnF1.Size = new System.Drawing.Size(99, 73);
             this.btnF1.TabIndex = 6;
@@ -204,7 +205,7 @@
             this.btnF2.Enabled = false;
             this.btnF2.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF2.ForeColor = System.Drawing.Color.White;
-            this.btnF2.Location = new System.Drawing.Point(219, 132);
+            this.btnF2.Location = new System.Drawing.Point(219, 87);
             this.btnF2.Name = "btnF2";
             this.btnF2.Size = new System.Drawing.Size(99, 73);
             this.btnF2.TabIndex = 7;
@@ -216,7 +217,7 @@
             this.btnESC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.btnESC.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnESC.ForeColor = System.Drawing.Color.White;
-            this.btnESC.Location = new System.Drawing.Point(9, 132);
+            this.btnESC.Location = new System.Drawing.Point(9, 87);
             this.btnESC.Name = "btnESC";
             this.btnESC.Size = new System.Drawing.Size(99, 73);
             this.btnESC.TabIndex = 8;
@@ -229,7 +230,7 @@
             this.btnF4.Enabled = false;
             this.btnF4.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF4.ForeColor = System.Drawing.Color.White;
-            this.btnF4.Location = new System.Drawing.Point(321, 132);
+            this.btnF4.Location = new System.Drawing.Point(321, 87);
             this.btnF4.Name = "btnF4";
             this.btnF4.Size = new System.Drawing.Size(99, 73);
             this.btnF4.TabIndex = 9;
@@ -242,7 +243,7 @@
             this.btnF5.Enabled = false;
             this.btnF5.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF5.ForeColor = System.Drawing.Color.White;
-            this.btnF5.Location = new System.Drawing.Point(9, 211);
+            this.btnF5.Location = new System.Drawing.Point(9, 166);
             this.btnF5.Name = "btnF5";
             this.btnF5.Size = new System.Drawing.Size(99, 73);
             this.btnF5.TabIndex = 10;
@@ -255,7 +256,7 @@
             this.btnF6.Enabled = false;
             this.btnF6.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF6.ForeColor = System.Drawing.Color.White;
-            this.btnF6.Location = new System.Drawing.Point(114, 211);
+            this.btnF6.Location = new System.Drawing.Point(111, 166);
             this.btnF6.Name = "btnF6";
             this.btnF6.Size = new System.Drawing.Size(99, 73);
             this.btnF6.TabIndex = 11;
@@ -268,7 +269,7 @@
             this.btnF7.Enabled = false;
             this.btnF7.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF7.ForeColor = System.Drawing.Color.White;
-            this.btnF7.Location = new System.Drawing.Point(219, 211);
+            this.btnF7.Location = new System.Drawing.Point(219, 166);
             this.btnF7.Name = "btnF7";
             this.btnF7.Size = new System.Drawing.Size(99, 73);
             this.btnF7.TabIndex = 12;
@@ -281,7 +282,7 @@
             this.btnF8.Enabled = false;
             this.btnF8.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF8.ForeColor = System.Drawing.Color.White;
-            this.btnF8.Location = new System.Drawing.Point(324, 211);
+            this.btnF8.Location = new System.Drawing.Point(321, 166);
             this.btnF8.Name = "btnF8";
             this.btnF8.Size = new System.Drawing.Size(99, 73);
             this.btnF8.TabIndex = 13;
@@ -294,7 +295,7 @@
             this.btnF9.Enabled = false;
             this.btnF9.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF9.ForeColor = System.Drawing.Color.White;
-            this.btnF9.Location = new System.Drawing.Point(9, 290);
+            this.btnF9.Location = new System.Drawing.Point(9, 245);
             this.btnF9.Name = "btnF9";
             this.btnF9.Size = new System.Drawing.Size(99, 73);
             this.btnF9.TabIndex = 14;
@@ -307,7 +308,7 @@
             this.btnF11.Enabled = false;
             this.btnF11.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF11.ForeColor = System.Drawing.Color.White;
-            this.btnF11.Location = new System.Drawing.Point(114, 290);
+            this.btnF11.Location = new System.Drawing.Point(114, 245);
             this.btnF11.Name = "btnF11";
             this.btnF11.Size = new System.Drawing.Size(99, 73);
             this.btnF11.TabIndex = 16;
@@ -319,167 +320,41 @@
             this.btnF12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.btnF12.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF12.ForeColor = System.Drawing.Color.White;
-            this.btnF12.Location = new System.Drawing.Point(219, 290);
+            this.btnF12.Location = new System.Drawing.Point(219, 245);
             this.btnF12.Name = "btnF12";
             this.btnF12.Size = new System.Drawing.Size(99, 73);
             this.btnF12.TabIndex = 17;
             this.btnF12.Text = "F12\r\nMenu";
             this.btnF12.UseVisualStyleBackColor = false;
             // 
-            // pnlOtherInfo
-            // 
-            this.pnlOtherInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.pnlOtherInfo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlOtherInfo.Controls.Add(this.lbl_smemo);
-            this.pnlOtherInfo.Controls.Add(this.lblSalesMemo);
-            this.pnlOtherInfo.Controls.Add(this.lblCustomermemo_d);
-            this.pnlOtherInfo.Controls.Add(this.lblWarning);
-            this.pnlOtherInfo.Controls.Add(this.lblMember_d);
-            this.pnlOtherInfo.Controls.Add(this.lblMember);
-            this.pnlOtherInfo.Controls.Add(this.lblCustomer);
-            this.pnlOtherInfo.Controls.Add(this.lblMode_d);
-            this.pnlOtherInfo.Controls.Add(this.lblMode);
-            this.pnlOtherInfo.Controls.Add(this.lblChecker_d);
-            this.pnlOtherInfo.Controls.Add(this.lblChecker);
-            this.pnlOtherInfo.Controls.Add(this.lblClerk);
-            this.pnlOtherInfo.Location = new System.Drawing.Point(12, 369);
-            this.pnlOtherInfo.Name = "pnlOtherInfo";
-            this.pnlOtherInfo.Size = new System.Drawing.Size(584, 203);
-            this.pnlOtherInfo.TabIndex = 18;
-            // 
-            // lbl_smemo
-            // 
-            this.lbl_smemo.AutoSize = true;
-            this.lbl_smemo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_smemo.ForeColor = System.Drawing.Color.Black;
-            this.lbl_smemo.Location = new System.Drawing.Point(303, 72);
-            this.lbl_smemo.Name = "lbl_smemo";
-            this.lbl_smemo.Size = new System.Drawing.Size(69, 24);
-            this.lbl_smemo.TabIndex = 15;
-            this.lbl_smemo.Text = "Memo:";
-            // 
-            // lblSalesMemo
-            // 
-            this.lblSalesMemo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSalesMemo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSalesMemo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblSalesMemo.Location = new System.Drawing.Point(401, 72);
-            this.lblSalesMemo.Name = "lblSalesMemo";
-            this.lblSalesMemo.Size = new System.Drawing.Size(169, 24);
-            this.lblSalesMemo.TabIndex = 14;
-            // 
-            // lblCustomermemo_d
-            // 
-            this.lblCustomermemo_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCustomermemo_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblCustomermemo_d.ForeColor = System.Drawing.Color.Black;
-            this.lblCustomermemo_d.Location = new System.Drawing.Point(13, 103);
-            this.lblCustomermemo_d.Name = "lblCustomermemo_d";
-            this.lblCustomermemo_d.Size = new System.Drawing.Size(557, 40);
-            this.lblCustomermemo_d.TabIndex = 13;
-            // 
-            // lblWarning
-            // 
-            this.lblWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblWarning.ForeColor = System.Drawing.Color.Red;
-            this.lblWarning.Location = new System.Drawing.Point(13, 149);
-            this.lblWarning.Name = "lblWarning";
-            this.lblWarning.Size = new System.Drawing.Size(557, 40);
-            this.lblWarning.TabIndex = 12;
-            this.lblWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblMember_d
-            // 
-            this.lblMember_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblMember_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMember_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblMember_d.Location = new System.Drawing.Point(401, 12);
-            this.lblMember_d.Name = "lblMember_d";
-            this.lblMember_d.Size = new System.Drawing.Size(169, 24);
-            this.lblMember_d.TabIndex = 11;
-            // 
-            // lblMember
-            // 
-            this.lblMember.AutoSize = true;
-            this.lblMember.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMember.ForeColor = System.Drawing.Color.Black;
-            this.lblMember.Location = new System.Drawing.Point(303, 12);
-            this.lblMember.Name = "lblMember";
-            this.lblMember.Size = new System.Drawing.Size(86, 24);
-            this.lblMember.TabIndex = 9;
-            this.lblMember.Text = "Member:";
-            // 
-            // lblCustomer
-            // 
-            this.lblCustomer.AutoSize = true;
-            this.lblCustomer.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomer.ForeColor = System.Drawing.Color.Black;
-            this.lblCustomer.Location = new System.Drawing.Point(14, 70);
-            this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(96, 24);
-            this.lblCustomer.TabIndex = 8;
-            this.lblCustomer.Text = "Customer:";
-            // 
             // lblMode_d
             // 
-            this.lblMode_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblMode_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMode_d.BackColor = System.Drawing.Color.White;
+            this.lblMode_d.Font = new System.Drawing.Font("Arial", 24.75F);
             this.lblMode_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblMode_d.Location = new System.Drawing.Point(401, 42);
+            this.lblMode_d.Location = new System.Drawing.Point(1095, 322);
             this.lblMode_d.Name = "lblMode_d";
-            this.lblMode_d.Size = new System.Drawing.Size(169, 24);
+            this.lblMode_d.Size = new System.Drawing.Size(169, 39);
             this.lblMode_d.TabIndex = 5;
             // 
             // lblMode
             // 
             this.lblMode.AutoSize = true;
-            this.lblMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMode.BackColor = System.Drawing.Color.White;
+            this.lblMode.Font = new System.Drawing.Font("Arial", 24.75F);
             this.lblMode.ForeColor = System.Drawing.Color.Black;
-            this.lblMode.Location = new System.Drawing.Point(303, 42);
+            this.lblMode.Location = new System.Drawing.Point(984, 323);
             this.lblMode.Name = "lblMode";
-            this.lblMode.Size = new System.Drawing.Size(64, 24);
+            this.lblMode.Size = new System.Drawing.Size(105, 38);
             this.lblMode.TabIndex = 4;
             this.lblMode.Text = "Mode:";
-            // 
-            // lblChecker_d
-            // 
-            this.lblChecker_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblChecker_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblChecker_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblChecker_d.Location = new System.Drawing.Point(117, 42);
-            this.lblChecker_d.Name = "lblChecker_d";
-            this.lblChecker_d.Size = new System.Drawing.Size(169, 24);
-            this.lblChecker_d.TabIndex = 3;
-            // 
-            // lblChecker
-            // 
-            this.lblChecker.AutoSize = true;
-            this.lblChecker.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblChecker.ForeColor = System.Drawing.Color.Black;
-            this.lblChecker.Location = new System.Drawing.Point(15, 41);
-            this.lblChecker.Name = "lblChecker";
-            this.lblChecker.Size = new System.Drawing.Size(98, 24);
-            this.lblChecker.TabIndex = 1;
-            this.lblChecker.Text = "Salesman:";
-            // 
-            // lblClerk
-            // 
-            this.lblClerk.AutoSize = true;
-            this.lblClerk.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblClerk.ForeColor = System.Drawing.Color.Black;
-            this.lblClerk.Location = new System.Drawing.Point(16, 13);
-            this.lblClerk.Name = "lblClerk";
-            this.lblClerk.Size = new System.Drawing.Size(58, 24);
-            this.lblClerk.TabIndex = 0;
-            this.lblClerk.Text = "Clerk:";
             // 
             // lblBarcode
             // 
             this.lblBarcode.AutoSize = true;
-            this.lblBarcode.BackColor = System.Drawing.Color.Transparent;
+            this.lblBarcode.BackColor = System.Drawing.Color.White;
             this.lblBarcode.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBarcode.Location = new System.Drawing.Point(5, 57);
+            this.lblBarcode.Location = new System.Drawing.Point(12, 12);
             this.lblBarcode.Name = "lblBarcode";
             this.lblBarcode.Size = new System.Drawing.Size(87, 22);
             this.lblBarcode.TabIndex = 20;
@@ -488,9 +363,9 @@
             // lblQty
             // 
             this.lblQty.AutoSize = true;
-            this.lblQty.BackColor = System.Drawing.Color.Transparent;
+            this.lblQty.BackColor = System.Drawing.Color.White;
             this.lblQty.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQty.Location = new System.Drawing.Point(399, 700);
+            this.lblQty.Location = new System.Drawing.Point(1013, 369);
             this.lblQty.Name = "lblQty";
             this.lblQty.Size = new System.Drawing.Size(76, 38);
             this.lblQty.TabIndex = 21;
@@ -498,36 +373,35 @@
             // 
             // lblQty_d
             // 
-            this.lblQty_d.BackColor = System.Drawing.Color.Transparent;
-            this.lblQty_d.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblQty_d.BackColor = System.Drawing.Color.White;
             this.lblQty_d.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQty_d.Location = new System.Drawing.Point(481, 700);
+            this.lblQty_d.Location = new System.Drawing.Point(1095, 369);
             this.lblQty_d.Name = "lblQty_d";
-            this.lblQty_d.Size = new System.Drawing.Size(115, 39);
+            this.lblQty_d.Size = new System.Drawing.Size(169, 39);
             this.lblQty_d.TabIndex = 22;
             this.lblQty_d.Text = "0";
             this.lblQty_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblTendered
             // 
-            this.lblTendered.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.lblTendered.Font = new System.Drawing.Font("Arial Black", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTendered.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblTendered.Location = new System.Drawing.Point(990, 575);
+            this.lblTendered.BackColor = System.Drawing.Color.White;
+            this.lblTendered.Font = new System.Drawing.Font("Arial", 24.75F);
+            this.lblTendered.ForeColor = System.Drawing.Color.Black;
+            this.lblTendered.Location = new System.Drawing.Point(1095, 463);
             this.lblTendered.Name = "lblTendered";
-            this.lblTendered.Size = new System.Drawing.Size(277, 73);
+            this.lblTendered.Size = new System.Drawing.Size(169, 39);
             this.lblTendered.TabIndex = 1;
             this.lblTendered.Text = "0.00";
             this.lblTendered.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // lblRemaining
             // 
-            this.lblRemaining.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.lblRemaining.Font = new System.Drawing.Font("Arial Black", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRemaining.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblRemaining.Location = new System.Drawing.Point(992, 658);
+            this.lblRemaining.BackColor = System.Drawing.Color.White;
+            this.lblRemaining.Font = new System.Drawing.Font("Arial", 24.75F);
+            this.lblRemaining.ForeColor = System.Drawing.Color.Black;
+            this.lblRemaining.Location = new System.Drawing.Point(1095, 510);
             this.lblRemaining.Name = "lblRemaining";
-            this.lblRemaining.Size = new System.Drawing.Size(276, 73);
+            this.lblRemaining.Size = new System.Drawing.Size(169, 39);
             this.lblRemaining.TabIndex = 2;
             this.lblRemaining.Text = "0.00";
             this.lblRemaining.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -545,30 +419,34 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(902, 620);
+            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.Font = new System.Drawing.Font("Arial", 24.75F);
+            this.label1.Location = new System.Drawing.Point(939, 464);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 13);
+            this.label1.Size = new System.Drawing.Size(150, 38);
             this.label1.TabIndex = 29;
             this.label1.Text = "Tendered";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(902, 676);
+            this.label3.BackColor = System.Drawing.Color.White;
+            this.label3.Font = new System.Drawing.Font("Arial", 24.75F);
+            this.label3.Location = new System.Drawing.Point(919, 511);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(57, 13);
+            this.label3.Size = new System.Drawing.Size(170, 38);
             this.label3.TabIndex = 30;
             this.label3.Text = "Remaining";
             // 
             // lblTotal
             // 
-            this.lblTotal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.lblTotal.Font = new System.Drawing.Font("Arial Black", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.lblTotal.Location = new System.Drawing.Point(989, 488);
+            this.lblTotal.BackColor = System.Drawing.Color.White;
+            this.lblTotal.Font = new System.Drawing.Font("Arial", 24.75F);
+            this.lblTotal.ForeColor = System.Drawing.Color.Black;
+            this.lblTotal.Location = new System.Drawing.Point(1095, 416);
             this.lblTotal.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(278, 74);
+            this.lblTotal.Size = new System.Drawing.Size(169, 39);
             this.lblTotal.TabIndex = 0;
             this.lblTotal.Text = "0.00";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -585,15 +463,11 @@
             this.tsslTransactions,
             this.tsslOfficialReceiptNumberTxt,
             this.tsslOfficialReceiptNumber,
-            this.tsslClerkTxt,
-            this.tsslClerk,
-            this.tsslCustomerTxt,
-            this.tsslCustomer,
-            this.tsslSpace,
+            this.tsslSpace2,
             this.tsslDateTime});
-            this.ssApplicationDetails.Location = new System.Drawing.Point(0, 748);
+            this.ssApplicationDetails.Location = new System.Drawing.Point(0, 718);
             this.ssApplicationDetails.Name = "ssApplicationDetails";
-            this.ssApplicationDetails.Size = new System.Drawing.Size(1280, 24);
+            this.ssApplicationDetails.Size = new System.Drawing.Size(1276, 24);
             this.ssApplicationDetails.SizingGrip = false;
             this.ssApplicationDetails.TabIndex = 31;
             this.ssApplicationDetails.Text = "Status";
@@ -601,6 +475,7 @@
             // tsslApplicationVersion
             // 
             this.tsslApplicationVersion.AutoSize = false;
+            this.tsslApplicationVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslApplicationVersion.Name = "tsslApplicationVersion";
             this.tsslApplicationVersion.Size = new System.Drawing.Size(55, 19);
             this.tsslApplicationVersion.Text = "v1.0.0.0";
@@ -610,6 +485,7 @@
             // 
             this.tsslBranchCode.AutoSize = false;
             this.tsslBranchCode.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslBranchCode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslBranchCode.Name = "tsslBranchCode";
             this.tsslBranchCode.Size = new System.Drawing.Size(55, 19);
             this.tsslBranchCode.Text = "0000";
@@ -619,6 +495,7 @@
             // 
             this.tsslBranchName.AutoSize = false;
             this.tsslBranchName.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslBranchName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslBranchName.Name = "tsslBranchName";
             this.tsslBranchName.Size = new System.Drawing.Size(100, 19);
             this.tsslBranchName.Text = "Branch";
@@ -629,6 +506,7 @@
             this.tsslTerminalNumberTxt.AutoSize = false;
             this.tsslTerminalNumberTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslTerminalNumberTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslTerminalNumberTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslTerminalNumberTxt.Name = "tsslTerminalNumberTxt";
             this.tsslTerminalNumberTxt.Size = new System.Drawing.Size(60, 19);
             this.tsslTerminalNumberTxt.Text = "Terminal:";
@@ -638,6 +516,7 @@
             // 
             this.tsslTerminalNumber.AutoSize = false;
             this.tsslTerminalNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslTerminalNumber.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslTerminalNumber.Name = "tsslTerminalNumber";
             this.tsslTerminalNumber.Size = new System.Drawing.Size(35, 19);
             this.tsslTerminalNumber.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -646,8 +525,9 @@
             // 
             this.tsslTransactionsTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslTransactionsTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslTransactionsTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslTransactionsTxt.Name = "tsslTransactionsTxt";
-            this.tsslTransactionsTxt.Size = new System.Drawing.Size(80, 19);
+            this.tsslTransactionsTxt.Size = new System.Drawing.Size(83, 19);
             this.tsslTransactionsTxt.Text = "Transactions:";
             this.tsslTransactionsTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -655,6 +535,7 @@
             // 
             this.tsslTransactions.AutoSize = false;
             this.tsslTransactions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslTransactions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslTransactions.Name = "tsslTransactions";
             this.tsslTransactions.Size = new System.Drawing.Size(70, 19);
             this.tsslTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -664,6 +545,7 @@
             this.tsslOfficialReceiptNumberTxt.AutoSize = false;
             this.tsslOfficialReceiptNumberTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslOfficialReceiptNumberTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslOfficialReceiptNumberTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslOfficialReceiptNumberTxt.Name = "tsslOfficialReceiptNumberTxt";
             this.tsslOfficialReceiptNumberTxt.Size = new System.Drawing.Size(60, 19);
             this.tsslOfficialReceiptNumberTxt.Text = "OR No.:";
@@ -673,60 +555,25 @@
             // 
             this.tsslOfficialReceiptNumber.AutoSize = false;
             this.tsslOfficialReceiptNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslOfficialReceiptNumber.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslOfficialReceiptNumber.Name = "tsslOfficialReceiptNumber";
-            this.tsslOfficialReceiptNumber.Size = new System.Drawing.Size(180, 19);
+            this.tsslOfficialReceiptNumber.Size = new System.Drawing.Size(90, 19);
             this.tsslOfficialReceiptNumber.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tsslClerkTxt
+            // tsslSpace2
             // 
-            this.tsslClerkTxt.AutoSize = false;
-            this.tsslClerkTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
-            this.tsslClerkTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsslClerkTxt.Name = "tsslClerkTxt";
-            this.tsslClerkTxt.Size = new System.Drawing.Size(50, 19);
-            this.tsslClerkTxt.Text = "Clerk:";
-            this.tsslClerkTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tsslClerk
-            // 
-            this.tsslClerk.AutoSize = false;
-            this.tsslClerk.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsslClerk.Name = "tsslClerk";
-            this.tsslClerk.Size = new System.Drawing.Size(100, 19);
-            this.tsslClerk.Text = "Clerk 1";
-            this.tsslClerk.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tsslCustomerTxt
-            // 
-            this.tsslCustomerTxt.AutoSize = false;
-            this.tsslCustomerTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
-            this.tsslCustomerTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsslCustomerTxt.Name = "tsslCustomerTxt";
-            this.tsslCustomerTxt.Size = new System.Drawing.Size(70, 19);
-            this.tsslCustomerTxt.Text = "Customer:";
-            this.tsslCustomerTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tsslCustomer
-            // 
-            this.tsslCustomer.AutoSize = false;
-            this.tsslCustomer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsslCustomer.Name = "tsslCustomer";
-            this.tsslCustomer.Size = new System.Drawing.Size(100, 19);
-            this.tsslCustomer.Text = "Customer 1";
-            this.tsslCustomer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tsslSpace
-            // 
-            this.tsslSpace.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
-            this.tsslSpace.Name = "tsslSpace";
-            this.tsslSpace.Size = new System.Drawing.Size(1, 19);
-            this.tsslSpace.Spring = true;
-            this.tsslSpace.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.tsslSpace2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslSpace2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslSpace2.Name = "tsslSpace2";
+            this.tsslSpace2.Size = new System.Drawing.Size(403, 19);
+            this.tsslSpace2.Spring = true;
+            this.tsslSpace2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tsslDateTime
             // 
             this.tsslDateTime.AutoSize = false;
             this.tsslDateTime.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslDateTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslDateTime.Name = "tsslDateTime";
             this.tsslDateTime.Size = new System.Drawing.Size(250, 19);
             this.tsslDateTime.Text = "JANUARY 01, 2016 08:00:00 AM";
@@ -738,24 +585,201 @@
             this.tmrUpdateDateTime.Interval = 1000;
             this.tmrUpdateDateTime.Tick += new System.EventHandler(this.tmrUpdateDateTime_Tick);
             // 
+            // ssOtherInformation
+            // 
+            this.ssOtherInformation.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslClerkTxt,
+            this.tsslClerk,
+            this.tsslSalesManTxt,
+            this.tsslSalesMan,
+            this.tsslMemberTxt,
+            this.tsslMember,
+            this.tsslCustomerTxt,
+            this.tsslCustomer,
+            this.tsslSalesMemoTxt,
+            this.tsslSalesMemo,
+            this.tsslCustomerMemo,
+            this.tsslWarning,
+            this.toolStripStatusLabel12,
+            this.tsslSpace1});
+            this.ssOtherInformation.Location = new System.Drawing.Point(0, 688);
+            this.ssOtherInformation.Name = "ssOtherInformation";
+            this.ssOtherInformation.Size = new System.Drawing.Size(1276, 30);
+            this.ssOtherInformation.SizingGrip = false;
+            this.ssOtherInformation.TabIndex = 32;
+            this.ssOtherInformation.Text = "Status";
+            // 
+            // tsslClerkTxt
+            // 
+            this.tsslClerkTxt.AutoSize = false;
+            this.tsslClerkTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslClerkTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslClerkTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslClerkTxt.Name = "tsslClerkTxt";
+            this.tsslClerkTxt.Size = new System.Drawing.Size(50, 25);
+            this.tsslClerkTxt.Text = "Clerk:";
+            this.tsslClerkTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslClerk
+            // 
+            this.tsslClerk.AutoSize = false;
+            this.tsslClerk.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslClerk.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslClerk.Name = "tsslClerk";
+            this.tsslClerk.Size = new System.Drawing.Size(100, 25);
+            this.tsslClerk.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslSalesManTxt
+            // 
+            this.tsslSalesManTxt.AutoSize = false;
+            this.tsslSalesManTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslSalesManTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslSalesManTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslSalesManTxt.Name = "tsslSalesManTxt";
+            this.tsslSalesManTxt.Size = new System.Drawing.Size(70, 25);
+            this.tsslSalesManTxt.Text = "Salesman:";
+            this.tsslSalesManTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslSalesMan
+            // 
+            this.tsslSalesMan.AutoSize = false;
+            this.tsslSalesMan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslSalesMan.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslSalesMan.Name = "tsslSalesMan";
+            this.tsslSalesMan.Size = new System.Drawing.Size(100, 25);
+            this.tsslSalesMan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslMemberTxt
+            // 
+            this.tsslMemberTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslMemberTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslMemberTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslMemberTxt.Name = "tsslMemberTxt";
+            this.tsslMemberTxt.Size = new System.Drawing.Size(62, 25);
+            this.tsslMemberTxt.Text = "Member:";
+            this.tsslMemberTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslMember
+            // 
+            this.tsslMember.AutoSize = false;
+            this.tsslMember.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslMember.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslMember.Name = "tsslMember";
+            this.tsslMember.Size = new System.Drawing.Size(100, 25);
+            this.tsslMember.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslCustomerTxt
+            // 
+            this.tsslCustomerTxt.AutoSize = false;
+            this.tsslCustomerTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslCustomerTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslCustomerTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslCustomerTxt.Name = "tsslCustomerTxt";
+            this.tsslCustomerTxt.Size = new System.Drawing.Size(70, 25);
+            this.tsslCustomerTxt.Text = "Customer:";
+            this.tsslCustomerTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslCustomer
+            // 
+            this.tsslCustomer.AutoSize = false;
+            this.tsslCustomer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslCustomer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslCustomer.Name = "tsslCustomer";
+            this.tsslCustomer.Size = new System.Drawing.Size(100, 25);
+            this.tsslCustomer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslSalesMemoTxt
+            // 
+            this.tsslSalesMemoTxt.AutoSize = false;
+            this.tsslSalesMemoTxt.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslSalesMemoTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslSalesMemoTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslSalesMemoTxt.Name = "tsslSalesMemoTxt";
+            this.tsslSalesMemoTxt.Size = new System.Drawing.Size(60, 25);
+            this.tsslSalesMemoTxt.Text = "Memo:";
+            this.tsslSalesMemoTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslSalesMemo
+            // 
+            this.tsslSalesMemo.AutoSize = false;
+            this.tsslSalesMemo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslSalesMemo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslSalesMemo.Name = "tsslSalesMemo";
+            this.tsslSalesMemo.Size = new System.Drawing.Size(180, 25);
+            this.tsslSalesMemo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslCustomerMemo
+            // 
+            this.tsslCustomerMemo.AutoSize = false;
+            this.tsslCustomerMemo.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslCustomerMemo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslCustomerMemo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslCustomerMemo.Name = "tsslCustomerMemo";
+            this.tsslCustomerMemo.Size = new System.Drawing.Size(180, 25);
+            this.tsslCustomerMemo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslWarning
+            // 
+            this.tsslWarning.AutoSize = false;
+            this.tsslWarning.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslWarning.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslWarning.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslWarning.Name = "tsslWarning";
+            this.tsslWarning.Size = new System.Drawing.Size(180, 25);
+            this.tsslWarning.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // toolStripStatusLabel12
+            // 
+            this.toolStripStatusLabel12.AutoSize = false;
+            this.toolStripStatusLabel12.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.toolStripStatusLabel12.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripStatusLabel12.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel12.Name = "toolStripStatusLabel12";
+            this.toolStripStatusLabel12.Size = new System.Drawing.Size(1, 25);
+            this.toolStripStatusLabel12.Text = "Customer:";
+            this.toolStripStatusLabel12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslSpace1
+            // 
+            this.tsslSpace1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslSpace1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslSpace1.Name = "tsslSpace1";
+            this.tsslSpace1.Size = new System.Drawing.Size(8, 25);
+            this.tsslSpace1.Spring = true;
+            this.tsslSpace1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.White;
+            this.label2.Font = new System.Drawing.Font("Arial", 24.75F);
+            this.label2.Location = new System.Drawing.Point(1005, 417);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(84, 38);
+            this.label2.TabIndex = 33;
+            this.label2.Text = "Total";
+            // 
             // POSMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1280, 772);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ClientSize = new System.Drawing.Size(1276, 742);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.ssOtherInformation);
             this.Controls.Add(this.ssApplicationDetails);
             this.Controls.Add(this.lblTotal);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblRemaining);
             this.Controls.Add(this.lblTendered);
+            this.Controls.Add(this.lblMode_d);
+            this.Controls.Add(this.lblMode);
             this.Controls.Add(this.dgvProduct);
             this.Controls.Add(this.lblQty_d);
             this.Controls.Add(this.lblQty);
             this.Controls.Add(this.lblBarcode);
-            this.Controls.Add(this.pnlOtherInfo);
             this.Controls.Add(this.btnF12);
             this.Controls.Add(this.btnF11);
             this.Controls.Add(this.btnF9);
@@ -778,10 +802,10 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.POSMain_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.POSMain_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).EndInit();
-            this.pnlOtherInfo.ResumeLayout(false);
-            this.pnlOtherInfo.PerformLayout();
             this.ssApplicationDetails.ResumeLayout(false);
             this.ssApplicationDetails.PerformLayout();
+            this.ssOtherInformation.ResumeLayout(false);
+            this.ssOtherInformation.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -800,28 +824,17 @@
         private System.Windows.Forms.Button btnF9;
         private System.Windows.Forms.Button btnF11;
         private System.Windows.Forms.Button btnF12;
-        private System.Windows.Forms.Panel pnlOtherInfo;
         private System.Windows.Forms.Label lblBarcode;
         private System.Windows.Forms.Label lblQty;
         private System.Windows.Forms.Label lblQty_d;
         private System.Windows.Forms.Label lblTendered;
         private System.Windows.Forms.Label lblRemaining;
-        private System.Windows.Forms.Label lblChecker_d;
-        private System.Windows.Forms.Label lblChecker;
-        private System.Windows.Forms.Label lblClerk;
         private System.Windows.Forms.Label lblMode_d;
         private System.Windows.Forms.Label lblMode;
-        private System.Windows.Forms.Label lblMember_d;
-        private System.Windows.Forms.Label lblMember;
-        private System.Windows.Forms.Label lblCustomer;
-        private System.Windows.Forms.Label lblWarning;
         private System.IO.Ports.SerialPort spcustdisp;
         public System.Windows.Forms.DataGridView dgvProduct;
         public System.Windows.Forms.TextBox txtBarcode;
-        private System.Windows.Forms.Label lblCustomermemo_d;
         private System.Windows.Forms.Timer tmrcheckposdsetting;
-        private System.Windows.Forms.Label lblSalesMemo;
-        private System.Windows.Forms.Label lbl_smemo;
         private System.Windows.Forms.DataGridViewTextBoxColumn description;
         private System.Windows.Forms.DataGridViewTextBoxColumn qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn price;
@@ -841,10 +854,22 @@
         private System.Windows.Forms.Timer tmrUpdateDateTime;
         private System.Windows.Forms.ToolStripStatusLabel tsslApplicationVersion;
         private System.Windows.Forms.ToolStripStatusLabel tsslTerminalNumberTxt;
-        private System.Windows.Forms.ToolStripStatusLabel tsslClerkTxt;
+        private System.Windows.Forms.ToolStripStatusLabel tsslSpace2;
+        private System.Windows.Forms.StatusStrip ssOtherInformation;
         private System.Windows.Forms.ToolStripStatusLabel tsslClerk;
+        private System.Windows.Forms.ToolStripStatusLabel tsslClerkTxt;
+        private System.Windows.Forms.ToolStripStatusLabel tsslSalesManTxt;
+        private System.Windows.Forms.ToolStripStatusLabel tsslSalesMan;
+        private System.Windows.Forms.ToolStripStatusLabel tsslMemberTxt;
+        private System.Windows.Forms.ToolStripStatusLabel tsslMember;
+        private System.Windows.Forms.ToolStripStatusLabel tsslSalesMemoTxt;
+        private System.Windows.Forms.ToolStripStatusLabel tsslSalesMemo;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel12;
+        private System.Windows.Forms.ToolStripStatusLabel tsslSpace1;
         private System.Windows.Forms.ToolStripStatusLabel tsslCustomerTxt;
         private System.Windows.Forms.ToolStripStatusLabel tsslCustomer;
-        private System.Windows.Forms.ToolStripStatusLabel tsslSpace;
+        private System.Windows.Forms.ToolStripStatusLabel tsslCustomerMemo;
+        private System.Windows.Forms.ToolStripStatusLabel tsslWarning;
+        private System.Windows.Forms.Label label2;
     }
 }

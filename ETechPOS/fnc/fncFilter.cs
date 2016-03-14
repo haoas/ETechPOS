@@ -204,6 +204,8 @@ namespace ETech.fnc
                 form.StartPosition = FormStartPosition.CenterScreen;
                 //form.FormBorderStyle = FormBorderStyle.None;
                 form.ControlBox = false;
+                form.FormBorderStyle = FormBorderStyle.None;
+                form.BackgroundImageLayout = ImageLayout.Stretch;
                 form.BackgroundImage = Properties.Resources.etechposbg;
 
                 if (cls_globalvariables.colortheme_v == "-1")

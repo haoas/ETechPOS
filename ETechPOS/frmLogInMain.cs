@@ -64,6 +64,7 @@ namespace ETech
             {
                 Bitmap bitmap = new Bitmap(logInImagePath);
             }
+            fncFilter.set_theme_color(this);
         }
 
         private void btnLogIn_Click(object sender, EventArgs e)
