@@ -194,9 +194,11 @@
             this.btnF1.ForeColor = System.Drawing.Color.White;
             this.btnF1.Location = new System.Drawing.Point(111, 87);
             this.btnF1.Name = "btnF1";
+            this.btnF1.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnF1.Size = new System.Drawing.Size(99, 73);
             this.btnF1.TabIndex = 6;
-            this.btnF1.Text = "F1\r\nNew";
+            this.btnF1.Text = "[F1]\r\nCreate New Invoice";
+            this.btnF1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnF1.UseVisualStyleBackColor = false;
             // 
             // btnF2
@@ -205,12 +207,13 @@
             this.btnF2.Enabled = false;
             this.btnF2.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF2.ForeColor = System.Drawing.Color.White;
-            this.btnF2.Location = new System.Drawing.Point(219, 87);
+            this.btnF2.Location = new System.Drawing.Point(497, 20);
             this.btnF2.Name = "btnF2";
             this.btnF2.Size = new System.Drawing.Size(99, 73);
             this.btnF2.TabIndex = 7;
-            this.btnF2.Text = "F2\r\nSwitch";
+            this.btnF2.Text = "Select Customer";
             this.btnF2.UseVisualStyleBackColor = false;
+            this.btnF2.Visible = false;
             // 
             // btnESC
             // 
@@ -219,9 +222,11 @@
             this.btnESC.ForeColor = System.Drawing.Color.White;
             this.btnESC.Location = new System.Drawing.Point(9, 87);
             this.btnESC.Name = "btnESC";
+            this.btnESC.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnESC.Size = new System.Drawing.Size(99, 73);
             this.btnESC.TabIndex = 8;
-            this.btnESC.Text = "ESC\r\nExit\r\nPOS";
+            this.btnESC.Text = "[ESC]\r\nExit\r\nPOS";
+            this.btnESC.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnESC.UseVisualStyleBackColor = false;
             // 
             // btnF4
@@ -230,11 +235,13 @@
             this.btnF4.Enabled = false;
             this.btnF4.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF4.ForeColor = System.Drawing.Color.White;
-            this.btnF4.Location = new System.Drawing.Point(321, 87);
+            this.btnF4.Location = new System.Drawing.Point(219, 87);
             this.btnF4.Name = "btnF4";
+            this.btnF4.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnF4.Size = new System.Drawing.Size(99, 73);
             this.btnF4.TabIndex = 9;
-            this.btnF4.Text = "F4\r\nSearch";
+            this.btnF4.Text = "[ F2 ]\r\nSelect Product";
+            this.btnF4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnF4.UseVisualStyleBackColor = false;
             // 
             // btnF5
@@ -245,9 +252,11 @@
             this.btnF5.ForeColor = System.Drawing.Color.White;
             this.btnF5.Location = new System.Drawing.Point(9, 166);
             this.btnF5.Name = "btnF5";
+            this.btnF5.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnF5.Size = new System.Drawing.Size(99, 73);
             this.btnF5.TabIndex = 10;
-            this.btnF5.Text = "F5\r\nQty";
+            this.btnF5.Text = "[ F4 ]\r\nChange\r\nQuantity";
+            this.btnF5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnF5.UseVisualStyleBackColor = false;
             // 
             // btnF6
@@ -256,12 +265,13 @@
             this.btnF6.Enabled = false;
             this.btnF6.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF6.ForeColor = System.Drawing.Color.White;
-            this.btnF6.Location = new System.Drawing.Point(111, 166);
+            this.btnF6.Location = new System.Drawing.Point(497, 99);
             this.btnF6.Name = "btnF6";
             this.btnF6.Size = new System.Drawing.Size(99, 73);
             this.btnF6.TabIndex = 11;
-            this.btnF6.Text = "F6\r\nVoid";
+            this.btnF6.Text = "Void Transaction";
             this.btnF6.UseVisualStyleBackColor = false;
+            this.btnF6.Visible = false;
             // 
             // btnF7
             // 
@@ -269,11 +279,13 @@
             this.btnF7.Enabled = false;
             this.btnF7.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF7.ForeColor = System.Drawing.Color.White;
-            this.btnF7.Location = new System.Drawing.Point(219, 166);
+            this.btnF7.Location = new System.Drawing.Point(114, 166);
             this.btnF7.Name = "btnF7";
+            this.btnF7.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnF7.Size = new System.Drawing.Size(99, 73);
             this.btnF7.TabIndex = 12;
-            this.btnF7.Text = "F7\r\nDelete";
+            this.btnF7.Text = "[ F7 ]\r\nDelete";
+            this.btnF7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnF7.UseVisualStyleBackColor = false;
             // 
             // btnF8
@@ -282,11 +294,13 @@
             this.btnF8.Enabled = false;
             this.btnF8.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF8.ForeColor = System.Drawing.Color.White;
-            this.btnF8.Location = new System.Drawing.Point(321, 166);
+            this.btnF8.Location = new System.Drawing.Point(219, 166);
             this.btnF8.Name = "btnF8";
+            this.btnF8.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnF8.Size = new System.Drawing.Size(99, 73);
             this.btnF8.TabIndex = 13;
-            this.btnF8.Text = "F8\r\nPayment";
+            this.btnF8.Text = "[ F8 ]\r\nCheckout/\r\nPayment";
+            this.btnF8.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnF8.UseVisualStyleBackColor = false;
             // 
             // btnF9
@@ -295,11 +309,13 @@
             this.btnF9.Enabled = false;
             this.btnF9.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF9.ForeColor = System.Drawing.Color.White;
-            this.btnF9.Location = new System.Drawing.Point(9, 245);
+            this.btnF9.Location = new System.Drawing.Point(321, 87);
             this.btnF9.Name = "btnF9";
+            this.btnF9.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnF9.Size = new System.Drawing.Size(99, 73);
             this.btnF9.TabIndex = 14;
-            this.btnF9.Text = "F9\r\nOpen\r\nItem";
+            this.btnF9.Text = "[ F3 ]\r\nAdd Open Item";
+            this.btnF9.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnF9.UseVisualStyleBackColor = false;
             // 
             // btnF11
@@ -308,11 +324,13 @@
             this.btnF11.Enabled = false;
             this.btnF11.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF11.ForeColor = System.Drawing.Color.White;
-            this.btnF11.Location = new System.Drawing.Point(114, 245);
+            this.btnF11.Location = new System.Drawing.Point(321, 166);
             this.btnF11.Name = "btnF11";
+            this.btnF11.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnF11.Size = new System.Drawing.Size(99, 73);
             this.btnF11.TabIndex = 16;
-            this.btnF11.Text = "F11 \r\nItem\r\nDiscount";
+            this.btnF11.Text = "[ F11 ]\r\nItem\r\nDiscount";
+            this.btnF11.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnF11.UseVisualStyleBackColor = false;
             // 
             // btnF12
@@ -320,12 +338,15 @@
             this.btnF12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.btnF12.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF12.ForeColor = System.Drawing.Color.White;
-            this.btnF12.Location = new System.Drawing.Point(219, 245);
+            this.btnF12.Location = new System.Drawing.Point(497, 178);
             this.btnF12.Name = "btnF12";
+            this.btnF12.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnF12.Size = new System.Drawing.Size(99, 73);
             this.btnF12.TabIndex = 17;
             this.btnF12.Text = "F12\r\nMenu";
+            this.btnF12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnF12.UseVisualStyleBackColor = false;
+            this.btnF12.Visible = false;
             // 
             // lblMode_d
             // 
@@ -617,7 +638,7 @@
             this.tsslClerkTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslClerkTxt.Name = "tsslClerkTxt";
             this.tsslClerkTxt.Size = new System.Drawing.Size(50, 25);
-            this.tsslClerkTxt.Text = "Clerk:";
+            this.tsslClerkTxt.Text = "Cashier:";
             this.tsslClerkTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tsslClerk

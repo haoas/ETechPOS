@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETECHPOS.FormatDesigner;
 
 namespace ETech
 {
@@ -106,14 +107,7 @@ namespace ETech
 
         private void frmSearchProduct_Load(object sender, EventArgs e)
         {
-            foreach (DataGridViewColumn col in dgvProduct.Columns)
-            {
-                col.SortMode = DataGridViewColumnSortMode.NotSortable;
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            }
-
-            //fncFullScreen fncfullscreen = new fncFullScreen(this);
-            //fncfullscreen.ResizeFormsControls();
+            dgvProduct.FormatColumnsWidth();
             fncFilter.set_theme_color(this);
             fncFilter.set_dgv_controls(dgvProduct);
         }
@@ -125,7 +119,7 @@ namespace ETech
             {
                 dt_temp.Clear();
                 this.dgvProduct.DataSource = dt_temp;
-                fncFilter.set_dgv_display(this.dgvProduct);
+                dgvProduct.FormatColumnsWidth();
                 return;
             }
 
@@ -174,8 +168,8 @@ namespace ETech
             this.dgvProduct.DataSource = dt_temp;
             if (dgvProduct.RowCount > 0)
                 this.dgvProduct.Rows[0].Selected = true;
-            else
-                fncFilter.set_dgv_display(this.dgvProduct);
+
+            dgvProduct.FormatColumnsWidth();
         }
 
         private void btnOk_Click(object sender, EventArgs e)

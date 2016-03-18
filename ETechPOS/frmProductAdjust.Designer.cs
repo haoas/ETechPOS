@@ -32,7 +32,6 @@
             this.lblOrigPrice = new System.Windows.Forms.Label();
             this.lblAdjustTo = new System.Windows.Forms.Label();
             this.lblDiscount = new System.Windows.Forms.Label();
-            this.lblOr = new System.Windows.Forms.Label();
             this.lblNewPrice = new System.Windows.Forms.Label();
             this.txtAdjustTo = new System.Windows.Forms.TextBox();
             this.txtDiscount = new System.Windows.Forms.TextBox();
@@ -65,7 +64,7 @@
             // lblOrigPrice
             // 
             this.lblOrigPrice.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOrigPrice.Location = new System.Drawing.Point(5, 123);
+            this.lblOrigPrice.Location = new System.Drawing.Point(4, 114);
             this.lblOrigPrice.Name = "lblOrigPrice";
             this.lblOrigPrice.Size = new System.Drawing.Size(185, 51);
             this.lblOrigPrice.TabIndex = 3;
@@ -92,34 +91,24 @@
             this.lblDiscount.Text = "Discount:";
             this.lblDiscount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblOr
-            // 
-            this.lblOr.AutoSize = true;
-            this.lblOr.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOr.Location = new System.Drawing.Point(64, 219);
-            this.lblOr.Name = "lblOr";
-            this.lblOr.Size = new System.Drawing.Size(31, 25);
-            this.lblOr.TabIndex = 6;
-            this.lblOr.Text = "or";
-            // 
             // lblNewPrice
             // 
             this.lblNewPrice.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNewPrice.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblNewPrice.Location = new System.Drawing.Point(5, 311);
+            this.lblNewPrice.Location = new System.Drawing.Point(5, 300);
             this.lblNewPrice.Name = "lblNewPrice";
-            this.lblNewPrice.Size = new System.Drawing.Size(167, 51);
+            this.lblNewPrice.Size = new System.Drawing.Size(272, 51);
             this.lblNewPrice.TabIndex = 0;
-            this.lblNewPrice.Text = "New Price:";
+            this.lblNewPrice.Text = "Adjusted Price:";
             this.lblNewPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtAdjustTo
             // 
             this.txtAdjustTo.Font = new System.Drawing.Font("Arial", 24F);
-            this.txtAdjustTo.Location = new System.Drawing.Point(170, 180);
+            this.txtAdjustTo.Location = new System.Drawing.Point(276, 180);
             this.txtAdjustTo.MaxLength = 20;
             this.txtAdjustTo.Name = "txtAdjustTo";
-            this.txtAdjustTo.Size = new System.Drawing.Size(309, 44);
+            this.txtAdjustTo.Size = new System.Drawing.Size(203, 44);
             this.txtAdjustTo.TabIndex = 0;
             this.txtAdjustTo.Tag = "num";
             this.txtAdjustTo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -129,10 +118,10 @@
             // txtDiscount
             // 
             this.txtDiscount.Font = new System.Drawing.Font("Arial", 24F);
-            this.txtDiscount.Location = new System.Drawing.Point(170, 240);
+            this.txtDiscount.Location = new System.Drawing.Point(276, 234);
             this.txtDiscount.MaxLength = 10;
             this.txtDiscount.Name = "txtDiscount";
-            this.txtDiscount.Size = new System.Drawing.Size(88, 44);
+            this.txtDiscount.Size = new System.Drawing.Size(151, 44);
             this.txtDiscount.TabIndex = 1;
             this.txtDiscount.Tag = "num";
             this.txtDiscount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -142,9 +131,9 @@
             // lblOrigPrice_d
             // 
             this.lblOrigPrice_d.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOrigPrice_d.Location = new System.Drawing.Point(196, 123);
+            this.lblOrigPrice_d.Location = new System.Drawing.Point(276, 114);
             this.lblOrigPrice_d.Name = "lblOrigPrice_d";
-            this.lblOrigPrice_d.Size = new System.Drawing.Size(283, 51);
+            this.lblOrigPrice_d.Size = new System.Drawing.Size(203, 51);
             this.lblOrigPrice_d.TabIndex = 0;
             this.lblOrigPrice_d.Text = "0.00";
             this.lblOrigPrice_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -153,9 +142,9 @@
             // 
             this.lblNewPrice_d.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNewPrice_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblNewPrice_d.Location = new System.Drawing.Point(170, 311);
+            this.lblNewPrice_d.Location = new System.Drawing.Point(276, 300);
             this.lblNewPrice_d.Name = "lblNewPrice_d";
-            this.lblNewPrice_d.Size = new System.Drawing.Size(309, 51);
+            this.lblNewPrice_d.Size = new System.Drawing.Size(203, 51);
             this.lblNewPrice_d.TabIndex = 0;
             this.lblNewPrice_d.Text = "0.00";
             this.lblNewPrice_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -163,7 +152,7 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Arial", 24F);
-            this.label2.Location = new System.Drawing.Point(270, 234);
+            this.label2.Location = new System.Drawing.Point(439, 228);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 51);
             this.label2.TabIndex = 14;
@@ -175,11 +164,12 @@
             this.lblCustomDiscount.AutoSize = true;
             this.lblCustomDiscount.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCustomDiscount.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblCustomDiscount.Location = new System.Drawing.Point(167, 287);
+            this.lblCustomDiscount.Location = new System.Drawing.Point(174, 259);
             this.lblCustomDiscount.Name = "lblCustomDiscount";
             this.lblCustomDiscount.Size = new System.Drawing.Size(103, 15);
             this.lblCustomDiscount.TabIndex = 34;
             this.lblCustomDiscount.Text = "Regular Discount";
+            this.lblCustomDiscount.Visible = false;
             // 
             // btnPriceA
             // 
@@ -245,6 +235,7 @@
             this.btnCustom.TabIndex = 100;
             this.btnCustom.Text = "Custom (F11)";
             this.btnCustom.UseVisualStyleBackColor = false;
+            this.btnCustom.Visible = false;
             this.btnCustom.Click += new System.EventHandler(this.btnCustom_Click);
             // 
             // btnRemove
@@ -256,6 +247,7 @@
             this.btnRemove.TabIndex = 101;
             this.btnRemove.Text = "Remove (F12)";
             this.btnRemove.UseVisualStyleBackColor = false;
+            this.btnRemove.Visible = false;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // btnESC
@@ -267,6 +259,7 @@
             this.btnESC.TabIndex = 103;
             this.btnESC.Text = "Close (ESC)";
             this.btnESC.UseVisualStyleBackColor = false;
+            this.btnESC.Visible = false;
             this.btnESC.Click += new System.EventHandler(this.btnESC_Click);
             // 
             // btnOK
@@ -278,6 +271,7 @@
             this.btnOK.TabIndex = 102;
             this.btnOK.Text = "Okay (F1)";
             this.btnOK.UseVisualStyleBackColor = false;
+            this.btnOK.Visible = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // frmProductAdjust
@@ -285,7 +279,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(625, 447);
+            this.ClientSize = new System.Drawing.Size(625, 356);
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnRemove);
@@ -303,7 +297,6 @@
             this.Controls.Add(this.txtDiscount);
             this.Controls.Add(this.txtAdjustTo);
             this.Controls.Add(this.lblNewPrice);
-            this.Controls.Add(this.lblOr);
             this.Controls.Add(this.lblDiscount);
             this.Controls.Add(this.lblAdjustTo);
             this.Controls.Add(this.lblOrigPrice);
@@ -327,7 +320,6 @@
         private System.Windows.Forms.Label lblOrigPrice;
         private System.Windows.Forms.Label lblAdjustTo;
         private System.Windows.Forms.Label lblDiscount;
-        private System.Windows.Forms.Label lblOr;
         private System.Windows.Forms.Label lblNewPrice;
         private System.Windows.Forms.TextBox txtAdjustTo;
         private System.Windows.Forms.TextBox txtDiscount;

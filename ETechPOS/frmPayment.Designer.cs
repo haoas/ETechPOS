@@ -59,7 +59,7 @@
             this.lblTendered.Name = "lblTendered";
             this.lblTendered.Size = new System.Drawing.Size(544, 55);
             this.lblTendered.TabIndex = 0;
-            this.lblTendered.Text = "TENDERED";
+            this.lblTendered.Text = "PAYMENTS";
             this.lblTendered.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCashRcv
@@ -69,9 +69,9 @@
             this.lblCashRcv.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblCashRcv.Location = new System.Drawing.Point(12, 96);
             this.lblCashRcv.Name = "lblCashRcv";
-            this.lblCashRcv.Size = new System.Drawing.Size(296, 38);
+            this.lblCashRcv.Size = new System.Drawing.Size(118, 38);
             this.lblCashRcv.TabIndex = 1;
-            this.lblCashRcv.Text = "CASH RECEIVED:";
+            this.lblCashRcv.Text = "CASH:";
             // 
             // txtCashRcv_d
             // 
@@ -96,6 +96,7 @@
             this.lblCreditCard_d.TabIndex = 6;
             this.lblCreditCard_d.Text = "0.00";
             this.lblCreditCard_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCreditCard_d.Visible = false;
             // 
             // lblDebitCard_d
             // 
@@ -107,6 +108,7 @@
             this.lblDebitCard_d.TabIndex = 7;
             this.lblDebitCard_d.Text = "0.00";
             this.lblDebitCard_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblDebitCard_d.Visible = false;
             // 
             // lblGiftCheque_d
             // 
@@ -118,6 +120,7 @@
             this.lblGiftCheque_d.TabIndex = 8;
             this.lblGiftCheque_d.Text = "0.00";
             this.lblGiftCheque_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblGiftCheque_d.Visible = false;
             // 
             // lblTotal
             // 
@@ -129,6 +132,7 @@
             this.lblTotal.TabIndex = 9;
             this.lblTotal.Text = "0.00";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblTotal.Visible = false;
             // 
             // lblLine
             // 
@@ -137,6 +141,7 @@
             this.lblLine.Size = new System.Drawing.Size(187, 13);
             this.lblLine.TabIndex = 12;
             this.lblLine.Text = "______________________________________";
+            this.lblLine.Visible = false;
             // 
             // lblRemaining_d
             // 
@@ -148,6 +153,7 @@
             this.lblRemaining_d.TabIndex = 16;
             this.lblRemaining_d.Text = "0.00";
             this.lblRemaining_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblRemaining_d.Visible = false;
             // 
             // lblRemaining
             // 
@@ -159,6 +165,7 @@
             this.lblRemaining.Size = new System.Drawing.Size(86, 16);
             this.lblRemaining.TabIndex = 17;
             this.lblRemaining.Text = "Remaining:";
+            this.lblRemaining.Visible = false;
             // 
             // lblPointUsed
             // 
@@ -215,6 +222,7 @@
             this.btnOK.TabIndex = 35;
             this.btnOK.Text = "Okay (F1)";
             this.btnOK.UseVisualStyleBackColor = false;
+            this.btnOK.Visible = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnESC
@@ -226,6 +234,7 @@
             this.btnESC.TabIndex = 34;
             this.btnESC.Text = "Close (ESC)";
             this.btnESC.UseVisualStyleBackColor = false;
+            this.btnESC.Visible = false;
             this.btnESC.Click += new System.EventHandler(this.btnESC_Click);
             // 
             // btnCreditCard
@@ -238,6 +247,7 @@
             this.btnCreditCard.Text = "CREDIT CARD: (F8)";
             this.btnCreditCard.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnCreditCard.UseVisualStyleBackColor = true;
+            this.btnCreditCard.Visible = false;
             this.btnCreditCard.Click += new System.EventHandler(this.btnCreditCard_Click);
             // 
             // btnDebitCard
@@ -250,6 +260,7 @@
             this.btnDebitCard.Text = "DEBIT CARD: (F9)";
             this.btnDebitCard.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnDebitCard.UseVisualStyleBackColor = true;
+            this.btnDebitCard.Visible = false;
             this.btnDebitCard.Click += new System.EventHandler(this.btnDebitCard_Click);
             // 
             // btnGiftCheque
@@ -262,6 +273,7 @@
             this.btnGiftCheque.Text = "GIFT CHEQUE: (F10)";
             this.btnGiftCheque.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnGiftCheque.UseVisualStyleBackColor = true;
+            this.btnGiftCheque.Visible = false;
             this.btnGiftCheque.Click += new System.EventHandler(this.btnGiftCheque_Click);
             // 
             // btnCustomPayment
@@ -274,6 +286,7 @@
             this.btnCustomPayment.Text = "CUSTOM PAYMENT (F12)";
             this.btnCustomPayment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCustomPayment.UseVisualStyleBackColor = true;
+            this.btnCustomPayment.Visible = false;
             this.btnCustomPayment.Click += new System.EventHandler(this.btnCustomPayment_Click);
             // 
             // lblCustomAmt_d
@@ -286,6 +299,7 @@
             this.lblCustomAmt_d.TabIndex = 40;
             this.lblCustomAmt_d.Text = "0.00";
             this.lblCustomAmt_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCustomAmt_d.Visible = false;
             this.lblCustomAmt_d.TextChanged += new System.EventHandler(this.lblCustomAmt_TextChanged);
             // 
             // frmPayment

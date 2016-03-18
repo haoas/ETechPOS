@@ -63,7 +63,7 @@
             this.lblTotal.Location = new System.Drawing.Point(12, 9);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblTotal.Size = new System.Drawing.Size(276, 80);
+            this.lblTotal.Size = new System.Drawing.Size(414, 80);
             this.lblTotal.TabIndex = 0;
             this.lblTotal.Text = "0.00";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -123,7 +123,7 @@
             // txt50
             // 
             this.txt50.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.txt50.Location = new System.Drawing.Point(12, 232);
+            this.txt50.Location = new System.Drawing.Point(161, 95);
             this.txt50.MaxLength = 4;
             this.txt50.Name = "txt50";
             this.txt50.Size = new System.Drawing.Size(61, 29);
@@ -136,7 +136,7 @@
             // txt20
             // 
             this.txt20.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.txt20.Location = new System.Drawing.Point(12, 267);
+            this.txt20.Location = new System.Drawing.Point(161, 130);
             this.txt20.MaxLength = 4;
             this.txt20.Name = "txt20";
             this.txt20.Size = new System.Drawing.Size(61, 29);
@@ -149,7 +149,7 @@
             // txt10
             // 
             this.txt10.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.txt10.Location = new System.Drawing.Point(158, 92);
+            this.txt10.Location = new System.Drawing.Point(161, 169);
             this.txt10.MaxLength = 4;
             this.txt10.Name = "txt10";
             this.txt10.Size = new System.Drawing.Size(61, 29);
@@ -162,7 +162,7 @@
             // txt5
             // 
             this.txt5.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.txt5.Location = new System.Drawing.Point(158, 127);
+            this.txt5.Location = new System.Drawing.Point(161, 204);
             this.txt5.MaxLength = 4;
             this.txt5.Name = "txt5";
             this.txt5.Size = new System.Drawing.Size(61, 29);
@@ -175,7 +175,7 @@
             // txt1
             // 
             this.txt1.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.txt1.Location = new System.Drawing.Point(158, 162);
+            this.txt1.Location = new System.Drawing.Point(297, 96);
             this.txt1.MaxLength = 4;
             this.txt1.Name = "txt1";
             this.txt1.Size = new System.Drawing.Size(61, 29);
@@ -188,7 +188,7 @@
             // txt25c
             // 
             this.txt25c.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.txt25c.Location = new System.Drawing.Point(158, 197);
+            this.txt25c.Location = new System.Drawing.Point(297, 131);
             this.txt25c.MaxLength = 4;
             this.txt25c.Name = "txt25c";
             this.txt25c.Size = new System.Drawing.Size(61, 29);
@@ -201,7 +201,7 @@
             // txt10c
             // 
             this.txt10c.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.txt10c.Location = new System.Drawing.Point(158, 232);
+            this.txt10c.Location = new System.Drawing.Point(297, 166);
             this.txt10c.MaxLength = 4;
             this.txt10c.Name = "txt10c";
             this.txt10c.Size = new System.Drawing.Size(61, 29);
@@ -214,7 +214,7 @@
             // txt5c
             // 
             this.txt5c.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.txt5c.Location = new System.Drawing.Point(158, 267);
+            this.txt5c.Location = new System.Drawing.Point(297, 201);
             this.txt5c.MaxLength = 4;
             this.txt5c.Name = "txt5c";
             this.txt5c.Size = new System.Drawing.Size(61, 29);
@@ -272,7 +272,7 @@
             // 
             this.lbl50.AutoSize = true;
             this.lbl50.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lbl50.Location = new System.Drawing.Point(79, 235);
+            this.lbl50.Location = new System.Drawing.Point(228, 98);
             this.lbl50.Name = "lbl50";
             this.lbl50.Size = new System.Drawing.Size(46, 22);
             this.lbl50.TabIndex = 17;
@@ -283,7 +283,7 @@
             // 
             this.lbl20.AutoSize = true;
             this.lbl20.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lbl20.Location = new System.Drawing.Point(79, 270);
+            this.lbl20.Location = new System.Drawing.Point(228, 133);
             this.lbl20.Name = "lbl20";
             this.lbl20.Size = new System.Drawing.Size(46, 22);
             this.lbl20.TabIndex = 18;
@@ -294,7 +294,7 @@
             // 
             this.lbl10.AutoSize = true;
             this.lbl10.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lbl10.Location = new System.Drawing.Point(225, 95);
+            this.lbl10.Location = new System.Drawing.Point(228, 172);
             this.lbl10.Name = "lbl10";
             this.lbl10.Size = new System.Drawing.Size(46, 22);
             this.lbl10.TabIndex = 19;
@@ -305,7 +305,7 @@
             // 
             this.lbl5.AutoSize = true;
             this.lbl5.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lbl5.Location = new System.Drawing.Point(225, 130);
+            this.lbl5.Location = new System.Drawing.Point(228, 207);
             this.lbl5.Name = "lbl5";
             this.lbl5.Size = new System.Drawing.Size(35, 22);
             this.lbl5.TabIndex = 20;
@@ -316,7 +316,7 @@
             // 
             this.lbl1.AutoSize = true;
             this.lbl1.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lbl1.Location = new System.Drawing.Point(225, 165);
+            this.lbl1.Location = new System.Drawing.Point(364, 99);
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(35, 22);
             this.lbl1.TabIndex = 21;
@@ -327,7 +327,7 @@
             // 
             this.lbl25c.AutoSize = true;
             this.lbl25c.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lbl25c.Location = new System.Drawing.Point(225, 200);
+            this.lbl25c.Location = new System.Drawing.Point(364, 134);
             this.lbl25c.Name = "lbl25c";
             this.lbl25c.Size = new System.Drawing.Size(62, 22);
             this.lbl25c.TabIndex = 22;
@@ -338,7 +338,7 @@
             // 
             this.lbl10c.AutoSize = true;
             this.lbl10c.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lbl10c.Location = new System.Drawing.Point(225, 235);
+            this.lbl10c.Location = new System.Drawing.Point(364, 169);
             this.lbl10c.Name = "lbl10c";
             this.lbl10c.Size = new System.Drawing.Size(62, 22);
             this.lbl10c.TabIndex = 23;
@@ -349,7 +349,7 @@
             // 
             this.lbl5c.AutoSize = true;
             this.lbl5c.Font = new System.Drawing.Font("Arial", 14.25F);
-            this.lbl5c.Location = new System.Drawing.Point(225, 270);
+            this.lbl5c.Location = new System.Drawing.Point(364, 204);
             this.lbl5c.Name = "lbl5c";
             this.lbl5c.Size = new System.Drawing.Size(62, 22);
             this.lbl5c.TabIndex = 24;
@@ -358,10 +358,12 @@
             // 
             // btnSave
             // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(12, 302);
+            this.btnSave.Location = new System.Drawing.Point(12, 236);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(120, 38);
+            this.btnSave.Size = new System.Drawing.Size(188, 48);
             this.btnSave.TabIndex = 25;
             this.btnSave.Text = "Save (F1)";
             this.btnSave.UseVisualStyleBackColor = false;
@@ -369,10 +371,12 @@
             // 
             // btnESC
             // 
+            this.btnESC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btnESC.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnESC.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnESC.Location = new System.Drawing.Point(149, 302);
+            this.btnESC.Location = new System.Drawing.Point(232, 236);
             this.btnESC.Name = "btnESC";
-            this.btnESC.Size = new System.Drawing.Size(139, 38);
+            this.btnESC.Size = new System.Drawing.Size(188, 48);
             this.btnESC.TabIndex = 29;
             this.btnESC.Text = "Close (ESC)";
             this.btnESC.UseVisualStyleBackColor = false;
@@ -382,7 +386,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 350);
+            this.ClientSize = new System.Drawing.Size(432, 294);
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.lblTotal);
             this.Controls.Add(this.btnSave);

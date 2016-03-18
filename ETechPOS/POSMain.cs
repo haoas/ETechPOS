@@ -470,61 +470,61 @@ namespace ETech
                     }
                     this.create_new_invoice();
                     isdetected = true; break;
+                // DO NOT DELETE THIS COMMENT
+                //case Keys.F2: if (btnF2.Enabled == false) return true;  //switch single or wholesale
+                //    tran = this.get_curtrans();
+                //    if (tran == null) return true;
 
-                case Keys.F2: if (btnF2.Enabled == false) return true;  //switch single or wholesale
-                    tran = this.get_curtrans();
-                    if (tran == null) return true;
+                //    if (!check_permission("wholesale"))
+                //    {
+                //        isdetected = true; break;
+                //    }
 
-                    if (!check_permission("wholesale"))
-                    {
-                        isdetected = true; break;
-                    }
+                //    if (tran.getcustomer().getwid() == 0 &&
+                //        !tran.get_productlist().get_iswholesale())
+                //    {
+                //        frmSearchCustomer custform = new frmSearchCustomer();
+                //        custform.ShowDialog();
 
-                    if (tran.getcustomer().getwid() == 0 &&
-                        !tran.get_productlist().get_iswholesale())
-                    {
-                        frmSearchCustomer custform = new frmSearchCustomer();
-                        custform.ShowDialog();
+                //        cls_customer cust = custform.customer;
+                //        if (cust.getwid() != 0)
+                //        {
+                //            tran.setcustomer(cust);
+                //            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " + cust.getfullname() + " " + cust.getPricingType());
+                //        }
+                //        else
+                //        {
+                //            tran.setcustomer(new cls_customer());
+                //            tran.get_productlist().set_iswholesale(false);
+                //            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
+                //            isdetected = true; break;
+                //        }
+                //        tran.get_productlist().set_iswholesale(true);
+                //        tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
+                //        refresh_productlist_data(tran);
+                //        isdetected = true; break;
+                //    }
+                //    else if (tran.getcustomer().getwid() != 0)
+                //    {
+                //        if (tran.get_productlist().get_iswholesale())
+                //        {
+                //            tran.setcustomer(new cls_customer());
+                //            tran.get_productlist().set_iswholesale(false);
+                //            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
+                //        }
+                //        else if (!tran.get_productlist().get_iswholesale())
+                //        {
+                //            tran.get_productlist().set_iswholesale(true);
+                //            tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
+                //            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " +
+                //                get_curtrans().getcustomer().getfullname() + " " +
+                //                get_curtrans().getcustomer().getPricingType());
+                //        }
+                //    }
+                //    refresh_productlist_data(tran);
+                //    isdetected = true; break;
 
-                        cls_customer cust = custform.customer;
-                        if (cust.getwid() != 0)
-                        {
-                            tran.setcustomer(cust);
-                            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " + cust.getfullname() + " " + cust.getPricingType());
-                        }
-                        else
-                        {
-                            tran.setcustomer(new cls_customer());
-                            tran.get_productlist().set_iswholesale(false);
-                            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
-                            isdetected = true; break;
-                        }
-                        tran.get_productlist().set_iswholesale(true);
-                        tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
-                        refresh_productlist_data(tran);
-                        isdetected = true; break;
-                    }
-                    else if (tran.getcustomer().getwid() != 0)
-                    {
-                        if (tran.get_productlist().get_iswholesale())
-                        {
-                            tran.setcustomer(new cls_customer());
-                            tran.get_productlist().set_iswholesale(false);
-                            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
-                        }
-                        else if (!tran.get_productlist().get_iswholesale())
-                        {
-                            tran.get_productlist().set_iswholesale(true);
-                            tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
-                            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " +
-                                get_curtrans().getcustomer().getfullname() + " " +
-                                get_curtrans().getcustomer().getPricingType());
-                        }
-                    }
-                    refresh_productlist_data(tran);
-                    isdetected = true; break;
-
-                case Keys.F4: if (btnF4.Enabled == false) return true;  //search product
+                case Keys.F2: if (btnF4.Enabled == false) return true;  //search product
                     tran = this.get_curtrans();
                     if (tran == null) return true;
 
@@ -592,7 +592,7 @@ namespace ETech
 
                     isdetected = true; break;
 
-                case Keys.F5: if (btnF5.Enabled == false) return true;  //change qty
+                case Keys.F4: if (btnF5.Enabled == false) return true;  //change qty
                     tran = this.get_curtrans();
                     if (tran == null) return true;
 
@@ -920,7 +920,7 @@ namespace ETech
                     isdetected = true;
                     break;
 
-                case Keys.F9: if (btnF9.Enabled == false) return true;  //retail
+                case Keys.F3: if (btnF9.Enabled == false) return true;  //retail
                     tran = this.get_curtrans();
                     if (tran == null) return true;
 
@@ -1063,6 +1063,7 @@ namespace ETech
                     isdetected = true; break;
 
                 case Keys.F12: if (btnF12.Enabled == false) return true; // open menu
+                    return true;
                     LOGS.LOG_PRINT("[F12] Menu Opened");
 
                     frmMenu menuform = new frmMenu();

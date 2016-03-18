@@ -34,12 +34,14 @@
             this.txtQty = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnESC = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblPrice
             // 
             this.lblPrice.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrice.Location = new System.Drawing.Point(12, 9);
+            this.lblPrice.Location = new System.Drawing.Point(9, 57);
             this.lblPrice.Name = "lblPrice";
             this.lblPrice.Size = new System.Drawing.Size(101, 51);
             this.lblPrice.TabIndex = 2;
@@ -49,7 +51,7 @@
             // lblQty
             // 
             this.lblQty.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQty.Location = new System.Drawing.Point(12, 60);
+            this.lblQty.Location = new System.Drawing.Point(9, 105);
             this.lblQty.Name = "lblQty";
             this.lblQty.Size = new System.Drawing.Size(101, 51);
             this.lblQty.TabIndex = 3;
@@ -59,10 +61,10 @@
             // txtPrice
             // 
             this.txtPrice.Font = new System.Drawing.Font("Arial", 24.75F);
-            this.txtPrice.Location = new System.Drawing.Point(110, 9);
+            this.txtPrice.Location = new System.Drawing.Point(160, 60);
             this.txtPrice.MaxLength = 20;
             this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(323, 45);
+            this.txtPrice.Size = new System.Drawing.Size(270, 45);
             this.txtPrice.TabIndex = 4;
             this.txtPrice.Tag = "num";
             this.txtPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -71,10 +73,10 @@
             // txtQty
             // 
             this.txtQty.Font = new System.Drawing.Font("Arial", 24.75F);
-            this.txtQty.Location = new System.Drawing.Point(110, 63);
+            this.txtQty.Location = new System.Drawing.Point(291, 108);
             this.txtQty.MaxLength = 10;
             this.txtQty.Name = "txtQty";
-            this.txtQty.Size = new System.Drawing.Size(97, 45);
+            this.txtQty.Size = new System.Drawing.Size(139, 45);
             this.txtQty.TabIndex = 5;
             this.txtQty.Tag = "num";
             this.txtQty.Text = "1";
@@ -84,7 +86,7 @@
             // btnOK
             // 
             this.btnOK.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOK.Location = new System.Drawing.Point(168, 115);
+            this.btnOK.Location = new System.Drawing.Point(165, 163);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(120, 38);
             this.btnOK.TabIndex = 104;
@@ -95,7 +97,7 @@
             // btnESC
             // 
             this.btnESC.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnESC.Location = new System.Drawing.Point(294, 115);
+            this.btnESC.Location = new System.Drawing.Point(291, 163);
             this.btnESC.Name = "btnESC";
             this.btnESC.Size = new System.Drawing.Size(139, 38);
             this.btnESC.TabIndex = 105;
@@ -103,11 +105,34 @@
             this.btnESC.UseVisualStyleBackColor = false;
             this.btnESC.Click += new System.EventHandler(this.btnESC_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("Arial", 24.75F);
+            this.textBox1.Location = new System.Drawing.Point(160, 12);
+            this.textBox1.MaxLength = 20;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(270, 45);
+            this.textBox1.TabIndex = 107;
+            this.textBox1.Tag = "num";
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(9, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(101, 51);
+            this.label1.TabIndex = 106;
+            this.label1.Text = "Item:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frmOpenItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 163);
+            this.ClientSize = new System.Drawing.Size(442, 206);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.txtQty);
@@ -136,5 +161,7 @@
         private System.Windows.Forms.TextBox txtQty;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnESC;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label1;
     }
 }

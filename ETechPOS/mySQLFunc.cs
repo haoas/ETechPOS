@@ -400,7 +400,7 @@ namespace ETech
 
             try
             {
-                FileStream fs = new FileStream(Application.StartupPath + "\\Errors\\errlog.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                FileStream fs = new FileStream(Application.StartupPath + "\\Errors\\ExcemptionErrors.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
                 StreamWriter s = new StreamWriter(fs);
                 s.Close();
                 fs.Close();
@@ -409,7 +409,7 @@ namespace ETech
 
             try
             {
-                FileStream fs1 = new FileStream(Application.StartupPath + "\\Errors\\errlog.txt", FileMode.Append, FileAccess.Write);
+                FileStream fs1 = new FileStream(Application.StartupPath + "\\Errors\\ExcemptionErrors.txt", FileMode.Append, FileAccess.Write);
                 StreamWriter s1 = new StreamWriter(fs1);
                 s1.WriteLine(msg);
                 s1.Close();

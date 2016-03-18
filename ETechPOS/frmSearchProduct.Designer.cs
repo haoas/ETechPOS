@@ -35,7 +35,6 @@
             this.keyDownTimer = new System.Windows.Forms.Timer(this.components);
             this.btnESC = new System.Windows.Forms.Button();
             this.dgvProduct = new System.Windows.Forms.DataGridView();
-            this.btnOk = new System.Windows.Forms.Button();
             this.colBarcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colStockNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSellingPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,6 +42,7 @@
             this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colProductWid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnOk = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,6 +85,7 @@
             this.btnESC.TabIndex = 101;
             this.btnESC.Text = "Close (ESC)";
             this.btnESC.UseVisualStyleBackColor = false;
+            this.btnESC.Visible = false;
             this.btnESC.Click += new System.EventHandler(this.btnESC_Click);
             // 
             // dgvProduct
@@ -118,18 +119,6 @@
             this.dgvProduct.Tag = "";
             this.dgvProduct.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProduct_CellDoubleClick);
             // 
-            // btnOk
-            // 
-            this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOk.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOk.Location = new System.Drawing.Point(12, 532);
-            this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(188, 38);
-            this.btnOk.TabIndex = 100;
-            this.btnOk.Text = "Select (ENTER)";
-            this.btnOk.UseVisualStyleBackColor = false;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-            // 
             // colBarcode
             // 
             this.colBarcode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -149,13 +138,14 @@
             this.colStockNo.Name = "colStockNo";
             this.colStockNo.ReadOnly = true;
             this.colStockNo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colStockNo.Visible = false;
             // 
             // colSellingPrice
             // 
             this.colSellingPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colSellingPrice.DataPropertyName = "price";
             this.colSellingPrice.FillWeight = 100.6763F;
-            this.colSellingPrice.HeaderText = "Selling Price";
+            this.colSellingPrice.HeaderText = "Price";
             this.colSellingPrice.Name = "colSellingPrice";
             this.colSellingPrice.ReadOnly = true;
             this.colSellingPrice.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -185,6 +175,7 @@
             this.memo.FillWeight = 99.48953F;
             this.memo.HeaderText = "Memo";
             this.memo.Name = "memo";
+            this.memo.Visible = false;
             // 
             // colProductWid
             // 
@@ -193,6 +184,19 @@
             this.colProductWid.Name = "colProductWid";
             this.colProductWid.Visible = false;
             this.colProductWid.Width = 51;
+            // 
+            // btnOk
+            // 
+            this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOk.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOk.Location = new System.Drawing.Point(12, 532);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(188, 38);
+            this.btnOk.TabIndex = 100;
+            this.btnOk.Text = "Select (ENTER)";
+            this.btnOk.UseVisualStyleBackColor = false;
+            this.btnOk.Visible = false;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // frmSearchProduct
             // 

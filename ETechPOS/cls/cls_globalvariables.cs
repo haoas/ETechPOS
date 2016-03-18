@@ -447,7 +447,7 @@ namespace ETech.cls
         public static string warning_promo_amtnotvalid = "Current total amount does not reach the required amount to avail this promo.";
 
         public static string confirm_logout = "";
-        public static string confirm_logout_voidtran = "Log-out and ignore all current transaction if exist?";
+        public static string confirm_logout_voidtran = "Logout?";
         public static string confirm_logout_deletetran = "Do you want to void current transaction?";
         public static string confirm_logout_deleteitem = "Do you want to delete selected item?";
         public static string confirm_customer_debt = "There's still remaining amount due. Add to Customer's debt?";

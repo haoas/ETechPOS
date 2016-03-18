@@ -8,6 +8,14 @@ namespace ETECHPOS.FormatDesigner
 {
     public static class LDatagridView
     {
+        public static void FormatColumnsWidth(this DataGridView thisDataGridView)
+        {
+            thisDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            thisDataGridView.Columns[thisDataGridView.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            foreach (DataGridViewColumn dataGridViewColumn in thisDataGridView.Columns)
+                dataGridViewColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+        }
+
         public static void FillColumn(this DataGridView DGV, List<string> ColumnNames)
         {
             foreach(string CN in ColumnNames)
