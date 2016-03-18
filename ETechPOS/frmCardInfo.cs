@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using ETech.cls;
 using ETech.fnc;
-
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -64,6 +64,8 @@ namespace ETech
             fncfullscreen.ResizeFormsControls();
             fncFilter.set_theme_color(this);
             fncFilter.set_dgv_controls(dgvCardInfo);
+
+            txtAmount_d.AsUnsigned2DecimalTextBox();
         }
 
         public void btnAdd_Click(object sender, EventArgs e)
@@ -205,14 +207,6 @@ namespace ETech
         //    //        txtAmount_d.Text = "";
         //    //        txtAmount_d.Focus();
         //    //    }
-        //    //    e.Handled = true;
-        //    //}
-        //    //if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
-        //    //{
-        //    //    e.Handled = true;
-        //    //}
-        //    //if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-        //    //{
         //    //    e.Handled = true;
         //    //}
         //}

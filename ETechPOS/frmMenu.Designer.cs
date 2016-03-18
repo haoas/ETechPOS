@@ -54,7 +54,7 @@
             this.btnF9.Enabled = false;
             this.btnF9.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF9.ForeColor = System.Drawing.Color.White;
-            this.btnF9.Location = new System.Drawing.Point(804, 12);
+            this.btnF9.Location = new System.Drawing.Point(210, 91);
             this.btnF9.Name = "btnF9";
             this.btnF9.Size = new System.Drawing.Size(93, 73);
             this.btnF9.TabIndex = 26;
@@ -68,7 +68,7 @@
             this.btnF8.Enabled = false;
             this.btnF8.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF8.ForeColor = System.Drawing.Color.White;
-            this.btnF8.Location = new System.Drawing.Point(705, 12);
+            this.btnF8.Location = new System.Drawing.Point(111, 91);
             this.btnF8.Name = "btnF8";
             this.btnF8.Size = new System.Drawing.Size(93, 73);
             this.btnF8.TabIndex = 25;
@@ -82,7 +82,7 @@
             this.btnF7.Enabled = false;
             this.btnF7.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF7.ForeColor = System.Drawing.Color.White;
-            this.btnF7.Location = new System.Drawing.Point(606, 12);
+            this.btnF7.Location = new System.Drawing.Point(12, 91);
             this.btnF7.Name = "btnF7";
             this.btnF7.Size = new System.Drawing.Size(93, 73);
             this.btnF7.TabIndex = 24;
@@ -96,7 +96,7 @@
             this.btnF6.Enabled = false;
             this.btnF6.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF6.ForeColor = System.Drawing.Color.White;
-            this.btnF6.Location = new System.Drawing.Point(507, 12);
+            this.btnF6.Location = new System.Drawing.Point(606, 12);
             this.btnF6.Name = "btnF6";
             this.btnF6.Size = new System.Drawing.Size(93, 73);
             this.btnF6.TabIndex = 23;
@@ -109,7 +109,7 @@
             this.btnF5.BackColor = System.Drawing.Color.Navy;
             this.btnF5.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF5.ForeColor = System.Drawing.Color.White;
-            this.btnF5.Location = new System.Drawing.Point(408, 12);
+            this.btnF5.Location = new System.Drawing.Point(507, 12);
             this.btnF5.Name = "btnF5";
             this.btnF5.Size = new System.Drawing.Size(93, 73);
             this.btnF5.TabIndex = 22;
@@ -122,7 +122,7 @@
             this.btnF4.BackColor = System.Drawing.Color.Navy;
             this.btnF4.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF4.ForeColor = System.Drawing.Color.White;
-            this.btnF4.Location = new System.Drawing.Point(309, 12);
+            this.btnF4.Location = new System.Drawing.Point(408, 12);
             this.btnF4.Name = "btnF4";
             this.btnF4.Size = new System.Drawing.Size(93, 73);
             this.btnF4.TabIndex = 21;
@@ -135,7 +135,7 @@
             this.btnF2.BackColor = System.Drawing.Color.Navy;
             this.btnF2.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF2.ForeColor = System.Drawing.Color.White;
-            this.btnF2.Location = new System.Drawing.Point(111, 12);
+            this.btnF2.Location = new System.Drawing.Point(210, 12);
             this.btnF2.Name = "btnF2";
             this.btnF2.Size = new System.Drawing.Size(93, 73);
             this.btnF2.TabIndex = 19;
@@ -148,7 +148,7 @@
             this.btnF1.BackColor = System.Drawing.Color.Navy;
             this.btnF1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF1.ForeColor = System.Drawing.Color.White;
-            this.btnF1.Location = new System.Drawing.Point(12, 12);
+            this.btnF1.Location = new System.Drawing.Point(111, 12);
             this.btnF1.Name = "btnF1";
             this.btnF1.Size = new System.Drawing.Size(93, 73);
             this.btnF1.TabIndex = 18;
@@ -162,7 +162,7 @@
             this.btnF10.Enabled = false;
             this.btnF10.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF10.ForeColor = System.Drawing.Color.White;
-            this.btnF10.Location = new System.Drawing.Point(903, 12);
+            this.btnF10.Location = new System.Drawing.Point(309, 91);
             this.btnF10.Name = "btnF10";
             this.btnF10.Size = new System.Drawing.Size(93, 73);
             this.btnF10.TabIndex = 27;
@@ -176,7 +176,7 @@
             this.btnF12.Enabled = false;
             this.btnF12.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF12.ForeColor = System.Drawing.Color.White;
-            this.btnF12.Location = new System.Drawing.Point(111, 91);
+            this.btnF12.Location = new System.Drawing.Point(507, 91);
             this.btnF12.Name = "btnF12";
             this.btnF12.Size = new System.Drawing.Size(93, 73);
             this.btnF12.TabIndex = 29;
@@ -190,7 +190,7 @@
             this.btnF11.Enabled = false;
             this.btnF11.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF11.ForeColor = System.Drawing.Color.White;
-            this.btnF11.Location = new System.Drawing.Point(12, 91);
+            this.btnF11.Location = new System.Drawing.Point(408, 91);
             this.btnF11.Name = "btnF11";
             this.btnF11.Size = new System.Drawing.Size(93, 73);
             this.btnF11.TabIndex = 28;
@@ -204,7 +204,7 @@
             this.btnP.Enabled = false;
             this.btnP.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnP.ForeColor = System.Drawing.Color.White;
-            this.btnP.Location = new System.Drawing.Point(408, 91);
+            this.btnP.Location = new System.Drawing.Point(507, 176);
             this.btnP.Name = "btnP";
             this.btnP.Size = new System.Drawing.Size(93, 73);
             this.btnP.TabIndex = 32;
@@ -218,7 +218,7 @@
             this.btnL.Enabled = false;
             this.btnL.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnL.ForeColor = System.Drawing.Color.White;
-            this.btnL.Location = new System.Drawing.Point(507, 91);
+            this.btnL.Location = new System.Drawing.Point(606, 176);
             this.btnL.Name = "btnL";
             this.btnL.Size = new System.Drawing.Size(93, 73);
             this.btnL.TabIndex = 33;
@@ -232,7 +232,7 @@
             this.btnM.Enabled = false;
             this.btnM.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnM.ForeColor = System.Drawing.Color.White;
-            this.btnM.Location = new System.Drawing.Point(309, 91);
+            this.btnM.Location = new System.Drawing.Point(408, 176);
             this.btnM.Name = "btnM";
             this.btnM.Size = new System.Drawing.Size(93, 73);
             this.btnM.TabIndex = 31;
@@ -245,7 +245,7 @@
             this.btnS.BackColor = System.Drawing.Color.Navy;
             this.btnS.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnS.ForeColor = System.Drawing.Color.White;
-            this.btnS.Location = new System.Drawing.Point(804, 92);
+            this.btnS.Location = new System.Drawing.Point(606, 97);
             this.btnS.Name = "btnS";
             this.btnS.Size = new System.Drawing.Size(93, 73);
             this.btnS.TabIndex = 41;
@@ -259,7 +259,7 @@
             this.btnH.Enabled = false;
             this.btnH.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnH.ForeColor = System.Drawing.Color.White;
-            this.btnH.Location = new System.Drawing.Point(606, 91);
+            this.btnH.Location = new System.Drawing.Point(12, 176);
             this.btnH.Name = "btnH";
             this.btnH.Size = new System.Drawing.Size(93, 73);
             this.btnH.TabIndex = 34;
@@ -272,7 +272,7 @@
             this.btnF3.BackColor = System.Drawing.Color.Navy;
             this.btnF3.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnF3.ForeColor = System.Drawing.Color.White;
-            this.btnF3.Location = new System.Drawing.Point(210, 12);
+            this.btnF3.Location = new System.Drawing.Point(309, 12);
             this.btnF3.Name = "btnF3";
             this.btnF3.Size = new System.Drawing.Size(93, 73);
             this.btnF3.TabIndex = 35;
@@ -285,7 +285,7 @@
             this.btnESC.BackColor = System.Drawing.Color.Navy;
             this.btnESC.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnESC.ForeColor = System.Drawing.Color.White;
-            this.btnESC.Location = new System.Drawing.Point(903, 91);
+            this.btnESC.Location = new System.Drawing.Point(12, 12);
             this.btnESC.Name = "btnESC";
             this.btnESC.Size = new System.Drawing.Size(93, 73);
             this.btnESC.TabIndex = 42;
@@ -298,7 +298,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.ClientSize = new System.Drawing.Size(1009, 171);
+            this.ClientSize = new System.Drawing.Size(723, 274);
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.btnF3);
             this.Controls.Add(this.btnH);

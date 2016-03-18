@@ -34,7 +34,6 @@ namespace ETech.cls
             this.disclist = new List<cls_discount>();
             this.headdetail = headdetail_val;
             this.member_obj = new cls_member();
-            this.getHierarchy();
         }
 
         public void setMember(cls_member val, decimal dc, decimal amount, bool isHistory)
@@ -82,38 +81,6 @@ namespace ETech.cls
                 }
             }
             return total_discount;
-        }
-
-        public void getHierarchy()
-        {
-            if (cls_globalvariables.POSmode == 0)
-                return;
-
-            DataTable discs = mySQLFunc.getdb(@"select T.wid, T.`type`, T.particular, H.position, H.basis, T.`value` 
-                                            from discounttype as T, discounthierarchy as H
-                                            where `headdetail` = " + this.headdetail.ToString() + @" and `status` = 1 
-                                                and branchid = " + cls_globalvariables.BranchCode.ToString() + @"
-	                                            and H.discountid = T.wid
-                                            order by H.`position`");
-            if (discs == null)
-                return;
-
-            if (discs.Rows.Count <= 0)
-                return;
-
-            this.disclist = new List<cls_discount>();
-
-            foreach (DataRow dr in discs.Rows)
-            {
-                cls_discount disc = new cls_discount(dr["particular"].ToString(),
-                                                     Convert.ToInt32(dr["wid"]),
-                                                     Convert.ToInt32(dr["type"]),
-                                                     Convert.ToInt32(dr["basis"]),
-                                                     1 - Convert.ToDecimal(dr["value"]),
-                                                     false,
-                                                     false);
-                this.disclist.Add(disc);
-            }
         }
 
         private void set_discount_name(cls_discount disc, int type)

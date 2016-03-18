@@ -70,7 +70,7 @@ namespace ETech
             WHERE H.`branchid` = " + branchid + @" 
             AND (H.`date` BETWEEN '" + datefrom + @"' AND '" + dateto + @"') 
             AND H.`terminalno` = " + terminalno + @" 
-            AND H.`show` = 1 AND H.`status` = 1 ORDER BY `wid`";
+            AND H.`status` = 1 ORDER BY `wid`";
 
             DataTable DT = mySQLFunc.getdb(sql);
 
@@ -158,7 +158,7 @@ namespace ETech
                 FORMAT(ROUND(SUM(SD.`quantity`*SD.`price`)/SUM(1),2),2) as 'AC',
                 FORMAT(ROUND(SUM(SD.`quantity`*SD.`price`),2),2) as 'Amount'
                 FROM saleshead as SH, salesdetail as SD
-                WHERE SH.`show`= 1 AND SH.`status` = 1
+                WHERE SH.`status` = 1
                 AND SD.price <> 0
                 AND SH.branchid = " + cls_globalvariables.BranchCode + @"
                 AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
@@ -174,7 +174,7 @@ namespace ETech
                 FORMAT(ROUND(SUM(SD.`quantity`*SD.`price`)/SUM(1),2),2) as 'AC',
                 FORMAT(ROUND(SUM(SD.`quantity`*SD.`price`),2),2) as 'Amount'
                 FROM saleshead as SH, salesdetail as SD
-                WHERE SH.`show`= 1 AND SH.`status` = 1
+                WHERE SH.`status` = 1
                 AND SD.price <> 0
                 AND SH.branchid = " + cls_globalvariables.BranchCode + @"
                 AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
@@ -196,7 +196,7 @@ namespace ETech
                     FROM saleshead as SH, salesdetail as SD
                     LEFT JOIN product as P on P.`wid` = SD.`productid`
                     LEFT JOIN department as D on P.`departmentid` = D.`wid`
-                    WHERE SH.`show`= 1 AND SH.`status` = 1  
+                    WHERE SH.`status` = 1  
                     AND SH.branchid = " + cls_globalvariables.BranchCode + @"
                     AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
                     AND SD.`headid` = SH.`wid`
@@ -219,7 +219,7 @@ namespace ETech
 	                        FORMAT(SUM(SD.`quantity`*SD.`price`),2) as 'Amount',
 	                        '' as '%amt'
 	                        FROM saleshead as SH, salesdetail as SD, product as P
-	                        WHERE SH.`show`= 1 AND SH.`status` = 1  
+	                        WHERE SH.`status` = 1  
                             AND SD.price <> 0
                             AND SH.branchid = " + cls_globalvariables.BranchCode + @"
 	                        AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"

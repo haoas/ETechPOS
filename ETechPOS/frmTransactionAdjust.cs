@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -47,13 +48,15 @@ namespace ETech
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
+
+            txtAdjustTo.AsUnsigned2DecimalTextBox();
+            txtDiscount.AsUnsigned2DecimalTextBox();
         }
 
         private void frmTransactionAdjust_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F1)   done_process();
             else if (e.KeyCode == Keys.Escape)  this.Close();
-            else if(e.KeyCode == Keys.F11)  CustomButtonClicked();
             else if(e.KeyCode == Keys.F12)  RemoveButtonClicked();
             return;
         }
@@ -75,14 +78,6 @@ namespace ETech
                 {
                     this.txtDiscount.Focus();
                 }
-                e.Handled = true;
-            }
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-            {
                 e.Handled = true;
             }
         }
@@ -108,18 +103,6 @@ namespace ETech
                 {
                     this.txtAdjustTo.Focus();
                 }
-                e.Handled = true;
-            }
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '-' && (sender as TextBox).Text.Contains('-'))
-            {
                 e.Handled = true;
             }
         }
@@ -210,27 +193,6 @@ namespace ETech
                 this.iscomplete = true;
                 this.Close();
             }
-        }
-        private void CustomButtonClicked()
-        {
-            if (this.txtDiscount.Enabled)
-            {
-                frmCustomDiscount custdiscount = new frmCustomDiscount(this.orig_price, 0);
-                custdiscount.passDiscountlist(this.disclist);
-                custdiscount.ShowDialog();
-                if (custdiscount.getDiscount().get_wid() != 0)
-                {
-                    this.disc = custdiscount.getDiscount();
-                    this.txtDiscount.Text = ((1 - this.disc.get_value()) * 100).ToString();
-                    //this.new_discount = (1 - this.disc.get_value())*100;
-                    this.lblCustomDiscount.Text = this.disc.get_name();
-                }
-            }   
-        }
-
-        private void btnCustom_Click(object sender, EventArgs e)
-        {
-            CustomButtonClicked();
         }
         private void btnRemove_Click(object sender, EventArgs e)
         {

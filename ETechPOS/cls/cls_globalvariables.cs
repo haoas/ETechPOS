@@ -35,7 +35,6 @@ namespace ETech.cls
         public static int dcdetail_senior5 = 5;
 
         public static int previewmul = 1;
-        public static int POSmode = 1;
 
         public static int dchead_defaultcustom = 10;
         public static DateTime companystartdate = new DateTime(2016, 1, 1, 0, 0, 0);
@@ -321,13 +320,6 @@ namespace ETech.cls
             set { showdetailCCinZRead = value; }
         }
 
-        private static string testpassword = "";
-        public static string testpassword_v
-        {
-            get { return testpassword; }
-            set { testpassword = value; }
-        }
-
         private static string RefundMemo = "0";
         public static string RefundMemo_v
         {
@@ -452,7 +444,6 @@ namespace ETech.cls
         public static string confirm_logout_deleteitem = "Do you want to delete selected item?";
         public static string confirm_customer_debt = "There's still remaining amount due. Add to Customer's debt?";
         public static string confirm_unlock_zreading = "Do you want to continue transacting?\nnote: You need to generate Zreading again \n\n 今天结账单已被打印过。\n如果再开单，要从新打印结账单。是否继续？";
-        public static string wait_sent_to_ftp_network = "Please wait while system tries to send your sales files...";
         public static string POS_TLogs_path =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 + @"\ETECH POS\" + DateTime.Now.ToString("yyMMdd") + @"POS" + cls_globalvariables.terminalno_v + @".T";

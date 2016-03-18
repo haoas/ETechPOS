@@ -54,7 +54,7 @@ namespace ETech.fnc
         public static int get_permission_nonvat() { return 110; }
         public static int get_permission_senior() { return 111; }
         public static int get_permission_debt() { return 112; }
-        public static int get_permission_retail() { return 113; }
+        public static int get_permission_openitem() { return 113; }
         public static int get_permission_forcereturn() { return 116; }
 
         public static bool check_permission_login(List<int> permissions)
@@ -129,7 +129,7 @@ namespace ETech.fnc
             if (permissions.Contains(112)) return true;
             return false;
         }
-        public static bool check_permission_retail(List<int> permissions)
+        public static bool check_permission_openitem(List<int> permissions)
         {
             if (permissions.Contains(100)) return true;
             if (permissions.Contains(113)) return true;
@@ -248,13 +248,6 @@ namespace ETech.fnc
         public static void set_all_controls(Control container) //All Controls
         {
             set_theme_controls(container);
-            if (container is TextBox)
-            {
-                TextBox textbox;
-                textbox = (TextBox)container;
-                cls_globalfunc.set_txtbox_controls(textbox);
-            }
-
             foreach (Control ctrl in container.Controls)
                 set_all_controls(ctrl);
         }

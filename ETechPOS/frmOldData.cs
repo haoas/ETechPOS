@@ -84,7 +84,7 @@ namespace ETech
                                 `datecreated` = NOW(),  
                                 `ornumber` = '" + ornumber + @"',  
                                 `terminalno` = '" + terminalno + @"',
-                                `show` = 1, `status` = 1, `customerid` = 0
+                                `status` = 1, `customerid` = 0
                             WHERE `wid` = '" + next_wid + @"'";
             mySQLFunc.setdb(sSQL);
 
@@ -115,8 +115,7 @@ namespace ETech
                                 `branchid` = " + branchid + @", 
                                 `lastmodifieddate` = NOW(), 
                                 `lastmodifiedby` = 0, 
-                                `datecreated` = NOW(),
-                                `show` = 1
+                                `datecreated` = NOW()
                             WHERE `wid` = " + collectionheadwid;
             mySQLFunc.setdb(sSQLch);
 

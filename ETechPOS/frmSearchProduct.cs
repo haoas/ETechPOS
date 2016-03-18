@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
-using ETECHPOS.FormatDesigner;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -151,7 +151,7 @@ namespace ETech
                                 P.`description` as 'desc', P.`memo`
                             FROM `product` AS P, `branchprice` AS B 
                             WHERE B.`branchid` = " + cls_globalvariables.BranchCode + @" AND B.`productid` = P.`wid` AND 
-                                P.`show` = 1 and P.`status` = 1 " + allowZeroPrice + @" AND
+                                P.`status` = 1 " + allowZeroPrice + @" AND
                                 CONCAT(P.`product`, ' ', P.`barcode`, ' ', P.`stockno`,' ',
                                     P.`clientbarcode`,' ',P.`clientbarcode2`) LIKE @str_param
                             LIMIT 50)A ";

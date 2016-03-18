@@ -14,7 +14,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using ETech.fnc;
-using ETECHPOS.FormatDesigner;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -135,16 +135,6 @@ namespace ETech
                     return;
                 }
 
-                //add offlineuser if not existing
-                DataTable DTO = mySQLFunc.getdb(@"SELECT `wid` FROM `user` WHERE wid=2 LIMIT 1");
-                if (DTO.Rows.Count <= 0)
-                {
-                    string sqlO = @"INSERT INTO `user` 
-                    (`wid`, `username`, `fullname`, `type`, `status`, `show`, `usercode`, `position`,`datecreate`,`lastmodifieddate`,`datelogin`) 
-                                VALUES ('2', 'offline user', 'offline user', '1', '1', '1', '0000', 'offlineuser',NOW(),NOW(),NOW())";
-                    mySQLFunc.setdb(sqlO);
-                }
-
                 //Check branchid
                 sql = @"Select `value` FROM config WHERE particular='branchid'";
                 DT = mySQLFunc.getdb(sql);
@@ -157,71 +147,6 @@ namespace ETech
                 if (cls_globalvariables.BranchCode != DT.Rows[0]["value"].ToString())
                 {
                     MessageBox.Show("Branchid in Config is not the same in settings!");
-                    isLoadSuccessful = false;
-                    return;
-                }
-
-                //refresh discounttype and discountthierarchy tables
-                sql = @"SELECT SUM(A.A) AS 'A' FROM(
-                        Select IF(Count(*)=12,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.BranchCode + @" AND `status`=1 AND `headdetail`=0 AND (`type`=2 OR `type`=3 OR (`type`>=10 AND `type`<=19))
-                        UNION ALL
-                        Select IF(Count(*)=4,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.BranchCode + @" AND `status`=1 AND `headdetail`=1 AND (`type`>=2 AND `type`<=5)
-                        )A";
-                DT = mySQLFunc.getdb(sql);
-                if (Convert.ToInt16(DT.Rows[0]["A"]) != 2)
-                {
-                    sql = @"DELETE FROM discounttype";
-                    mySQLFunc.setdb(sql);
-                    sql = @"DELETE FROM discounthierarchy";
-                    mySQLFunc.setdb(sql);
-                    Int64 basewid = (Convert.ToInt64(cls_globalvariables.BranchCode) * 10000000);
-                    string branchid = cls_globalvariables.BranchCode;
-                    sql = @"INSERT INTO `discounthierarchy` (`discountid`,`position`,`basis`) VALUES
-			                (" + (basewid + 1) + @",0,-1),
-                            (" + (basewid + 2) + @",1,0),
-                            (" + (basewid + 3) + @",2,1),
-                            (" + (basewid + 4) + @",3,2),
-                            (" + (basewid + 5) + @",4,3),
-                            (" + (basewid + 6) + @",5,4),
-                            (" + (basewid + 7) + @",6,5),
-                            (" + (basewid + 8) + @",7,6),
-                            (" + (basewid + 9) + @",8,7),
-                            (" + (basewid + 10) + @",9,8),
-                            (" + (basewid + 11) + @",10,9),
-                            (" + (basewid + 12) + @",11,10),
-                            (" + (basewid + 13) + @",1,0),
-                            (" + (basewid + 14) + @",0,-1),
-                            (" + (basewid + 15) + @",2,1),
-                            (" + (basewid + 16) + @",3,2);";
-                    mySQLFunc.setdb(sql);
-                    sql = @"INSERT INTO `discounttype` (`wid`,`branchid`,`particular`,`type`,`value`,`headdetail`,`status`) VALUES 
-			                (" + (basewid + 1) + @"," + branchid + @",'Member Discount',2,0,0,1),
-                            (" + (basewid + 2) + @"," + branchid + @",'POS Promotion',3,0,0,1),
-                            (" + (basewid + 3) + @"," + branchid + @",'Employee Discount',10,0.05,0,1),
-                            (" + (basewid + 4) + @"," + branchid + @",'PWD Discount',11,0.2,0,1),
-                            (" + (basewid + 5) + @"," + branchid + @",'GPC Discount',12,0.05,0,1),
-                            (" + (basewid + 6) + @"," + branchid + @",'VIP Discount',13,0.1,0,1),
-                            (" + (basewid + 7) + @"," + branchid + @",'Discount 1',14,0.05,0,1),
-                            (" + (basewid + 8) + @"," + branchid + @",'Discount 2',15,0.10,0,1),
-                            (" + (basewid + 9) + @"," + branchid + @",'Discount 3',16,0.15,0,1),
-                            (" + (basewid + 10) + @"," + branchid + @",'Discount 4',17,0.20,0,1),
-                            (" + (basewid + 11) + @"," + branchid + @",'Discount 5',18,0.25,0,1),
-                            (" + (basewid + 12) + @"," + branchid + @",'Discount 6',19,0.3,0,1),
-                            (" + (basewid + 13) + @"," + branchid + @",'Senior',2,0,1,1),
-                            (" + (basewid + 14) + @"," + branchid + @",'Non-VAT',3,0,1,1),
-                            (" + (basewid + 15) + @"," + branchid + @",'Senior 5',5,0.05,1,1),
-                            (" + (basewid + 16) + @"," + branchid + @",'Promo QTY',4,0,1,1);";
-                    mySQLFunc.setdb(sql);
-                }
-                sql = @"SELECT SUM(A.A) AS 'A' FROM(
-                        Select IF(Count(*)=12,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.BranchCode + @" AND `status`=1 AND `headdetail`=0 AND (`type`=2 OR `type`=3 OR (`type`>=10 AND `type`<=19))
-                        UNION ALL
-                        Select IF(Count(*)=4,1,0) as A FROM discounttype WHERE `branchid`=" + cls_globalvariables.BranchCode + @" AND `status`=1 AND `headdetail`=1 AND (`type`>=2 AND `type`<=5)
-                        )A";
-                DT = mySQLFunc.getdb(sql);
-                if (Convert.ToInt16(DT.Rows[0]["A"]) != 2)
-                {
-                    MessageBox.Show("Database error Please contact ETech");
                     isLoadSuccessful = false;
                     return;
                 }
@@ -367,14 +292,7 @@ namespace ETech
             if (cur_cashier.getwid() == 0)
                 this.Close();
 
-            //lblClerk_d.BorderStyle = BorderStyle.None;
-            //lblChecker_d.BorderStyle = BorderStyle.None;
-            //lblCustomer_d.BorderStyle = BorderStyle.None;
-            //lblMember_d.BorderStyle = BorderStyle.None;
             lblMode_d.BorderStyle = BorderStyle.None;
-            //lblCustomermemo_d.BorderStyle = BorderStyle.None;
-            //lblWarning.BorderStyle = BorderStyle.None;
-            //lblSalesMemo.BorderStyle = BorderStyle.None;
 
             //Text = cls_globalvariables.ApplicationName;
             tsslApplicationVersion.Text = "v1.0.0.0";
@@ -470,61 +388,60 @@ namespace ETech
                     }
                     this.create_new_invoice();
                     isdetected = true; break;
-                // DO NOT DELETE THIS COMMENT
-                //case Keys.F2: if (btnF2.Enabled == false) return true;  //switch single or wholesale
-                //    tran = this.get_curtrans();
-                //    if (tran == null) return true;
+                case Keys.F2: if (btnF2.Enabled == false) return true;  //switch single or wholesale
+                    tran = this.get_curtrans();
+                    if (tran == null) return true;
 
-                //    if (!check_permission("wholesale"))
-                //    {
-                //        isdetected = true; break;
-                //    }
+                    if (!check_permission("wholesale"))
+                    {
+                        isdetected = true; break;
+                    }
 
-                //    if (tran.getcustomer().getwid() == 0 &&
-                //        !tran.get_productlist().get_iswholesale())
-                //    {
-                //        frmSearchCustomer custform = new frmSearchCustomer();
-                //        custform.ShowDialog();
+                    if (tran.getcustomer().getwid() == 0 &&
+                        !tran.get_productlist().get_iswholesale())
+                    {
+                        frmSearchCustomer custform = new frmSearchCustomer();
+                        custform.ShowDialog();
 
-                //        cls_customer cust = custform.customer;
-                //        if (cust.getwid() != 0)
-                //        {
-                //            tran.setcustomer(cust);
-                //            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " + cust.getfullname() + " " + cust.getPricingType());
-                //        }
-                //        else
-                //        {
-                //            tran.setcustomer(new cls_customer());
-                //            tran.get_productlist().set_iswholesale(false);
-                //            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
-                //            isdetected = true; break;
-                //        }
-                //        tran.get_productlist().set_iswholesale(true);
-                //        tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
-                //        refresh_productlist_data(tran);
-                //        isdetected = true; break;
-                //    }
-                //    else if (tran.getcustomer().getwid() != 0)
-                //    {
-                //        if (tran.get_productlist().get_iswholesale())
-                //        {
-                //            tran.setcustomer(new cls_customer());
-                //            tran.get_productlist().set_iswholesale(false);
-                //            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
-                //        }
-                //        else if (!tran.get_productlist().get_iswholesale())
-                //        {
-                //            tran.get_productlist().set_iswholesale(true);
-                //            tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
-                //            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " +
-                //                get_curtrans().getcustomer().getfullname() + " " +
-                //                get_curtrans().getcustomer().getPricingType());
-                //        }
-                //    }
-                //    refresh_productlist_data(tran);
-                //    isdetected = true; break;
+                        cls_customer cust = custform.customer;
+                        if (cust.getwid() != 0)
+                        {
+                            tran.setcustomer(cust);
+                            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " + cust.getfullname() + " " + cust.getPricingType());
+                        }
+                        else
+                        {
+                            tran.setcustomer(new cls_customer());
+                            tran.get_productlist().set_iswholesale(false);
+                            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
+                            isdetected = true; break;
+                        }
+                        tran.get_productlist().set_iswholesale(true);
+                        tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
+                        refresh_productlist_data(tran);
+                        isdetected = true; break;
+                    }
+                    else if (tran.getcustomer().getwid() != 0)
+                    {
+                        if (tran.get_productlist().get_iswholesale())
+                        {
+                            tran.setcustomer(new cls_customer());
+                            tran.get_productlist().set_iswholesale(false);
+                            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
+                        }
+                        else if (!tran.get_productlist().get_iswholesale())
+                        {
+                            tran.get_productlist().set_iswholesale(true);
+                            tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
+                            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " +
+                                get_curtrans().getcustomer().getfullname() + " " +
+                                get_curtrans().getcustomer().getPricingType());
+                        }
+                    }
+                    refresh_productlist_data(tran);
+                    isdetected = true; break;
 
-                case Keys.F2: if (btnF4.Enabled == false) return true;  //search product
+                case Keys.F4: if (btnF4.Enabled == false) return true;  //search product
                     tran = this.get_curtrans();
                     if (tran == null) return true;
 
@@ -592,7 +509,7 @@ namespace ETech
 
                     isdetected = true; break;
 
-                case Keys.F4: if (btnF5.Enabled == false) return true;  //change qty
+                case Keys.F5: if (btnF5.Enabled == false) return true;  //change qty
                     tran = this.get_curtrans();
                     if (tran == null) return true;
 
@@ -680,6 +597,8 @@ namespace ETech
                         else
                         {
                             frmVoid frmvoid = new frmVoid();
+                            frmvoid.ShowDialog();
+
                             long or_num = frmvoid.or_number;
 
                             if (or_num == 0)
@@ -920,37 +839,28 @@ namespace ETech
                     isdetected = true;
                     break;
 
-                case Keys.F3: if (btnF9.Enabled == false) return true;  //retail
+                case Keys.F3: if (btnF9.Enabled == false) return true;
                     tran = this.get_curtrans();
                     if (tran == null) return true;
 
-                    bool permcheck_retail = false;
-                    if (fncFilter.check_permission_retail(this.cur_cashier.getpermission()))
+                    bool permcheck_openitem = false;
+                    if (fncFilter.check_permission_openitem(this.cur_cashier.getpermission()))
                     {
-                        permcheck_retail = true;
+                        permcheck_openitem = true;
                     }
                     else
-                        permcheck_retail = isInput_permission_code(fncFilter.get_permission_retail());
+                        permcheck_openitem = isInput_permission_code(fncFilter.get_permission_openitem());
 
-                    if (permcheck_retail)
+                    if (permcheck_openitem)
                     {
-                        frmOpenItem retailform = new frmOpenItem();
-                        retailform.ShowDialog();
+                        frmOpenItem openitemform = new frmOpenItem();
+                        openitemform.ShowDialog();
 
-                        decimal price = retailform.prodprice;
-                        decimal qty = retailform.quantity;
-                        string type = retailform.type;
+                        decimal price = openitemform.prodprice;
+                        decimal qty = openitemform.quantity;
 
-                        if (type == "ServiceCharge")
-                        {
-                            tran.get_productlist().add_product(new cls_product(price, 1, 1));
-                        }
-                        else
-                        {
-                            if (price != 0 && qty != 0)
-                                lastaddedrownumber = tran.get_productlist().add_product(new cls_product(price, 0, qty));
-                            LOGS.LOG_PRINT("[F9]Retail: QTY (" + qty + ") PRICE (" + price + ") ");
-                        }
+                        if (price != 0 && qty != 0)
+                            lastaddedrownumber = tran.get_productlist().add_product(new cls_product(price, 0, qty));
                     }
 
                     refresh_productlist_data(tran);
@@ -1063,7 +973,6 @@ namespace ETech
                     isdetected = true; break;
 
                 case Keys.F12: if (btnF12.Enabled == false) return true; // open menu
-                    return true;
                     LOGS.LOG_PRINT("[F12] Menu Opened");
 
                     frmMenu menuform = new frmMenu();
@@ -1453,7 +1362,6 @@ namespace ETech
                 WHERE
                     SH.`wid` = SD.`headid`
                     AND SH.`status` = 1
-                    AND SH.`show` = 1
                     #AND SD.`` =
 	                AND SD.`description` LIKE '%" + orNumber + "%'";
             DataTable resultDt = mySQLFunc.getdb(selectSql);
@@ -1716,7 +1624,7 @@ namespace ETech
                 DELETE FROM
                     saleshead 
                 WHERE
-                    `status`=0 AND `show`=0 AND 
+                    `status`=0 AND
                     `branchid` = " + cls_globalvariables.BranchCode + @" AND
                     `terminalno` = " + cls_globalvariables.terminalno_v + @" AND 
                     `wid` = '" + tran.getWid() + @"'

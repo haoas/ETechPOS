@@ -236,7 +236,6 @@
             this.btnCustom.Text = "Custom (F11)";
             this.btnCustom.UseVisualStyleBackColor = false;
             this.btnCustom.Visible = false;
-            this.btnCustom.Click += new System.EventHandler(this.btnCustom_Click);
             // 
             // btnRemove
             // 

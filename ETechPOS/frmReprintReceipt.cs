@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -97,19 +98,17 @@ namespace ETech
                 this.Close();
 
             string sSQL =
-                @"SELECT `ornumber` FROM `saleshead`
+                @"SELECT MAX(`ornumber`) as `ornumber` FROM `saleshead`
                 WHERE `terminalno` = " + cls_globalvariables.terminalno_v + @"
                     AND `branchid` = " + cls_globalvariables.BranchCode + @"
-                    AND `status`=1
-                ORDER BY `ornumber` DESC
-                LIMIT 1;";
+                    AND `status`=1";
+
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {
                 this.txtORNumber_d.Focus();
                 return;
             }
-
 
             long maxtenderedOR = 0;
             long.TryParse(dt.Rows[0]["ornumber"].ToString(), out maxtenderedOR);
@@ -122,18 +121,8 @@ namespace ETech
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
-        }
 
-        private void txtORNumber_d_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == 'h' || e.KeyChar == 'H')
-            {
-                e.Handled = true;
-            }
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
+            txtORNumber_d.AsInteger();
         }
 
         private bool Check_ReprintReceiptPermission(bool isSwitch)

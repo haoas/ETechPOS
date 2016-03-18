@@ -13,14 +13,13 @@ namespace ETech.cls
         private string singlebarcode;
         private string productname;
 
-        private decimal retailpprice;
+        
+        private RoundedDecimal retailpprice;
         private decimal retailprice;
 
         private decimal pprice;
         private decimal origprice;
         private cls_user soldby;
-        private string productname_prefix;
-        private string productname_suffix;
         private decimal adjust;
         private decimal discount;
         private string memo;
@@ -82,8 +81,6 @@ namespace ETech.cls
             this.origprice = 0;
             this.vat = 0;
             this.soldby = new cls_user();
-            this.productname_prefix = "";
-            this.productname_suffix = "";
             this.price_suffix = "";
             this.isvat = true;
             this.issenior = 0;
@@ -611,16 +608,6 @@ namespace ETech.cls
             this.soldby = soldby_d;
         }
 
-        public void setProductName_Prefix(string prodname_prefix_d)
-        {
-            this.productname_prefix = prodname_prefix_d;
-        }
-
-        public void setProductName_Suffix(string prodname_suffix_d)
-        {
-            this.productname_suffix = prodname_suffix_d;
-        }
-
         public void setPrice_Suffix(string price_suffix_d)
         {
             this.price_suffix = price_suffix_d;
@@ -665,11 +652,6 @@ namespace ETech.cls
             else return Math.Round(this.price, 2, MidpointRounding.AwayFromZero);
         }
 
-        public decimal getRetailPrice()
-        {
-            return Math.Round(this.retailprice, 2, MidpointRounding.AwayFromZero);
-        }
-
         public decimal getPPrice()
         {
             return Math.Round(this.pprice, 2, MidpointRounding.AwayFromZero);
@@ -698,16 +680,6 @@ namespace ETech.cls
         public cls_user getSoldBy()
         {
             return this.soldby;
-        }
-
-        public string getProductName_Prefix()
-        {
-            return this.productname_prefix;
-        }
-
-        public string getProductName_Suffix()
-        {
-            return this.productname_suffix;
         }
 
         public string getPrice_Suffix()

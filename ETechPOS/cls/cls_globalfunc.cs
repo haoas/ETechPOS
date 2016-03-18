@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Net.NetworkInformation;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech.cls
 {
@@ -109,7 +110,7 @@ namespace ETech.cls
                     `branchid`=" + cls_globalvariables.BranchCode + @"
                     AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
                     AND `date` >= '" + DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd") + @"'
-                    AND `show` = 1 AND `status` = 1
+                    AND `status` = 1
                 ORDER BY `ornumber` DESC LIMIT 1;";
             DataTable DT = mySQLFunc.getdb(sql);
             if (DT == null || DT.Rows.Count <= 0)
@@ -124,7 +125,7 @@ namespace ETech.cls
                     AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
                     AND `date` >= '" + DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd") + @"'
                     AND `ornumber` > " + DT.Rows[0]["ornumber"].ToString() + @"
-                    AND `show` = 0 AND `status` = 0";
+                    AND `status` = 0";
 
             DT = mySQLFunc.getdb(sql);
             if (DT == null || DT.Rows[0]["wids"] == null || DT.Rows[0]["wids"].ToString() == "")
@@ -330,29 +331,6 @@ namespace ETech.cls
                 del.EndInvoke(ar);
             }
             catch { }
-        }
-        public static void set_txtbox_controls(TextBox txtbx)
-        {
-            if (txtbx.Tag == null)
-                return;
-            if ((string)txtbx.Tag == "num")
-                txtbx.KeyPress += new KeyPressEventHandler(tbnum_KeyPress);
-            else if ((string)txtbx.Tag == "integer")
-                txtbx.KeyPress += new KeyPressEventHandler(tbinteger_KeyPress);
-        }
-        private static void tbnum_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
-                e.Handled = true;
-            if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf('.') > -1)
-                e.Handled = true;
-            if (e.KeyChar == '-' && (sender as TextBox).Text.IndexOf('-') > -1)
-                e.Handled = true;
-        }
-        private static void tbinteger_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-                e.Handled = true;
         }
 
         public static string GetMacAddress()

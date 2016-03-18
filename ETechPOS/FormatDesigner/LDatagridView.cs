@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ETECHPOS.FormatDesigner
+namespace ETech.FormatDesigner
 {
     public static class LDatagridView
     {

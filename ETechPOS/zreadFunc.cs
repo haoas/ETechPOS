@@ -239,7 +239,7 @@ public static class zreadFunc
 
         string sql = @"SELECT SUM(ROUND(CAST(D.`price` * D.`quantity` AS DECIMAL(10,3)),2)) AS 'total_amount'
                         FROM `saleshead` AS H, `salesdetail` AS D
-                        WHERE H.`wid` = D.`headid` AND H.`show` = 1 AND H.`status` = 1
+                        WHERE H.`wid` = D.`headid` AND H.`status` = 1
                             AND H.`terminalno` = " + terminalno + @" AND H.`branchid` = " + sBranchid +
                         zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetime_d);
         decimal cur_total = 0;

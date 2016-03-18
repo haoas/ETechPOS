@@ -41,7 +41,6 @@
             this.lblCustomDiscount = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnESC = new System.Windows.Forms.Button();
-            this.btnCustom = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -186,17 +185,6 @@
             this.btnESC.UseVisualStyleBackColor = false;
             this.btnESC.Click += new System.EventHandler(this.btnESC_Click);
             // 
-            // btnCustom
-            // 
-            this.btnCustom.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCustom.Location = new System.Drawing.Point(8, 251);
-            this.btnCustom.Name = "btnCustom";
-            this.btnCustom.Size = new System.Drawing.Size(115, 75);
-            this.btnCustom.TabIndex = 106;
-            this.btnCustom.Text = "Custom\r\n(F11)";
-            this.btnCustom.UseVisualStyleBackColor = false;
-            this.btnCustom.Click += new System.EventHandler(this.btnCustom_Click);
-            // 
             // btnRemove
             // 
             this.btnRemove.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -212,8 +200,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(510, 248);
-            this.Controls.Add(this.btnCustom);
+            this.ClientSize = new System.Drawing.Size(510, 351);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnESC);
@@ -257,7 +244,6 @@
         private System.Windows.Forms.Label lblCustomDiscount;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnESC;
-        private System.Windows.Forms.Button btnCustom;
         private System.Windows.Forms.Button btnRemove;
     }
 }

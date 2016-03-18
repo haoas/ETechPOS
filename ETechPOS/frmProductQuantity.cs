@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -43,6 +44,8 @@ namespace ETech
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
+
+            txtNewQty_d.AsSigned2DecimalTextBox();
         }
         private void frmProductQuantity_KeyDown(object sender, KeyEventArgs e)
         {
@@ -153,22 +156,6 @@ namespace ETech
         {
             if (keyData == Keys.F10) return true;
             return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private void txtNewQty_d_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '-' && (sender as TextBox).Text.Contains('-'))
-            {
-                e.Handled = true;
-            }
         }
     }
 }

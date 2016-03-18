@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -53,7 +54,6 @@ namespace ETech
             else if (e.KeyCode == Keys.F8) CustomerPrices("C");
             else if (e.KeyCode == Keys.F9) CustomerPrices("D");
             else if (e.KeyCode == Keys.F10) CustomerPrices("E");
-            else if (e.KeyCode == Keys.F11) CustomButtonClicked();
             else if (e.KeyCode == Keys.F12) RemoveButtonClicked();
             else
                 return;
@@ -72,14 +72,6 @@ namespace ETech
                     done_process();
                 else
                     txtDiscount.Focus();
-                e.Handled = true;
-            }
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-            {
                 e.Handled = true;
             }
         }
@@ -106,18 +98,6 @@ namespace ETech
                 {
                     this.txtAdjustTo.Focus();
                 }
-                e.Handled = true;
-            }
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '-' && (sender as TextBox).Text.Contains('-'))
-            {
                 e.Handled = true;
             }
         }
@@ -228,25 +208,9 @@ namespace ETech
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
-        }
 
-        private void CustomButtonClicked()
-        {
-            if (this.txtDiscount.Enabled)
-            {
-                frmCustomDiscount customdiscounts = new frmCustomDiscount(this.orig_price, 1);
-                customdiscounts.passDiscountlist(this.disclist);
-                customdiscounts.ShowDialog();
-                this.new_adjust = 0;
-                this.new_discount = 0;
-                if (customdiscounts.getDiscount().get_wid() != 0)
-                {
-                    this.disc = customdiscounts.getDiscount();
-                    this.txtDiscount.Text = ((1 - this.disc.get_value()) * 100).ToString();
-                    this.new_discount = (1 - this.disc.get_value()) * 100;
-                    this.lblCustomDiscount.Text = this.disc.get_name();
-                }
-            }
+            txtAdjustTo.AsUnsigned2DecimalTextBox();
+            txtDiscount.AsUnsigned2DecimalTextBox();
         }
 
         private void RemoveButtonClicked()
@@ -286,10 +250,6 @@ namespace ETech
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-        private void btnCustom_Click(object sender, EventArgs e)
-        {
-            CustomButtonClicked();
         }
         private void btnOK_Click(object sender, EventArgs e)
         {

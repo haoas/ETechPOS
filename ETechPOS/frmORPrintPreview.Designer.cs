@@ -50,7 +50,6 @@
             this.txtORNumber_d.TabIndex = 10;
             this.txtORNumber_d.Tag = "num";
             this.txtORNumber_d.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtORNumber_d_KeyDown);
-            this.txtORNumber_d.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtORNumber_d_KeyPress);
             // 
             // lblORNumber
             // 

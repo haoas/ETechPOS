@@ -162,27 +162,6 @@ namespace ETech.cls
             add_new_default_discount(type, -1, value, isMultiple, true, 0);
         }
 
-        public void getHierarchy()
-        {
-            DataTable discs = mySQLFunc.getdb(@"select T.wid, T.`type`, T.particular, H.position, H.basis, T.`value` 
-                                            from discounttype as T, discounthierarchy as H
-                                            where `headdetail` = 1 and `status` = 1 
-                                                and branchid = " + cls_globalvariables.BranchCode.ToString() + @"
-	                                            and H.discountid = T.wid
-                                            order by H.`position`");
-            this.dt = new DataTable();
-            this.dt.Columns.Add("wid", typeof(int));
-            this.dt.Columns.Add("type", typeof(int));
-            this.dt.Columns.Add("basis", typeof(int));
-            this.dt.Columns.Add("value", typeof(decimal));
-            this.dt.Columns.Add("ismultiple", typeof(bool));
-            this.dt.Columns.Add("status", typeof(bool));
-
-            foreach (DataRow dr in discs.Rows)
-            {
-                this.dt.Rows.Add(Convert.ToInt32(dr["wid"]), Convert.ToInt32(dr["type"]), Convert.ToInt32(dr["basis"]), 1 - Convert.ToDecimal(dr["value"]), false, false);
-            }
-        }
         public decimal getBasis(List<decimal> amts, int basis)
         {
             for (int i = basis; i >= 0; i--)

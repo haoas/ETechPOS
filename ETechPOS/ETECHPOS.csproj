@@ -8,7 +8,7 @@
     <ProjectGuid>{9C655C86-7814-4E73-8604-CEE22CC95AA9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ETECHPOS</RootNamespace>
+    <RootNamespace>ETech</RootNamespace>
     <AssemblyName>ETECHPOS</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -79,6 +79,7 @@
     <Compile Include="cls\cls_senior.cs" />
     <Compile Include="cls\cls_CustomPayments.cs" />
     <Compile Include="cls\cls_user.cs" />
+    <Compile Include="cls\CustomDatatype.cs" />
     <Compile Include="ctrl\ctrl_btnpanel.cs" />
     <Compile Include="ctrl\ctrl_CustomerDisplay.cs" />
     <Compile Include="ctrl\ctrl_otherinfo.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="fnc\RawPrinterHelper.cs" />
     <Compile Include="fnc\ReceiptPrinterHelper.cs" />
     <Compile Include="FormatDesigner\LDatagridView.cs" />
+    <Compile Include="FormatDesigner\LTextBox.cs" />
     <Compile Include="frmCustomPayments.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,12 +139,6 @@
     </Compile>
     <Compile Include="frmChooseDiscount.Designer.cs">
       <DependentUpon>frmChooseDiscount.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmCustomDiscount.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmCustomDiscount.Designer.cs">
-      <DependentUpon>frmCustomDiscount.cs</DependentUpon>
     </Compile>
     <Compile Include="frmError.cs">
       <SubType>Form</SubType>
@@ -333,10 +329,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmChooseDiscount.resx">
       <DependentUpon>frmChooseDiscount.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmCustomDiscount.resx">
-      <DependentUpon>frmCustomDiscount.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmError.resx">

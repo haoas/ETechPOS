@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -40,6 +41,7 @@ namespace ETech
             cboxRefundReason.SelectedIndex = 0;
             txtORno.Text = "";
             txtRemark.Text = "";
+            txtORno.AsInteger();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -97,7 +99,7 @@ namespace ETech
 
             string sql = @"SELECT COALESCE(SUM(D.`quantity`),0) as `remainqty` 
             FROM Saleshead as H, Salesdetail as D
-            WHERE H.`show` = 1 AND H.`status` = 1
+            WHERE H.`status` = 1
                 AND H.`branchid`=" + branchid + @"
                 AND H.`wid`=D.`headid`
                 AND D.`productid`=" + productid + @" AND 
@@ -110,15 +112,6 @@ namespace ETech
                 return 0;
             else
                 return Convert.ToDecimal(DT.Rows[0]["remainqty"]);
-        }
-
-        private void txtORno_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            //numeric only
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
         }
 
         private void cboxRefundReason_KeyDown(object sender, KeyEventArgs e)

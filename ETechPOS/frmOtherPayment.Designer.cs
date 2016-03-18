@@ -181,7 +181,6 @@
             this.txtAmount_d.TabIndex = 2;
             this.txtAmount_d.Tag = "num";
             this.txtAmount_d.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.txtAmount_d.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_d_KeyPress);
             // 
             // lblValidThru
             // 

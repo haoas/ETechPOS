@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -72,6 +73,8 @@ namespace ETech
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
+
+            txtORNumber_d.AsInteger();
         }
 
         private void btnVoid_Click(object sender, EventArgs e)
@@ -82,14 +85,6 @@ namespace ETech
         {
             this.or_number = 0;
             this.Close();
-        }
-
-        private void txtORNumber_d_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
         }
     }
 }

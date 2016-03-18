@@ -304,7 +304,7 @@ namespace ETech
 		                            H.`branchid` = " + branchid + @" AND
 		                            `terminalno` = " + terminalno + @" AND 
 		                            CAST(`date` AS DATE) = CAST(NOW() AS DATE)
-		                            AND `status` = 1 AND `show` = 1
+		                            AND `status` = 1
                             ) A";
             DataTable dt = getdb(sSQL);
             return Convert.ToDecimal(dt.Rows[0]["amount"]);
@@ -432,7 +432,7 @@ namespace ETech
                                             `amount` = " + mem_points + @",
                                             `status` = 1,
                                             `date` = NOW(),
-                                            `show` = 1,
+                                            `status` = 1,
                                             `datecreated` = NOW(),
                                             `lastmodifieddate` = NOW(),
                                             `userid` = " + userid + @",
@@ -454,7 +454,6 @@ namespace ETech
                                             `amount` = " + point_earn.ToString("N2") + @",
                                             `status` = 1,
                                             `date` = NOW(),
-                                            `show` = 1,
                                             `datecreated` = NOW(),
                                             `lastmodifieddate` = NOW(),
                                             `userid` = " + userid + @",
@@ -487,7 +486,6 @@ namespace ETech
                         `branchid` = '" + branchid + @"',                     
                         `lastmodifiedby` = " + userid + @", 
                         `lastmodifieddate` = NOW(), 
-                        `show` = 1, 
                         `memberid` = " + memberid + @", 
                         `checkerid` = " + checkerid + @",
                         `iswholesale` = " + iswholesale + @",
@@ -519,13 +517,12 @@ namespace ETech
                                 `productid` = '" + prod.getWid().ToString() + @"',  
                                 `quantity` = '" + qty + @"',   
                                 `oprice` = '" + prod.getOrigPrice().ToString() + @"',  
-                                `discount1` = '" + prod.getDiscount().ToString() + @"', 
+                                `regularDC` = '" + prod.getDiscount().ToString() + @"', 
                                 `price` = '" + price + @"',  
                                 `pprice` = '" + prod.getPurchasePrice().ToString() + @"', 
-                                `vat` = '" + vat + @"', 
-                                `senior` = " + issenior + @", 
+                                `vat` = '" + vat + @"',
                                 `soldby` = '" + soldbywid + @"',  
-                                `description` = '" + prod.getMemo() + @"'
+                                `memo` = '" + prod.getMemo() + @"'
                             WHERE `wid` = @salesdetailwid";
                 //Console.WriteLine(sSQLdetail);
                 //setdb(sSQLdetail);

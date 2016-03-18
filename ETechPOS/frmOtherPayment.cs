@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -45,6 +46,8 @@ namespace ETech
             fncfullscreen.ResizeFormsControls();
             fncFilter.set_theme_color(this);
             fncFilter.set_dgv_controls(dgvGCInfo);
+
+            txtAmount_d.AsUnsigned2DecimalTextBox();
         }
 
         public decimal gettotalamount()
@@ -250,18 +253,6 @@ namespace ETech
         {
             if (keyData == Keys.F10) return true;
             return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private void txtAmount_d_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-            {
-                e.Handled = true;
-            }
         }
     }
 }

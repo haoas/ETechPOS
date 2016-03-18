@@ -108,7 +108,7 @@ namespace ETech.fnc
             {
                 string terminalno = cls_globalvariables.terminalno_v;
                 string branchid = cls_globalvariables.BranchCode;
-                string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`show`=0 OR `status`=0) AND `wid` = '" + tran.getWid() + @"'";
+                string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`status`=0) AND `wid` = '" + tran.getWid() + @"'";
                 isVoid = Convert.ToBoolean(mySQLFunc.getdb(checkIfVoidSql).Rows[0]["cnt"]);
             }
             RawPrinterHelper.OpenCashDrawer(true);
@@ -122,8 +122,8 @@ namespace ETech.fnc
         {
             int lastmodifiedby = tran.get_permissiongiver_wid();
 
-            mySQLFunc.setdb(@"UPDATE collectionhead SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `show`=0 WHERE wid = ( SELECT `headid` FROM collectionsales where `saleswid` = '" + tran.getWid() + "') LIMIT 1");
-            mySQLFunc.setdb(@"UPDATE saleshead SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `show` = 0 WHERE `wid` = '" + tran.getWid() + "' LIMIT 1");
+            mySQLFunc.setdb(@"UPDATE collectionhead SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status`=2 WHERE wid = ( SELECT `headid` FROM collectionsales where `saleswid` = '" + tran.getWid() + "') LIMIT 1");
+            mySQLFunc.setdb(@"UPDATE saleshead SET `VoidedOn`=NOW(),`VoidedBy`='" + lastmodifiedby + @"' `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status` = 2 WHERE `wid` = '" + tran.getWid() + "' LIMIT 1");
             mySQLFunc.setdb_main(@"UPDATE memberpointtrans SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `show` = 0 WHERE `referencewid` = '" + tran.getWid() + "'");
 
 

@@ -43,7 +43,6 @@
             this.txtORNumber_d.Size = new System.Drawing.Size(313, 41);
             this.txtORNumber_d.TabIndex = 14;
             this.txtORNumber_d.Tag = "num";
-            this.txtORNumber_d.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtORNumber_d_KeyPress);
             // 
             // lblORNumber
             // 

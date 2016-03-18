@@ -658,7 +658,7 @@
             this.tsslSalesManTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslSalesManTxt.Name = "tsslSalesManTxt";
             this.tsslSalesManTxt.Size = new System.Drawing.Size(70, 25);
-            this.tsslSalesManTxt.Text = "Salesman:";
+            this.tsslSalesManTxt.Text = "SalesAgent:";
             this.tsslSalesManTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tsslSalesMan
@@ -765,7 +765,7 @@
             this.tsslSpace1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslSpace1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslSpace1.Name = "tsslSpace1";
-            this.tsslSpace1.Size = new System.Drawing.Size(8, 25);
+            this.tsslSpace1.Size = new System.Drawing.Size(1, 25);
             this.tsslSpace1.Spring = true;
             this.tsslSpace1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 

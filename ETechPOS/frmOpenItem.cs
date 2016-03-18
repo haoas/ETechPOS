@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -15,7 +16,6 @@ namespace ETech
     {
         public decimal prodprice;
         public decimal quantity;
-        public string type = "Retail";
 
         public frmOpenItem()
         {
@@ -65,7 +65,7 @@ namespace ETech
             this.Close();
         }
 
-        private void frmRetail_KeyDown(object sender, KeyEventArgs e)
+        private void frmOpenItem_KeyDown(object sender, KeyEventArgs e)
         {
             Control nextControl;
             if (e.KeyCode == Keys.Enter)
@@ -77,10 +77,6 @@ namespace ETech
             }
             else if (e.KeyCode == Keys.F1)
                 done_process();
-            //else if (e.KeyCode == Keys.F2)
-            //{
-            //    done_process_servicecharge();
-            //}
             else if (e.KeyCode == Keys.Escape)
             {
                 this.prodprice = 0;
@@ -91,25 +87,20 @@ namespace ETech
             else
                 return;
         }
-        private void frmRetail_Load(object sender, EventArgs e)
+        private void frmOpenItem_Load(object sender, EventArgs e)
         {
             txtPrice.Focus();
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
+
+            txtQty.AsSigned2DecimalTextBox();
+            txtPrice.AsUnsigned2DecimalTextBox();
         }
 
         private void txtPrice_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 13)
-            {
-                e.Handled = true;
-            }
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
             {
                 e.Handled = true;
             }
@@ -119,18 +110,6 @@ namespace ETech
             if (e.KeyChar == 13)
             {
                 done_process();
-                e.Handled = true;
-            }
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
-            {
-                e.Handled = true;
-            }
-            if (e.KeyChar == '-' && (sender as TextBox).Text.Contains('-'))
-            {
                 e.Handled = true;
             }
         }

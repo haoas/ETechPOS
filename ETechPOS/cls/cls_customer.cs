@@ -120,7 +120,7 @@ namespace ETech.cls
                 sSQL = @"
                 SELECT H.`wid`
                      FROM `saleshead` AS H
-                     WHERE H.`show` = 1 AND H.`status` = 1
+                     WHERE H.`status` = 1
                       AND H.`branchid` = " + cls_globalvariables.BranchCode + @" AND H.`customerid` = " + wid;
                 DataTable tempDataTable = mySQLFunc.getdb(sSQL);
                 string groupConcat = "";

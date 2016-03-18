@@ -146,8 +146,8 @@
             this.Name = "frmOpenItem";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Open Item";
-            this.Load += new System.EventHandler(this.frmRetail_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmRetail_KeyDown);
+            this.Load += new System.EventHandler(this.frmOpenItem_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmOpenItem_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

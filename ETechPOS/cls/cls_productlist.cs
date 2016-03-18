@@ -394,16 +394,6 @@ namespace ETech.cls
             this.sync_product_row(row_index);
         }
 
-        // update product retail or package
-        public void set_retail_or_package(int row_index, int retail_package)
-        {
-            if (row_index < 0 || row_index >= this.list_product.Count)
-                return;
-
-            this.list_product[row_index].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
-            this.sync_product_row(row_index);
-        }
-
         //remove product
         public void remove_product(int row_index)
         {

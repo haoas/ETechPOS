@@ -12,6 +12,7 @@ using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.IO;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -67,6 +68,8 @@ namespace ETech
 
             if (!bgwLoadReceipt.IsBusy)
                 bgwLoadReceipt.RunWorkerAsync();
+
+            txtORNumber_d.AsInteger();
         }
         private void ORPrintPreview_KeyDown(object sender, KeyEventArgs e)
         {
@@ -82,15 +85,6 @@ namespace ETech
                 return;
         }
 
-        private void txtORNumber_d_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            //if (e.KeyChar == 'h' || e.KeyChar == 'H')
-            //    e.Handled = true;
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-        }
         private void txtORNumber_d_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -154,7 +148,7 @@ namespace ETech
                 return;
             }
 
-            string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`show`=0 OR `status`=0) AND `wid` = '" + temp_tran.getWid() + @"'";
+            string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`status`=0) AND `wid` = '" + temp_tran.getWid() + @"'";
             bool isVoid = Convert.ToBoolean(mySQLFunc.getdb(checkIfVoidSql).Rows[0]["cnt"]);
 
             SaveBitmap(temp_tran, isVoid);

@@ -70,7 +70,6 @@
             this.txtORno.Text = "111110000000";
             this.txtORno.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtORno.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtORno_KeyDown);
-            this.txtORno.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtORno_KeyPress);
             // 
             // lblORno
             // 
