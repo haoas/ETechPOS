@@ -39,17 +39,6 @@
             this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtBarcode = new System.Windows.Forms.TextBox();
-            this.btnF1 = new System.Windows.Forms.Button();
-            this.btnF2 = new System.Windows.Forms.Button();
-            this.btnESC = new System.Windows.Forms.Button();
-            this.btnF4 = new System.Windows.Forms.Button();
-            this.btnF5 = new System.Windows.Forms.Button();
-            this.btnF6 = new System.Windows.Forms.Button();
-            this.btnF7 = new System.Windows.Forms.Button();
-            this.btnF8 = new System.Windows.Forms.Button();
-            this.btnF9 = new System.Windows.Forms.Button();
-            this.btnF11 = new System.Windows.Forms.Button();
-            this.btnF12 = new System.Windows.Forms.Button();
             this.lblMode_d = new System.Windows.Forms.Label();
             this.lblMode = new System.Windows.Forms.Label();
             this.lblBarcode = new System.Windows.Forms.Label();
@@ -91,6 +80,18 @@
             this.toolStripStatusLabel12 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslSpace1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.label2 = new System.Windows.Forms.Label();
+            this.ButtonF01 = new System.Windows.Forms.Button();
+            this.ButtonF02 = new System.Windows.Forms.Button();
+            this.ButtonF04 = new System.Windows.Forms.Button();
+            this.ButtonF03 = new System.Windows.Forms.Button();
+            this.ButtonF06 = new System.Windows.Forms.Button();
+            this.ButtonF05 = new System.Windows.Forms.Button();
+            this.ButtonF12 = new System.Windows.Forms.Button();
+            this.ButtonF11 = new System.Windows.Forms.Button();
+            this.ButtonF10 = new System.Windows.Forms.Button();
+            this.ButtonF09 = new System.Windows.Forms.Button();
+            this.ButtonF08 = new System.Windows.Forms.Button();
+            this.ButtonF07 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).BeginInit();
             this.ssApplicationDetails.SuspendLayout();
             this.ssOtherInformation.SuspendLayout();
@@ -110,12 +111,12 @@
             this.price,
             this.amount});
             this.dgvProduct.Enabled = false;
-            this.dgvProduct.Location = new System.Drawing.Point(602, 12);
+            this.dgvProduct.Location = new System.Drawing.Point(412, 12);
             this.dgvProduct.Name = "dgvProduct";
             this.dgvProduct.ReadOnly = true;
             this.dgvProduct.RowHeadersVisible = false;
             this.dgvProduct.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvProduct.Size = new System.Drawing.Size(662, 307);
+            this.dgvProduct.Size = new System.Drawing.Size(852, 307);
             this.dgvProduct.TabIndex = 1;
             this.dgvProduct.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProduct_CellClick);
             // 
@@ -178,7 +179,7 @@
             // 
             this.txtBarcode.Enabled = false;
             this.txtBarcode.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBarcode.Location = new System.Drawing.Point(12, 37);
+            this.txtBarcode.Location = new System.Drawing.Point(550, 360);
             this.txtBarcode.MaxLength = 50;
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Size = new System.Drawing.Size(408, 35);
@@ -186,167 +187,6 @@
             this.txtBarcode.Tag = "";
             this.txtBarcode.Leave += new System.EventHandler(this.txtBarcode_Leave);
             this.txtBarcode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBarcode_KeyPress);
-            // 
-            // btnF1
-            // 
-            this.btnF1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF1.ForeColor = System.Drawing.Color.White;
-            this.btnF1.Location = new System.Drawing.Point(111, 87);
-            this.btnF1.Name = "btnF1";
-            this.btnF1.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnF1.Size = new System.Drawing.Size(99, 73);
-            this.btnF1.TabIndex = 6;
-            this.btnF1.Text = "[F1]\r\nCreate New Invoice";
-            this.btnF1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnF1.UseVisualStyleBackColor = false;
-            // 
-            // btnF2
-            // 
-            this.btnF2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF2.Enabled = false;
-            this.btnF2.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF2.ForeColor = System.Drawing.Color.White;
-            this.btnF2.Location = new System.Drawing.Point(497, 20);
-            this.btnF2.Name = "btnF2";
-            this.btnF2.Size = new System.Drawing.Size(99, 73);
-            this.btnF2.TabIndex = 7;
-            this.btnF2.Text = "Select Customer";
-            this.btnF2.UseVisualStyleBackColor = false;
-            this.btnF2.Visible = false;
-            // 
-            // btnESC
-            // 
-            this.btnESC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnESC.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnESC.ForeColor = System.Drawing.Color.White;
-            this.btnESC.Location = new System.Drawing.Point(9, 87);
-            this.btnESC.Name = "btnESC";
-            this.btnESC.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnESC.Size = new System.Drawing.Size(99, 73);
-            this.btnESC.TabIndex = 8;
-            this.btnESC.Text = "[ESC]\r\nExit\r\nPOS";
-            this.btnESC.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnESC.UseVisualStyleBackColor = false;
-            // 
-            // btnF4
-            // 
-            this.btnF4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF4.Enabled = false;
-            this.btnF4.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF4.ForeColor = System.Drawing.Color.White;
-            this.btnF4.Location = new System.Drawing.Point(219, 87);
-            this.btnF4.Name = "btnF4";
-            this.btnF4.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnF4.Size = new System.Drawing.Size(99, 73);
-            this.btnF4.TabIndex = 9;
-            this.btnF4.Text = "[ F2 ]\r\nSelect Product";
-            this.btnF4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnF4.UseVisualStyleBackColor = false;
-            // 
-            // btnF5
-            // 
-            this.btnF5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF5.Enabled = false;
-            this.btnF5.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF5.ForeColor = System.Drawing.Color.White;
-            this.btnF5.Location = new System.Drawing.Point(9, 166);
-            this.btnF5.Name = "btnF5";
-            this.btnF5.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnF5.Size = new System.Drawing.Size(99, 73);
-            this.btnF5.TabIndex = 10;
-            this.btnF5.Text = "[ F4 ]\r\nChange\r\nQuantity";
-            this.btnF5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnF5.UseVisualStyleBackColor = false;
-            // 
-            // btnF6
-            // 
-            this.btnF6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF6.Enabled = false;
-            this.btnF6.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF6.ForeColor = System.Drawing.Color.White;
-            this.btnF6.Location = new System.Drawing.Point(497, 99);
-            this.btnF6.Name = "btnF6";
-            this.btnF6.Size = new System.Drawing.Size(99, 73);
-            this.btnF6.TabIndex = 11;
-            this.btnF6.Text = "Void Transaction";
-            this.btnF6.UseVisualStyleBackColor = false;
-            this.btnF6.Visible = false;
-            // 
-            // btnF7
-            // 
-            this.btnF7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF7.Enabled = false;
-            this.btnF7.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF7.ForeColor = System.Drawing.Color.White;
-            this.btnF7.Location = new System.Drawing.Point(114, 166);
-            this.btnF7.Name = "btnF7";
-            this.btnF7.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnF7.Size = new System.Drawing.Size(99, 73);
-            this.btnF7.TabIndex = 12;
-            this.btnF7.Text = "[ F7 ]\r\nDelete";
-            this.btnF7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnF7.UseVisualStyleBackColor = false;
-            // 
-            // btnF8
-            // 
-            this.btnF8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF8.Enabled = false;
-            this.btnF8.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF8.ForeColor = System.Drawing.Color.White;
-            this.btnF8.Location = new System.Drawing.Point(219, 166);
-            this.btnF8.Name = "btnF8";
-            this.btnF8.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnF8.Size = new System.Drawing.Size(99, 73);
-            this.btnF8.TabIndex = 13;
-            this.btnF8.Text = "[ F8 ]\r\nCheckout/\r\nPayment";
-            this.btnF8.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnF8.UseVisualStyleBackColor = false;
-            // 
-            // btnF9
-            // 
-            this.btnF9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF9.Enabled = false;
-            this.btnF9.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF9.ForeColor = System.Drawing.Color.White;
-            this.btnF9.Location = new System.Drawing.Point(321, 87);
-            this.btnF9.Name = "btnF9";
-            this.btnF9.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnF9.Size = new System.Drawing.Size(99, 73);
-            this.btnF9.TabIndex = 14;
-            this.btnF9.Text = "[ F3 ]\r\nAdd Open Item";
-            this.btnF9.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnF9.UseVisualStyleBackColor = false;
-            // 
-            // btnF11
-            // 
-            this.btnF11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF11.Enabled = false;
-            this.btnF11.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF11.ForeColor = System.Drawing.Color.White;
-            this.btnF11.Location = new System.Drawing.Point(321, 166);
-            this.btnF11.Name = "btnF11";
-            this.btnF11.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnF11.Size = new System.Drawing.Size(99, 73);
-            this.btnF11.TabIndex = 16;
-            this.btnF11.Text = "[ F11 ]\r\nItem\r\nDiscount";
-            this.btnF11.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnF11.UseVisualStyleBackColor = false;
-            // 
-            // btnF12
-            // 
-            this.btnF12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnF12.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnF12.ForeColor = System.Drawing.Color.White;
-            this.btnF12.Location = new System.Drawing.Point(497, 178);
-            this.btnF12.Name = "btnF12";
-            this.btnF12.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnF12.Size = new System.Drawing.Size(99, 73);
-            this.btnF12.TabIndex = 17;
-            this.btnF12.Text = "F12\r\nMenu";
-            this.btnF12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnF12.UseVisualStyleBackColor = false;
-            this.btnF12.Visible = false;
             // 
             // lblMode_d
             // 
@@ -375,7 +215,7 @@
             this.lblBarcode.AutoSize = true;
             this.lblBarcode.BackColor = System.Drawing.Color.White;
             this.lblBarcode.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBarcode.Location = new System.Drawing.Point(12, 12);
+            this.lblBarcode.Location = new System.Drawing.Point(550, 335);
             this.lblBarcode.Name = "lblBarcode";
             this.lblBarcode.Size = new System.Drawing.Size(87, 22);
             this.lblBarcode.TabIndex = 20;
@@ -486,9 +326,9 @@
             this.tsslOfficialReceiptNumber,
             this.tsslSpace2,
             this.tsslDateTime});
-            this.ssApplicationDetails.Location = new System.Drawing.Point(0, 718);
+            this.ssApplicationDetails.Location = new System.Drawing.Point(0, 706);
             this.ssApplicationDetails.Name = "ssApplicationDetails";
-            this.ssApplicationDetails.Size = new System.Drawing.Size(1276, 24);
+            this.ssApplicationDetails.Size = new System.Drawing.Size(1264, 24);
             this.ssApplicationDetails.SizingGrip = false;
             this.ssApplicationDetails.TabIndex = 31;
             this.ssApplicationDetails.Text = "Status";
@@ -586,7 +426,7 @@
             this.tsslSpace2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslSpace2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslSpace2.Name = "tsslSpace2";
-            this.tsslSpace2.Size = new System.Drawing.Size(403, 19);
+            this.tsslSpace2.Size = new System.Drawing.Size(391, 19);
             this.tsslSpace2.Spring = true;
             this.tsslSpace2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -623,9 +463,9 @@
             this.tsslWarning,
             this.toolStripStatusLabel12,
             this.tsslSpace1});
-            this.ssOtherInformation.Location = new System.Drawing.Point(0, 688);
+            this.ssOtherInformation.Location = new System.Drawing.Point(0, 676);
             this.ssOtherInformation.Name = "ssOtherInformation";
-            this.ssOtherInformation.Size = new System.Drawing.Size(1276, 30);
+            this.ssOtherInformation.Size = new System.Drawing.Size(1264, 30);
             this.ssOtherInformation.SizingGrip = false;
             this.ssOtherInformation.TabIndex = 32;
             this.ssOtherInformation.Text = "Status";
@@ -780,13 +620,205 @@
             this.label2.TabIndex = 33;
             this.label2.Text = "Total";
             // 
+            // ButtonF01
+            // 
+            this.ButtonF01.BackColor = System.Drawing.Color.White;
+            this.ButtonF01.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF01.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF01.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF01.Location = new System.Drawing.Point(13, 97);
+            this.ButtonF01.Name = "ButtonF01";
+            this.ButtonF01.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF01.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF01.TabIndex = 34;
+            this.ButtonF01.Text = "[ F1 ]\r\nOPEN\r\nITEM";
+            this.ButtonF01.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF01.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF02
+            // 
+            this.ButtonF02.BackColor = System.Drawing.Color.White;
+            this.ButtonF02.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF02.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF02.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF02.Location = new System.Drawing.Point(13, 183);
+            this.ButtonF02.Name = "ButtonF02";
+            this.ButtonF02.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF02.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF02.TabIndex = 35;
+            this.ButtonF02.Text = "[ F2 ]\r\nCHANGE\r\nQUANTITY";
+            this.ButtonF02.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF02.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF04
+            // 
+            this.ButtonF04.BackColor = System.Drawing.Color.White;
+            this.ButtonF04.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF04.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF04.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF04.Location = new System.Drawing.Point(13, 355);
+            this.ButtonF04.Name = "ButtonF04";
+            this.ButtonF04.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF04.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF04.TabIndex = 37;
+            this.ButtonF04.Text = "[ F4 ]\r\nCLEAR\r\nTRANS";
+            this.ButtonF04.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF04.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF03
+            // 
+            this.ButtonF03.BackColor = System.Drawing.Color.White;
+            this.ButtonF03.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF03.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF03.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF03.Location = new System.Drawing.Point(13, 269);
+            this.ButtonF03.Name = "ButtonF03";
+            this.ButtonF03.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF03.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF03.TabIndex = 36;
+            this.ButtonF03.Text = "[ F3 ]\r\nREMOVE\r\nITEM";
+            this.ButtonF03.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF03.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF06
+            // 
+            this.ButtonF06.BackColor = System.Drawing.Color.White;
+            this.ButtonF06.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF06.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF06.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF06.Location = new System.Drawing.Point(13, 527);
+            this.ButtonF06.Name = "ButtonF06";
+            this.ButtonF06.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF06.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF06.TabIndex = 39;
+            this.ButtonF06.Text = "[ F6 ]\r\nTRANS\r\nDISCOUNT";
+            this.ButtonF06.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF06.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF05
+            // 
+            this.ButtonF05.BackColor = System.Drawing.Color.White;
+            this.ButtonF05.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF05.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF05.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF05.Location = new System.Drawing.Point(13, 441);
+            this.ButtonF05.Name = "ButtonF05";
+            this.ButtonF05.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF05.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF05.TabIndex = 38;
+            this.ButtonF05.Text = "[ F5 ]\r\nITEM\r\nDISCOUNT";
+            this.ButtonF05.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF05.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF12
+            // 
+            this.ButtonF12.BackColor = System.Drawing.Color.White;
+            this.ButtonF12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF12.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF12.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF12.Location = new System.Drawing.Point(119, 527);
+            this.ButtonF12.Name = "ButtonF12";
+            this.ButtonF12.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF12.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF12.TabIndex = 45;
+            this.ButtonF12.Text = "[ F12 ]\r\nADVANCED\r\nFUNCS";
+            this.ButtonF12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF12.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF11
+            // 
+            this.ButtonF11.BackColor = System.Drawing.Color.White;
+            this.ButtonF11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF11.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF11.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF11.Location = new System.Drawing.Point(119, 441);
+            this.ButtonF11.Name = "ButtonF11";
+            this.ButtonF11.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF11.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF11.TabIndex = 44;
+            this.ButtonF11.Text = "[ F11 ]\r\nNEXT\r\nTRANS";
+            this.ButtonF11.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF11.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF10
+            // 
+            this.ButtonF10.BackColor = System.Drawing.Color.White;
+            this.ButtonF10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF10.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF10.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF10.Location = new System.Drawing.Point(119, 355);
+            this.ButtonF10.Name = "ButtonF10";
+            this.ButtonF10.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF10.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF10.TabIndex = 43;
+            this.ButtonF10.Text = "[ F10 ]\r\nPREV\r\nTRANS";
+            this.ButtonF10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF10.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF09
+            // 
+            this.ButtonF09.BackColor = System.Drawing.Color.White;
+            this.ButtonF09.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF09.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF09.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF09.Location = new System.Drawing.Point(119, 269);
+            this.ButtonF09.Name = "ButtonF09";
+            this.ButtonF09.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF09.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF09.TabIndex = 42;
+            this.ButtonF09.Text = "[ F9 ]\r\nNEW\r\nTRANS";
+            this.ButtonF09.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF09.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF08
+            // 
+            this.ButtonF08.BackColor = System.Drawing.Color.White;
+            this.ButtonF08.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF08.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF08.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF08.Location = new System.Drawing.Point(119, 183);
+            this.ButtonF08.Name = "ButtonF08";
+            this.ButtonF08.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF08.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF08.TabIndex = 41;
+            this.ButtonF08.Text = "[ F8 ]\r\nADD\r\nNOTES";
+            this.ButtonF08.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF08.UseVisualStyleBackColor = false;
+            // 
+            // ButtonF07
+            // 
+            this.ButtonF07.BackColor = System.Drawing.Color.White;
+            this.ButtonF07.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonF07.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonF07.ForeColor = System.Drawing.Color.Black;
+            this.ButtonF07.Location = new System.Drawing.Point(119, 98);
+            this.ButtonF07.Name = "ButtonF07";
+            this.ButtonF07.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.ButtonF07.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF07.TabIndex = 46;
+            this.ButtonF07.Text = "[ F7 ]\r\nTENDER\r\nPAYMENT";
+            this.ButtonF07.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonF07.UseVisualStyleBackColor = false;
+            // 
             // POSMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1276, 742);
+            this.ClientSize = new System.Drawing.Size(1264, 730);
+            this.Controls.Add(this.ButtonF07);
+            this.Controls.Add(this.ButtonF12);
+            this.Controls.Add(this.ButtonF11);
+            this.Controls.Add(this.ButtonF10);
+            this.Controls.Add(this.ButtonF09);
+            this.Controls.Add(this.ButtonF08);
+            this.Controls.Add(this.ButtonF06);
+            this.Controls.Add(this.ButtonF05);
+            this.Controls.Add(this.ButtonF04);
+            this.Controls.Add(this.ButtonF03);
+            this.Controls.Add(this.ButtonF02);
+            this.Controls.Add(this.ButtonF01);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.ssOtherInformation);
             this.Controls.Add(this.ssApplicationDetails);
@@ -801,17 +833,6 @@
             this.Controls.Add(this.lblQty_d);
             this.Controls.Add(this.lblQty);
             this.Controls.Add(this.lblBarcode);
-            this.Controls.Add(this.btnF12);
-            this.Controls.Add(this.btnF11);
-            this.Controls.Add(this.btnF9);
-            this.Controls.Add(this.btnF8);
-            this.Controls.Add(this.btnF7);
-            this.Controls.Add(this.btnF6);
-            this.Controls.Add(this.btnF5);
-            this.Controls.Add(this.btnF4);
-            this.Controls.Add(this.btnESC);
-            this.Controls.Add(this.btnF2);
-            this.Controls.Add(this.btnF1);
             this.Controls.Add(this.txtBarcode);
             this.DoubleBuffered = true;
             this.KeyPreview = true;
@@ -834,17 +855,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnF1;
-        private System.Windows.Forms.Button btnF2;
-        private System.Windows.Forms.Button btnESC;
-        private System.Windows.Forms.Button btnF4;
-        private System.Windows.Forms.Button btnF5;
-        private System.Windows.Forms.Button btnF6;
-        private System.Windows.Forms.Button btnF7;
-        private System.Windows.Forms.Button btnF8;
-        private System.Windows.Forms.Button btnF9;
-        private System.Windows.Forms.Button btnF11;
-        private System.Windows.Forms.Button btnF12;
         private System.Windows.Forms.Label lblBarcode;
         private System.Windows.Forms.Label lblQty;
         private System.Windows.Forms.Label lblQty_d;
@@ -892,5 +902,17 @@
         private System.Windows.Forms.ToolStripStatusLabel tsslCustomerMemo;
         private System.Windows.Forms.ToolStripStatusLabel tsslWarning;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button ButtonF01;
+        private System.Windows.Forms.Button ButtonF02;
+        private System.Windows.Forms.Button ButtonF04;
+        private System.Windows.Forms.Button ButtonF03;
+        private System.Windows.Forms.Button ButtonF06;
+        private System.Windows.Forms.Button ButtonF05;
+        private System.Windows.Forms.Button ButtonF12;
+        private System.Windows.Forms.Button ButtonF11;
+        private System.Windows.Forms.Button ButtonF10;
+        private System.Windows.Forms.Button ButtonF09;
+        private System.Windows.Forms.Button ButtonF08;
+        private System.Windows.Forms.Button ButtonF07;
     }
 }

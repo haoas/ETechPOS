@@ -30,7 +30,7 @@ namespace ETech
 
         private ctrl_productgrid ctrlproductgridview;
         private ctrl_payment ctrlpaymentlabel;
-        private ctrl_btnpanel ctrlbtnpanel;
+        private ButtonKeyEventhandler ctrlbtnpanel;
         private ctrl_otherinfo ctrlOther;
         private ctrl_CustomerDisplay ctrlCustDisp;
         public DialogResult dialogResult;
@@ -42,12 +42,18 @@ namespace ETech
         private bool isLoadSuccessful = true;
 
         bool gofullscreen = true;
+
+        int FPage = 0; // 0-Basic 1-Advanced 2-BackOffice
+
         #endregion
 
         #region Declaration
         public POSMain()
         {
             InitializeComponent();
+
+            if (0 > FPage || FPage > 2)
+                FPage = 0;
 
             dgvProduct.Standardize();
             dgvProduct.FillColumn(new List<string> { "Description" });
@@ -63,15 +69,16 @@ namespace ETech
             cls_globalfunc.CreateIfMissing(@"TEMP\");
 
             List<Button> btnlist = new List<Button>();
-            btnlist.Add(this.btnF1); btnlist.Add(this.btnF2); btnlist.Add(this.btnESC);
-            btnlist.Add(this.btnF4); btnlist.Add(this.btnF5); btnlist.Add(this.btnF6);
-            btnlist.Add(this.btnF7); btnlist.Add(this.btnF8); btnlist.Add(this.btnF9);
-            btnlist.Add(this.btnF11); btnlist.Add(this.btnF12); btnlist.Add(this.btnESC);
+            btnlist.Add(new Button()); btnlist.Add(this.ButtonF01); btnlist.Add(this.ButtonF02);
+            btnlist.Add(this.ButtonF03); btnlist.Add(this.ButtonF04); btnlist.Add(this.ButtonF05);
+            btnlist.Add(this.ButtonF06); btnlist.Add(this.ButtonF07); btnlist.Add(this.ButtonF08);
+            btnlist.Add(this.ButtonF09); btnlist.Add(this.ButtonF10); btnlist.Add(this.ButtonF11);
+            btnlist.Add(this.ButtonF12);
 
             this.Trans = new List<cls_POSTransaction>();
             this.ctrlproductgridview = new ctrl_productgrid(this.dgvProduct);
             this.ctrlpaymentlabel = new ctrl_payment(this.lblTotal, this.lblTendered, this.lblRemaining);
-            this.ctrlbtnpanel = new ctrl_btnpanel(btnlist, this);
+            this.ctrlbtnpanel = new ButtonKeyEventhandler(btnlist, this);
             this.ctrlOther = new ctrl_otherinfo(this.tsslClerk, this.tsslSalesMan,
                                                 this.lblMode_d, this.tsslCustomer, this.tsslCustomerMemo,
                                                 this.tsslMember, this.tsslWarning);
@@ -123,12 +130,10 @@ namespace ETech
                 cls_globalfunc.DeleteUnusedSalesHead();
 
                 //Does not continue if Servertime is not equal to POStime
-                string sql = @"Select NOW() as `now`";
-                DataTable DT = mySQLFunc.getdb(sql);
-                DateTime datetime = Convert.ToDateTime(DT.Rows[0]["now"].ToString());
-                string servertime = datetime.ToString("yyyy-MM-dd hh tt");
+                string servertime = mySQLFunc.getServerDateTime();
                 string systemtime = DateTime.Now.ToString("yyyy-MM-dd hh tt");
-                if (servertime != systemtime)
+
+                if (systemtime != servertime)
                 {
                     fncFilter.alert("Warning!\n\nServer Time: " + servertime + " \nPOS Time: " + systemtime + " \nPlease Adjust POS time\n to Server Time");
                     isLoadSuccessful = false;
@@ -136,8 +141,8 @@ namespace ETech
                 }
 
                 //Check branchid
-                sql = @"Select `value` FROM config WHERE particular='branchid'";
-                DT = mySQLFunc.getdb(sql);
+                string sql = @"Select `value` FROM config WHERE particular='branchid'";
+                DataTable DT = mySQLFunc.getdb(sql);
                 if (DT.Rows.Count == 0)
                 {
                     MessageBox.Show("Config Table Doesn't have branchid!");
@@ -176,6 +181,8 @@ namespace ETech
 
                 if (cls_globalvariables.ads_url_v.Length > 0)
                     frmposmainext.Show();
+
+                this.create_new_invoice();
             }
         }
         #endregion
@@ -193,7 +200,7 @@ namespace ETech
 
             bool permcheck_exit = false;
 
-            if (btnF1.Enabled == false && !Trans.Exists(x => x.get_productlist().get_productlist().Count > 0))
+            if (!Trans.Exists(x => x.get_productlist().get_productlist().Count > 0))
                 permcheck_exit = true;
             else if (fncFilter.check_permission_void(this.cur_cashier.getpermission()))
                 permcheck_exit = true;
@@ -341,7 +348,11 @@ namespace ETech
         #region Return methods
         public bool processShortCutKey(KeyEventArgs e)
         {
-            cls_POSTransaction tran;
+            cls_POSTransaction tran = this.get_curtrans();
+
+            if (tran == null)
+                MessageBox.Show("NULL TRANS");
+
             bool isdetected = false;
 
             /* 0 - product info
@@ -352,6 +363,7 @@ namespace ETech
             cls_user permissiongiver = new cls_user();
             switch (e.KeyCode)
             {
+
                 case Keys.Escape:
                     this.Close();
                     isdetected = true; break;
@@ -365,83 +377,7 @@ namespace ETech
                     this.ctrlproductgridview.select_next();
 
                     isdetected = true; break;
-
-                case Keys.F1:
-                    if (btnF1.Enabled == false) return true;  //create invoice
-                    DateTime now = mySQLFunc.DateTimeNow();
-                    DateTime cutofftimestart = now.Date.AddSeconds(cls_globalvariables.endtime_v);
-                    DateTime cutofftimeend = now.Date.AddSeconds(cls_globalvariables.starttime_v);
-                    if ((cls_globalvariables.endtime_v > 0) &&
-                        (now >= cutofftimestart) &&
-                        (now < cutofftimeend))
-                    {
-                        cls_globalfunc.MSGBXLOG("Cannot Create Invoice, Still in Cut-Off time!");
-                        return true;
-                    }
-
-                    DateTime ZreadDateToday = zreadFunc.getZreadDate(now).Date;
-                    DateTime maxDateInZread = zreadFunc.getZreadDate(zreadFunc.GetMaxDateTimeFromPosXYZRead()).Date;
-                    if (ZreadDateToday <= maxDateInZread)
-                    {
-                        cls_globalfunc.MSGBXLOG("POS can no longer Create Invoice since Zread is already created!");
-                        break;
-                    }
-                    this.create_new_invoice();
-                    isdetected = true; break;
-                case Keys.F2: if (btnF2.Enabled == false) return true;  //switch single or wholesale
-                    tran = this.get_curtrans();
-                    if (tran == null) return true;
-
-                    if (!check_permission("wholesale"))
-                    {
-                        isdetected = true; break;
-                    }
-
-                    if (tran.getcustomer().getwid() == 0 &&
-                        !tran.get_productlist().get_iswholesale())
-                    {
-                        frmSearchCustomer custform = new frmSearchCustomer();
-                        custform.ShowDialog();
-
-                        cls_customer cust = custform.customer;
-                        if (cust.getwid() != 0)
-                        {
-                            tran.setcustomer(cust);
-                            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " + cust.getfullname() + " " + cust.getPricingType());
-                        }
-                        else
-                        {
-                            tran.setcustomer(new cls_customer());
-                            tran.get_productlist().set_iswholesale(false);
-                            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
-                            isdetected = true; break;
-                        }
-                        tran.get_productlist().set_iswholesale(true);
-                        tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
-                        refresh_productlist_data(tran);
-                        isdetected = true; break;
-                    }
-                    else if (tran.getcustomer().getwid() != 0)
-                    {
-                        if (tran.get_productlist().get_iswholesale())
-                        {
-                            tran.setcustomer(new cls_customer());
-                            tran.get_productlist().set_iswholesale(false);
-                            LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
-                        }
-                        else if (!tran.get_productlist().get_iswholesale())
-                        {
-                            tran.get_productlist().set_iswholesale(true);
-                            tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
-                            LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " +
-                                get_curtrans().getcustomer().getfullname() + " " +
-                                get_curtrans().getcustomer().getPricingType());
-                        }
-                    }
-                    refresh_productlist_data(tran);
-                    isdetected = true; break;
-
-                case Keys.F4: if (btnF4.Enabled == false) return true;  //search product
+                case Keys.Enter: // Search Product
                     tran = this.get_curtrans();
                     if (tran == null) return true;
 
@@ -509,778 +445,895 @@ namespace ETech
 
                     isdetected = true; break;
 
-                case Keys.F5: if (btnF5.Enabled == false) return true;  //change qty
-                    tran = this.get_curtrans();
-                    if (tran == null) return true;
-
-                    bool permcheck_deleteproduct = false;
-                    bool permcheck_return = false;
-                    bool permcheck_forcereturn = false;
-                    if (fncFilter.check_permission_delete(this.cur_cashier.getpermission()))
-                        permcheck_deleteproduct = true;
-                    if (fncFilter.check_permission_return(this.cur_cashier.getpermission()))
-                        permcheck_return = true;
-                    if (fncFilter.check_permission_forcereturn(this.cur_cashier.getpermission()))
-                        permcheck_forcereturn = true;
-
-                    row_index = this.ctrlproductgridview.get_currentrow().Index;
-                    cls_product prod = tran.get_productlist().get_product(row_index);
-                    string productname = prod.getProductName();
-                    if ((prod.getWid() == 1) || (prod.getWid() == 2)) { isdetected = true; break; }
-                    decimal cur_prodqty = prod.getQty();
-                    string cur_prodmemo = prod.getMemo();
-
-                    frmProductQuantity frmprodqty = new frmProductQuantity();
-                    frmprodqty.productid = prod.getWid();
-                    frmprodqty.productname = productname;
-                    frmprodqty.new_qty = cur_prodqty;
-                    frmprodqty.delete_permission = permcheck_deleteproduct;
-                    frmprodqty.return_permission = permcheck_return;
-                    frmprodqty.forcereturn_permission = permcheck_forcereturn;
-                    frmprodqty.ShowDialog();
-
-                    if (cur_prodqty == frmprodqty.new_qty)
-                        break;
-
-                    cur_prodqty = frmprodqty.new_qty;
-                    cur_prodmemo = frmprodqty.salesdetailmemo;
-
-                    LOGS.LOG_PRINT("Product Changed Qty : " + productname + " " + cur_prodqty);
-                    tran.get_productlist().set_quantity(row_index, cur_prodqty);
-                    tran.get_productlist().set_salesdetailmemo(row_index, cur_prodmemo);
-                    refresh_productlist_data(tran);
-                    tran.get_productlist().sync_product_row(row_index);
-                    lastaddedrownumber = row_index;
-
-                    frmposmainext.UpdateDGV(tran);
-                    isdetected = true; break;
-
-                case Keys.F6:
-                    if (btnF6.Enabled == false) return true; //remove transaction
-
-                    bool permcheck_void = false;
-                    if (btnF1.Enabled == false && this.get_curtrans().get_productlist().get_productlist().Count <= 0)
+                case Keys.F1:
+                    if (FPage == 0)
                     {
-                        permcheck_void = true;
-                    }
-                    else if (fncFilter.check_permission_void(this.cur_cashier.getpermission()))
-                    {
-                        permcheck_void = true;
-
-                        if (btnF1.Enabled == false)
+                        //Open Item
+                        bool permcheck_openitem = false;
+                        if (fncFilter.check_permission_openitem(this.cur_cashier.getpermission()))
                         {
-                            if (MessageBox.Show(cls_globalvariables.confirm_logout_deletetran, "Confirm Box",
+                            permcheck_openitem = true;
+                        }
+                        else
+                            permcheck_openitem = isInput_permission_code(fncFilter.get_permission_openitem());
+
+                        if (permcheck_openitem)
+                        {
+                            frmOpenItem openitemform = new frmOpenItem();
+                            openitemform.ShowDialog();
+
+                            decimal price = openitemform.prodprice;
+                            decimal qty = openitemform.quantity;
+
+                            if (price != 0 && qty != 0)
+                                lastaddedrownumber = tran.get_productlist().add_product(new cls_product(price, 0, qty));
+                        }
+
+                        refresh_productlist_data(tran);
+                        isdetected = true;
+                    }
+                    else if (FPage == 1)
+                    {
+                        if (check_permission("opendrawer"))
+                            RawPrinterHelper.OpenCashDrawer(false);
+                    }
+                    else if (FPage == 2)
+                    {
+                        
+                    }
+                    break;
+                //Do not delete
+                //DateTime now = mySQLFunc.DateTimeNow();
+                //DateTime cutofftimestart = now.Date.AddSeconds(cls_globalvariables.endtime_v);
+                //DateTime cutofftimeend = now.Date.AddSeconds(cls_globalvariables.starttime_v);
+                //if ((cls_globalvariables.endtime_v > 0) &&
+                //    (now >= cutofftimestart) &&
+                //    (now < cutofftimeend))
+                //{
+                //    cls_globalfunc.MSGBXLOG("Cannot Create Invoice, Still in Cut-Off time!");
+                //    return true;
+                //}
+
+                //DateTime ZreadDateToday = zreadFunc.getZreadDate(now).Date;
+                //DateTime maxDateInZread = zreadFunc.getZreadDate(zreadFunc.GetMaxDateTimeFromPosXYZRead()).Date;
+                //if (ZreadDateToday <= maxDateInZread)
+                //{
+                //    cls_globalfunc.MSGBXLOG("POS can no longer Create Invoice since Zread is already created!");
+                //    break;
+                //}
+                //this.create_new_invoice();
+                //isdetected = true; break;
+                case Keys.F2:
+                    if (FPage == 0)
+                    {
+                        bool permcheck_deleteproduct = false;
+                        bool permcheck_return = false;
+                        bool permcheck_forcereturn = false;
+                        if (fncFilter.check_permission_delete(this.cur_cashier.getpermission()))
+                            permcheck_deleteproduct = true;
+                        if (fncFilter.check_permission_return(this.cur_cashier.getpermission()))
+                            permcheck_return = true;
+                        if (fncFilter.check_permission_forcereturn(this.cur_cashier.getpermission()))
+                            permcheck_forcereturn = true;
+
+                        row_index = this.ctrlproductgridview.get_currentrow().Index;
+                        cls_product prod = tran.get_productlist().get_product(row_index);
+                        string productname = prod.getProductName();
+                        if ((prod.getWid() == 1) || (prod.getWid() == 2)) { isdetected = true; break; }
+                        decimal cur_prodqty = prod.getQty();
+                        string cur_prodmemo = prod.getMemo();
+
+                        frmProductQuantity frmprodqty = new frmProductQuantity();
+                        frmprodqty.productid = prod.getWid();
+                        frmprodqty.productname = productname;
+                        frmprodqty.new_qty = cur_prodqty;
+                        frmprodqty.delete_permission = permcheck_deleteproduct;
+                        frmprodqty.return_permission = permcheck_return;
+                        frmprodqty.forcereturn_permission = permcheck_forcereturn;
+                        frmprodqty.ShowDialog();
+
+                        if (cur_prodqty == frmprodqty.new_qty)
+                            break;
+
+                        cur_prodqty = frmprodqty.new_qty;
+                        cur_prodmemo = frmprodqty.salesdetailmemo;
+
+                        LOGS.LOG_PRINT("Product Changed Qty : " + productname + " " + cur_prodqty);
+                        tran.get_productlist().set_quantity(row_index, cur_prodqty);
+                        tran.get_productlist().set_salesdetailmemo(row_index, cur_prodmemo);
+                        refresh_productlist_data(tran);
+                        tran.get_productlist().sync_product_row(row_index);
+                        lastaddedrownumber = row_index;
+
+                        frmposmainext.UpdateDGV(tran);
+                        isdetected = true;
+                    }
+                    else if (FPage == 1)
+                    {
+                        if (check_permission("opendrawer"))
+                        {
+                            RawPrinterHelper.OpenCashDrawer(false);
+                            frmCashDenomination cashform = new frmCashDenomination();
+                            cashform.cash_bills = new cls_bills();
+                            cashform.ShowDialog();
+                            cashform.cash_bills.set_type(2);
+                            cashform.cash_bills.save_cashdenomination(this.cur_cashier);
+
+                            LOGS.LOG_PRINT("[F5] Print Pickup Cash");
+                            fncHardware.print_pickupcash(DateTime.Now, cur_cashier.getwid());
+                        }
+                    }
+                    else if (FPage == 2)
+                    {
+
+                    }
+                    break;
+
+                //Do not delete
+                //tran = this.get_curtrans();
+                //if (tran == null) return true;
+
+                //if (!check_permission("wholesale"))
+                //{
+                //    isdetected = true; break;
+                //}
+
+                //if (tran.getcustomer().getwid() == 0 &&
+                //    !tran.get_productlist().get_iswholesale())
+                //{
+                //    frmSearchCustomer custform = new frmSearchCustomer();
+                //    custform.ShowDialog();
+
+                //    cls_customer cust = custform.customer;
+                //    if (cust.getwid() != 0)
+                //    {
+                //        tran.setcustomer(cust);
+                //        LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " + cust.getfullname() + " " + cust.getPricingType());
+                //    }
+                //    else
+                //    {
+                //        tran.setcustomer(new cls_customer());
+                //        tran.get_productlist().set_iswholesale(false);
+                //        LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
+                //        isdetected = true; break;
+                //    }
+                //    tran.get_productlist().set_iswholesale(true);
+                //    tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
+                //    refresh_productlist_data(tran);
+                //    isdetected = true; break;
+                //}
+                //else if (tran.getcustomer().getwid() != 0)
+                //{
+                //    if (tran.get_productlist().get_iswholesale())
+                //    {
+                //        tran.setcustomer(new cls_customer());
+                //        tran.get_productlist().set_iswholesale(false);
+                //        LOGS.LOG_PRINT("[F2][Switch] Cancelled Customer");
+                //    }
+                //    else if (!tran.get_productlist().get_iswholesale())
+                //    {
+                //        tran.get_productlist().set_iswholesale(true);
+                //        tran.get_productlist().set_pricingtype_rate(tran.getcustomer().getPricingType(), tran.getcustomer().getPricingRate());
+                //        LOGS.LOG_PRINT("[F2][Switch] Set Customer/PricingType: " +
+                //            get_curtrans().getcustomer().getfullname() + " " +
+                //            get_curtrans().getcustomer().getPricingType());
+                //    }
+                //}
+                //refresh_productlist_data(tran);
+                //isdetected = true; break;
+                case Keys.F3:
+                    if (FPage == 0)
+                    {
+                        int prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getWid();
+                        if (prodWid == 1 || prodWid == 2)
+                        {
+                            fncFilter.alert(@"Not allowed!");
+                            isdetected = true; break;
+                        }
+
+                        bool permcheck_delete = false;
+                        if (fncFilter.check_permission_delete(this.cur_cashier.getpermission()))
+                        {
+                            permcheck_delete = true;
+
+                            if (MessageBox.Show(cls_globalvariables.confirm_logout_deleteitem, "Confirm Box",
                                     MessageBoxButtons.YesNo) == DialogResult.No)
                             {
                                 isdetected = true; break;
                             }
-                        }
-                    }
-                    else
-                    {
-                        //permcheck_void = isInput_permission_code(fncFilter.get_permission_void());
-                        frmPermissionCode frmpermcode = new frmPermissionCode();
-                        frmpermcode.permission_needed = fncFilter.get_permission_void();
-                        frmpermcode.ShowDialog();
-                        permcheck_void = frmpermcode.permcode;
-                        permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                    }
 
-                    if (permcheck_void)
-                    {
-                        if (btnF1.Enabled == false)
-                        {
-                            Delete_Unused_saleshead(this.get_curtrans());
-                            LOGS.LOG_PRINT("Invoice Cancelled: " + this.get_curtrans().getORnumber().ToString());
-                            remove_transaction();
                         }
                         else
                         {
-                            frmVoid frmvoid = new frmVoid();
-                            frmvoid.ShowDialog();
-
-                            long or_num = frmvoid.or_number;
-
-                            if (or_num == 0)
-                                break;
-
-                            if (TransactionHasRefundedItem(or_num))
-                            {
-                                fncFilter.alert(cls_globalvariables.warning_refunded_transaction_cannot_be_voided);
-                                break;
-                            }
-
-                            if (zreadFunc.HasZReadingToday())
-                            {
-                                Int64 maxORinPosxyzread = zreadFunc.get_max_OR_in_posxyzread();
-                                if ((maxORinPosxyzread != 0) && (maxORinPosxyzread >= Convert.ToInt64(or_num)))
-                                {
-                                    cls_globalfunc.MSGBXLOG("OR cannot be voided. Z-Reading is already reported.");
-                                    break;
-                                }
-                            }
-
-                            cls_POSTransaction temp_tran = new cls_POSTransaction();
-                            temp_tran.set_transaction_by_ornumber(or_num);
-                            temp_tran.set_permissiongiver(permissiongiver);
-                            if (temp_tran.getWid() == 0)
-                            {
-                                fncFilter.alert(cls_globalvariables.warning_ornumber_invalid);
-                                break;
-                            }
-                            if (temp_tran.getShow() == 0)
-                            {
-                                DialogResult dialogResult =
-                                    MessageBox.Show("This OR# is already voided!\nDo you want to reprint?", "Message", MessageBoxButtons.YesNo);
-                                if (dialogResult == DialogResult.Yes)
-                                    fncHardware.print_receipt(temp_tran, true, true);
-                                break;
-                            }
-                            if (temp_tran.getmember().MemberButOffline)
-                            {
-                                fncFilter.alert("This OR cannot be voided since Member feature is offline.");
-                                break;
-                            }
-
-                            fncHardware.void_transaction(temp_tran);
-                            fncHardware.print_receipt(temp_tran, false, true);
+                            //permcheck_delete = isInput_permission_code(fncFilter.get_permission_delete());
+                            frmPermissionCode frmpermcode = new frmPermissionCode();
+                            frmpermcode.permission_needed = fncFilter.get_permission_delete();
+                            frmpermcode.ShowDialog();
+                            permcheck_delete = frmpermcode.permcode;
+                            permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
+                            tran.set_permissiongiver(permissiongiver);
                         }
-                    }
-                    frmposmainext.AfterTran();
 
-                    isdetected = true; break;
-
-                case Keys.F7: if (btnF7.Enabled == false) return true; //delete product
-                    tran = this.get_curtrans();
-                    if (tran == null) return true;
-
-                    int prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getWid();
-                    if (prodWid == 1 || prodWid == 2)
-                    {
-                        fncFilter.alert(@"Not allowed!");
-                        isdetected = true; break;
-                    }
-
-                    bool permcheck_delete = false;
-                    if (fncFilter.check_permission_delete(this.cur_cashier.getpermission()))
-                    {
-                        permcheck_delete = true;
-
-                        if (MessageBox.Show(cls_globalvariables.confirm_logout_deleteitem, "Confirm Box",
-                                MessageBoxButtons.YesNo) == DialogResult.No)
+                        int row_index_delete = this.ctrlproductgridview.get_currentrow().Index;
+                        if (permcheck_delete)
                         {
+                            LOGS.LOG_PRINT("Product Removed : " + tran.get_productlist().get_product(row_index_delete).getProductName() + " BY " + tran.get_permissiongiver_fullname());
+                            tran.get_productlist().remove_product(row_index_delete);
+                            lastaddedrownumber = tran.get_productlist().get_productlist().Count - 1;
+                        }
+
+                        refresh_productlist_data(tran);
+
+                        tran.get_productlist().sync_product_row(row_index_delete);
+
+                        isdetected = true;
+                    }
+                    else if (FPage == 1)
+                    {
+                        tran = this.get_curtrans();
+                        if (tran == null) return true;
+
+                        if (check_permission("nonvat"))
+                        {
+                            if (tran.get_productlist().get_isnonvat())
+                                LOGS.LOG_PRINT("[F9] NonVat Transaction Deactivated");
+                            else
+                                LOGS.LOG_PRINT("[F9] NonVat Transaction Activated");
+                            tran.get_productlist().set_isnonvat(!tran.get_productlist().get_isnonvat());
+
+                            frmNonVatInfo nonvattrans = new frmNonVatInfo();
+                            nonvattrans.nonvat = tran.getnonvat();
+                            nonvattrans.ShowDialog();
+
+                            tran.setnonvat(nonvattrans.nonvat);
+                        }
+
+                        refresh_productlist_data(tran);
+                    }
+                    else if (FPage == 2)
+                    {
+
+                    }
+                    break;
+                case Keys.F4:
+                    if (FPage == 0)
+                    {
+                        Delete_Unused_saleshead(this.get_curtrans());
+                        LOGS.LOG_PRINT("Invoice Cancelled: " + this.get_curtrans().getORnumber().ToString());
+                        remove_transaction();
+                        isdetected = true;
+                    }
+                    else if (FPage == 1)
+                    {
+                        tran = this.get_curtrans();
+                        if (tran == null) return true;
+                        frmMember memberform = new frmMember();
+                        memberform.member = tran.getmember().ShallowCopy();
+                        memberform.ShowDialog();
+
+                        if (memberform.member.getwid() != 0)
+                            LOGS.LOG_PRINT("[F8] Set Member: " + memberform.member.getfullname() + ", "
+                                + memberform.member.get_memberrate_name());
+                        else
+                            LOGS.LOG_PRINT("[F8] Removed Member");
+
+                        tran.setmember(memberform.member);
+                        decimal dcpercent = tran.getmember().get_member_discount_amount(tran.get_productlist().get_totalamount());
+                        tran.get_productlist().append_adjustdiscount_all(0, dcpercent);
+
+                        tran.get_productlist().getTransDisc().setMember(memberform.member, 0, 0, false);
+                        refresh_productlist_data(tran);
+                    }
+                    else if (FPage == 2)
+                    {
+
+                    }
+                    break;
+                case Keys.F5:
+                    if (FPage == 0)
+                    {
+                        tran = this.get_curtrans();
+
+                        int prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getWid();
+                        if (prodWid == 1 || prodWid == 2)
+                        {
+                            fncFilter.alert(@"Not allowed!");
                             isdetected = true; break;
                         }
 
-                    }
-                    else
-                    {
-                        //permcheck_delete = isInput_permission_code(fncFilter.get_permission_delete());
-                        frmPermissionCode frmpermcode = new frmPermissionCode();
-                        frmpermcode.permission_needed = fncFilter.get_permission_delete();
-                        frmpermcode.ShowDialog();
-                        permcheck_delete = frmpermcode.permcode;
-                        permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                        tran.set_permissiongiver(permissiongiver);
-                    }
+                        if (tran == null) return true;
 
-                    int row_index_delete = this.ctrlproductgridview.get_currentrow().Index;
-                    if (permcheck_delete)
-                    {
-                        LOGS.LOG_PRINT("Product Removed : " + tran.get_productlist().get_product(row_index_delete).getProductName() + " BY " + tran.get_permissiongiver_fullname());
-                        tran.get_productlist().remove_product(row_index_delete);
-                        lastaddedrownumber = tran.get_productlist().get_productlist().Count - 1;
-                    }
-
-                    refresh_productlist_data(tran);
-
-                    tran.get_productlist().sync_product_row(row_index_delete);
-
-                    //frmposmainext.UpdateDGV(tran);
-                    isdetected = true; break;
-
-                case Keys.F8: if (btnF8.Enabled == false) return true; // payment
-                    tran = this.get_curtrans();
-                    if ((tran == null) || (tran.get_productlist().get_productlist().Count == 0)) return true;
-                    if (cls_globalvariables.RefundMemo_v == "1")
-                    {
-                        for (int i = 0; i < tran.get_productlist().get_productlist().Count; i++)
+                        if (tran.get_productlist().get_discount_percentage() != 0)
                         {
-                            if (tran.get_productlist().get_product(i).getQty() < 0)
-                            {
-                                frmSalesmemo salesmemo = new frmSalesmemo();
-                                salesmemo.salesheadwid = tran.getWid();
-                                salesmemo.ShowDialog();
-                                continue;
-                            }
+                            fncFilter.alert(@"Please clear the transaction discounts first.");
+                            isdetected = true; break;
                         }
-                    }
 
-                    frmPayment payment = new frmPayment();
-                    payment.paymentdata = tran.getpayments().DeepCopy();
-                    payment.totalamtdue = tran.get_productlist().get_totalamount();
-                    payment.totalpoints = tran.getmember().getPreviousPoints();
-                    payment.hasMember = tran.getmember().getwid() != 0;
-                    payment.ShowDialog();
-
-                    if (payment.changeupdated)
-                    {
-                        tran.setpayments(payment.paymentdata);
-                    }
-
-                    if (tran.get_productlist().get_productlist().Count <= 0)
-                    {
-                        mode = 1;
-                        isdetected = true; break;
-                    }
-
-                    bool ispaymentdone = payment.transactiondone;
-                    decimal total_amount_due = tran.get_productlist().get_totalamount();
-                    decimal total_amount_paid = tran.getpayments().get_totalamount();
-
-                    bool istransactiondone = false;
-                    //LESTER
-                    //if (total_amount_due < -0.1)
-                    //{
-                    //    fncFilter.alert(cls_globalvariables.warning_transaction_invalid);
-                    //    istransactiondone = false;
-                    //}
-                    //else 
-                    if (ispaymentdone && total_amount_due <= (total_amount_paid))
-                    {
-                        istransactiondone = true;
-                    }
-                    else if (ispaymentdone && total_amount_due > (total_amount_paid) && tran.getcustomer().getwid() > 0)
-                    {
-                        if (MessageBox.Show(cls_globalvariables.confirm_customer_debt, "Confirm Box",
-                                MessageBoxButtons.YesNo) == DialogResult.No)
-                        {
-                            istransactiondone = false;
-                        }
+                        bool permcheck_discountproduct = false;
+                        if (fncFilter.check_permission_discount(this.cur_cashier.getpermission()))
+                            permcheck_discountproduct = true;
                         else
                         {
-                            bool permcheck_debt = false;
-                            if (fncFilter.check_permission_debt(this.cur_cashier.getpermission()))
+                            //permcheck_discountproduct = isInput_permission_code(fncFilter.get_permission_discount());
+                            frmPermissionCode frmpermcode = new frmPermissionCode();
+                            frmpermcode.permission_needed = fncFilter.get_permission_discount();
+                            frmpermcode.ShowDialog();
+                            permcheck_discountproduct = frmpermcode.permcode;
+                            permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
+                            tran.set_permissiongiver(permissiongiver);
+                        }
+
+                        if (permcheck_discountproduct)
+                        {
+                            int row_index_discount = this.ctrlproductgridview.get_currentrow().Index;
+                            cls_product prod_discount = tran.get_productlist().get_product(row_index_discount);
+
+                            decimal cur_prodadjust = prod_discount.getAdjust();
+                            decimal cur_proddiscount = prod_discount.getDiscount();
+                            decimal cur_prodprice = prod_discount.getPrice();
+
+                            frmProductAdjust frmprodadjust = new frmProductAdjust();
+                            if (tran.getcustomer().getwid() == 0)
                             {
-                                permcheck_debt = true;
+                                frmprodadjust.Width = 500;
                             }
                             else
-                                permcheck_debt = isInput_permission_code(fncFilter.get_permission_debt());
+                            {
+                                frmprodadjust.orig_pricea = prod_discount.getPrice("A");
+                                frmprodadjust.orig_priceb = prod_discount.getPrice("B");
+                                frmprodadjust.orig_pricec = prod_discount.getPrice("C");
+                                frmprodadjust.orig_priced = prod_discount.getPrice("D");
+                                frmprodadjust.orig_pricee = prod_discount.getPrice("E");
+                            }
+                            frmprodadjust.orig_price = prod_discount.getOrigPrice();
+                            frmprodadjust.disclist = prod_discount.getProductDiscountList();
+                            frmprodadjust.productname = prod_discount.getProductName();
+                            frmprodadjust.new_price = cur_prodprice;
+                            //frmprodadjust.new_adjust = cur_prodadjust;
+                            //frmprodadjust.new_discount = cur_proddiscount;
+                            frmprodadjust.ShowDialog();
 
-                            if (!permcheck_debt)
-                                istransactiondone = false;
+                            cur_prodadjust = frmprodadjust.new_adjust;
+                            cur_proddiscount = frmprodadjust.new_discount;
 
-                            istransactiondone = true;
-                            tran.getpayments().set_dept(total_amount_due - total_amount_paid);
-                            LOGS.LOG_PRINT("Customer Transacts with Debt: " + tran.getcustomer().getfullname() + " "
-                                + (total_amount_due - total_amount_paid).ToString());
+                            if (frmprodadjust.iscomplete)
+                            {
+                                if (frmprodadjust.disc.get_wid() != 0)
+                                {
+                                    prod_discount.getProductDiscountList().activateDiscount_using_wid(frmprodadjust.disc.get_wid(), 1 - cur_proddiscount, true);
+                                    refresh_productlist_data(tran);
+                                    tran.get_productlist().sync_product_row(row_index_discount);
+                                    LOGS.LOG_PRINT("[F11]Product Custom Discount (" + frmprodadjust.disc.get_name() + "(" + frmprodadjust.disc.get_value() + "%)): " +
+                                        frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
+                                        " BY " + tran.get_permissiongiver_fullname());
+                                }
+                                else if (cur_prodadjust != 0)
+                                {
+                                    prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, cur_prodadjust, false);
+                                    refresh_productlist_data(tran);
+                                    tran.get_productlist().sync_product_row(row_index_discount);
+                                    LOGS.LOG_PRINT("[F11]Product Adjusted (" + (cur_prodadjust * 100) + "): " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
+                                        " BY " + tran.get_permissiongiver_fullname());
+                                }
+                                else if (cur_proddiscount != 0)
+                                {
+                                    prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_discounttype, 1 - cur_proddiscount, true);
+                                    refresh_productlist_data(tran);
+                                    tran.get_productlist().sync_product_row(row_index_discount);
+                                    LOGS.LOG_PRINT("[F11]Product Discounted (" + (cur_proddiscount * 100) + "%): " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
+                                        " BY " + tran.get_permissiongiver_fullname());
+                                }
+                                else
+                                {
+                                    refresh_productlist_data(tran);
+                                    tran.get_productlist().sync_product_row(row_index_discount);
+                                    LOGS.LOG_PRINT("[F11]Product Adjust/Discount Removed: " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
+                                           " BY " + tran.get_permissiongiver_fullname());
+                                }
+                                lastaddedrownumber = row_index_discount;
+                            }
                         }
-                    }
-                    else if (ispaymentdone && total_amount_due > (total_amount_paid))
-                    {
-                        fncFilter.alert(cls_globalvariables.warning_lack_of_payment);
-                        istransactiondone = false;
-                    }
-                    int temp = 0;
-                    if (istransactiondone)
-                    {
-                        //save transaction to db
-                        tran.setdatetime(mySQLFunc.DateTimeNow()); // IMPT!
-                        //Thread mythread = new Thread(() => this.save_transaction_thread(tran));
-                        //mythread.Start();
-                        //if (cls_globalvariables.testmode_v)
-                        //    while (mythread.IsAlive) { }
-                        LOGS.LOG_PRINT("[F8] AMOUNT DUE: " + total_amount_due + " CASH: " + payment.paymentdata.get_cash());
 
-                        //print receipt
-                        for (int x = 0; x < cls_globalvariables.ORPrintCount_v + (temp == -1 ? 1 : 0); x++)
-                            fncHardware.print_receipt(tran, false, false);
-
-                        frmposmainext.UpdateTenderChange(tran);
-                        frmChange_c changeform = new frmChange_c();
-                        changeform.StartPosition = FormStartPosition.Manual;
-                        changeform.Location = new Point(
-                            Screen.PrimaryScreen.WorkingArea.Width / 2 - changeform.Size.Width / 2,
-                            100);
-                        changeform.changeamount = tran.get_changeamount().ToString("N2");
-                        changeform.tran = tran;
-                        changeform.ShowDialog();
-                        istransactiondone = changeform.isTransactionDone;
+                        //frmposmainext.UpdateDGV(tran);
+                        isdetected = true;
                     }
-                    if (istransactiondone)
+                    else if (FPage == 1)
                     {
-                        this.ctrlCustDisp.refresh_display_payment();
+                        tran = this.get_curtrans();
+                        if (tran == null) return true;
 
-                        if (tran.getpayments().get_dept() > 0)
+                        if (check_permission("senior"))
                         {
-                            //print receipt copy
-                            fncHardware.print_receipt(tran, false, false);
+                            frmSenior seniorform = new frmSenior();
+                            seniorform.senior = tran.getsenior();
+                            seniorform.ShowDialog();
+                            tran.setsenior(seniorform.senior);
                         }
-                        remove_transaction();
-
-                        LOGS.LOG_PRINT("Transaction Complete: " + tran.getORnumber());
-
-                        if (fncHardware.PulloutCashCollection())
-                        {
-                            MessageBox.Show("Cash amount already exceeds. Please remove the money.", "Cash Collection Warning");
-                            LOGS.LOG_PRINT("Cash Collection Warning");
-                        }
-
-                        //After successful payment, create new payment if no other open transactions
-                        if (Trans.Count == 0)
-                            this.create_new_invoice();
+                        refresh_productlist_data(tran);
                     }
+                    else if (FPage == 2)
+                    {
 
-                    mode = 1;
-                    frmposmainext.AfterTran();
-                    if (cur_trans_index != -1)
-                        frmposmainext.UpdateDGV(Trans[cur_trans_index]);
-
-                    isdetected = true;
+                    }
                     break;
 
-                case Keys.F3: if (btnF9.Enabled == false) return true;
-                    tran = this.get_curtrans();
-                    if (tran == null) return true;
-
-                    bool permcheck_openitem = false;
-                    if (fncFilter.check_permission_openitem(this.cur_cashier.getpermission()))
+                case Keys.F6:
+                    if (FPage == 0)
                     {
-                        permcheck_openitem = true;
-                    }
-                    else
-                        permcheck_openitem = isInput_permission_code(fncFilter.get_permission_openitem());
-
-                    if (permcheck_openitem)
-                    {
-                        frmOpenItem openitemform = new frmOpenItem();
-                        openitemform.ShowDialog();
-
-                        decimal price = openitemform.prodprice;
-                        decimal qty = openitemform.quantity;
-
-                        if (price != 0 && qty != 0)
-                            lastaddedrownumber = tran.get_productlist().add_product(new cls_product(price, 0, qty));
-                    }
-
-                    refresh_productlist_data(tran);
-                    //frmposmainext.UpdateDGV(tran);
-                    isdetected = true; break;
-                case Keys.F11: if (btnF11.Enabled == false) return true; //product adjust or discount
-                    tran = this.get_curtrans();
-
-                    prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getWid();
-                    if (prodWid == 1 || prodWid == 2)
-                    {
-                        fncFilter.alert(@"Not allowed!");
-                        isdetected = true; break;
-                    }
-
-                    if (tran == null) return true;
-
-                    if (tran.get_productlist().get_discount_percentage() != 0)
-                    {
-                        fncFilter.alert(@"Please clear the transaction discounts first.");
-                        isdetected = true; break;
-                    }
-
-                    bool permcheck_discountproduct = false;
-                    if (fncFilter.check_permission_discount(this.cur_cashier.getpermission()))
-                        permcheck_discountproduct = true;
-                    else
-                    {
-                        //permcheck_discountproduct = isInput_permission_code(fncFilter.get_permission_discount());
-                        frmPermissionCode frmpermcode = new frmPermissionCode();
-                        frmpermcode.permission_needed = fncFilter.get_permission_discount();
-                        frmpermcode.ShowDialog();
-                        permcheck_discountproduct = frmpermcode.permcode;
-                        permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                        tran.set_permissiongiver(permissiongiver);
-                    }
-
-                    if (permcheck_discountproduct)
-                    {
-                        int row_index_discount = this.ctrlproductgridview.get_currentrow().Index;
-                        cls_product prod_discount = tran.get_productlist().get_product(row_index_discount);
-
-                        decimal cur_prodadjust = prod_discount.getAdjust();
-                        decimal cur_proddiscount = prod_discount.getDiscount();
-                        decimal cur_prodprice = prod_discount.getPrice();
-
-                        frmProductAdjust frmprodadjust = new frmProductAdjust();
-                        if (tran.getcustomer().getwid() == 0)
+                        LOGS.LOG_PRINT("[F6] Transaction Discount/Adjust");
+                        if (tran.get_productlist().get_totalqty() == 0)
                         {
-                            frmprodadjust.Width = 500;
+                            fncFilter.alert("No Products to Adjust!");
+                            return true;
+                        }
+                        bool permcheck_discounttransaction = false;
+                        if (fncFilter.check_permission_discount(this.cur_cashier.getpermission()))
+                            permcheck_discounttransaction = true;
+                        else
+                        {
+                            //permcheck_discounttransaction = isInput_permission_code(fncFilter.get_permission_discount());
+                            frmPermissionCode frmpermcode = new frmPermissionCode();
+                            frmpermcode.permission_needed = fncFilter.get_permission_discount();
+                            frmpermcode.ShowDialog();
+                            permcheck_discounttransaction = frmpermcode.permcode;
+                            permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
+                            tran.set_permissiongiver(permissiongiver);
+                        }
+
+                        if (permcheck_discounttransaction)
+                        {
+                            frmTransactionAdjust transAdjust = new frmTransactionAdjust();
+                            transAdjust.orig_price = tran.get_productlist().get_totalamount_no_head_discount();
+                            transAdjust.disclist = tran.get_productlist().getTransDisc();
+                            transAdjust.new_price = tran.get_productlist().get_totalamount();
+                            transAdjust.ShowDialog();
+
+
+                            if (!transAdjust.iscomplete)
+                                break;
+
+                            cls_discountlist transdisc = tran.get_productlist().getTransDisc();
+                            if (transAdjust.disc.get_wid() != 0)
+                            {
+                                transdisc.activateDiscount_using_wid(transAdjust.disc.get_wid(), 1 - transAdjust.new_discount, true);
+                                refresh_productlist_data(tran);
+                                LOGS.LOG_PRINT("[F12][F6]Transaction Custom Discount (" + transAdjust.disc.get_name() + " (" + (transAdjust.disc.get_value() * 100) + "%)): OR: "
+                                    + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
+                                    " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
+                            }
+                            else if (transAdjust.new_adjust != 0)
+                            {
+                                transdisc.appendDiscount(cls_globalvariables.dchead_adjusttype, transAdjust.new_adjust, false);
+                                refresh_productlist_data(tran);
+                                LOGS.LOG_PRINT("[F12][F6]Transaction Adjust (" + transAdjust.new_adjust + ")): OR: "
+                                    + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
+                                    " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
+                            }
+                            else if (transAdjust.new_discount != 0)
+                            {
+                                transdisc.appendDiscount(cls_globalvariables.dchead_discounttype, 1 - transAdjust.new_discount, true);
+                                refresh_productlist_data(tran);
+                                LOGS.LOG_PRINT("[F12][F6]Transaction Discount (" + (transAdjust.new_discount * 100) + "%)): OR: "
+                                    + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
+                                    " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
+                            }
+                            else
+                            {
+                                refresh_productlist_data(tran);
+                                LOGS.LOG_PRINT("[F12][F6]Transaction Adjust/Discount Removed: OR: "
+                                    + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
+                                    " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
+                            }
+                        }
+                    }
+                    else if (FPage == 1)
+                    {
+
+                    }
+                    else if (FPage == 2)
+                    {
+
+                    }
+                    break;
+                //bool permcheck_void = false;
+                //if (this.get_curtrans().get_productlist().get_productlist().Count <= 0)
+                //{
+                //    permcheck_void = true;
+                //}
+                //else if (fncFilter.check_permission_void(this.cur_cashier.getpermission()))
+                //{
+                //    permcheck_void = true;
+
+                //    if (MessageBox.Show(cls_globalvariables.confirm_logout_deletetran, "Confirm Box",
+                //                MessageBoxButtons.YesNo) == DialogResult.No)
+                //    {
+                //        isdetected = true; break;
+                //    }
+                //}
+                //else
+                //{
+                //    //permcheck_void = isInput_permission_code(fncFilter.get_permission_void());
+                //    frmPermissionCode frmpermcode = new frmPermissionCode();
+                //    frmpermcode.permission_needed = fncFilter.get_permission_void();
+                //    frmpermcode.ShowDialog();
+                //    permcheck_void = frmpermcode.permcode;
+                //    permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
+                //}
+
+                //if (permcheck_void)
+                //{
+                //    if (true)
+                //    {
+
+                //    }
+                //    else
+                //    {
+                //        frmVoid frmvoid = new frmVoid();
+                //        frmvoid.ShowDialog();
+
+                //        long or_num = frmvoid.or_number;
+
+                //        if (or_num == 0)
+                //            break;
+
+                //        if (TransactionHasRefundedItem(or_num))
+                //        {
+                //            fncFilter.alert(cls_globalvariables.warning_refunded_transaction_cannot_be_voided);
+                //            break;
+                //        }
+
+                //        if (zreadFunc.HasZReadingToday())
+                //        {
+                //            Int64 maxORinPosxyzread = zreadFunc.get_max_OR_in_posxyzread();
+                //            if ((maxORinPosxyzread != 0) && (maxORinPosxyzread >= Convert.ToInt64(or_num)))
+                //            {
+                //                cls_globalfunc.MSGBXLOG("OR cannot be voided. Z-Reading is already reported.");
+                //                break;
+                //            }
+                //        }
+
+                //        cls_POSTransaction temp_tran = new cls_POSTransaction();
+                //        temp_tran.set_transaction_by_ornumber(or_num);
+                //        temp_tran.set_permissiongiver(permissiongiver);
+                //        if (temp_tran.getWid() == 0)
+                //        {
+                //            fncFilter.alert(cls_globalvariables.warning_ornumber_invalid);
+                //            break;
+                //        }
+                //        if (temp_tran.getShow() == 0)
+                //        {
+                //            DialogResult dialogResult =
+                //                MessageBox.Show("This OR# is already voided!\nDo you want to reprint?", "Message", MessageBoxButtons.YesNo);
+                //            if (dialogResult == DialogResult.Yes)
+                //                fncHardware.print_receipt(temp_tran, true, true);
+                //            break;
+                //        }
+                //        if (temp_tran.getmember().MemberButOffline)
+                //        {
+                //            fncFilter.alert("This OR cannot be voided since Member feature is offline.");
+                //            break;
+                //        }
+
+                //        fncHardware.void_transaction(temp_tran);
+                //        fncHardware.print_receipt(temp_tran, false, true);
+                //    }
+                //}
+                //frmposmainext.AfterTran();
+
+                //isdetected = true; break;
+
+                case Keys.F7:
+                    if (FPage == 0)
+                    {
+                        if (tran.get_productlist().get_productlist().Count == 0)
+                            return true;
+
+                        if (cls_globalvariables.RefundMemo_v == "1")
+                        {
+                            for (int i = 0; i < tran.get_productlist().get_productlist().Count; i++)
+                            {
+                                if (tran.get_productlist().get_product(i).getQty() < 0)
+                                {
+                                    frmSalesmemo salesmemo = new frmSalesmemo();
+                                    salesmemo.salesheadwid = tran.getWid();
+                                    salesmemo.ShowDialog();
+                                    continue;
+                                }
+                            }
+                        }
+
+                        frmPayment payment = new frmPayment();
+                        payment.paymentdata = tran.getpayments().DeepCopy();
+                        payment.totalamtdue = tran.get_productlist().get_totalamount();
+                        payment.totalpoints = tran.getmember().getPreviousPoints();
+                        payment.hasMember = tran.getmember().getwid() != 0;
+                        payment.ShowDialog();
+
+                        if (payment.changeupdated)
+                        {
+                            tran.setpayments(payment.paymentdata);
+                        }
+
+                        if (tran.get_productlist().get_productlist().Count <= 0)
+                        {
+                            mode = 1;
+                            isdetected = true; break;
+                        }
+
+                        bool ispaymentdone = payment.transactiondone;
+                        decimal total_amount_due = tran.get_productlist().get_totalamount();
+                        decimal total_amount_paid = tran.getpayments().get_totalamount();
+
+                        bool istransactiondone = false;
+                        //LESTER
+                        //if (total_amount_due < -0.1)
+                        //{
+                        //    fncFilter.alert(cls_globalvariables.warning_transaction_invalid);
+                        //    istransactiondone = false;
+                        //}
+                        //else 
+                        if (ispaymentdone && total_amount_due <= (total_amount_paid))
+                        {
+                            istransactiondone = true;
+                        }
+                        else if (ispaymentdone && total_amount_due > (total_amount_paid) && tran.getcustomer().getwid() > 0)
+                        {
+                            if (MessageBox.Show(cls_globalvariables.confirm_customer_debt, "Confirm Box",
+                                    MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                istransactiondone = false;
+                            }
+                            else
+                            {
+                                bool permcheck_debt = false;
+                                if (fncFilter.check_permission_debt(this.cur_cashier.getpermission()))
+                                {
+                                    permcheck_debt = true;
+                                }
+                                else
+                                    permcheck_debt = isInput_permission_code(fncFilter.get_permission_debt());
+
+                                if (!permcheck_debt)
+                                    istransactiondone = false;
+
+                                istransactiondone = true;
+                                tran.getpayments().set_dept(total_amount_due - total_amount_paid);
+                                LOGS.LOG_PRINT("Customer Transacts with Debt: " + tran.getcustomer().getfullname() + " "
+                                    + (total_amount_due - total_amount_paid).ToString());
+                            }
+                        }
+                        else if (ispaymentdone && total_amount_due > (total_amount_paid))
+                        {
+                            fncFilter.alert(cls_globalvariables.warning_lack_of_payment);
+                            istransactiondone = false;
+                        }
+                        int temp = 0;
+                        if (istransactiondone)
+                        {
+                            //save transaction to db
+                            tran.setdatetime(mySQLFunc.DateTimeNow()); // IMPT!
+                            //Thread mythread = new Thread(() => this.save_transaction_thread(tran));
+                            //mythread.Start();
+                            //if (cls_globalvariables.testmode_v)
+                            //    while (mythread.IsAlive) { }
+                            LOGS.LOG_PRINT("[F8] AMOUNT DUE: " + total_amount_due + " CASH: " + payment.paymentdata.get_cash());
+
+                            //print receipt
+                            for (int x = 0; x < cls_globalvariables.ORPrintCount_v + (temp == -1 ? 1 : 0); x++)
+                                fncHardware.print_receipt(tran, false, false);
+
+                            frmposmainext.UpdateTenderChange(tran);
+                            frmChange_c changeform = new frmChange_c();
+                            changeform.StartPosition = FormStartPosition.Manual;
+                            changeform.Location = new Point(
+                                Screen.PrimaryScreen.WorkingArea.Width / 2 - changeform.Size.Width / 2,
+                                100);
+                            changeform.changeamount = tran.get_changeamount().ToString("N2");
+                            changeform.tran = tran;
+                            changeform.ShowDialog();
+                            istransactiondone = changeform.isTransactionDone;
+                        }
+                        if (istransactiondone)
+                        {
+                            this.ctrlCustDisp.refresh_display_payment();
+
+                            if (tran.getpayments().get_dept() > 0)
+                            {
+                                //print receipt copy
+                                fncHardware.print_receipt(tran, false, false);
+                            }
+                            remove_transaction();
+
+                            LOGS.LOG_PRINT("Transaction Complete: " + tran.getORnumber());
+
+                            if (fncHardware.PulloutCashCollection())
+                            {
+                                MessageBox.Show("Cash amount already exceeds. Please remove the money.", "Cash Collection Warning");
+                                LOGS.LOG_PRINT("Cash Collection Warning");
+                            }
+
+                            //After successful payment, create new payment if no other open transactions
+                            if (Trans.Count == 0)
+                                this.create_new_invoice();
+                        }
+
+                        mode = 1;
+                        frmposmainext.AfterTran();
+                        if (cur_trans_index != -1)
+                            frmposmainext.UpdateDGV(Trans[cur_trans_index]);
+
+                        isdetected = true;
+                    }
+                    else if (FPage == 1)
+                    {
+                        long ORNumber = 0;
+                        frmReprintReceipt reprintfrm = new frmReprintReceipt();
+                        frmORPrintPreview frmorprintpreview = new frmORPrintPreview();
+
+                        tran = this.get_curtrans();
+                        if (tran != null)
+                        {
+                            reprintfrm.currenttrans_ornumber = tran.getORnumber();
+                            frmorprintpreview.currenttrans_ornumber = tran.getORnumber();
+                        }
+
+                        if (cls_globalvariables.PreviewOR_v)
+                        {
+                            frmorprintpreview.cur_permissions = this.cur_cashier.getpermission();
+                            frmorprintpreview.ShowDialog();
+                            ORNumber = frmorprintpreview.or_number;
                         }
                         else
                         {
-                            frmprodadjust.orig_pricea = prod_discount.getPrice("A");
-                            frmprodadjust.orig_priceb = prod_discount.getPrice("B");
-                            frmprodadjust.orig_pricec = prod_discount.getPrice("C");
-                            frmprodadjust.orig_priced = prod_discount.getPrice("D");
-                            frmprodadjust.orig_pricee = prod_discount.getPrice("E");
+                            reprintfrm.cur_permissions = this.cur_cashier.getpermission();
+                            reprintfrm.ShowDialog();
+                            ORNumber = reprintfrm.or_number;
                         }
-                        frmprodadjust.orig_price = prod_discount.getOrigPrice();
-                        frmprodadjust.disclist = prod_discount.getProductDiscountList();
-                        frmprodadjust.productname = prod_discount.getProductName();
-                        frmprodadjust.new_price = cur_prodprice;
-                        //frmprodadjust.new_adjust = cur_prodadjust;
-                        //frmprodadjust.new_discount = cur_proddiscount;
-                        frmprodadjust.ShowDialog();
 
-                        cur_prodadjust = frmprodadjust.new_adjust;
-                        cur_proddiscount = frmprodadjust.new_discount;
-
-                        if (frmprodadjust.iscomplete)
+                        frmLoad loadForm = new frmLoad("Loading Transaction Data", "Loading Screen");
+                        loadForm.BackgroundWorker.DoWork += (sender, e1) =>
                         {
-                            if (frmprodadjust.disc.get_wid() != 0)
-                            {
-                                prod_discount.getProductDiscountList().activateDiscount_using_wid(frmprodadjust.disc.get_wid(), 1 - cur_proddiscount, true);
-                                refresh_productlist_data(tran);
-                                tran.get_productlist().sync_product_row(row_index_discount);
-                                LOGS.LOG_PRINT("[F11]Product Custom Discount (" + frmprodadjust.disc.get_name() + "(" + frmprodadjust.disc.get_value() + "%)): " +
-                                    frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
-                                    " BY " + tran.get_permissiongiver_fullname());
-                            }
-                            else if (cur_prodadjust != 0)
-                            {
-                                prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, cur_prodadjust, false);
-                                refresh_productlist_data(tran);
-                                tran.get_productlist().sync_product_row(row_index_discount);
-                                LOGS.LOG_PRINT("[F11]Product Adjusted (" + (cur_prodadjust * 100) + "): " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
-                                    " BY " + tran.get_permissiongiver_fullname());
-                            }
-                            else if (cur_proddiscount != 0)
-                            {
-                                prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_discounttype, 1 - cur_proddiscount, true);
-                                refresh_productlist_data(tran);
-                                tran.get_productlist().sync_product_row(row_index_discount);
-                                LOGS.LOG_PRINT("[F11]Product Discounted (" + (cur_proddiscount * 100) + "%): " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
-                                    " BY " + tran.get_permissiongiver_fullname());
-                            }
-                            else
-                            {
-                                refresh_productlist_data(tran);
-                                tran.get_productlist().sync_product_row(row_index_discount);
-                                LOGS.LOG_PRINT("[F11]Product Adjust/Discount Removed: " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
-                                       " BY " + tran.get_permissiongiver_fullname());
-                            }
-                            lastaddedrownumber = row_index_discount;
-                        }
-                    }
+                            if (cls_globalfunc.isReceiptInTransList(Trans, ORNumber))
+                                return;
 
-                    //frmposmainext.UpdateDGV(tran);
-                    isdetected = true; break;
+                            cls_POSTransaction temp_tran = new cls_POSTransaction();
+                            temp_tran.set_transaction_by_ornumber(ORNumber);
 
-                case Keys.F12: if (btnF12.Enabled == false) return true; // open menu
-                    LOGS.LOG_PRINT("[F12] Menu Opened");
-
-                    frmMenu menuform = new frmMenu();
-                    if (btnF1.Enabled == false)
-                        menuform.F1flag = true;
-                    menuform.ShowDialog();
-
-                    string cmd = menuform.commandentered;
-                    switch (cmd)
-                    {
-                        case "F1": //inventory
-                            tran = this.get_curtrans();
-                            if (tran != null)
-                            {
-                                MessageBox.Show("Please Void Current Transaction First! (F6 - Void)");
-                                break;
-                            }
-                            frmInventory invform = new frmInventory();
-                            invform.cur_permissions = this.cur_cashier.getpermission();
-                            invform.ShowDialog();
-                            string inv_cmd = invform.commandentered;
-                            DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
-                            DateTime datetimeTO_d = zreadFunc.getZreadDate(invform.datetimeTO_d);
-                            switch (inv_cmd)
-                            {
-                                case "F1":
-                                    LOGS.LOG_PRINT("[F1] Open Drawer");
-
-                                    RawPrinterHelper.OpenCashDrawer(false);
-
-                                    frmCashDenomination cashcheckform = new frmCashDenomination();
-                                    cashcheckform.cash_bills = new cls_bills();
-                                    cashcheckform.ShowDialog();
-                                    cls_bills end_bills = cashcheckform.cash_bills;
-                                    end_bills.set_type(3);
-                                    end_bills.save_cashdenomination(this.cur_cashier);
-                                    break;
-
-                                case "F2":
-                                    LOGS.LOG_PRINT("[F2] Print Z-Reading: " + datetime_d.ToString());
-                                    Print_Date_Ranged_Zread(datetime_d, datetimeTO_d);
-                                    break;
-                                case "none": break;
-                            }
-                            break;
-                        case "F2": //open drawer
-
-                            if (check_permission("opendrawer"))
-                                RawPrinterHelper.OpenCashDrawer(false);
-
-                            break;
-                        case "F3":
-                            tran = this.get_curtrans();
-                            if (tran != null)
-                            {
-                                MessageBox.Show("Please Void Current Transaction First!");
-                                break;
-                            }
-
-                            frmTerminalReadings TR = new frmTerminalReadings();
-                            TR.ShowDialog();
-
-                            break;
-                        case "F4": //reprint receipt
-
-                            long ORNumber = 0;
-                            frmReprintReceipt reprintfrm = new frmReprintReceipt();
-                            frmORPrintPreview frmorprintpreview = new frmORPrintPreview();
-
-                            tran = this.get_curtrans();
-                            if (tran != null)
-                            {
-                                reprintfrm.currenttrans_ornumber = tran.getORnumber();
-                                frmorprintpreview.currenttrans_ornumber = tran.getORnumber();
-                            }
-
-                            if (cls_globalvariables.PreviewOR_v)
-                            {
-                                frmorprintpreview.cur_permissions = this.cur_cashier.getpermission();
-                                frmorprintpreview.ShowDialog();
-                                ORNumber = frmorprintpreview.or_number;
-                            }
-                            else
-                            {
-                                reprintfrm.cur_permissions = this.cur_cashier.getpermission();
-                                reprintfrm.ShowDialog();
-                                ORNumber = reprintfrm.or_number;
-                            }
-
-                            frmLoad loadForm = new frmLoad("Loading Transaction Data", "Loading Screen");
-                            loadForm.BackgroundWorker.DoWork += (sender, e1) =>
-                            {
-                                if (cls_globalfunc.isReceiptInTransList(Trans, ORNumber))
-                                    return;
-
-                                cls_POSTransaction temp_tran = new cls_POSTransaction();
+                            if (temp_tran.getWid() == 0)
                                 temp_tran.set_transaction_by_ornumber(ORNumber);
 
-                                if (temp_tran.getWid() == 0)
-                                    temp_tran.set_transaction_by_ornumber(ORNumber);
-
-                                if (temp_tran.getWid() == 0)
-                                {
-                                    fncFilter.alert(cls_globalvariables.warning_ornumber_invalid);
-                                    return;
-                                }
-                                fncHardware.print_receipt(temp_tran, true, false);
-                            };
-                            loadForm.ShowDialog();
-                            break;
-                        case "F5": //pickup cash
-                            if (check_permission("opendrawer"))
+                            if (temp_tran.getWid() == 0)
                             {
-                                RawPrinterHelper.OpenCashDrawer(false);
-                                frmCashDenomination cashform = new frmCashDenomination();
-                                cashform.cash_bills = new cls_bills();
-                                cashform.ShowDialog();
-                                cashform.cash_bills.set_type(2);
-                                cashform.cash_bills.save_cashdenomination(this.cur_cashier);
-
-                                LOGS.LOG_PRINT("[F5] Print Pickup Cash");
-                                fncHardware.print_pickupcash(DateTime.Now, cur_cashier.getwid());
+                                fncFilter.alert(cls_globalvariables.warning_ornumber_invalid);
+                                return;
                             }
-                            break;
-                        case "F6": //discount
-                            LOGS.LOG_PRINT("[F6] Transaction Discount/Adjust");
-                            tran = this.get_curtrans();
-                            if ((tran == null) || (tran.get_productlist().get_totalqty() == 0))
-                            {
-                                fncFilter.alert("No Products to Adjust!");
-                                return true;
-                            }
-                            bool permcheck_discounttransaction = false;
-                            if (fncFilter.check_permission_discount(this.cur_cashier.getpermission()))
-                                permcheck_discounttransaction = true;
-                            else
-                            {
-                                //permcheck_discounttransaction = isInput_permission_code(fncFilter.get_permission_discount());
-                                frmPermissionCode frmpermcode = new frmPermissionCode();
-                                frmpermcode.permission_needed = fncFilter.get_permission_discount();
-                                frmpermcode.ShowDialog();
-                                permcheck_discounttransaction = frmpermcode.permcode;
-                                permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                                tran.set_permissiongiver(permissiongiver);
-                            }
-
-                            if (permcheck_discounttransaction)
-                            {
-                                frmTransactionAdjust transAdjust = new frmTransactionAdjust();
-                                transAdjust.orig_price = tran.get_productlist().get_totalamount_no_head_discount();
-                                transAdjust.disclist = tran.get_productlist().getTransDisc();
-                                transAdjust.new_price = tran.get_productlist().get_totalamount();
-                                transAdjust.ShowDialog();
-
-
-                                if (!transAdjust.iscomplete)
-                                    break;
-
-                                cls_discountlist transdisc = tran.get_productlist().getTransDisc();
-                                if (transAdjust.disc.get_wid() != 0)
-                                {
-                                    transdisc.activateDiscount_using_wid(transAdjust.disc.get_wid(), 1 - transAdjust.new_discount, true);
-                                    refresh_productlist_data(tran);
-                                    LOGS.LOG_PRINT("[F12][F6]Transaction Custom Discount (" + transAdjust.disc.get_name() + " (" + (transAdjust.disc.get_value() * 100) + "%)): OR: "
-                                        + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
-                                        " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
-                                }
-                                else if (transAdjust.new_adjust != 0)
-                                {
-                                    transdisc.appendDiscount(cls_globalvariables.dchead_adjusttype, transAdjust.new_adjust, false);
-                                    refresh_productlist_data(tran);
-                                    LOGS.LOG_PRINT("[F12][F6]Transaction Adjust (" + transAdjust.new_adjust + ")): OR: "
-                                        + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
-                                        " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
-                                }
-                                else if (transAdjust.new_discount != 0)
-                                {
-                                    transdisc.appendDiscount(cls_globalvariables.dchead_discounttype, 1 - transAdjust.new_discount, true);
-                                    refresh_productlist_data(tran);
-                                    LOGS.LOG_PRINT("[F12][F6]Transaction Discount (" + (transAdjust.new_discount * 100) + "%)): OR: "
-                                        + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
-                                        " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
-                                }
-                                else
-                                {
-                                    refresh_productlist_data(tran);
-                                    LOGS.LOG_PRINT("[F12][F6]Transaction Adjust/Discount Removed: OR: "
-                                        + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
-                                        " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
-                                }
-                            }
-
-                            break;
-                        case "F7": // Senior
-                            tran = this.get_curtrans();
-                            if (tran == null) return true;
-
-                            if (check_permission("senior"))
-                            {
-                                frmSenior seniorform = new frmSenior();
-                                seniorform.senior = tran.getsenior();
-                                seniorform.ShowDialog();
-                                tran.setsenior(seniorform.senior);
-                            }
-                            refresh_productlist_data(tran);
-                            break;
-                        case "F8": // Member
-                            tran = this.get_curtrans();
-                            if (tran == null) return true;
-                            frmMember memberform = new frmMember();
-                            memberform.member = tran.getmember().ShallowCopy();
-                            memberform.ShowDialog();
-
-                            if (memberform.member.getwid() != 0)
-                                LOGS.LOG_PRINT("[F8] Set Member: " + memberform.member.getfullname() + ", "
-                                    + memberform.member.get_memberrate_name());
-                            else
-                                LOGS.LOG_PRINT("[F8] Removed Member");
-
-                            tran.setmember(memberform.member);
-                            decimal dcpercent = tran.getmember().get_member_discount_amount(tran.get_productlist().get_totalamount());
-                            tran.get_productlist().append_adjustdiscount_all(0, dcpercent);
-
-                            tran.get_productlist().getTransDisc().setMember(memberform.member, 0, 0, false);
-                            refresh_productlist_data(tran);
-                            break;
-                        case "F9": // Non-Vat
-
-                            tran = this.get_curtrans();
-                            if (tran == null) return true;
-
-                            if (check_permission("nonvat"))
-                            {
-                                if (tran.get_productlist().get_isnonvat())
-                                    LOGS.LOG_PRINT("[F9] NonVat Transaction Deactivated");
-                                else
-                                    LOGS.LOG_PRINT("[F9] NonVat Transaction Activated");
-                                tran.get_productlist().set_isnonvat(!tran.get_productlist().get_isnonvat());
-
-                                frmNonVatInfo nonvattrans = new frmNonVatInfo();
-                                nonvattrans.nonvat = tran.getnonvat();
-                                nonvattrans.ShowDialog();
-
-                                tran.setnonvat(nonvattrans.nonvat);
-                            }
-
-                            refresh_productlist_data(tran);
-
-                            break;
-                        case "F10":
-                            LOGS.LOG_PRINT("[F10] View Previous Transaction");
-                            this.view_previoustransaction();
-                            break;
-                        case "F11":
-                            LOGS.LOG_PRINT("[F11] Create New Invoice");
-                            this.create_new_invoice();
-                            break;
-                        case "F12":
-                            LOGS.LOG_PRINT("[F12] View Next Transaction");
-                            this.view_nexttransaction();
-                            break;
-                        case "O":
-                            LOGS.LOG_PRINT("[O] Old Data Form");
-                            frmOldData olddataform = new frmOldData();
-                            olddataform.ShowDialog();
-                            break;
-                        case "S":
-                            LOGS.LOG_PRINT("[S] Settings");
-                            frmSetting settingform = new frmSetting();
-                            settingform.ShowDialog();
-                            break;
-                        case "L":
-                            LOGS.LOG_PRINT("[L] Discount Lists");
-                            tran = this.get_curtrans();
-                            if (tran == null) return true;
-
-                            frmChooseDiscount dList = new frmChooseDiscount();
-                            dList.passProductList(tran.get_productlist());
-                            dList.ShowDialog();
-
-                            break;
-                        case "M":
-                            LOGS.LOG_PRINT("[S] Salesman");
-                            tran = this.get_curtrans();
-                            if (tran == null) return true;
-                            frmLogIn loggedsalesman = new frmLogIn();
-                            loggedsalesman.user = "salesman";
-                            loggedsalesman.salesman = tran.getsalesman();
-                            loggedsalesman.ShowDialog();
-
-                            tran.setchecker(loggedsalesman.salesman);
-
-                            isdetected = true;
-                            break;
-                        case "H":
-                            tran = this.get_curtrans();
-                            if (tran == null) return true;
-                            frmSalesmemo salesmemo = new frmSalesmemo();
-                            salesmemo.salesheadwid = this.get_curtrans().getWid();
-                            salesmemo.ShowDialog();
-                            tran.setmemo(salesmemo.txtmemo);
-                            tsslSalesMemo.Text = salesmemo.txtmemo;
-                            break;
-                        case "Escape":
-                            break;
+                            fncHardware.print_receipt(temp_tran, true, false);
+                        };
+                        loadForm.ShowDialog();
                     }
-                    isdetected = true; break;
+                    else if (FPage == 2)
+                    {
 
+                    }
+                    break;
+                case Keys.F8:
+                    if (FPage == 0)
+                    {
+                        frmSalesmemo salesnotes = new frmSalesmemo();
+                        salesnotes.salesheadwid = this.get_curtrans().getWid();
+                        salesnotes.ShowDialog();
+                        tran.setmemo(salesnotes.txtmemo);
+                        tsslSalesMemo.Text = salesnotes.txtmemo;
+                        isdetected = true;
+                    }
+                    else if (FPage == 1)
+                    {
+                        tran = this.get_curtrans();
+                        if (tran != null)
+                        {
+                            MessageBox.Show("Please Void Current Transaction First!");
+                            break;
+                        }
+
+                        frmTerminalReadings TR = new frmTerminalReadings();
+                        TR.ShowDialog();
+                    }
+                    else if (FPage == 2)
+                    {
+
+                    }
+                    break;
+                case Keys.F9:
+                    if (FPage == 0)
+                    {
+                        LOGS.LOG_PRINT("[F9] Create New Transaction");
+                        this.create_new_invoice();
+                        isdetected = true;
+                    }
+                    else if (FPage == 1)
+                    {
+                        tran = this.get_curtrans();
+                        if (tran != null)
+                        {
+                            MessageBox.Show("Please Void Current Transaction First! (F6 - Void)");
+                            break;
+                        }
+                        frmInventory invform = new frmInventory();
+                        invform.cur_permissions = this.cur_cashier.getpermission();
+                        invform.ShowDialog();
+                        string inv_cmd = invform.commandentered;
+                        DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
+                        DateTime datetimeTO_d = zreadFunc.getZreadDate(invform.datetimeTO_d);
+                        LOGS.LOG_PRINT("[F1] Open Drawer");
+
+                        RawPrinterHelper.OpenCashDrawer(false);
+
+                        frmCashDenomination cashcheckform = new frmCashDenomination();
+                        cashcheckform.cash_bills = new cls_bills();
+                        cashcheckform.ShowDialog();
+                        cls_bills end_bills = cashcheckform.cash_bills;
+                        end_bills.set_type(3);
+                        end_bills.save_cashdenomination(this.cur_cashier);
+                    }
+                    else if (FPage == 2)
+                    {
+
+                    }
+                    break;
+                case Keys.F10:
+                    if (FPage == 0)
+                    {
+                        LOGS.LOG_PRINT("[F10] Previous Transaction");
+                        this.view_previoustransaction();
+                        isdetected = true;
+                    }
+                    else if (FPage == 1)
+                    {
+                        tran = this.get_curtrans();
+                        if (tran != null)
+                        {
+                            MessageBox.Show("Please Void Current Transaction First! (F6 - Void)");
+                            break;
+                        }
+                        frmInventory invform = new frmInventory();
+                        invform.cur_permissions = this.cur_cashier.getpermission();
+                        invform.ShowDialog();
+                        string inv_cmd = invform.commandentered;
+                        DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
+                        DateTime datetimeTO_d = zreadFunc.getZreadDate(invform.datetimeTO_d);
+
+                        LOGS.LOG_PRINT("[F2] Print Z-Reading: " + datetime_d.ToString());
+                        Print_Date_Ranged_Zread(datetime_d, datetimeTO_d);
+
+                    }
+                    else if (FPage == 2)
+                    {
+
+                    }
+                    break;
+                case Keys.F11:
+                    if (FPage == 0)
+                    {
+                        LOGS.LOG_PRINT("[F11] Next Transaction");
+                        this.view_nexttransaction();
+                        isdetected = true;
+                    }
+                    else if (FPage == 1)
+                    {
+                        LOGS.LOG_PRINT("[S] Settings");
+                        frmSetting settingform = new frmSetting();
+                        settingform.ShowDialog();
+                    }
+                    else if (FPage == 2)
+                    {
+
+                    }
+                    break;
+                case Keys.F12:
+                    LOGS.LOG_PRINT("[F12] Open Advanced Functions");
+                    SwitchFunctionPage();
+                    isdetected = true;
+                    break;
                 //case Keys.ControlKey:
                 //    gofullscreen = fncfullscreen.ResizeScreen(gofullscreen);
                 //    break;
@@ -1377,7 +1430,6 @@ namespace ETech
         {
             this.ctrlpaymentlabel.refresh_display();
             this.ctrlOther.refresh_display();
-            this.ctrlbtnpanel.refresh_display();
             if (mode == 0)
             {
                 int row_index = (this.ctrlproductgridview.get_currentrow() != null) ?
@@ -1530,7 +1582,6 @@ namespace ETech
 
             this.ctrlproductgridview.set_databinding(tran.get_productlist().get_dtproduct());
             this.ctrlpaymentlabel.set_databinding(tran);
-            this.ctrlbtnpanel.refresh_display();
             this.ctrlOther.set_databinding(tran);
             this.ctrlCustDisp.set_databinding(tran);
 
@@ -1557,20 +1608,15 @@ namespace ETech
         {
             this.cur_trans_index = -1;
 
-            //this.lblORNumber_d.Enabled = false;
             this.tsslOfficialReceiptNumber.Enabled = false;
             this.lblQty_d.Enabled = false;
             this.txtBarcode.Enabled = false;
 
-            //this.lblORNumber_d.Text = "";
             this.tsslOfficialReceiptNumber.Text = "";
             this.lblQty_d.Text = "0";
             this.txtBarcode.Text = "";
-            //this.lbltransaction_d.Text = "-";
-            //this.lbltransaction_total.Text = "-";
             this.tsslTransactions.Text = "";
 
-            this.ctrlbtnpanel.initial_display();
             this.ctrlOther.initial_display();
             this.ctrlpaymentlabel.initial_display();
             this.ctrlproductgridview.initial_display();
@@ -1649,6 +1695,75 @@ namespace ETech
             {
                 fncHardware.print_zread(datefrom, cur_cashier.getwid());
             }
+        }
+
+        public void SwitchFunctionPage()
+        {
+            ButtonF04.Visible = true;
+            ButtonF05.Visible = true;
+            ButtonF06.Visible = true;
+            ButtonF07.Visible = true;
+            ButtonF08.Visible = true;
+            ButtonF09.Visible = true;
+            ButtonF10.Visible = true;
+            ButtonF11.Visible = true;
+            if (FPage == 0)
+            {
+                FPage = 1;
+                ButtonF01.Text = "[ F1 ]\r\nOPEN\r\nDRAWER";
+                ButtonF02.Text = "[ F2 ]\r\nPICKUP\r\nCASH";
+                ButtonF03.Text = "[ F3 ]\r\nNONVAT\r\nTRANS";
+                ButtonF04.Text = "[ F4 ]\r\nMEMBER\r\nTRANS";
+                ButtonF05.Text = "[ F5 ]\r\nSENIOR\r\nTRANS";
+                ButtonF06.Text = "[ F6 ]\r\nVOID\r\nTRANS";
+                ButtonF07.Text = "[ F7 ]\r\nREPRINT\r\nRECEIPT";
+                ButtonF08.Text = "[ F8 ]\r\nOTHER\r\nREADINGS";
+                ButtonF09.Text = "[ F9 ]\r\nX\r\nREADING";
+                ButtonF10.Text = "[ F10 ]\r\nZ\r\nREADING";
+                ButtonF11.Text = "[ F11 ]\r\nMODIFY\r\nSETTINGS";
+                ButtonF12.Text = "[ F12 ]\r\nBACKOFFICE\r\nFUNCS";
+            }
+            else if (FPage == 1)
+            {
+                FPage = 2;
+                ButtonF01.Text = "[ F1 ]\r\nADD\r\nUSER";
+                ButtonF02.Text = "[ F2 ]\r\nADD\r\nPRODUCT";
+                ButtonF03.Text = "[ F3 ]\r\nADD\r\nMEMBER";
+                ButtonF04.Visible = false;
+                ButtonF04.Text = "[ F4 ]\r\n \r\n ";
+                ButtonF05.Visible = false;
+                ButtonF05.Text = "[ F5 ]\r\n \r\n ";
+                ButtonF06.Visible = false;
+                ButtonF06.Text = "[ F6 ]\r\n \r\n ";
+                ButtonF07.Visible = false;
+                ButtonF07.Text = "[ F7 ]\r\n \r\n ";
+                ButtonF08.Visible = false;
+                ButtonF08.Text = "[ F8 ]\r\n \r\n ";
+                ButtonF09.Visible = false;
+                ButtonF09.Text = "[ F9 ]\r\n \r\n ";
+                ButtonF10.Visible = false;
+                ButtonF10.Text = "[ F10 ]\r\n \r\n ";
+                ButtonF11.Visible = false;
+                ButtonF11.Text = "[ F11 ]\r\n \r\n ";
+                ButtonF12.Text = "[ F12 ]\r\nBASIC\r\nFUNCS";
+            }
+            else
+            {
+                FPage = 0;
+                ButtonF01.Text = "[ F1 ]\r\nOPEN\r\nITEM";
+                ButtonF02.Text = "[ F2 ]\r\nCHANGE\r\nQUANTITY";
+                ButtonF03.Text = "[ F3 ]\r\nREMOVE\r\nITEM";
+                ButtonF04.Text = "[ F4 ]\r\nCLEAR\r\nTRANS";
+                ButtonF05.Text = "[ F5 ]\r\nITEM\r\nDISCOUNT";
+                ButtonF06.Text = "[ F6 ]\r\nTRANS\r\nDISCOUNT";
+                ButtonF07.Text = "[ F7 ]\r\nTENDER\r\nPAYMENT";
+                ButtonF08.Text = "[ F8 ]\r\nADD\r\nNOTES";
+                ButtonF09.Text = "[ F9 ]\r\nNEW\r\nTRANS";
+                ButtonF10.Text = "[ F10 ]\r\nPREV\r\nTRANS";
+                ButtonF11.Text = "[ F11 ]\r\nNEXT\r\nTRANS";
+                ButtonF12.Text = "[ F12 ]\r\nADVANCED\r\nFUNCS";
+            }
+
         }
     }
 

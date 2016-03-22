@@ -489,7 +489,14 @@ namespace ETech
             else
                 return check_connection();
         }
-    
 
+        public static string getServerDateTime()
+        {
+            string sql = @"Select NOW() as `now`";
+            DataTable DT = mySQLFunc.getdb(sql);
+            DateTime datetime = Convert.ToDateTime(DT.Rows[0]["now"].ToString());
+
+            return datetime.ToString("yyyy-MM-dd hh tt");
+        }
     }
 }

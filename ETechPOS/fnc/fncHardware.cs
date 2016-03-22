@@ -960,11 +960,11 @@ namespace ETech.fnc
                             SELECT H.`wid` AS 'shwid', H.`userid`, H.`show`, H.`status`,
                                 IF( D.`vat` = 0, true, false) AS 'isnonvat', H.`iswholesale`,
                                 IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`senior` = 0 OR D.`senior` = 2,false,true) AS 'issenior',
-                                IF(`show` = 1 AND `status` = 1, D.`quantity`, 0) AS 'qty',
-                                IF(`show` = 0 OR `status` = 0, D.`quantity`, 0) AS 'voidqty',
-                                IF(`show` = 1 AND `status` = 1, D.`quantity` * (D.`oprice` - D.`price`),0) AS 'dcamount',
-                                IF(`show` = 1 AND `status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
-                                IF(`show` = 0 or `status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
+                                IF(`status` = 1, D.`quantity`, 0) AS 'qty',
+                                IF(`status` = 0, D.`quantity`, 0) AS 'voidqty',
+                                IF(`status` = 1, D.`quantity` * (D.`oprice` - D.`price`),0) AS 'dcamount',
+                                IF(`status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
+                                IF(status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
                             FROM `saleshead` AS H 
                             LEFT JOIN `salesdetail` AS D ON H.`wid` = D.`headid` 
                             WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno + @"

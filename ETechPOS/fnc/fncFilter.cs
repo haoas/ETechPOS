@@ -368,6 +368,7 @@ namespace ETech.fnc
 
         public static void set_theme_controls(Control control)
         {
+            return;
             GroupBox gb;
             CheckBox cb;
             TextBox tb;
