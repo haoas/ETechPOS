@@ -12,14 +12,20 @@ namespace ETech.cls
         //attributes
         private string code;
         private string fullname;
+        public string username { get; private set; }
+        public string password { get; private set; }
         private List<int> permission;
+        public List<string> authorization { get; private set; }
         private long syncid;
 
         public void init()
         {
             this.code = "";
             this.fullname = "";
+            this.username = "";
+            this.password = "";
             this.permission = new List<int>();
+            this.authorization = new List<string>();
             this.syncid = 0;
         }
 
@@ -79,10 +85,10 @@ namespace ETech.cls
         {
             this.syncid = SyncId;
             string sSQL = "SELECT * FROM `user` WHERE `SyncId` = " + SyncId;
-            
+
             if (!is_history)
             {
-                sSQL += " AND `show` = 1 AND `status` = 1 ";
+                sSQL += " AND `status` = 1 ";
             }
 
             DataTable dt = mySQLFunc.getdb(sSQL);
@@ -94,6 +100,8 @@ namespace ETech.cls
             DataRow dr = dt.Rows[0];
             this.code = dr["usercode"].ToString();
             this.fullname = dr["fullname"].ToString();
+            this.username = dr["username"].ToString();
+            this.password = dr["password"].ToString();
 
             sSQL = "SELECT * FROM `userpermission` WHERE `userid` = " + SyncId;
             dt = mySQLFunc.getdb(sSQL);
@@ -101,6 +109,14 @@ namespace ETech.cls
             foreach (DataRow dr_d in dt.Rows)
             {
                 this.permission.Add(Convert.ToInt32(dr_d["code"]));
+            }
+
+            sSQL = "SELECT * FROM `userauth` WHERE `userid` = " + SyncId;
+            dt = mySQLFunc.getdb(sSQL);
+            this.authorization.Clear();
+            foreach (DataRow dr_d in dt.Rows)
+            {
+                this.authorization.Add(dr_d["authorization"].ToString());
             }
         }
 

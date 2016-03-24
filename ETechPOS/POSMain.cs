@@ -478,7 +478,8 @@ namespace ETech
                     }
                     else if (FPage == 2)
                     {
-                        
+                        AddUserForm userform = new AddUserForm();
+                        userform.ShowDialog();
                     }
                     break;
                 //Do not delete
@@ -1190,7 +1191,7 @@ namespace ETech
                             ORNumber = reprintfrm.or_number;
                         }
 
-                        frmLoad loadForm = new frmLoad("Loading Transaction Data", "Loading Screen");
+                        frmLoad loadForm = new frmLoad("Loading... Please wait", "Loading Screen");
                         loadForm.BackgroundWorker.DoWork += (sender, e1) =>
                         {
                             if (cls_globalfunc.isReceiptInTransList(Trans, ORNumber))

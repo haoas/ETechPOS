@@ -137,7 +137,7 @@ namespace ETech.cls
             return (change > 0) ? change : 0;
         }
 
-        public void set_transaction_by_wid(long SyncId, bool is_history)
+        public void set_transaction_by_wid(long SyncId, bool status)
         {
             this.syncid = SyncId;
 
@@ -160,14 +160,14 @@ namespace ETech.cls
             Int32.TryParse(dr["show"].ToString(), out this.show);
             Int32.TryParse(dr["status"].ToString(), out this.status);
 
-            this.clerk = new cls_user(Convert.ToInt32(dr["userid"]), is_history);
-            this.checker = new cls_user(Convert.ToInt32(dr["checkerid"]), is_history);
-            this.customer = new cls_customer(Convert.ToInt32(dr["customerid"]), is_history);
-            this.member = new cls_member(Convert.ToInt32(dr["memberid"]), is_history);
+            this.clerk = new cls_user(Convert.ToInt32(dr["userid"]), status);
+            this.checker = new cls_user(Convert.ToInt32(dr["checkerid"]), status);
+            this.customer = new cls_customer(Convert.ToInt32(dr["customerid"]), status);
+            this.member = new cls_member(Convert.ToInt32(dr["memberid"]), status);
             this.payments = new cls_payment(SyncId);
 
             this.productlist = new cls_productlist();
-            this.productlist.set_productlist_by_wid(SyncId, is_history);
+            this.productlist.set_productlist_by_wid(SyncId, status);
 
             if (Convert.ToInt32(dr["customerid"]) > 0 && this.productlist.get_totalamount() > this.payments.get_totalamount())
             {

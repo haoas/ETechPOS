@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech
 {
@@ -46,8 +47,7 @@ namespace ETech
         }
         private void frmSearchCustomer_Load(object sender, EventArgs e)
         {
-            foreach (DataGridViewColumn col in dgvCustomer.Columns)
-                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgvCustomer.Standardize();
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
