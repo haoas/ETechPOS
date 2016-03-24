@@ -10,7 +10,7 @@ namespace ETech.cls
 {
     public class cls_POSTransaction
     {
-        private int wid;
+        private long syncid;
         private long OfficialReceiptNo;
         private DateTime salesdatetime;
         private cls_user clerk;
@@ -34,7 +34,7 @@ namespace ETech.cls
         //constructor
         public cls_POSTransaction()
         {
-            this.wid = 0;
+            this.syncid = 0;
             this.OfficialReceiptNo = 0;
             this.adjust = 0;
             this.discount = 0;
@@ -54,8 +54,8 @@ namespace ETech.cls
             this.status = 0;
         }
 
-        public void setWid(int wid_d) { this.wid = wid_d; }
-        public int getWid() { return this.wid; }
+        public void setSyncId(long syncid_d) { this.syncid = syncid_d; }
+        public long getSyncId() { return this.syncid; }
 
         public void setORnumber(long ORnumber_d) { this.OfficialReceiptNo = ORnumber_d; }
         public long getORnumber() { return this.OfficialReceiptNo; }
@@ -137,15 +137,15 @@ namespace ETech.cls
             return (change > 0) ? change : 0;
         }
 
-        public void set_transaction_by_wid(int wid, bool is_history)
+        public void set_transaction_by_wid(long SyncId, bool is_history)
         {
-            this.wid = wid;
+            this.syncid = SyncId;
 
-            string sSQL = "SELECT * FROM `saleshead` WHERE `wid` = " + wid;
+            string sSQL = "SELECT * FROM `saleshead` WHERE `SyncId` = " + SyncId;
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {
-                this.wid = 0;
+                this.syncid = 0;
                 return;
             }
 
@@ -164,57 +164,10 @@ namespace ETech.cls
             this.checker = new cls_user(Convert.ToInt32(dr["checkerid"]), is_history);
             this.customer = new cls_customer(Convert.ToInt32(dr["customerid"]), is_history);
             this.member = new cls_member(Convert.ToInt32(dr["memberid"]), is_history);
-            this.payments = new cls_payment(wid);
+            this.payments = new cls_payment(SyncId);
 
             this.productlist = new cls_productlist();
-            this.productlist.set_productlist_by_wid(wid, is_history);
-
-            //--------------------------------------------------------
-            //get discounts
-
-            string query = @"SELECT * FROM `salesheaddiscounts` WHERE salesheadwid = " + wid + " order by id";
-            DataTable discs = mySQLFunc.getdb(query);
-            if (discs.Rows.Count > 0)
-            {
-                int customdiscounttype = cls_globalvariables.dchead_customdiscounttype;
-                int adjusttype = cls_globalvariables.dchead_adjusttype;
-                int discounttype = cls_globalvariables.dchead_discounttype;
-                int membertype = cls_globalvariables.dchead_membertype;
-                int pospromotype = cls_globalvariables.dchead_pospromotype;
-
-                foreach (DataRow d in discs.Rows)
-                {
-                    int discwid = Convert.ToInt32(d["discountwid"]);
-                    int type = Convert.ToInt32(d["type"]);
-                    int basis = Convert.ToInt32(d["basis"]);
-                    decimal value = Convert.ToDecimal(d["value"]);
-                    decimal amount = Convert.ToDecimal(d["amount"]);
-                    bool ismultiple = Convert.ToBoolean(d["ismultiple"]);
-
-                    if (type == adjusttype || type == discounttype)
-                    {
-                        this.productlist.getTransDisc().appendDiscount(type, value, amount, ismultiple, true);
-                    }
-                    else if (type == membertype)
-                    {
-                        this.productlist.getTransDisc().setMember(this.member, value, amount, true);
-                    }
-                    else if (type == pospromotype)
-                    {
-                        this.productlist.getTransDisc().setPosPromo(value, ismultiple, amount, true);
-                    }
-                    else if (type == customdiscounttype)
-                    {
-                        this.productlist.getTransDisc().activateDiscount(customdiscounttype, value, amount, true, discwid);
-                    }
-                    else
-                    {
-                        this.productlist.getTransDisc().activateDiscount(type, value, amount, ismultiple, true);
-                    }
-                }
-            }
-
-            //--------------------------------------------------------
+            this.productlist.set_productlist_by_wid(SyncId, is_history);
 
             if (Convert.ToInt32(dr["customerid"]) > 0 && this.productlist.get_totalamount() > this.payments.get_totalamount())
             {
@@ -225,25 +178,23 @@ namespace ETech.cls
 
         public void set_transaction_by_ornumber(long or_num)
         {
-            //get wid by or number
-            string sSQL = @"SELECT `wid` FROM `saleshead`
-                            WHERE `ornumber` = '" + or_num + @"'
-                            ORDER BY `id` DESC LIMIT 1";
+            //get SyncId by or number
+            string sSQL = @"SELECT `SyncId` FROM `saleshead` WHERE `ornumber` = '" + or_num + @"'";
             Console.WriteLine(sSQL);
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {
-                this.wid = 0;
+                this.syncid = 0;
                 return;
             }
 
-            int wid_d = Convert.ToInt32(dt.Rows[0]["wid"]);
+            int wid_d = Convert.ToInt32(dt.Rows[0]["SyncId"]);
             set_transaction_by_wid(wid_d, true);
         }
 
         public decimal get_memberpoint_earn()
         {
-            if (this.member.getwid() == 0)
+            if (this.member.getSyncId() == 0)
                 return 0;
             decimal totalamt = this.get_productlist().get_totalamount() - payments.get_points();
             bool isNegative = totalamt < 0;
@@ -308,10 +259,10 @@ namespace ETech.cls
             this.permissiongiver = permissiongiver_d;
         }
 
-        public int get_permissiongiver_wid()
+        public long get_permissiongiver_wid()
         {
-            int permissiongiverwid = this.get_permissiongiver().getwid();
-            int clerkwid = this.getclerk().getwid();
+            long permissiongiverwid = this.get_permissiongiver().getsyncid();
+            long clerkwid = this.getclerk().getsyncid();
             return (permissiongiverwid != 0) ? permissiongiverwid : clerkwid;
         }
 

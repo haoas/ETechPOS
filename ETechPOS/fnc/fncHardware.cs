@@ -108,7 +108,7 @@ namespace ETech.fnc
             {
                 string terminalno = cls_globalvariables.terminalno_v;
                 string branchid = cls_globalvariables.BranchCode;
-                string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`status`=0) AND `wid` = '" + tran.getWid() + @"'";
+                string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`status`=0) AND `SyncId` = '" + tran.getSyncId() + @"'";
                 isVoid = Convert.ToBoolean(mySQLFunc.getdb(checkIfVoidSql).Rows[0]["cnt"]);
             }
             RawPrinterHelper.OpenCashDrawer(true);
@@ -120,16 +120,16 @@ namespace ETech.fnc
 
         public static void void_transaction(cls_POSTransaction tran)
         {
-            int lastmodifiedby = tran.get_permissiongiver_wid();
+            long lastmodifiedby = tran.get_permissiongiver_wid();
 
-            mySQLFunc.setdb(@"UPDATE collectionhead SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status`=2 WHERE wid = ( SELECT `headid` FROM collectionsales where `saleswid` = '" + tran.getWid() + "') LIMIT 1");
-            mySQLFunc.setdb(@"UPDATE saleshead SET `VoidedOn`=NOW(),`VoidedBy`='" + lastmodifiedby + @"' `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status` = 2 WHERE `wid` = '" + tran.getWid() + "' LIMIT 1");
-            mySQLFunc.setdb_main(@"UPDATE memberpointtrans SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `show` = 0 WHERE `referencewid` = '" + tran.getWid() + "'");
+            mySQLFunc.setdb(@"UPDATE collectionhead SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status`=2 WHERE SyncId = ( SELECT `headid` FROM collectionsales where `saleswid` = '" + tran.getSyncId() + "') LIMIT 1");
+            mySQLFunc.setdb(@"UPDATE saleshead SET `VoidedOn`=NOW(),`VoidedBy`='" + lastmodifiedby + @"' `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status` = 2 WHERE `SyncId` = '" + tran.getSyncId() + "' LIMIT 1");
+            mySQLFunc.setdb_main(@"UPDATE memberpointtrans SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `show` = 0 WHERE `referencewid` = '" + tran.getSyncId() + "'");
 
 
             //void gift check
-            string collectionsales_headid = @"SELECT `headid` FROM collectionsales WHERE `saleswid` = " + tran.getWid();
-            string collectiondetail_wid = @"SELECT `wid` FROM collectiondetail WHERE `method` = 7 AND `headid` = (" + collectionsales_headid + ")";
+            string collectionsales_headid = @"SELECT `headid` FROM collectionsales WHERE `saleswid` = " + tran.getSyncId();
+            string collectiondetail_wid = @"SELECT `SyncId` FROM collectiondetail WHERE `method` = 7 AND `headid` = (" + collectionsales_headid + ")";
             List<string> collectiondetail_wids = new List<string>();
 
             DataTable dt = mySQLFunc.getdb(collectiondetail_wid);
@@ -138,14 +138,14 @@ namespace ETech.fnc
                 collectiondetail_wids.Add(row[0].ToString());
 
             mySQLClass mysqlclass = new mySQLClass();
-            mysqlclass.update_synctable("saleshead", tran.getWid());
+            mysqlclass.update_synctable("saleshead", tran.getSyncId());
         }
 
         public static void print_zread(DateTime datetime_d)
         {
             fncHardware.print_zread(datetime_d, 0);
         }
-        public static void print_zread(DateTime datetime_d, int userwid)
+        public static void print_zread(DateTime datetime_d, long userwid)
         {
             if (zreadFunc.getZreadDate(datetime_d).Date <
                 zreadFunc.getZreadDate(mySQLFunc.DateTimeNow()).Date)
@@ -164,7 +164,7 @@ namespace ETech.fnc
             }
         }
 
-        public static void print_zread(int printtype, DateTime datetime_d, DateTime datetimeTO_d, int userwid)
+        public static void print_zread(int printtype, DateTime datetime_d, DateTime datetimeTO_d, long userwid)
         {
             //printtype
             //0-zreading
@@ -244,7 +244,7 @@ namespace ETech.fnc
                             SUM(IF(`voidamount`>0,`voidamount`,0)) AS 'total_void_amount'
                         FROM
                         (
-                            SELECT H.`wid` AS 'shwid', H.`userid`, H.`show`, H.`status`,
+                            SELECT H.`SyncId` AS 'shwid', H.`userid`, H.`show`, H.`status`,
                                 IF( D.`vat` = 0, true, false) AS 'isnonvat', H.`iswholesale`,
                                 IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`senior` = 0 OR D.`senior` = 2,false,true) AS 'issenior',
                                 IF(`show` = 1 AND `status` = 1, D.`quantity`, 0) AS 'qty',
@@ -252,7 +252,7 @@ namespace ETech.fnc
                                 IF(`show` = 1 AND `status` = 1, D.`quantity` * (D.`oprice` - D.`price`),0) AS 'dcamount',
                                 IF(`show` = 1 AND `status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
                                 IF(`show` = 0 OR  `status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
-                            FROM `saleshead` AS H LEFT JOIN `salesdetail` AS D ON H.`wid` = D.`headid` 
+                            FROM `saleshead` AS H LEFT JOIN `salesdetail` AS D ON H.`SyncId` = D.`headid` 
                             WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno +
                             zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetimeTO_d) + @"
                         ) A
@@ -269,7 +269,7 @@ namespace ETech.fnc
                                 SUM(IF(D.`method` = 8,D.`amount`,0)) AS 'mempoints',
                                 SUM(IF(D.`method` >= 9,D.`amount`,0)) AS 'othertender'
                         FROM `collectionhead` AS H, `collectiondetail` AS D, `collectionsales` AS S
-                        WHERE H.`wid` = D.`headid` AND H.`wid` = S.`headid` AND H.`show` = 1 " +
+                        WHERE H.`SyncId` = D.`headid` AND H.`SyncId` = S.`headid` AND H.`show` = 1 " +
                             zreadFunc.GetSQLDateRange("H.`collectiondate`", datetime_d, datetimeTO_d) + @"
                         GROUP BY S.`saleswid`
                     ) AS C ON C.`saleswid` = S.`shwid` 
@@ -279,7 +279,7 @@ namespace ETech.fnc
                             SUM(IF( D.`method` = 5 AND CP.`cardsettingwid` = '4', D.`amount`,0)) AS `visacreditcard`,                    
                             SUM(IF( D.`method` = 5 AND CP.`cardsettingwid` = '5', D.`amount`,0)) AS `mccreditcard`	                    
 		                    FROM `collectionhead` AS H, `collectiondetail` AS D, `collectionsales` AS S, `poscardpayment` as CP
-		                    WHERE CP.`collectiondetailid`= D.`wid` AND H.`wid` = D.`headid` AND H.`wid` = S.`headid` AND H.`show` = 1 " +
+		                    WHERE CP.`collectiondetailid`= D.`SyncId` AND H.`SyncId` = D.`headid` AND H.`SyncId` = S.`headid` AND H.`show` = 1 " +
                             zreadFunc.GetSQLDateRange("H.`collectiondate`", datetime_d, datetimeTO_d) + @"
 		                    GROUP BY S.`saleswid`
 	                    ) AS C2 ON C2.`saleswid` = S.`shwid` 
@@ -338,7 +338,7 @@ namespace ETech.fnc
 		                        Select C.`salesheadwid`,
 		                        SUM(D.`quantity`*D.`price`) as 'totalamount'
 		                        FROM reprintcount as C, saleshead as H, salesdetail as D
-		                        WHERE C.`salesheadwid` = H.`wid` AND C.`terminalnocreate` = " + terminalno + @" AND H.`wid` = D.`headid` " +
+		                        WHERE C.`salesheadwid` = H.`SyncId` AND C.`terminalnocreate` = " + terminalno + @" AND H.`SyncId` = D.`headid` " +
                                 zreadFunc.GetSQLDateRange("`datecreate`", datetime_d, datetimeTO_d) + @"
 		                        GROUP BY C.`id`, C.`salesheadwid`
 	                        )A
@@ -365,10 +365,10 @@ namespace ETech.fnc
 	                `saleshead` AS sh
                 LEFT JOIN
 	                `salesdetail` AS sd
-	                ON sd.`headid` = sh.`wid`
+	                ON sd.`headid` = sh.`SyncId`
                 LEFT JOIN
 	                salesdetaildiscounts AS sdd
-	                ON sdd.`salesdetailwid` = sd.`wid`
+	                ON sdd.`salesdetailwid` = sd.`SyncId`
                 WHERE
 	                sh.`show` = 1 and sh.`status` = 1 and sdd.`type` = 2
                     and `date` between '" + datetime_d.ToString("yyyy-MM-dd") + "' and '" + datetime_d.ToString("yyyy-MM-dd") + " 23:59:59';";
@@ -411,7 +411,7 @@ namespace ETech.fnc
             decimal cur_total = Convert.ToDecimal(mySQLFunc.getdb(@"SELECT 
                                         COALESCE(SUM(D.`quantity` * D.`price`),0) AS 'total_amount'
                                     FROM `saleshead` AS H, `salesdetail` AS D
-                                    WHERE H.`wid` = D.`headid` AND H.`show` = 1 AND H.`status` = 1
+                                    WHERE H.`SyncId` = D.`headid` AND H.`show` = 1 AND H.`status` = 1
 	                                    AND H.`terminalno` = " + terminalno + @" AND H.`branchid` = " + sBranchid +
                                         zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetimeTO_d)).Rows[0]["total_amount"]);
 
@@ -469,7 +469,7 @@ namespace ETech.fnc
                                 FROM  `collectionhead` as H, 
 	                                  `collectiondetail` as D,
 	                                  `paymentmethod` as P
-                                WHERE H.`wid`=D.`headid` AND P.`wid`=D.`method` 
+                                WHERE H.`SyncId`=D.`headid` AND P.`SyncId`=D.`method` 
 	                                AND H.`show`=1 AND H.`status`=1 AND H.`branchid`=" + cls_globalvariables.BranchCode
                                    + zreadFunc.GetSQLDateRange("H.`collectiondate`", datetime_d, datetimeTO_d) + @"
 	                                AND D.`method` >= 100
@@ -526,7 +526,7 @@ namespace ETech.fnc
 
             string cashieracctcond = "";
             if (printtype == 2 && cls_globalvariables.CashierAcct_wid != "")
-                cashieracctcond = " WHERE U.`wid` = " + cls_globalvariables.CashierAcct_wid + @" ";
+                cashieracctcond = " WHERE U.`SyncId` = " + cls_globalvariables.CashierAcct_wid + @" ";
 
             string sBranchid = cls_globalvariables.BranchCode;
             string sBusinessName = cls_globalvariables.BusinessName_v;
@@ -621,7 +621,7 @@ namespace ETech.fnc
                         SUM(IF(`voidamount`>0,`voidamount`,0)) AS 'total_void_amount'
                     FROM
                     (
-                        SELECT H.`wid` AS 'shwid', H.`userid`, H.`show`, H.`status`,
+                        SELECT H.`SyncId` AS 'shwid', H.`userid`, H.`show`, H.`status`,
                             IF( D.`vat` = 0, true, false) AS 'isnonvat', H.`iswholesale`,
                             IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`senior` = 0 OR D.`senior` = 2,false,true) AS 'issenior',
                             IF(`show` = 1 AND `status` = 1, D.`quantity`, 0) AS 'qty',
@@ -629,7 +629,7 @@ namespace ETech.fnc
                             IF(`show` = 1 AND `status` = 1, D.`quantity` * (D.`oprice` - D.`price`),0) AS 'dcamount',
                             IF(`show` = 1 AND `status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
                             IF(`show` = 0 or `status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
-                        FROM `saleshead` AS H LEFT JOIN `salesdetail` AS D ON H.`wid` = D.`headid` 
+                        FROM `saleshead` AS H LEFT JOIN `salesdetail` AS D ON H.`SyncId` = D.`headid` 
                         WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno +
                         zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetimeTO_d) + @"
                     ) A
@@ -646,7 +646,7 @@ namespace ETech.fnc
                             SUM(IF(D.`method` = 8,D.`amount`,0)) AS 'mempoints',
                             SUM(IF(D.`method` >= 9,D.`amount`,0)) AS 'othertender'
                     FROM `collectionhead` AS H, `collectiondetail` AS D, `collectionsales` AS S
-                    WHERE H.`wid` = D.`headid` AND H.`wid` = S.`headid` AND H.`show` = 1" +
+                    WHERE H.`SyncId` = D.`headid` AND H.`SyncId` = S.`headid` AND H.`show` = 1" +
                     zreadFunc.GetSQLDateRange("H.`collectiondate`", datetime_d, datetimeTO_d) + @"
                     GROUP BY S.`saleswid`
                 ) AS C ON C.`saleswid` = S.`shwid`
@@ -656,11 +656,11 @@ namespace ETech.fnc
                     SUM(IF( D.`method` = 5 AND CP.`cardsettingwid` = '4', D.`amount`,0)) AS 'visacreditcard',                    
                     SUM(IF( D.`method` = 5 AND CP.`cardsettingwid` = '5', D.`amount`,0)) AS 'mccreditcard'
                     FROM `collectionhead` AS H, `collectiondetail` AS D, `collectionsales` AS S, `poscardpayment` as CP
-                    WHERE CP.`collectiondetailid`= D.`wid` AND H.`wid` = D.`headid` AND H.`wid` = S.`headid` AND H.`show` = 1 " +
+                    WHERE CP.`collectiondetailid`= D.`SyncId` AND H.`SyncId` = D.`headid` AND H.`SyncId` = S.`headid` AND H.`show` = 1 " +
                     zreadFunc.GetSQLDateRange("H.`collectiondate`", datetime_d, datetimeTO_d) + @"
                     GROUP BY S.`saleswid`
                 ) AS C2 ON C2.`saleswid` = S.`shwid` 
-                LEFT JOIN `user` AS U ON U.`wid` = S.`userid` 
+                LEFT JOIN `user` AS U ON U.`SyncId` = S.`userid` 
                 " + cashieracctcond + @"
                 GROUP BY S.`userid`";
             DataTable dt_usersalessummary = mySQLFunc.getdb(SQLusersalessummary);
@@ -957,7 +957,7 @@ namespace ETech.fnc
                             SUM(IF(`voidamount`>0,`voidamount`,0)) AS 'total_void_amount'
                         FROM
                         (
-                            SELECT H.`wid` AS 'shwid', H.`userid`, H.`show`, H.`status`,
+                            SELECT H.`SyncId` AS 'shwid', H.`userid`, H.`show`, H.`status`,
                                 IF( D.`vat` = 0, true, false) AS 'isnonvat', H.`iswholesale`,
                                 IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`senior` = 0 OR D.`senior` = 2,false,true) AS 'issenior',
                                 IF(`status` = 1, D.`quantity`, 0) AS 'qty',
@@ -966,7 +966,7 @@ namespace ETech.fnc
                                 IF(`status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
                                 IF(status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
                             FROM `saleshead` AS H 
-                            LEFT JOIN `salesdetail` AS D ON H.`wid` = D.`headid` 
+                            LEFT JOIN `salesdetail` AS D ON H.`SyncId` = D.`headid` 
                             WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno + @"
                                 AND H.`date` >= '" + sdate + @" 00:00:00'
                                 AND H.`date` <= '" + sdate + @" 23:59:59'
@@ -985,7 +985,7 @@ namespace ETech.fnc
                         FROM `collectionhead` AS H, 
                             `collectiondetail` AS D, 
                             `collectionsales` AS S
-                        WHERE H.`wid` = D.`headid` AND H.`wid` = S.`headid` AND H.`show` = 1 
+                        WHERE H.`SyncId` = D.`headid` AND H.`SyncId` = S.`headid` AND H.`show` = 1 
                             AND H.`collectiondate` >= '" + sdate + @" 00:00:00'
                             AND H.`collectiondate` <= '" + sdate + @" 23:59:59'
                         GROUP BY S.`saleswid`
@@ -1050,7 +1050,7 @@ namespace ETech.fnc
                 string old_grand_sql = @"SELECT 
                                         COALESCE(SUM(D.`quantity` * D.`price`),0) AS 'total_amount'
                                     FROM `saleshead` AS H, `salesdetail` AS D
-                                    WHERE H.`wid` = D.`headid` AND H.`show` = 1 AND H.`status` = 1
+                                    WHERE H.`SyncId` = D.`headid` AND H.`show` = 1 AND H.`status` = 1
 	                                    AND H.`terminalno` = " + terminalno + @" AND H.`branchid` = " + sBranchid + @"
 	                                    AND H.`date` > '2013-01-15 00:00:00' 
 	                                    AND H.`date` < '" + this_date + @" 00:00:00'";
@@ -1279,10 +1279,10 @@ namespace ETech.fnc
 	                `saleshead` AS sh
                 LEFT JOIN
 	                `salesdetail` AS sd
-	                ON sd.`headid` = sh.`wid`
+	                ON sd.`headid` = sh.`SyncId`
                 LEFT JOIN
 	                salesdetaildiscounts AS sdd
-	                ON sdd.`salesdetailwid` = sd.`wid`
+	                ON sdd.`salesdetailwid` = sd.`SyncId`
                 WHERE
 	                sh.`show` = 1 and sh.`status` = 1 and sdd.`type` = 2
                     and `date` between '" + datetime_d.ToString("yyyy-MM-dd") + "' and '" + datetime_d.ToString("yyyy-MM-dd") + " 23:59:59';";
@@ -1419,10 +1419,10 @@ namespace ETech.fnc
             string salestime = salesdatetime.ToString("HH:mm:ss");
 
             string cashier = tran.getclerk().getfullname();
-            string cashierid = tran.getclerk().getwid().ToString();
+            string cashierid = tran.getclerk().getsyncid().ToString();
             string cashiercode = tran.getclerk().getusercode().ToString();
             string checker = tran.getchecker().getfullname();
-            string checkerid = tran.getchecker().getwid().ToString();
+            string checkerid = tran.getchecker().getsyncid().ToString();
             string checkercode = tran.getchecker().getusercode().ToString();
             string customername = tran.getcustomer().getfullname();
             string customercode = tran.getcustomer().getCode().ToString();
@@ -1504,7 +1504,7 @@ namespace ETech.fnc
             foreach (cls_product prod in tran.get_productlist().get_productlist())
             {
                 string proddesc = prod.getProductName();
-                if ((prod.getWid() != 1) && (prod.getWid() != 2))
+                if ((prod.getSyncId() != 1) && (prod.getSyncId() != 2))
                     proddesc += " @P" + prod.getPrice().ToString("N2") + "ea\n";
                 if ((prod.getPrice() != prod.getOrigPrice()) && (prod.getOrigPrice() != 0)
                     && (printformat != 57) && cls_globalvariables.DiscountDetails_v == 1)
@@ -1861,7 +1861,7 @@ namespace ETech.fnc
             List<Font> font_voidprint = fncHardware.create_font_list(new int[] { 4 });
             nY = DrawStringDataTable(g, dt_addedprints, font_voidprint, rect_payment, fncHardware.brush_Black, sf_addedprints);
 
-            if ((tran.getmember().getwid() != 0 || tran.getmember().MemberButOffline) && !isreprint && !isvoid)
+            if ((tran.getmember().getSyncId() != 0 || tran.getmember().MemberButOffline) && !isreprint && !isvoid)
             {
                 //-----------line-------------
                 nY += 5; g.DrawLine(new Pen(fncHardware.brush_Black), nX, nY, maxwidth * cls_globalvariables.previewmul, nY); nY += 5;
@@ -1953,7 +1953,7 @@ namespace ETech.fnc
             foreach (cls_product prod in tran.get_productlist().get_productlist())
             {
                 string proddesc = prod.getProductName();
-                if ((prod.getWid() != 1) && (prod.getWid() != 2))
+                if ((prod.getSyncId() != 1) && (prod.getSyncId() != 2))
                     proddesc += " @P" + prod.getPrice().ToString("N2") + "ea";
                 tempDataTable.Rows.Add(prod.getQty().ToString("G29"), "", proddesc, prod.getAmount().ToString("N2"));
                 if ((prod.getPrice() != prod.getOrigPrice()) && (prod.getOrigPrice() != 0)
@@ -2144,7 +2144,7 @@ namespace ETech.fnc
 
             // Customer/Member/Senior Info
             printer.WriteRepeatingCharacterLine('=');
-            if (tran.getmember().getwid() != 0)
+            if (tran.getmember().getSyncId() != 0)
                 printer.WriteLines("MEMBER INFORMATION");
             else if (tran.getsenior().get_fullname() != "")
                 printer.WriteLines("SENIOR INFORMATION");
@@ -2153,7 +2153,7 @@ namespace ETech.fnc
             else
                 printer.WriteLines("CUSTOMER INFORMATION");
 
-            if (tran.getmember().getwid() != 0)
+            if (tran.getmember().getSyncId() != 0)
                 printer.WriteLines("Name: " + tran.getmember().getfullname(), StringAlignment.Near);
             else if (tran.getsenior().get_fullname() != "")
                 printer.WriteLines("Name: " + tran.getsenior().get_fullname(), StringAlignment.Near);
@@ -2162,11 +2162,11 @@ namespace ETech.fnc
             else
                 printer.WriteLines("Name: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 6));
 
-            if (tran.getmember().getwid() != 0)
+            if (tran.getmember().getSyncId() != 0)
                 printer.WriteLines("Card#: " + tran.getmember().getcardid(), StringAlignment.Near);
             else if (tran.getsenior().get_fullname() != "")
                 printer.WriteLines("ID#: " + tran.getsenior().get_idnumber(), StringAlignment.Near);
-            if (tran.getmember().getwid() != 0)
+            if (tran.getmember().getSyncId() != 0)
                 printer.WriteLines("Address: " + tran.getmember().getaddress(), StringAlignment.Near);
             else
                 printer.WriteLines("Address: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 9));
@@ -2175,7 +2175,7 @@ namespace ETech.fnc
             //printer.Write("\n\r\n\r\n\rSIGNATURE: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 11));
 
             // Member Points (Only appears on original OR)
-            if (tran.getmember().getwid() != 0 && !tran.getmember().MemberButOffline && !isvoid && !isreprint)
+            if (tran.getmember().getSyncId() != 0 && !tran.getmember().MemberButOffline && !isvoid && !isreprint)
             {
                 tempDataTable = new DataTable();
                 tempDataTable.Columns.Add();
@@ -2508,7 +2508,7 @@ namespace ETech.fnc
             if (cls_globalvariables.maximum_cash_collection_v == 0)
                 return false;
             string sql = @"SELECT SUM(D.amount) FROM collectionhead AS H
-                    LEFT JOIN collectiondetail AS D ON H.wid = D.headid
+                    LEFT JOIN collectiondetail AS D ON H.syncid = D.headid
                     WHERE DATE_FORMAT(H.`datecreated`, '%Y-%m-%d') = DATE(NOW()) AND
                     D.`method` = 1 AND H.`status` = 1 AND H.`show` = 1;";
             DataTable dt = mySQLFunc.getdb(sql);
@@ -2522,14 +2522,14 @@ namespace ETech.fnc
                 return false;
         }
 
-        public static void print_pickupcash(DateTime datetime_d, int userwid)
+        public static void print_pickupcash(DateTime datetime_d, long userwid)
         {
             PrintDocument pd = new PrintDocument();
             pd.PrintPage += (sender, e) => { printpage_pickupcash(sender, e, null, datetime_d, userwid); };
             start_print(pd);
         }
 
-        private static Graphics printpage_pickupcash(object sender, PrintPageEventArgs e, Bitmap bmp, DateTime datetime_d, int userwid)
+        private static Graphics printpage_pickupcash(object sender, PrintPageEventArgs e, Bitmap bmp, DateTime datetime_d, long userwid)
         {
             string sBranchid = cls_globalvariables.BranchCode;
             string sBusinessName = cls_globalvariables.BusinessName_v;

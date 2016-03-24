@@ -8,7 +8,7 @@ namespace ETech.cls
 {
     public class cls_discount
     {
-        private int wid;
+        private long syncid;
         private int type;
         private int basis;
         private decimal value;
@@ -19,7 +19,7 @@ namespace ETech.cls
 
         public cls_discount()
         {
-            this.wid = 0;
+            this.syncid = 0;
             this.type = 0;
             this.basis = 0;
             this.value = 0;
@@ -28,8 +28,8 @@ namespace ETech.cls
             this.discounted_amount = 0;
         }
         
-        public cls_discount(int wid_val, int type_val, int basis_val, decimal value_val, bool ismultiple_val, bool status_val){
-            this.wid = wid_val;
+        public cls_discount(long syncid_val, int type_val, int basis_val, decimal value_val, bool ismultiple_val, bool status_val){
+            this.syncid = syncid_val;
             this.type = type_val;
             this.basis = basis_val;
             this.value = value_val;
@@ -39,7 +39,7 @@ namespace ETech.cls
         }
         public cls_discount(string discount_name_val, int wid_val, int type_val, int basis_val, decimal value_val, bool ismultiple_val, bool status_val)
         {
-            this.wid = wid_val;
+            this.syncid = wid_val;
             this.type = type_val;
             this.basis = basis_val;
             this.value = value_val;
@@ -49,7 +49,7 @@ namespace ETech.cls
             this.discount_name = discount_name_val;
         }
 
-        public void set_wid(int val){ this.wid = val; }
+        public void set_wid(int val){ this.syncid = val; }
         public void set_type(int val){ this.type = val; }
         public void set_basis(int val){ this.basis = val; }
         public void set_value(decimal val){ this.value = val; }
@@ -59,7 +59,7 @@ namespace ETech.cls
         public void add_discounted_amount(decimal val) { this.discounted_amount += val; }
         public void set_name(string val) { this.discount_name = val; }
 
-        public int get_wid(){ return this.wid; }
+        public long get_SyncId(){ return this.syncid; }
         public int get_type(){ return this.type; }
         public int get_basis(){ return this.basis; }
         public decimal get_value()

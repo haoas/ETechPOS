@@ -68,7 +68,7 @@ namespace ETech
             };
             loadForm.ShowDialog();
 
-            if (member_temp.getwid() == 0)
+            if (member_temp.getSyncId() == 0)
             {
                 fncFilter.alert(cls_globalvariables.warning_member_notregistered);
                 ClearControlsData();
@@ -129,7 +129,7 @@ namespace ETech
                 return;
             }
             ClearControlsData();
-            if (member.getwid() != 0)
+            if (member.getSyncId() != 0)
             {
                 this.txtCardID.Text = this.member.getcardid();
                 this.lblName.Text = this.member.getfullname() + "\n" + this.member.getmobile() + "\n" + this.member.getbirhtdate();

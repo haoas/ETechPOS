@@ -105,7 +105,7 @@ namespace ETech
             loginmain.cashier = this.cur_cashier;
             loginmain.ShowDialog();
 
-            if (loginmain.cashier.getwid() == 0)
+            if (loginmain.cashier.getsyncid() == 0)
             {
                 isLoadSuccessful = false;
                 return;
@@ -115,18 +115,17 @@ namespace ETech
 
             this.cur_checker = new cls_user();
 
-            if (cur_cashier.getwid() != 0)
+            if (cur_cashier.getsyncid() != 0)
             {
 
                 //Does not continue if Database Version is lower
-                if (!cls_globalfunc.CheckDatabaseVersion() && cur_cashier.getwid() != 1)
+                if (!cls_globalfunc.CheckDatabaseVersion() && cur_cashier.getsyncid() != 1)
                 {
                     fncFilter.alert("Incompatible Database Version!");
                     isLoadSuccessful = false;
                     return;
                 }
 
-                cls_globalfunc.database_validator();
                 cls_globalfunc.DeleteUnusedSalesHead();
 
                 //Does not continue if Servertime is not equal to POStime
@@ -253,7 +252,7 @@ namespace ETech
                 if (this.txtBarcode.Text.Trim() == "") return;
 
                 cls_product searchedproduct = new cls_product(this.txtBarcode.Text.Trim());
-                if (searchedproduct.getWid() == 0)
+                if (searchedproduct.getSyncId() == 0)
                 {
                     fncFilter.alert(cls_globalvariables.warning_product_notfound);
                     this.txtBarcode.SelectAll();
@@ -296,7 +295,7 @@ namespace ETech
                 return;
             }
 
-            if (cur_cashier.getwid() == 0)
+            if (cur_cashier.getsyncid() == 0)
                 this.Close();
 
             lblMode_d.BorderStyle = BorderStyle.None;
@@ -406,7 +405,7 @@ namespace ETech
                     if (productwid != 0)
                     {
                         cls_product searchedproduct = new cls_product(productwid, false, false);
-                        if (searchedproduct.getWid() == 0)
+                        if (searchedproduct.getSyncId() == 0)
                         {
                             fncFilter.alert(cls_globalvariables.warning_product_notfound);
                             this.txtBarcode.SelectAll();
@@ -519,12 +518,12 @@ namespace ETech
                         row_index = this.ctrlproductgridview.get_currentrow().Index;
                         cls_product prod = tran.get_productlist().get_product(row_index);
                         string productname = prod.getProductName();
-                        if ((prod.getWid() == 1) || (prod.getWid() == 2)) { isdetected = true; break; }
+                        if ((prod.getSyncId() == 1) || (prod.getSyncId() == 2)) { isdetected = true; break; }
                         decimal cur_prodqty = prod.getQty();
                         string cur_prodmemo = prod.getMemo();
 
                         frmProductQuantity frmprodqty = new frmProductQuantity();
-                        frmprodqty.productid = prod.getWid();
+                        frmprodqty.productid = prod.getSyncId();
                         frmprodqty.productname = productname;
                         frmprodqty.new_qty = cur_prodqty;
                         frmprodqty.delete_permission = permcheck_deleteproduct;
@@ -560,7 +559,7 @@ namespace ETech
                             cashform.cash_bills.save_cashdenomination(this.cur_cashier);
 
                             LOGS.LOG_PRINT("[F5] Print Pickup Cash");
-                            fncHardware.print_pickupcash(DateTime.Now, cur_cashier.getwid());
+                            fncHardware.print_pickupcash(DateTime.Now, cur_cashier.getsyncid());
                         }
                     }
                     else if (FPage == 2)
@@ -624,7 +623,7 @@ namespace ETech
                 case Keys.F3:
                     if (FPage == 0)
                     {
-                        int prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getWid();
+                        long prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getSyncId();
                         if (prodWid == 1 || prodWid == 2)
                         {
                             fncFilter.alert(@"Not allowed!");
@@ -711,7 +710,7 @@ namespace ETech
                         memberform.member = tran.getmember().ShallowCopy();
                         memberform.ShowDialog();
 
-                        if (memberform.member.getwid() != 0)
+                        if (memberform.member.getSyncId() != 0)
                             LOGS.LOG_PRINT("[F8] Set Member: " + memberform.member.getfullname() + ", "
                                 + memberform.member.get_memberrate_name());
                         else
@@ -734,7 +733,7 @@ namespace ETech
                     {
                         tran = this.get_curtrans();
 
-                        int prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getWid();
+                        long prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getSyncId();
                         if (prodWid == 1 || prodWid == 2)
                         {
                             fncFilter.alert(@"Not allowed!");
@@ -798,9 +797,9 @@ namespace ETech
 
                             if (frmprodadjust.iscomplete)
                             {
-                                if (frmprodadjust.disc.get_wid() != 0)
+                                if (frmprodadjust.disc.get_SyncId() != 0)
                                 {
-                                    prod_discount.getProductDiscountList().activateDiscount_using_wid(frmprodadjust.disc.get_wid(), 1 - cur_proddiscount, true);
+                                    prod_discount.getProductDiscountList().activateDiscount_using_wid(frmprodadjust.disc.get_SyncId(), 1 - cur_proddiscount, true);
                                     refresh_productlist_data(tran);
                                     tran.get_productlist().sync_product_row(row_index_discount);
                                     LOGS.LOG_PRINT("[F11]Product Custom Discount (" + frmprodadjust.disc.get_name() + "(" + frmprodadjust.disc.get_value() + "%)): " +
@@ -893,9 +892,9 @@ namespace ETech
                                 break;
 
                             cls_discountlist transdisc = tran.get_productlist().getTransDisc();
-                            if (transAdjust.disc.get_wid() != 0)
+                            if (transAdjust.disc.get_SyncId() != 0)
                             {
-                                transdisc.activateDiscount_using_wid(transAdjust.disc.get_wid(), 1 - transAdjust.new_discount, true);
+                                transdisc.activateDiscount_using_wid(transAdjust.disc.get_SyncId(), 1 - transAdjust.new_discount, true);
                                 refresh_productlist_data(tran);
                                 LOGS.LOG_PRINT("[F12][F6]Transaction Custom Discount (" + transAdjust.disc.get_name() + " (" + (transAdjust.disc.get_value() * 100) + "%)): OR: "
                                     + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
@@ -1035,7 +1034,7 @@ namespace ETech
                                 if (tran.get_productlist().get_product(i).getQty() < 0)
                                 {
                                     frmSalesmemo salesmemo = new frmSalesmemo();
-                                    salesmemo.salesheadwid = tran.getWid();
+                                    salesmemo.salesheadwid = tran.getSyncId();
                                     salesmemo.ShowDialog();
                                     continue;
                                 }
@@ -1046,7 +1045,7 @@ namespace ETech
                         payment.paymentdata = tran.getpayments().DeepCopy();
                         payment.totalamtdue = tran.get_productlist().get_totalamount();
                         payment.totalpoints = tran.getmember().getPreviousPoints();
-                        payment.hasMember = tran.getmember().getwid() != 0;
+                        payment.hasMember = tran.getmember().getSyncId() != 0;
                         payment.ShowDialog();
 
                         if (payment.changeupdated)
@@ -1199,10 +1198,10 @@ namespace ETech
                             cls_POSTransaction temp_tran = new cls_POSTransaction();
                             temp_tran.set_transaction_by_ornumber(ORNumber);
 
-                            if (temp_tran.getWid() == 0)
+                            if (temp_tran.getSyncId() == 0)
                                 temp_tran.set_transaction_by_ornumber(ORNumber);
 
-                            if (temp_tran.getWid() == 0)
+                            if (temp_tran.getSyncId() == 0)
                             {
                                 fncFilter.alert(cls_globalvariables.warning_ornumber_invalid);
                                 return;
@@ -1220,7 +1219,7 @@ namespace ETech
                     if (FPage == 0)
                     {
                         frmSalesmemo salesnotes = new frmSalesmemo();
-                        salesnotes.salesheadwid = this.get_curtrans().getWid();
+                        salesnotes.salesheadwid = this.get_curtrans().getSyncId();
                         salesnotes.ShowDialog();
                         tran.setmemo(salesnotes.txtmemo);
                         tsslSalesMemo.Text = salesnotes.txtmemo;
@@ -1413,7 +1412,7 @@ namespace ETech
 	                `saleshead` AS SH,
                     `salesdetail` AS SD
                 WHERE
-                    SH.`wid` = SD.`headid`
+                    SH.`SyncId` = SD.`headid`
                     AND SH.`status` = 1
                     #AND SD.`` =
 	                AND SD.`description` LIKE '%" + orNumber + "%'";
@@ -1450,13 +1449,13 @@ namespace ETech
             //remove service charge
             for (int i = 0; i < tran.get_productlist().get_productlist().Count; i++)
             {
-                if (tran.get_productlist().get_product(i).getWid() == 1)
+                if (tran.get_productlist().get_product(i).getSyncId() == 1)
                     tran.get_productlist().remove_product(i);
             }
             //remove local tax
             for (int i = 0; i < tran.get_productlist().get_productlist().Count; i++)
             {
-                if (tran.get_productlist().get_product(i).getWid() == 2)
+                if (tran.get_productlist().get_product(i).getSyncId() == 2)
                     tran.get_productlist().remove_product(i);
             }
             tran.get_productlist().refresh_all_discounts();
@@ -1667,15 +1666,12 @@ namespace ETech
                 return;
 
             string SQLDelete = @"
-                DELETE FROM
-                    saleshead 
+                DELETE FROM `saleshead`
                 WHERE
                     `status`=0 AND
                     `branchid` = " + cls_globalvariables.BranchCode + @" AND
                     `terminalno` = " + cls_globalvariables.terminalno_v + @" AND 
-                    `wid` = '" + tran.getWid() + @"'
-                ORDER BY `id` DESC
-                LIMIT 1";
+                    `SyncId` = '" + tran.getSyncId() + @"' LIMIT 1";
             mySQLFunc.setdb(SQLDelete);
             LOGS.LOG_PRINT("DELETED1 in saleshead or = " + tran.getORnumber());
         }
@@ -1693,7 +1689,7 @@ namespace ETech
             }
             else
             {
-                fncHardware.print_zread(datefrom, cur_cashier.getwid());
+                fncHardware.print_zread(datefrom, cur_cashier.getsyncid());
             }
         }
 

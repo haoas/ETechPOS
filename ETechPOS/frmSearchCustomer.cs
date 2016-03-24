@@ -79,7 +79,7 @@ namespace ETech
             }
             string str_input = "%" + this.txtCustomer.Text.Trim() + "%";
 
-            string SQL = @"SELECT `wid`, `customercode` AS 'code', `fullname`, `ownername`
+            string SQL = @"SELECT `SyncId`, `customercode` AS 'code', `fullname`, `ownername`
                             FROM `customer`
                             WHERE `show` = 1 AND `status` = 1 AND 
 	                            CONCAT(`customercode`, `fullname`, `chinesename`, `ownername`) LIKE @str_param";
@@ -115,12 +115,12 @@ namespace ETech
         {
             if (dgvCustomer.SelectedRows.Count <= 0)
                 return;
-            int wid = Convert.ToInt32(dgvCustomer.SelectedRows[0].Cells["colWid"].Value);
+            long SyncId = Convert.ToInt32(dgvCustomer.SelectedRows[0].Cells["colWid"].Value);
 
             frmLoad loadForm = new frmLoad("Loading Customer Data", "Loading Screen");
             loadForm.BackgroundWorker.DoWork += (sender, e1) =>
             {
-                this.customer = new cls_customer(wid);
+                this.customer = new cls_customer(SyncId);
             };
             loadForm.ShowDialog();
             this.Close();

@@ -15,7 +15,7 @@ namespace ETech
     public partial class frmSalesmemo : Form
     {
         public string txtmemo;
-        public Int32 salesheadwid;
+        public long salesheadwid;
 
         public frmSalesmemo()
         {
@@ -43,7 +43,7 @@ namespace ETech
             this.txtmemo = txtmemo;
 
             string sql = @"UPDATE saleshead SET memo='" + MySqlHelper.EscapeString(this.txtmemo)
-                + @"' WHERE wid=" + salesheadwid + @" LIMIT 1";
+                + @"' WHERE `SyncId`=" + salesheadwid + @" LIMIT 1";
             mySQLFunc.setdb(sql);
 
             this.Close();
@@ -52,7 +52,7 @@ namespace ETech
         private void frmRefundmemo_Load(object sender, EventArgs e)
         {
             string sSQL = @"SELECT `memo` FROM `saleshead` 
-                            WHERE `wid`= "+ salesheadwid+ @" LIMIT 1";
+                            WHERE `SyncId`= " + salesheadwid + @" LIMIT 1";
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {

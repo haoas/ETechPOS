@@ -11,7 +11,7 @@ namespace ETech.cls
         //attributes
         private string code;
         private string fullname;
-        private int wid;
+        private long syncid;
         private int pricingtype = 1;
         private decimal pricingrate = 0;
         private string memo;
@@ -21,7 +21,7 @@ namespace ETech.cls
         {
             this.code = "";
             this.fullname = "";
-            this.wid = 0;
+            this.syncid = 0;
             this.pricingtype = 1;
             this.pricingrate = 0;
             this.memo = "";
@@ -34,10 +34,10 @@ namespace ETech.cls
             init();
         }
 
-        public cls_customer(int wid_d)
+        public cls_customer(long syncid_d)
         {
             init();
-            setcls_customer_by_wid(wid_d);
+            setcls_customer_by_wid(syncid_d);
         }
 
         public cls_customer(int wid_d, bool is_history)
@@ -50,7 +50,7 @@ namespace ETech.cls
         {
             this.code = code_d;
             this.fullname = fullname_d;
-            this.wid = wid_d;
+            this.syncid = wid_d;
         }
 
         public string getCode() { return this.code; }
@@ -60,9 +60,9 @@ namespace ETech.cls
             return this.fullname;
         }
 
-        public int getwid()
+        public long getwid()
         {
-            return this.wid;
+            return this.syncid;
         }
 
         public int getPricingType()
@@ -85,16 +85,16 @@ namespace ETech.cls
             return itemPriceDictionary;
         }
 
-        public void setcls_customer_by_wid(int wid, bool is_history)
+        public void setcls_customer_by_wid(long SyncId, bool is_history)
         {
-            this.wid = wid;
+            this.syncid = SyncId;
             string sSQL =
             @"SELECT COALESCE(`customercode`,'') as customercode,
                      COALESCE(`fullname`,'') as fullname,
                      COALESCE(`pricingtype`,'1') as pricingtype ,
                      COALESCE(`pricingrate`,'0') as pricingrate ,
                      COALESCE(`memo`,'') as memo 
-            FROM `customer` WHERE `wid` = " + wid;
+            FROM `customer` WHERE `SyncId` = " + SyncId;
 
             if (!is_history)
             {
@@ -104,7 +104,7 @@ namespace ETech.cls
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {
-                this.wid = 0;
+                this.syncid = 0;
                 return;
             }
             DataRow dr = dt.Rows[0];
@@ -118,14 +118,14 @@ namespace ETech.cls
             if (pricingtype == 0)
             {
                 sSQL = @"
-                SELECT H.`wid`
+                SELECT H.`SyncId`
                      FROM `saleshead` AS H
                      WHERE H.`status` = 1
-                      AND H.`branchid` = " + cls_globalvariables.BranchCode + @" AND H.`customerid` = " + wid;
+                      AND H.`branchid` = " + cls_globalvariables.BranchCode + @" AND H.`customerid` = " + SyncId;
                 DataTable tempDataTable = mySQLFunc.getdb(sSQL);
                 string groupConcat = "";
                 foreach (DataRow row in tempDataTable.Rows)
-                    groupConcat += ", " + row["wid"].ToString();
+                    groupConcat += ", " + row["SyncId"].ToString();
 
                 if (groupConcat != "")
                 {
@@ -136,7 +136,7 @@ namespace ETech.cls
                         FROM 
                             salesdetail
                         WHERE `headid` IN( " + groupConcat.Substring(1) + @")
-                        ORDER BY `wid` DESC
+                        ORDER BY `SyncId` DESC
                     )A
                     GROUP BY `pwid`";
                     tempDataTable = mySQLFunc.getdb(sSQL);
@@ -152,9 +152,9 @@ namespace ETech.cls
             }
         }
 
-        public void setcls_customer_by_wid(int wid)
+        public void setcls_customer_by_wid(long SyncId)
         {
-            setcls_customer_by_wid(wid, false);
+            setcls_customer_by_wid(SyncId, false);
             
         }
     }

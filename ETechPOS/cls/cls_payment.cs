@@ -30,7 +30,7 @@ namespace ETech.cls
             this.memo = "";
         }
 
-        public cls_payment(int salesheadwid)
+        public cls_payment(long salesheadwid)
         {
             this.creditcard = new List<cls_cardinfo>();
             this.debitcard = new List<cls_cardinfo>();
@@ -44,12 +44,12 @@ namespace ETech.cls
             string sSQL = @"SELECT D.*,H.`memo` 
                     FROM `collectionhead` AS H, `collectionsales` AS S, 
                         `collectiondetail` AS D 
-                    WHERE H.`wid` = S.`headid` AND H.`wid` = D.`headid` 
+                    WHERE H.`SyncId` = S.`headid` AND H.`SyncId` = D.`headid` 
 	                   AND S.`saleswid` = " + salesheadwid;
             DataTable dt = mySQLFunc.getdb(sSQL);
             foreach (DataRow dr_d in dt.Rows)
             {
-                int dwid = Convert.ToInt32(dr_d["wid"]);
+                int dwid = Convert.ToInt32(dr_d["SyncId"]);
                 int method = Convert.ToInt32(dr_d["method"]);
                 decimal amt = Convert.ToDecimal(dr_d["amount"]);
                 this.memo = dt.Rows[0]["memo"].ToString();

@@ -67,8 +67,8 @@ namespace ETech.cls
                 return -1;
             for (int i = 0; i < list_product.Count; i++)
             {
-                if (list_product[i].getWid() == prod.getWid()
-                        && prod.getWid() != 0
+                if (list_product[i].getSyncId() == prod.getSyncId()
+                        && prod.getSyncId() != 0
                         && prod.getBarcode() != "-")
                 {
                     decimal qty = list_product[i].getQty() + prod.getQty();
@@ -119,7 +119,7 @@ namespace ETech.cls
         public int add_product_by_barcode(string barcode_d)
         {
             cls_product prod = new cls_product(barcode_d);
-            if (prod.getWid() == 0)
+            if (prod.getSyncId() == 0)
                 return -1;
 
             return this.add_product(prod);
@@ -187,7 +187,7 @@ namespace ETech.cls
 
             foreach (cls_product prod in list_product)
             {
-                Console.WriteLine("productwid " + prod.getWid() + "\nproductmode " + prod.getTransaction_Mode());
+                Console.WriteLine("productwid " + prod.getSyncId() + "\nproductmode " + prod.getTransaction_Mode());
                 if (mode.Equals(prod.getTransaction_Mode()))
                 {
                     sum += prod.getAmount();
@@ -401,9 +401,9 @@ namespace ETech.cls
             this.dtproducts.Rows.RemoveAt(row_index);
         }
 
-        public void set_productlist_by_wid(int wid_d, bool is_history)
+        public void set_productlist_by_wid(long syncid_d, bool is_history)
         {
-            string sSQL = "SELECT * FROM `saleshead` WHERE `wid` = " + wid_d;
+            string sSQL = "SELECT * FROM `saleshead` WHERE `SyncId` = " + syncid_d;
 
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
@@ -414,12 +414,12 @@ namespace ETech.cls
             this.iswholesale = (Convert.ToInt32(dr["iswholesale"]) == 1);
             this.issenior = (dr["seniorno"].ToString() != "");
 
-            sSQL = @"SELECT P.`product`, SD.`wid`,SD.`productid`, SD.`quantity`, SD.`oprice`, SD.`price` AS 'aprice', 
+            sSQL = @"SELECT P.`product`, SD.`SyncId`,SD.`productid`, SD.`quantity`, SD.`oprice`, SD.`price` AS 'aprice', 
 	                    SD.`discount1`, SD.`vat`, SD.`soldby` 
                     FROM `salesdetail` AS SD
                     LEFT JOIN `product` AS P
-                        ON P.`wid` = SD.`productid`
-                    WHERE SD.`headid` = " + wid_d + " ORDER BY SD.`id` ";
+                        ON P.`SyncId` = SD.`productid`
+                    WHERE SD.`headid` = " + syncid_d + " ORDER BY SD.`id` ";
             dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
                 return;
@@ -454,7 +454,7 @@ namespace ETech.cls
                     prod = new cls_product(pwid, false, true);
                 }
 
-                int tempWid = int.TryParse(dr_d["wid"].ToString(), out tempWid) ? tempWid : 0;
+                int tempWid = int.TryParse(dr_d["SyncId"].ToString(), out tempWid) ? tempWid : 0;
                 prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
                 prod.setOrigPrice(Convert.ToDecimal(dr_d["oprice"]));
                 prod.setQty(Convert.ToDecimal(dr_d["quantity"]));
@@ -498,45 +498,6 @@ namespace ETech.cls
                 }
                 else { }
 
-                //--------------------------------------------------------
-                //get discounts
-                //ROBI
-                string query = @"select * from `salesdetaildiscounts` where salesdetailwid = " + dr_d["wid"].ToString() + " order by id";
-                DataTable discs = mySQLFunc.getdb(query);
-                if (discs.Rows.Count > 0)
-                {
-                    int dcdetail_customdiscounttype = cls_globalvariables.dcdetail_customdiscounttype;
-                    int dcdetail_adjusttype = cls_globalvariables.dcdetail_adjusttype;
-                    int dcdetail_discounttype = cls_globalvariables.dcdetail_discounttype;
-                    int dcdetail_senior = cls_globalvariables.dcdetail_senior;
-                    int dcdetail_senior5 = cls_globalvariables.dcdetail_senior5;
-                    int dcdetail_nonvat = cls_globalvariables.dcdetail_nonvat;
-                    int dcdetail_promoqty = cls_globalvariables.dcdetail_promoqty;
-
-                    foreach (DataRow d in discs.Rows)
-                    {
-                        int discwid = Convert.ToInt32(d["discountwid"]);
-                        int type = Convert.ToInt32(d["type"]);
-                        int basis = Convert.ToInt32(d["basis"]);
-                        decimal value = Convert.ToDecimal(d["value"]);
-                        bool ismultiple = Convert.ToBoolean(d["ismultiple"]);
-
-                        if (type == dcdetail_adjusttype || type == dcdetail_discounttype)
-                        {
-                            prod.getProductDiscountList().appendDiscount(type, value, ismultiple);
-                        }
-                        else if (type == dcdetail_promoqty || type == dcdetail_nonvat || type == dcdetail_senior || type == dcdetail_senior5)
-                        {
-                            prod.getProductDiscountList().activateDiscount(type, value, ismultiple, true);
-                        }
-                        else if (type == dcdetail_customdiscounttype)
-                        {
-                            prod.getProductDiscountList().activateDiscount(dcdetail_customdiscounttype, value, true, discwid);
-                        }
-                        else { }
-                    }
-                }
-                //--------------------------------------------------------
                 prod.reprint_reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype);
                 this.list_product.Add(prod);
                 this.dtproducts.Rows.Add(dtproducts.NewRow());

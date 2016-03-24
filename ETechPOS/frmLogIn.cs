@@ -72,22 +72,13 @@ namespace ETech
 
             string code = dt.Rows[0]["usercode"].ToString();
             string fullname = dt.Rows[0]["fullname"].ToString();
-            string wid = dt.Rows[0]["wid"].ToString();
-
-            //if (Convert.ToInt32(wid) == this.cashier.getwid())
-            //{
-            //    fncFilter.alert(cls_globalvariables.warning_samecashierchecker);
-            //    txtUsername.Focus();
-            //    txtUsername.SelectAll();
-            //    return;
-            //}
-
+            string SyncId = dt.Rows[0]["SyncId"].ToString();
 
             string SQLpermissions = @"SELECT * FROM `userpermission` WHERE `userid` = @userwid";
             parameters = new List<string>();
             values = new List<string>();
             parameters.Add("@userwid");
-            values.Add(wid);
+            values.Add(SyncId);
             DataTable dtpermission = mySQLFunc.getdb(SQLpermissions, parameters, values);
             List<int> permissions = new List<int>();
             foreach (DataRow dr in dtpermission.Rows)
@@ -104,9 +95,9 @@ namespace ETech
             }
 
             if (user == "checker")
-                this.checker.setcls_user(code, fullname, permissions, Convert.ToInt32(wid));
+                this.checker.setcls_user(code, fullname, permissions, Convert.ToInt32(SyncId));
             if (user == "salesman")
-                this.salesman.setcls_user(code, fullname, permissions, Convert.ToInt32(wid));
+                this.salesman.setcls_user(code, fullname, permissions, Convert.ToInt32(SyncId));
 
             this.Close();
         }

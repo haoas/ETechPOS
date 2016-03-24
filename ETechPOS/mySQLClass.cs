@@ -236,7 +236,7 @@ namespace ETech
                             `sqlusername` AS `username`,
                             `sqlpassword` AS `password`
                            FROM `branch`
-                           WHERE `wid` = 10 LIMIT 1";
+                           WHERE `SyncId` = 10 LIMIT 1";
                 DataTable connectionTable = getdb(sql);
                 if (connectionTable != null && connectionTable.Rows.Count != 0)
                 {
@@ -266,7 +266,7 @@ namespace ETech
                             `sqlusername` AS `username`,
                             `sqlpassword` AS `password`
                            FROM `branch`
-                           WHERE `wid` = 10 LIMIT 1";
+                           WHERE `SyncId` = 10 LIMIT 1";
                 DataTable connectionTable = getdb(sql);
                 if (connectionTable != null && connectionTable.Rows.Count != 0)
                 {
@@ -294,13 +294,13 @@ namespace ETech
 	                            (
 		                            SELECT S.`saleswid`, SUM(D.`amount`) AS 'amount' 
 		                            FROM `collectionhead` AS H, `collectiondetail` AS D, `collectionsales` AS S
-		                            WHERE H.`wid` = D.`headid` AND H.`wid` = S.`headid` 
+		                            WHERE H.`SyncId` = D.`headid` AND H.`SyncId` = S.`headid` 
 			                            AND H.`show` = 1 AND H.`status` = 1
 			                            AND D.`method` = 1
 			                            AND CAST(H.`collectiondate` AS DATE) = CAST(NOW() AS DATE)
 		                            GROUP BY S.`saleswid`
 	                            ) AS C
-	                            WHERE C.`saleswid` = H.`wid` AND 
+	                            WHERE C.`saleswid` = H.`SyncId` AND 
 		                            H.`branchid` = " + branchid + @" AND
 		                            `terminalno` = " + terminalno + @" AND 
 		                            CAST(`date` AS DATE) = CAST(NOW() AS DATE)
@@ -319,7 +319,7 @@ namespace ETech
                                 WHERE `terminalno` = " + terminalno + @"
                                     AND `branchid` = " + branchid;
             DataTable dt = getdb(sSQLtransno);
-            
+
             return 1 + Convert.ToInt64(dt.Rows[0]["ornumber"]);
         }
 
@@ -329,11 +329,11 @@ namespace ETech
             string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
 
-            int userwid = trans.getclerk().getwid();
+            long userwid = trans.getclerk().getsyncid();
 
             long next_ornumber = get_nextornumber();
 
-            int next_wid = get_next_wid_withlock("saleshead");
+            long next_SyncId = GetAndInsertNextSyncId("saleshead");
             string sSQL = @"UPDATE `saleshead` SET
                                 `branchid` = '" + branchid + @"', 
                                 `date` = '" + datetime_d + @"', 
@@ -343,41 +343,41 @@ namespace ETech
                                 `datecreated` = NOW(),  
                                 `ornumber` = '" + next_ornumber + @"',  
                                 `terminalno` = '" + terminalno + @"'
-                            WHERE `wid` = '" + next_wid + @"'";
+                            WHERE `SyncId` = '" + next_SyncId + @"'";
             setdb(sSQL);
 
             trans.setORnumber(next_ornumber);
-            trans.setWid(next_wid);
+            trans.setSyncId(next_SyncId);
             return 0;
         }
 
-        public void update_synctable(string table_name, int wid)
+        public void update_synctable(string table_name, long SyncId)
         {
             if (cls_globalvariables.BranchCode == "10")
                 return;
 
             //delete old data if exists
-            string sSQL = "DELETE FROM `sync` WHERE `tablename` = '" + table_name + "' AND `wid` = " + wid;
+            string sSQL = "DELETE FROM `sync` WHERE `tablename` = '" + table_name + "' AND `SyncId` = " + SyncId;
             setdb(sSQL);
 
             string sSQLInsert = @"INSERT INTO `sync` 
-						    (`tablename`, `wid`, `branchid`) 
-						    VALUES ('" + table_name + "', " + wid + ", 10)";
+						    (`tablename`, `SyncId`, `branchid`) 
+						    VALUES ('" + table_name + "', " + SyncId + ", 10)";
             setdb(sSQLInsert);
         }
 
-        public List<string> update_synctable_liststring(string table_name, string wid)
+        public List<string> update_synctable_liststring(string table_name, string syncid)
         {
             List<string> tempStringList = new List<string>();
             if (cls_globalvariables.BranchCode == "10")
                 return tempStringList;
             //delete old data if exists
-            string sSQL = "DELETE FROM `sync` WHERE `tablename` = '" + table_name + "' AND `wid` = " + wid;
+            string sSQL = "DELETE FROM `sync` WHERE `tablename` = '" + table_name + "' AND `SyncId` = " + syncid;
             tempStringList.Add(sSQL);
 
             string sSQLInsert = @"INSERT INTO `sync` 
-						    (`tablename`, `wid`, `branchid`) 
-						    VALUES ('" + table_name + "', " + wid + ", 10)";
+						    (`tablename`, `SyncId`, `branchid`) 
+						    VALUES ('" + table_name + "', " + syncid + ", 10)";
             tempStringList.Add(sSQLInsert);
             return tempStringList;
         }
@@ -386,15 +386,15 @@ namespace ETech
         {
             string datetime_d = trans.getdatetime().ToString("yyyy-MM-dd HH:mm:ss");
             string branchid = cls_globalvariables.BranchCode;
-            int salesheadwid = trans.getWid();
-            int customerid = trans.getcustomer().getwid();
+            long salesheadwid = trans.getSyncId();
+            long customerid = trans.getcustomer().getwid();
             string customername = trans.getcustomer().getfullname();
             decimal adjust = trans.getadjust();
             string seniorno = trans.getsenior().get_idnumber();
             string seniorname = trans.getsenior().get_fullname();
-            int userid = trans.getclerk().getwid();
-            int memberid = trans.getmember().getwid();
-            int checkerid = trans.getchecker().getwid();
+            long userid = trans.getclerk().getsyncid();
+            long memberid = trans.getmember().getSyncId();
+            long checkerid = trans.getchecker().getsyncid();
             decimal totalamt = trans.get_productlist().get_totalamount();
             bool iswholesale = trans.get_productlist().get_iswholesale();
             bool isnonvat = trans.get_productlist().get_isnonvat();
@@ -414,65 +414,65 @@ namespace ETech
             List<cls_CustomPaymentsInfo> custompaymentsinfo = trans.getpayments().get_custompayments();
             string sSQLcd = "";
             List<string> tempStringList = new List<string>();
-
-            //MEMBER (Priority since it will be run on main branch)
-            if (trans.getmember().getwid() != 0)
-            {
-                List<string> memberTransactionListString = new List<string>();
-                if (mem_points != 0)
-                {
-                    tempStringList = get_next_wid_withlock_main_liststring("memberpointtrans");
-                    foreach (string str in tempStringList)
-                        memberTransactionListString.Add(str);
-                    string sSQLmemberpoint_d = @"UPDATE `memberpointtrans` SET
-                                            `memberid` = " + trans.getmember().getwid() + @",
-                                            `branchid` = " + branchid + @",
-                                            `type` = 3,
-                                            `referencewid` = " + salesheadwid.ToString() + @",
-                                            `amount` = " + mem_points + @",
-                                            `status` = 1,
-                                            `date` = NOW(),
-                                            `status` = 1,
-                                            `datecreated` = NOW(),
-                                            `lastmodifieddate` = NOW(),
-                                            `userid` = " + userid + @",
-                                            `lastmodifiedby` = " + userid + @"
-                                           WHERE `wid` = @wid_d;";
-                    memberTransactionListString.Add(sSQLmemberpoint_d);
-                }
-                if (trans.getmember().getwid() != 0)
-                {
-                    decimal point_earn = trans.get_memberpoint_earn();
-                    List<string> temp = get_next_wid_withlock_main_liststring("memberpointtrans");
-                    foreach (string str in temp)
-                        memberTransactionListString.Add(str);
-                    string sSQLmemberpoint = @"UPDATE `memberpointtrans` SET
-                                            `memberid` = " + trans.getmember().getwid() + @",
-                                            `branchid` = " + branchid + @",
-                                            `type` = 1,
-                                            `referencewid` = " + salesheadwid.ToString() + @",
-                                            `amount` = " + point_earn.ToString("N2") + @",
-                                            `status` = 1,
-                                            `date` = NOW(),
-                                            `datecreated` = NOW(),
-                                            `lastmodifieddate` = NOW(),
-                                            `userid` = " + userid + @",
-                                            `lastmodifiedby` = " + userid + @"
-                                           WHERE `wid` = @wid_d;";
-                    memberTransactionListString.Add(sSQLmemberpoint);
-                }
-                //'select' is purposely lower cased for exec_trans method
-                memberTransactionListString.Add(@"select 'SUCCESS';");
-                if (!mySQLFunc.check_connection_main() || exec_trans_main(memberTransactionListString, 3) != "SUCCESS")
-                    return 1;
-            }
+            //              DO NOT DELETE
+            //            //MEMBER (Priority since it will be run on main branch)
+            //            if (trans.getmember().getwid() != 0)
+            //            {
+            //                List<string> memberTransactionListString = new List<string>();
+            //                if (mem_points != 0)
+            //                {
+            //                    tempStringList = get_next_wid_withlock_main_liststring("memberpointtrans");
+            //                    foreach (string str in tempStringList)
+            //                        memberTransactionListString.Add(str);
+            //                    string sSQLmemberpoint_d = @"UPDATE `memberpointtrans` SET
+            //                                            `memberid` = " + trans.getmember().getwid() + @",
+            //                                            `branchid` = " + branchid + @",
+            //                                            `type` = 3,
+            //                                            `referencewid` = " + salesheadwid.ToString() + @",
+            //                                            `amount` = " + mem_points + @",
+            //                                            `status` = 1,
+            //                                            `date` = NOW(),
+            //                                            `status` = 1,
+            //                                            `datecreated` = NOW(),
+            //                                            `lastmodifieddate` = NOW(),
+            //                                            `userid` = " + userid + @",
+            //                                            `lastmodifiedby` = " + userid + @"
+            //                                           WHERE `SyncId` = @syncid_d;";
+            //                    memberTransactionListString.Add(sSQLmemberpoint_d);
+            //                }
+            //                if (trans.getmember().getwid() != 0)
+            //                {
+            //                    decimal point_earn = trans.get_memberpoint_earn();
+            //                    List<string> temp = get_next_wid_withlock_main_liststring("memberpointtrans");
+            //                    foreach (string str in temp)
+            //                        memberTransactionListString.Add(str);
+            //                    string sSQLmemberpoint = @"UPDATE `memberpointtrans` SET
+            //                                            `memberid` = " + trans.getmember().getwid() + @",
+            //                                            `branchid` = " + branchid + @",
+            //                                            `type` = 1,
+            //                                            `referencewid` = " + salesheadwid.ToString() + @",
+            //                                            `amount` = " + point_earn.ToString("N2") + @",
+            //                                            `status` = 1,
+            //                                            `date` = NOW(),
+            //                                            `datecreated` = NOW(),
+            //                                            `lastmodifieddate` = NOW(),
+            //                                            `userid` = " + userid + @",
+            //                                            `lastmodifiedby` = " + userid + @"
+            //                                           WHERE `SyncId` = @syncid_d;";
+            //                    memberTransactionListString.Add(sSQLmemberpoint);
+            //                }
+            //                //'select' is purposely lower cased for exec_trans method
+            //                memberTransactionListString.Add(@"select 'SUCCESS';");
+            //                if (!mySQLFunc.check_connection_main() || exec_trans_main(memberTransactionListString, 3) != "SUCCESS")
+            //                    return 1;
+            //            }
 
             string discquery = @"";
             List<string> transactionQueryList = new List<string>();
             string sSQL = "";
 
             sSQL = @"UPDATE `saleshead` SET
-                        `salesman` = " + trans.getsalesman().getwid().ToString() + @",
+                        `salesman` = " + trans.getsalesman().getsyncid().ToString() + @",
                         `status` = 1, 
                         `customerid` = " + customerid + @", 
                         `customername` = '" + escapeString(customername) + @"',
@@ -489,8 +489,8 @@ namespace ETech
                         `memberid` = " + memberid + @", 
                         `checkerid` = " + checkerid + @",
                         `iswholesale` = " + iswholesale + @",
-                        `isnonvat` = " +  isnonvat.ToString() + @"
-                        WHERE `wid` = " + salesheadwid;
+                        `isnonvat` = " + isnonvat.ToString() + @"
+                        WHERE `SyncId` = " + salesheadwid;
 
             //Console.WriteLine(sSQL);
             //setdb(sSQL);
@@ -503,18 +503,18 @@ namespace ETech
                 string vat = prod.getVat().ToString();
 
                 cls_user soldby = (cls_user)prod.getSoldBy();
-                int soldbywid = 0;
-                try { soldbywid = soldby.getwid(); }
+                long soldbywid = 0;
+                try { soldbywid = soldby.getsyncid(); }
                 catch { soldbywid = userid; }
 
-                List<string> temp = get_next_wid_withlock_liststring("salesdetail");
+                List<string> temp = GetListStringAndInsertNextSyncId("salesdetail");
                 foreach (string str in temp)
                     transactionQueryList.Add(str);
-                transactionQueryList.Add("SET @salesdetailwid := @wid_d");
+                transactionQueryList.Add("SET @salesdetailwid := @syncid_d");
                 int issenior = (trans.getsenior().get_idnumber().Length >= 1 && prod.getIsSenior() != 0) ? prod.getIsSenior() : 0;
                 string sSQLdetail = @"UPDATE `salesdetail` SET
                                 `headid` = '" + salesheadwid + @"', 
-                                `productid` = '" + prod.getWid().ToString() + @"',  
+                                `productid` = '" + prod.getSyncId().ToString() + @"',  
                                 `quantity` = '" + qty + @"',   
                                 `oprice` = '" + prod.getOrigPrice().ToString() + @"',  
                                 `regularDC` = '" + prod.getDiscount().ToString() + @"', 
@@ -523,7 +523,7 @@ namespace ETech
                                 `vat` = '" + vat + @"',
                                 `soldby` = '" + soldbywid + @"',  
                                 `memo` = '" + prod.getMemo() + @"'
-                            WHERE `wid` = @salesdetailwid";
+                            WHERE `SyncId` = @salesdetailwid";
                 //Console.WriteLine(sSQLdetail);
                 //setdb(sSQLdetail);
                 transactionQueryList.Add(sSQLdetail);
@@ -534,7 +534,7 @@ namespace ETech
                     if (disc.get_status())
                     {
                         discquery += @" ,(@salesdetailwid," + disc.get_type() + "," + disc.get_basis() + "," +
-                                            disc.get_value() + "," + disc.get_ismultiple() + "," + disc.get_discounted_amount() + "," + disc.get_wid() + ") ";
+                                            disc.get_value() + "," + disc.get_ismultiple() + "," + disc.get_discounted_amount() + "," + disc.get_SyncId() + ") ";
                     }
                 }
 
@@ -555,7 +555,7 @@ namespace ETech
                 if (disc.get_status())
                 {
                     discquery += @" ,(" + salesheadwid + "," + disc.get_type() + "," + disc.get_basis() + "," +
-                                        disc.get_value() + "," + disc.get_ismultiple() + "," + disc.get_discounted_amount() + "," + disc.get_wid() + ") ";
+                                        disc.get_value() + "," + disc.get_ismultiple() + "," + disc.get_discounted_amount() + "," + disc.get_SyncId() + ") ";
                 }
             }
             if (discquery.Length > 0)
@@ -565,10 +565,10 @@ namespace ETech
                             VALUES " + discquery.Substring(2));
             }
 
-            tempStringList = get_next_wid_withlock_liststring("collectionhead");
+            tempStringList = GetListStringAndInsertNextSyncId("collectionhead");
             foreach (string str in tempStringList)
                 transactionQueryList.Add(str);
-            transactionQueryList.Add(@"SET @collectionheadwid := @wid_d");
+            transactionQueryList.Add(@"SET @collectionheadwid := @syncid_d");
             string sSQLch = @"UPDATE `collectionhead` SET
                                 `customerid` = " + customerid + @", 
                                 `collectiondate` = NOW(), 
@@ -580,7 +580,7 @@ namespace ETech
                                 `datecreated` = NOW(),
                                 `memo` = '" + trans.getpayments().get_memo() + @"',
                                 `show` = 1
-                            WHERE `wid` = @collectionheadwid";
+                            WHERE `SyncId` = @collectionheadwid";
 
             //Console.WriteLine(sSQLch);
             //setdb(sSQLch);
@@ -596,14 +596,14 @@ namespace ETech
 
             if (cash != 0)
             {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
+                tempStringList = GetListStringAndInsertNextSyncId("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 1, 
                                 `amount` = " + cash + @"
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
 
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
@@ -611,14 +611,14 @@ namespace ETech
 
             if (change > 0)
             {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
+                tempStringList = GetListStringAndInsertNextSyncId("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 1,
                                 `amount` = -" + change + @"
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
 
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
@@ -626,21 +626,21 @@ namespace ETech
 
             foreach (cls_cardinfo creditcard in creditcards)
             {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
+                tempStringList = GetListStringAndInsertNextSyncId("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 5, 
                                 `amount` = " + creditcard.getamount() + @"
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
 
                 //Console.WriteLine(sSQLcd);
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
-                transactionQueryList.Add("SET @collectiondetailwid = @wid_d");
+                transactionQueryList.Add("SET @collectiondetailwid = @syncid_d");
 
-                tempStringList = get_next_wid_withlock_liststring("poscardpayment");
+                tempStringList = GetListStringAndInsertNextSyncId("poscardpayment");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `poscardpayment` SET
@@ -652,28 +652,28 @@ namespace ETech
                             `type` = '0', 
                             `approvalcode` = '" + escapeString(creditcard.getapprovalcode()) + @"',
                             `amount` = '" + creditcard.getamount() + @"'
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
             }
 
             foreach (cls_cardinfo debitcard in debitcards)
             {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
+                tempStringList = GetListStringAndInsertNextSyncId("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 6, 
                                 `amount` = " + debitcard.getamount() + @"
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
 
                 //Console.WriteLine(sSQLcd);
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
-                transactionQueryList.Add("SET @collectiondetailwid = @wid_d");
+                transactionQueryList.Add("SET @collectiondetailwid = @syncid_d");
 
-                tempStringList = get_next_wid_withlock_liststring("poscardpayment");
+                tempStringList = GetListStringAndInsertNextSyncId("poscardpayment");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `poscardpayment` SET
@@ -684,7 +684,7 @@ namespace ETech
                             `type` = '1', 
                             `approvalcode` = '" + escapeString(debitcard.getapprovalcode()) + @"',
                             `amount` = '" + debitcard.getamount() + @"'
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
                 //Console.WriteLine(sSQLcd);
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
@@ -692,20 +692,20 @@ namespace ETech
 
             foreach (cls_giftcheque giftchequenew in giftchequesnew)
             {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
+                tempStringList = GetListStringAndInsertNextSyncId("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 13,
                                 `amount` = " + giftchequenew.getamount() + @"
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
 
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
-                transactionQueryList.Add("SET @collectiondetailwid = @wid_d");
+                transactionQueryList.Add("SET @collectiondetailwid = @syncid_d");
 
-                tempStringList = get_next_wid_withlock_liststring("posgiftchequepayment");
+                tempStringList = GetListStringAndInsertNextSyncId("posgiftchequepayment");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `posgiftchequepayment` SET
@@ -714,21 +714,21 @@ namespace ETech
                             `expdate` = '" + giftchequenew.getexpdate().ToString("yyyy-MM-dd") + @"', 
                             `memo` = '" + escapeString(giftchequenew.get_memo()) + @"', 
                             `amount` = '" + giftchequenew.getamount() + @"'
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
             }
 
             foreach (cls_CustomPaymentsInfo custompayment in custompaymentsinfo)
             {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
+                tempStringList = GetListStringAndInsertNextSyncId("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = " + custompayment.get_paymentwid() + @", 
                                 `amount` = " + custompayment.get_amount() + @"
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
 
@@ -745,7 +745,7 @@ namespace ETech
                     sSQLcs = @"INSERT INTO `poscustompayments`
                             (`detailid`,`field1`,`field2`,`field3`,`field4`,`field5`,`field6`)
                             VALUES
-                            ( @wid_d, '" + escapeString(field1info) + @"',
+                            ( @syncid_d, '" + escapeString(field1info) + @"',
                                 '" + escapeString(field2info) + @"','" + escapeString(field3info) + @"',
                                 '" + escapeString(field4info) + @"','" + escapeString(field5info) + @"',
                                 '" + escapeString(field6info) + @"')";
@@ -756,14 +756,14 @@ namespace ETech
 
             if (mem_points != 0)
             {
-                tempStringList = get_next_wid_withlock_liststring("collectiondetail");
+                tempStringList = GetListStringAndInsertNextSyncId("collectiondetail");
                 foreach (string str in tempStringList)
                     transactionQueryList.Add(str);
                 sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = @collectionheadwid,
                                 `method` = 8, 
                                 `amount` = " + mem_points + @"
-                           WHERE `wid` = @wid_d";
+                           WHERE `SyncId` = @syncid_d";
 
                 //setdb(sSQLcd);
                 transactionQueryList.Add(sSQLcd);
@@ -938,7 +938,7 @@ namespace ETech
                             `sqlusername` AS `username`,
                             `sqlpassword` AS `password`
                            FROM `branch`
-                           WHERE `wid` = 10 LIMIT 1";
+                           WHERE `Id` = 10 LIMIT 1";
                 DataTable connectionTable = getdb(sql);
                 if (connectionTable != null && connectionTable.Rows.Count != 0)
                 {
@@ -955,63 +955,70 @@ namespace ETech
                 return exec_trans(SQL);
             }
         }
+
         public string escapeString(string str)
         {
             return MySql.Data.MySqlClient.MySqlHelper.EscapeString(str);
         }
 
-        public int get_next_wid_withlock(string tablename)
+        public long GetAndInsertNextSyncId(string Table)
         {
-            List<string> ls = new List<string>();
-            ls.Add("SET @wid_d = 0;");
-            ls.Add(@"SELECT coalesce(MAX(`wid`)," + cls_globalvariables.BranchCode + "0000000) INTO @wid_d FROM `" + tablename + @"` 
-                                WHERE `wid` >= " + cls_globalvariables.BranchCode + @"0000000 
-                                    AND `wid` <= " + cls_globalvariables.BranchCode + @"9999999 FOR UPDATE;");
-            ls.Add(@"INSERT into `" + tablename + @"` (`wid`)
-                             VALUES ( IF(@wid_d = 0,'" + cls_globalvariables.BranchCode + @"0000001',@wid_d+1) );");
-            ls.Add(@"select IF(@wid_d = 0,'" + cls_globalvariables.BranchCode + @"0000001',@wid_d+1) AS 'wid';");
-            return Convert.ToInt32(exec_trans(ls));
+            //Format 1001 01 
+            //1001 = BranchCode
+            //  01 = Terminal
+            //MAX = 9999-01-99999999999
+            //MIN = 1001-01-00000000000
+            string branchcode = cls_globalvariables.BranchCode;
+            string terminalno = cls_globalvariables.terminalno_v;
+            string minimum = branchcode + terminalno + "000000000000";
+            string first = branchcode + terminalno + "000000000001";
+            string maximum = branchcode + terminalno + "999999999999";
+
+            List<string> SQLS = new List<string>();
+            SQLS.Add("SET @SyncId = 0;");
+            SQLS.Add(@"SELECT COALESCE(MAX(`SyncId`)," + minimum + ") INTO @SyncId FROM `" + Table + @"` 
+                       WHERE `SyncId` BETWEEN " + minimum + " AND " + maximum + " FOR UPDATE;");
+            SQLS.Add(@"INSERT INTO `" + Table + @"` (`SyncId`) VALUES ( IF(@SyncId = 0," + first + @",@SyncId+1) );");
+            SQLS.Add(@"select IF(@SyncId = 0," + first + @",@SyncId+1) AS 'SyncId';");
+            return Convert.ToInt64(exec_trans(SQLS));
         }
 
-        public int get_next_wid_withlock_main(string tablename)
-        {
-            List<string> ls = new List<string>();
-            ls.Add("SET @wid_d = 0;");
-            ls.Add(@"SELECT coalesce(MAX(`wid`)," + 10 + "0000000) INTO @wid_d FROM `" + tablename + @"` 
-                                WHERE `wid` >= " + 10 + @"0000000 
-                                    AND `wid` <= " + 10 + @"9999999 FOR UPDATE;");
-            ls.Add(@"INSERT into `" + tablename + @"` (`wid`)
-                             VALUES ( IF(@wid_d = 0,'" + 10 + @"0000001',@wid_d+1) );");
-            ls.Add(@"select IF(@wid_d = 0,'" + 10 + @"0000001',@wid_d+1) AS 'wid';");
-            return Convert.ToInt32(exec_trans_main(ls));
-        }
+        //Used For Member Needs to refactor this
+        //        public List<string> get_next_wid_withlock_main_liststring(string tablename)
+        //        {
+        //            List<string> ls = new List<string>();
+        //            ls.Add("SET @syncid_d = 0;");
+        //            ls.Add(@"SELECT coalesce(MAX(`SyncId`)," + 10 + "0000000) INTO @syncid_d FROM `" + tablename + @"` 
+        //                                        WHERE `SyncId` >= " + 10 + @"0000000 
+        //                                            AND `SyncId` <= " + 10 + @"9999999 FOR UPDATE;");
+        //            ls.Add(@"INSERT into `" + tablename + @"` (`SyncId`)
+        //                                     VALUES ( IF(@syncid_d = 0,'" + 10 + @"0000001',@syncid_d+1) );");
+        //            ls.Add(@"SET @syncid_d = IF(@syncid_d = 0,'" + 10 + @"0000001', @syncid_d + 1);");
+        //            //ls.Add(@"select IF(@syncid_d = 0,'" + 10 + @"0000001',@syncid_d+1) AS 'syncid';");
+        //            return ls;
+        //        }
 
-        public List<string> get_next_wid_withlock_main_liststring(string tablename)
+        public List<string> GetListStringAndInsertNextSyncId(string Table)
         {
-            List<string> ls = new List<string>();
-            ls.Add("SET @wid_d = 0;");
-            ls.Add(@"SELECT coalesce(MAX(`wid`)," + 10 + "0000000) INTO @wid_d FROM `" + tablename + @"` 
-                                WHERE `wid` >= " + 10 + @"0000000 
-                                    AND `wid` <= " + 10 + @"9999999 FOR UPDATE;");
-            ls.Add(@"INSERT into `" + tablename + @"` (`wid`)
-                             VALUES ( IF(@wid_d = 0,'" + 10 + @"0000001',@wid_d+1) );");
-            ls.Add(@"SET @wid_d = IF(@wid_d = 0,'" + 10 + @"0000001', @wid_d + 1);");
-            //ls.Add(@"select IF(@wid_d = 0,'" + 10 + @"0000001',@wid_d+1) AS 'wid';");
-            return ls;
-        }
+            //Format 1001 01 
+            //1001 = BranchCode
+            //  01 = Terminal
+            //MAX = 9999-01-99999999999
+            //MIN = 1001-01-00000000000
+            string branchcode = cls_globalvariables.BranchCode;
+            string terminalno = cls_globalvariables.terminalno_v;
+            string minimum = branchcode + terminalno + "000000000000";
+            string first = branchcode + terminalno + "000000000001";
+            string maximum = branchcode + terminalno + "999999999999";
 
-        public List<string> get_next_wid_withlock_liststring(string tablename)
-        {
-            List<string> ls = new List<string>();
-            ls.Add("SET @wid_d = 0;");
-            ls.Add(@"SELECT coalesce(MAX(`wid`)," + cls_globalvariables.BranchCode + "0000000) INTO @wid_d FROM `" + tablename + @"` 
-                                WHERE `wid` >= " + cls_globalvariables.BranchCode + @"0000000 
-                                    AND `wid` <= " + cls_globalvariables.BranchCode + @"9999999 FOR UPDATE;");
-            ls.Add(@"INSERT into `" + tablename + @"` (`wid`)
-                             VALUES ( IF(@wid_d = 0,'" + cls_globalvariables.BranchCode + @"0000001',@wid_d+1) );");
-            ls.Add(@"SET @wid_d = IF(@wid_d = 0,'" + cls_globalvariables.BranchCode + @"0000001', @wid_d + 1);");
-            //ls.Add(@"select IF(@wid_d = 0,'" + cls_globalvariables.branchid_v + @"0000001',@wid_d+1) AS 'wid';");
-            return ls;
+            List<string> SQLS = new List<string>();
+            SQLS.Add("SET @SyncId = 0;");
+            SQLS.Add(@"SELECT COALESCE(MAX(`SyncId`)," + minimum + ") INTO @SyncId FROM `" + Table + @"` 
+                       WHERE `SyncId` BETWEEN " + minimum + " AND " + maximum + " FOR UPDATE;");
+            SQLS.Add(@"INSERT INTO `" + Table + @"` (`SyncId`) VALUES ( IF(@SyncId = 0," + first + @",@SyncId + 1) );");
+            SQLS.Add(@"SET @SyncId = IF(@SyncId = 0," + first + @", @SyncId + 1); ");
+
+            return SQLS;
         }
     }
 }

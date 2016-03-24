@@ -13,14 +13,14 @@ namespace ETech.cls
         private string code;
         private string fullname;
         private List<int> permission;
-        private int wid;
+        private long syncid;
 
         public void init()
         {
             this.code = "";
             this.fullname = "";
             this.permission = new List<int>();
-            this.wid = 0;
+            this.syncid = 0;
         }
 
         //constructor
@@ -29,13 +29,13 @@ namespace ETech.cls
             init();
         }
 
-        public cls_user(int wid_d)
+        public cls_user(long wid_d)
         {
             init();
             setcls_user_by_wid(wid_d);
         }
 
-        public cls_user(int wid_d, bool is_history)
+        public cls_user(long wid_d, bool is_history)
         {
             init();
             setcls_user_by_wid(wid_d, is_history);
@@ -46,7 +46,7 @@ namespace ETech.cls
             this.code = code_d;
             this.fullname = fullname_d;
             this.permission = permission_d;
-            this.wid = wid_d;
+            this.syncid = wid_d;
         }
 
         public string getusercode()
@@ -70,16 +70,15 @@ namespace ETech.cls
             return this.permission;
         }
 
-        //getwid - return wid
-        public int getwid()
+        public long getsyncid()
         {
-            return this.wid;
+            return this.syncid;
         }
 
-        public void setcls_user_by_wid(int wid, bool is_history)
+        public void setcls_user_by_wid(long SyncId, bool is_history)
         {
-            this.wid = wid;
-            string sSQL = "SELECT * FROM `user` WHERE `wid` = " + wid;
+            this.syncid = SyncId;
+            string sSQL = "SELECT * FROM `user` WHERE `SyncId` = " + SyncId;
             
             if (!is_history)
             {
@@ -89,14 +88,14 @@ namespace ETech.cls
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {
-                this.wid = 0;
+                this.syncid = 0;
                 return;
             }
             DataRow dr = dt.Rows[0];
             this.code = dr["usercode"].ToString();
             this.fullname = dr["fullname"].ToString();
 
-            sSQL = "SELECT * FROM `userpermission` WHERE `userid` = " + wid;
+            sSQL = "SELECT * FROM `userpermission` WHERE `userid` = " + SyncId;
             dt = mySQLFunc.getdb(sSQL);
             this.permission.Clear();
             foreach (DataRow dr_d in dt.Rows)
@@ -105,7 +104,7 @@ namespace ETech.cls
             }
         }
 
-        public void setcls_user_by_wid(int wid_d)
+        public void setcls_user_by_wid(long wid_d)
         {
             setcls_user_by_wid(wid_d, false);
         }

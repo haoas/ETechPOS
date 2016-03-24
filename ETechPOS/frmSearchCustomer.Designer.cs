@@ -65,9 +65,9 @@
             // colWid
             // 
             this.colWid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colWid.DataPropertyName = "wid";
-            this.colWid.HeaderText = "Wid";
-            this.colWid.Name = "colWid";
+            this.colWid.DataPropertyName = "SyncId";
+            this.colWid.HeaderText = "SyncId";
+            this.colWid.Name = "colSyncId";
             this.colWid.ReadOnly = true;
             this.colWid.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.colWid.Visible = false;

@@ -14,7 +14,7 @@ namespace ETech.cls
         private string fullname;
         private string mobile;
         private DateTime birthdate;
-        private int wid;
+        private long syncid;
         private string cardid;
         private decimal points;
         private int rateid;
@@ -35,7 +35,7 @@ namespace ETech.cls
             this.fullname = "";
             this.mobile = "";
             this.birthdate = new DateTime();
-            this.wid = 0;
+            this.syncid = 0;
             this.cardid = "";
             this.points = 0;
             this.rateid = 0;
@@ -65,7 +65,7 @@ namespace ETech.cls
         public cls_member(string fullname_d, int wid_d, string cardid_d, decimal points_d)
         {
             this.fullname = fullname_d;
-            this.wid = wid_d;
+            this.syncid = wid_d;
             this.cardid = cardid_d;
             this.points = points_d;
         }
@@ -73,7 +73,7 @@ namespace ETech.cls
         public string getfullname() { return this.fullname; }
         public string getmobile() { return this.mobile; }
         public string getbirhtdate() { return this.birthdate.ToString("yyyy-MM-dd"); }
-        public int getwid() { return this.wid; }
+        public long getSyncId() { return this.syncid; }
         public string getbarcode() { return this.barcode; }
         public string getaddress() { return this.address; }
 
@@ -91,29 +91,29 @@ namespace ETech.cls
         public void setcls_member_by_cardid(string cardid)
         {
             cardid = MySqlHelper.EscapeString(cardid);
-            string sSQL = @"SELECT `wid`, `memberrateid` FROM `member` AS M 
+            string sSQL = @"SELECT `SyncId`, `memberrateid` FROM `member` AS M 
                             WHERE (`cardid` = '" + cardid + @"'
                                 OR `barcode` = '" + cardid + @"' ) 
                                 AND M.`show` = 1 AND M.`status` = 1";
             DataTable dt = mySQLFunc.getdb_main(sSQL);
             if (dt.Rows.Count <= 0)
             {
-                this.wid = 0;
+                this.syncid = 0;
                 return;
             }
 
-            int wid_d = Convert.ToInt32(dt.Rows[0]["wid"]);
+            int wid_d = Convert.ToInt32(dt.Rows[0]["SyncId"]);
             setcls_member_by_wid(wid_d);
 
             //int memberrateid_d = Convert.ToInt32(dt.Rows[0]["memberrateid"]);
             //setcls_memberrate_by_wid(memberrateid_d);
         }
 
-        public void setcls_member_by_wid(int wid, bool is_history)
+        public void setcls_member_by_wid(long SyncId, bool is_history)
         {
-            this.wid = wid;
+            this.syncid = SyncId;
 
-            string sSQL = @"SELECT COALESCE(M.`wid`, 0) AS 'wid', 
+            string sSQL = @"SELECT COALESCE(M.`SyncId`, 0) AS 'syncid', 
 	                            COALESCE(M.`fullname`, '') AS 'fullname', 
                                 COALESCE(M.`mobile`, '') AS 'mobile',
                                 COALESCE(M.`birthdate`, '') AS 'birthdate',
@@ -130,11 +130,11 @@ namespace ETech.cls
 		                            END),0) AS 'points'
                             FROM `member` AS M
                             LEFT JOIN `memberratehead` AS R
-	                            ON M.`memberrateid` = R.`wid` 
+	                            ON M.`memberrateid` = R.`SyncId` 
                             LEFT JOIN `memberpointtrans` AS T
-	                            ON T.`memberid` = M.`wid` AND T.`show` = 1 AND T.`status` = 1
+	                            ON T.`memberid` = M.`SyncId` AND T.`show` = 1 AND T.`status` = 1
                             WHERE R.`show` = 1 AND R.`status` = 1 
-	                            AND M.`wid` = " + wid;
+	                            AND M.`SyncId` = " + SyncId;
 
             if (!is_history)
             {
@@ -144,8 +144,8 @@ namespace ETech.cls
             DataTable dt = mySQLFunc.getdb_main(sSQL);
             if (dt.Rows.Count <= 0)
             {
-                memberButOffline = (wid != 0);
-                this.wid = 0;
+                memberButOffline = (SyncId != 0);
+                this.syncid = 0;
                 return;
             }
 
@@ -175,7 +175,7 @@ namespace ETech.cls
                                             IF (DATE(`datefrom`) = '0000-00-00','" + startdate + @"',`datefrom`) as `datefrom`,
                                             IF (DATE(`datefrom`) = '0000-00-00','" + enddate + @"',`dateto`) as `dateto`
                                             FROM memberratedetail as D, memberratehead as H
-                                            WHERE D.`headid` = '" + memberrateid_d + @"' AND D.`headid` = H.`wid`
+                                            WHERE D.`headid` = '" + memberrateid_d + @"' AND D.`headid` = H.`SyncId`
 	                                            AND (DATE(`datefrom`) <= DATE(NOW()) OR DATE(`datefrom`) = '0000-00-00' )
                                                 AND (DATE(`dateto`) >= DATE(NOW()) OR DATE(`dateto`) = '0000-00-00' )
 	                                            AND `percent` > 0 

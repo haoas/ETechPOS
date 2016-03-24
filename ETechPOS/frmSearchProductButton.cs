@@ -35,7 +35,7 @@ namespace ETech
 
             buttongridDepartment.setTable("Department");
             buttongridDepartment.setColumnShown("name");
-            buttongridDepartment.setCondition("WHERE `wid` IN( SELECT DISTINCT(departmentid) FROM product WHERE `show` = 1 AND `status` = 1 )");
+            buttongridDepartment.setCondition("WHERE `SyncId` IN( SELECT DISTINCT(departmentid) FROM product WHERE `show` = 1 AND `status` = 1 )");
             buttongridDepartment.setColumnCntPerPage(2);
             buttongridDepartment.setRowCntPerPage(5);
             buttongridDepartment.setCurrentPage(1);
@@ -73,7 +73,7 @@ namespace ETech
                 int btnX = buttongrid_d.initLeftSpacing + (buttongrid_d.buttonwidth + buttongrid_d.LeftSpacing) * (I % buttongrid_d.columnCntPerPage);
                 int btnY = buttongrid_d.initTopSpacing + (buttongrid_d.buttonheight + buttongrid_d.RightSpacing) * (I / buttongrid_d.columnCntPerPage);
                 btn.Text = buttongrid_d.DT.Rows[I][buttongrid_d.columnshown].ToString();
-                btn.Tag = buttongrid_d.DT.Rows[I]["wid"].ToString();
+                btn.Tag = buttongrid_d.DT.Rows[I]["SyncId"].ToString();
                 btn.Location = new Point(btnX, btnY);
                 btn.Click += new EventHandler((sender, e) => MyEvent(sender, e, cntlParent));
             }

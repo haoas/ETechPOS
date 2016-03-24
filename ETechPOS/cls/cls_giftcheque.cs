@@ -12,7 +12,7 @@ namespace ETech.cls
         private DateTime expdate;
         private decimal amount;
         private string memo;
-        private int paymentmethod; //wid
+        private int paymentmethod; //SyncId
 
         //constructor
         public cls_giftcheque()

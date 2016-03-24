@@ -32,7 +32,7 @@
             this.discount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.basis = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.value = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.wid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.syncid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ismultiple = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.actualValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,7 +51,7 @@
             this.discount,
             this.basis,
             this.value,
-            this.wid,
+            this.syncid,
             this.status,
             this.ismultiple,
             this.actualValue});
@@ -87,11 +87,11 @@
             this.value.ReadOnly = true;
             this.value.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
-            // wid
+            // SyncId
             // 
-            this.wid.HeaderText = "wid";
-            this.wid.Name = "wid";
-            this.wid.Visible = false;
+            this.syncid.HeaderText = "SyncId";
+            this.syncid.Name = "SyncId";
+            this.syncid.Visible = false;
             // 
             // status
             // 
@@ -196,7 +196,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn discount;
         private System.Windows.Forms.DataGridViewTextBoxColumn basis;
         private System.Windows.Forms.DataGridViewTextBoxColumn value;
-        private System.Windows.Forms.DataGridViewTextBoxColumn wid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn syncid;
         private System.Windows.Forms.DataGridViewTextBoxColumn status;
         private System.Windows.Forms.DataGridViewTextBoxColumn ismultiple;
         private System.Windows.Forms.DataGridViewTextBoxColumn actualValue;

@@ -337,9 +337,9 @@
             // 
             // colPaymentwid
             // 
-            this.colPaymentwid.DataPropertyName = "Payment Wid";
-            this.colPaymentwid.HeaderText = "Payment Wid";
-            this.colPaymentwid.Name = "colPaymentwid";
+            this.colPaymentwid.DataPropertyName = "Payment SyncId";
+            this.colPaymentwid.HeaderText = "Payment SyncId";
+            this.colPaymentwid.Name = "colPaymentsyncId";
             this.colPaymentwid.ReadOnly = true;
             this.colPaymentwid.Visible = false;
             // 

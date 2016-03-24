@@ -71,31 +71,6 @@ namespace ETech.cls
             }
         }
 
-        public static void database_validator()
-        {
-            string msg = "";
-            string sql = "";
-
-            sql = @"SELECT `wid` FROM `DEPARTMENT` WHERE `wid`=2";
-            if (mySQLFunc.getdb(sql).Rows.Count < 1)
-                msg = msg + "Novelty Item Not Implemented in your POS!\n";
-
-            sql = @"SELECT `wid` FROM `PRODUCT` WHERE `wid`=1";
-            if (mySQLFunc.getdb(sql).Rows.Count < 1)
-                msg = msg + "Service Charge Not Implemented in your POS!\n";
-
-            sql = @"SELECT `wid` FROM `PRODUCT` WHERE `wid`=2";
-            if (mySQLFunc.getdb(sql).Rows.Count < 1)
-                msg = msg + "Local Tax Not Implemented in your POS!\n";
-
-            sql = @"SELECT `wid` FROM `paymentmethod`";
-            if (mySQLFunc.getdb(sql).Rows.Count < 12)
-                msg = msg + "Other Payment Methods are Not Completely Implemented in your database!\n";
-
-            if (msg != "")
-                MessageBox.Show("WARNING!\n" + msg + "\nContact ETECH to fix this problem");
-        }
-
         public static void DeleteUnusedSalesHead()
         {
             // done to avoid deletion of current pending transaction 
@@ -117,7 +92,7 @@ namespace ETech.cls
                 return;
             sql = @"
                 SELECT
-                    GROUP_CONCAT(`wid`) AS 'wids', GROUP_CONCAT(`ornumber`) AS 'ornumbers'
+                    GROUP_CONCAT(`SyncId`) AS 'wids', GROUP_CONCAT(`ornumber`) AS 'ornumbers'
                 FROM
                     `saleshead`
                 WHERE
@@ -133,7 +108,7 @@ namespace ETech.cls
             string wids = DT.Rows[0]["wids"].ToString();
             string ornumbers = DT.Rows[0]["wids"].ToString();
 
-            sql = @"DELETE FROM saleshead WHERE `wid` IN (" + wids + ")";
+            sql = @"DELETE FROM saleshead WHERE `SyncId` IN (" + wids + ")";
             mySQLFunc.setdb(sql);
             LOGS.LOG_PRINT("DELETED2 in saleshead ors = " + ornumbers);
         }

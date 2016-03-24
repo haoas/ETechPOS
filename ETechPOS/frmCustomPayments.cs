@@ -71,7 +71,7 @@ namespace ETech
 
             string sql =
             @"SELECT
-	            `wid` AS `Payment Id`,
+	            `SyncId` AS `Payment Id`,
                 `name` AS `Payment Name`,
                 `field1` AS 'Field 1',
                 `field2` AS 'Field 2',
@@ -82,9 +82,9 @@ namespace ETech
             FROM
 	            `paymentmethod`
             WHERE
-	            `wid` >= 100
+	            `SyncId` >= 100
             ORDER BY
-	            `wid`";
+	            `SyncId`";
 
             DataTable DT = mySQLFunc.getdb(sql);
             if (DT == null)

@@ -180,8 +180,8 @@
             // colProductWid
             // 
             this.colProductWid.DataPropertyName = "productwid";
-            this.colProductWid.HeaderText = "Wid";
-            this.colProductWid.Name = "colProductWid";
+            this.colProductWid.HeaderText = "SyncId";
+            this.colProductWid.Name = "colProductSyncId";
             this.colProductWid.Visible = false;
             this.colProductWid.Width = 51;
             // 

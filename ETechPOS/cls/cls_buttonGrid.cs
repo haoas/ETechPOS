@@ -26,7 +26,7 @@ namespace ETech.cls
         public cls_buttonGrid()
         {
             this.table = "Department";
-            this.columnshown = "wid";
+            this.columnshown = "SyncId";
             this.condition = "";
             this.buttonwidth = 93;
             this.buttonheight = 75;

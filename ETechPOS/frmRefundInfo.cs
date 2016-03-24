@@ -15,7 +15,7 @@ namespace ETech
     public partial class frmRefundInfo : Form
     {
         public string productname;
-        public Int32 productid;
+        public long productid;
         public decimal negative_qty;
         public string remarks;
         public string salesdetailmemo;
@@ -93,7 +93,7 @@ namespace ETech
             this.Close();
         }
 
-        public decimal get_productCountFromOR(Int32 productid, string ornumber)
+        public decimal get_productCountFromOR(long productid, string ornumber)
         {
             string branchid = cls_globalvariables.BranchCode;
 
@@ -101,7 +101,7 @@ namespace ETech
             FROM Saleshead as H, Salesdetail as D
             WHERE H.`status` = 1
                 AND H.`branchid`=" + branchid + @"
-                AND H.`wid`=D.`headid`
+                AND H.`SyncId`=D.`headid`
                 AND D.`productid`=" + productid + @" AND 
             (H.`ornumber`='" + ornumber + @"' OR D.`description` LIKE 'OR#: " + ornumber + @"%' );";
 

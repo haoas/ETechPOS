@@ -44,7 +44,7 @@ namespace ETech
             //Convert encoded bytes back to a 'readable' string
             string pass = BitConverter.ToString(encodedBytes).Replace("-", "");
 
-            string SQL = @"SELECT `wid` FROM `user` WHERE password = @password AND `show` = 1 AND `status`= 1";
+            string SQL = @"SELECT `SyncId` FROM `user` WHERE password = @password AND `status`= 1";
             List<string> parameters = new List<string>();
             List<string> values = new List<string>();
             parameters.Add("@password");
@@ -59,12 +59,12 @@ namespace ETech
                 return;
             }
 
-            string wid = dt.Rows[0]["wid"].ToString();
+            string SyncId = dt.Rows[0]["SyncId"].ToString();
             string SQLpermissions = @"SELECT * FROM `userpermission` WHERE `userid` = @userwid";
             parameters = new List<string>();
             values = new List<string>();
             parameters.Add("@userwid");
-            values.Add(wid);
+            values.Add(SyncId);
             DataTable dtpermission = mySQLFunc.getdb(SQLpermissions, parameters, values);
             List<int> permissions = new List<int>();
             foreach (DataRow dr in dtpermission.Rows)
@@ -75,7 +75,7 @@ namespace ETech
             if (permissions.Contains(100) || permissions.Contains(this.permission_needed))
             {
                 permcode = true;
-                this.permissionwid = wid;
+                this.permissionwid = SyncId;
                 this.Close();
                 return;
             }

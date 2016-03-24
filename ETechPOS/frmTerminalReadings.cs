@@ -62,15 +62,15 @@ namespace ETech
             string branchid = cls_globalvariables.BranchCode;
 
             string sql = @"
-            SELECT '' as `wid`,'ALL' as `fullname`
+            SELECT '' as `SyncId`,'ALL' as `fullname`
             UNION
-            SELECT DISTINCT U.`wid`, U.`fullname` 
+            SELECT DISTINCT U.`SyncId`, U.`fullname` 
             FROM `Saleshead` AS H
-            LEFT JOIN user AS U ON U.wid = H.`userid`
+            LEFT JOIN user AS U ON U.syncid = H.`userid`
             WHERE H.`branchid` = " + branchid + @" 
             AND (H.`date` BETWEEN '" + datefrom + @"' AND '" + dateto + @"') 
             AND H.`terminalno` = " + terminalno + @" 
-            AND H.`status` = 1 ORDER BY `wid`";
+            AND H.`status` = 1 ORDER BY `SyncId`";
 
             DataTable DT = mySQLFunc.getdb(sql);
 
@@ -162,7 +162,7 @@ namespace ETech
                 AND SD.price <> 0
                 AND SH.branchid = " + cls_globalvariables.BranchCode + @"
                 AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
-                AND SD.`headid` = SH.`wid`
+                AND SD.`headid` = SH.`SyncId`
                 AND SH.`date` >= '" + datefrom + @" 00:00:00'
                 AND SH.`date` <= '" + dateto + @" 23:59:59'
                 GROUP BY hour(SH.`date`) ) B on B.`Time` = A.`Time`";
@@ -178,7 +178,7 @@ namespace ETech
                 AND SD.price <> 0
                 AND SH.branchid = " + cls_globalvariables.BranchCode + @"
                 AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
-                AND SD.`headid` = SH.`wid`
+                AND SD.`headid` = SH.`SyncId`
                 AND SH.`date` >= '" + datefrom + @" 00:00:00'
                 AND SH.`date` <= '" + dateto + @" 23:59:59'
                 GROUP BY DAY(SH.`date`) ORDER BY `Time`";
@@ -194,15 +194,15 @@ namespace ETech
                     FORMAT(SUM(SD.`quantity`*SD.`price`),2) as 'Amount',
                     '' as '%amt'
                     FROM saleshead as SH, salesdetail as SD
-                    LEFT JOIN product as P on P.`wid` = SD.`productid`
-                    LEFT JOIN department as D on P.`departmentid` = D.`wid`
+                    LEFT JOIN product as P on P.`SyncId` = SD.`productid`
+                    LEFT JOIN department as D on P.`departmentid` = D.`SyncId`
                     WHERE SH.`status` = 1  
                     AND SH.branchid = " + cls_globalvariables.BranchCode + @"
                     AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
-                    AND SD.`headid` = SH.`wid`
+                    AND SD.`headid` = SH.`SyncId`
                     AND SH.`date` >= '" + datefrom + @" 00:00:00'
                     AND SH.`date` <= '" + dateto + @" 23:59:59'
-                    GROUP BY D.`wid`";
+                    GROUP BY D.`SyncId`";
                 }
                 else
                 {
@@ -223,11 +223,11 @@ namespace ETech
                             AND SD.price <> 0
                             AND SH.branchid = " + cls_globalvariables.BranchCode + @"
 	                        AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
-	                        AND SD.`headid` = SH.`wid`
+	                        AND SD.`headid` = SH.`SyncId`
 	                        AND SH.`date` BETWEEN '" + datefrom + @" 00:00:00' AND '" + dateto + @" 23:59:59'
-	                        AND P.`wid` = SD.`productid`
+	                        AND P.`SyncId` = SD.`productid`
 	                        " + GroupByCondition + @"
-	                        GROUP BY P.`wid` HAVING `Count` <> 0";
+	                        GROUP BY P.`SyncId` HAVING `Count` <> 0";
                 }
             }
             DataTable DT_report = mySQLFunc.getdb(SQL);

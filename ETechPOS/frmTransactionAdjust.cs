@@ -63,7 +63,7 @@ namespace ETech
 
         private void txtAdjustTo_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (this.disc.get_wid() != 0)
+            if (this.disc.get_SyncId() != 0)
             {
                 MessageBox.Show("Please remove custom discount first.");
                 e.Handled = true;

@@ -39,7 +39,7 @@ namespace ETech
                 row.Cells[0].Value = disc.get_name();
                 row.Cells[1].Value = disc.get_basis();
                 row.Cells[2].Value = (disc.get_ismultiple()) ? ((1 - disc.get_value()) * 100).ToString()+"%" : disc.get_value().ToString("N2");
-                row.Cells[3].Value = disc.get_wid();
+                row.Cells[3].Value = disc.get_SyncId();
                 row.Cells[4].Value = disc.get_status();
                 row.Cells[5].Value = disc.get_ismultiple();
                 row.Cells[6].Value = disc.get_value();

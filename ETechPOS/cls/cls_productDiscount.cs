@@ -92,17 +92,17 @@ namespace ETech.cls
             }
         }
 
-        public void activateDiscount(int wid, bool isMultiple)
+        public void activateDiscount(long SyncId, bool isMultiple)
         {
             foreach (DataRow dr in this.dt.Rows)
             {
-                if (wid == Convert.ToInt32(dr["wid"]) && !Convert.ToBoolean(dr["status"]))
+                if (SyncId == Convert.ToInt32(dr["SyncId"]) && !Convert.ToBoolean(dr["status"]))
                 {
                     dr["status"] = true;
                     dr["ismultiple"] = isMultiple;
                     break;
                 }
-                else if (wid == Convert.ToInt32(dr["wid"]) && Convert.ToBoolean(dr["status"]))
+                else if (SyncId == Convert.ToInt32(dr["SyncId"]) && Convert.ToBoolean(dr["status"]))
                 {
                     if (MessageBox.Show("This discount is already being used. Do you want to remove the discount?", "Confirm Box",
                                 MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -131,7 +131,7 @@ namespace ETech.cls
         public void add_new_default_discount(int type, int basis, decimal value, bool ismultiple, bool status, int position)
         {
             DataRow dr = this.dt.NewRow();
-            dr["wid"] = 0;
+            dr["SyncId"] = 0;
             dr["type"] = type;
             dr["basis"] = basis;
             dr["value"] = value;

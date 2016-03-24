@@ -8,7 +8,7 @@ namespace ETech.cls
 {
     public class cls_product
     {
-        private int wid;
+        private long syncid;
         private string barcode;
         private string singlebarcode;
         private string productname;
@@ -59,7 +59,7 @@ namespace ETech.cls
         public void init()
         {
             this.customerHistoricalPricingFlag = false;
-            this.wid = 0;
+            this.syncid = 0;
             this.barcode = "";
             this.singlebarcode = "";
             this.productname = "";
@@ -107,7 +107,7 @@ namespace ETech.cls
             barcode_d = barcode_d.Trim().Replace("'", "''");
 
             //search for clientbarcode
-            string sSQL = @"SELECT `wid` FROM `product` 
+            string sSQL = @"SELECT `SyncId` FROM `product` 
                             WHERE `show` = 1 AND `status` = 1 
                                 AND ( `clientbarcode` = @barcode_d OR `clientbarcode2` = @barcode_d ) ";
             DataTable dt = mySQLFunc.getdb(sSQL,
@@ -116,7 +116,7 @@ namespace ETech.cls
 
             if (dt.Rows.Count > 0)
             {
-                int pwid = Convert.ToInt32(dt.Rows[0]["wid"]);
+                int pwid = Convert.ToInt32(dt.Rows[0]["SyncId"]);
                 this.setcls_product_by_wid(pwid);
                 return;
             }
@@ -126,7 +126,7 @@ namespace ETech.cls
 
             if (barcode_d.Length > 13)
             {
-                sSQL = @"SELECT `wid` FROM `product` 
+                sSQL = @"SELECT `SyncId` FROM `product` 
                             WHERE `show` = 1 AND `status` = 1 
                                 AND ( `barcode` = @barcode_d 
                                     OR `clientbarcode` = @barcode_d OR `clientbarcode2` = @barcode_d ) ";
@@ -135,13 +135,13 @@ namespace ETech.cls
                                 new List<string>(new string[] { barcode_d }));
                 if (dt.Rows.Count > 0)
                 {
-                    int pwid = Convert.ToInt32(dt.Rows[0]["wid"]);
+                    int pwid = Convert.ToInt32(dt.Rows[0]["SyncId"]);
                     this.setcls_product_by_wid(pwid);
                     return;
                 }
 
-                sSQL = @"SELECT P.`wid` FROM `product` AS P, `branchprice` AS B 
-                            WHERE P.`show` = 1 AND P.`status` = 1 AND P.`wid` = B.`productid` 
+                sSQL = @"SELECT P.`SyncId` FROM `product` AS P, `branchprice` AS B 
+                            WHERE P.`show` = 1 AND P.`status` = 1 AND P.`SyncId` = B.`productid` 
                                 AND B.`branchid` = " + cls_globalvariables.BranchCode + @"
                                 AND ( P.`packbarcode` = @barcode_d 
                                     OR P.`packbarcode2` = @barcode_d )";
@@ -151,7 +151,7 @@ namespace ETech.cls
 
                 if (dt.Rows.Count > 0)
                 {
-                    int pwid = Convert.ToInt32(dt.Rows[0]["wid"]);
+                    int pwid = Convert.ToInt32(dt.Rows[0]["SyncId"]);
                     this.setcls_product_by_wid(pwid, true, false);
                     return;
                 }
@@ -160,7 +160,7 @@ namespace ETech.cls
 
             //search for clientbarcode and barcode
             barcode_d = barcode_d.Substring(0, 12);
-            sSQL = @"SELECT `wid` FROM `product` 
+            sSQL = @"SELECT `SyncId` FROM `product` 
                             WHERE `show` = 1 AND `status` = 1 
                                 AND ( `barcode` LIKE @barcode_d_like 
                                     OR `clientbarcode` = @barcode_d OR `clientbarcode2` = @barcode_d ) ";
@@ -170,14 +170,14 @@ namespace ETech.cls
 
             if (dt.Rows.Count > 0)
             {
-                int pwid = Convert.ToInt32(dt.Rows[0]["wid"]);
+                int pwid = Convert.ToInt32(dt.Rows[0]["SyncId"]);
                 this.setcls_product_by_wid(pwid);
                 return;
             }
 
             //search for E13 Barcode with leading zero
             barcode_d = "0" + barcode_d.Substring(0, 11);
-            sSQL = @"SELECT `wid` FROM `product` 
+            sSQL = @"SELECT `SyncId` FROM `product` 
                             WHERE `show` = 1 AND `status` = 1 
                                 AND ( `barcode` LIKE @barcode_d_like 
                                     OR `clientbarcode` = @barcode_d OR `clientbarcode2` = @barcode_d ) ";
@@ -187,7 +187,7 @@ namespace ETech.cls
 
             if (dt.Rows.Count > 0)
             {
-                int pwid = Convert.ToInt32(dt.Rows[0]["wid"]);
+                int pwid = Convert.ToInt32(dt.Rows[0]["SyncId"]);
                 this.setcls_product_by_wid(pwid);
                 return;
             }
@@ -218,12 +218,12 @@ namespace ETech.cls
 
             string sSQL = "";
             sSQL = @"SELECT Count(0),
-                    COALESCE(P.`wid`,0) AS 'pwid',
+                    COALESCE(P.`SyncId`,0) AS 'pwid',
                     COALESCE(P.`product`,'RETAIL') AS 'productname', 
                     COALESCE(B.`purchaseprice`, 0) AS 'pprice',
                     COALESCE(B.`sellingprice`, " + price_d + @") AS 'oprice'
                     FROM `product` AS P
-                    LEFT JOIN `branchprice` AS B ON B.`productid`=P.`wid` AND
+                    LEFT JOIN `branchprice` AS B ON B.`productid`=P.`SyncId` AND
                         B.`branchid` = " + cls_globalvariables.BranchCode + @" 
                     WHERE (P.`barcode` = '" + barcode_d + @"' OR P.`clientbarcode` = '" + barcode_d + @"')";
 
@@ -231,7 +231,7 @@ namespace ETech.cls
             DataTable dt = mySQLFunc.getdb(sSQL);
             DataRow dr = dt.Rows[0];
 
-            this.wid = Convert.ToInt32(dr["pwid"]);
+            this.syncid = Convert.ToInt32(dr["pwid"]);
             this.origprice = Convert.ToDecimal(dr["oprice"]);
             this.pprice = Convert.ToDecimal(dr["pprice"]);
         }
@@ -255,18 +255,18 @@ namespace ETech.cls
             string sql = @"
                 SELECT `product` 
                 FROM `product`
-                WHERE `wid` = " + wid;
+                WHERE `SyncId` = " + syncid;
             DataTable table = mySQLFunc.getdb(sql);
             if (table != null && table.Rows.Count > 0)
                 this.productname = table.Rows[0]["product"].ToString();
-            this.wid = wid_d;
-            if (this.wid == 0)
+            this.syncid = wid_d;
+            if (this.syncid == 0)
             {
                 this.qty = qty_d;
                 this.vat = calculate_vat(this.isvat, price_d);
                 this.isvat = true;
             }
-            else if (this.wid == 1)
+            else if (this.syncid == 1)
             {
                 this.productname = "Service Charge: " + cls_globalvariables.ServiceCharge_v + "%";
                 this.isvat = false;
@@ -275,7 +275,7 @@ namespace ETech.cls
                 this.isvat = false;
                 this.transaction_mode = "nonvat_sale";
             }
-            else if (this.wid == 2)
+            else if (this.syncid == 2)
             {
                 this.productname = "Local Tax: " + cls_globalvariables.LocalTax_v + "%";
                 this.isvat = false;
@@ -301,7 +301,7 @@ namespace ETech.cls
         public void setcls_product_by_wid(int wid_d, bool is_package, bool is_history)
         {
             string sSQL = "";
-            sSQL = @"SELECT P.`wid` AS 'pwid', P.`product` AS 'productname', 
+            sSQL = @"SELECT P.`SyncId` AS 'pwid', P.`product` AS 'productname', 
                             P.`packbarcode`, P.`barcode`, P.`isvat`, P.`senior`,
                             COALESCE(B.`sellingprice`, 0) AS 'price', 
                             COALESCE(B.`wholesaleprice`, 0) AS 'wholesaleprice', 
@@ -312,9 +312,9 @@ namespace ETech.cls
                             COALESCE(B.`pricee`, 0) AS 'pricee',
                             COALESCE(B.`purchaseprice`, 0) AS 'pprice'
                         FROM `product` AS P
-                        LEFT JOIN `branchprice` AS B ON B.`productid` = P.`wid` 
+                        LEFT JOIN `branchprice` AS B ON B.`productid` = P.`SyncId` 
                             AND B.`branchid` = " + cls_globalvariables.BranchCode + @" 
-                        WHERE P.`wid` = " + wid_d;
+                        WHERE P.`SyncId` = " + wid_d;
 
             if (cls_globalvariables.allowZeroPrice_v.ToString() != "1")
             {
@@ -331,7 +331,7 @@ namespace ETech.cls
                 return;
 
             DataRow dr = dt.Rows[0];
-            this.wid = wid_d;
+            this.syncid = wid_d;
             this.singlebarcode = dr["barcode"].ToString();
             this.productname = dr["productname"].ToString();
 
@@ -365,15 +365,15 @@ namespace ETech.cls
             this.origprice = this.retailprice;
             this.price = this.retailprice;
 
-            if (iswholesale && this.wid != 0)
+            if (iswholesale && this.syncid != 0)
             {
-                if (pricingtype == 0 && customer.getItemPriceDictionary().ContainsKey(wid))
+                if (pricingtype == 0 && customer.getItemPriceDictionary().ContainsKey(syncid))
                 {
                     this.origprice = wholesaleprice;
                     this.price = wholesaleprice;
                     if (!this.customerHistoricalPricingFlag)
                     {
-                        getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[wid] - this.origprice, false);
+                        getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[syncid] - this.origprice, false);
                         customerHistoricalPricingFlag = true;
                     }
                 }
@@ -473,7 +473,7 @@ namespace ETech.cls
             this.productmode = (this.isvat) ? "V " : "NV ";
             this.productmode += ((this.issenior != 0) && issenior_d) ? "S" : "NS";
 
-            if (this.qty > 0 && (!this.isvat || isnonvat_d) && (!issenior_d || this.issenior != 1) || (this.wid < 10 && this.wid > 0))
+            if (this.qty > 0 && (!this.isvat || isnonvat_d) && (!issenior_d || this.issenior != 1) || (this.syncid < 10 && this.syncid > 0))
                 this.transaction_mode = "nonvat_sale";
             else if (this.qty < 0 && (!this.isvat || isnonvat_d) && (!issenior_d || this.issenior != 1))
                 this.transaction_mode = "nonvat_return";
@@ -556,7 +556,7 @@ namespace ETech.cls
             this.productmode = (this.isvat) ? "V " : "NV ";
             this.productmode += ((this.issenior != 0) && issenior_d) ? "S" : "NS";
 
-            if (this.qty > 0 && (!this.isvat || isnonvat_d) && (!issenior_d || this.issenior != 1) || (this.wid < 10 && this.wid > 0))
+            if (this.qty > 0 && (!this.isvat || isnonvat_d) && (!issenior_d || this.issenior != 1) || (this.syncid < 10 && this.syncid > 0))
                 this.transaction_mode = "nonvat_sale";
             else if (this.qty < 0 && (!this.isvat || isnonvat_d) && (!issenior_d || this.issenior != 1))
                 this.transaction_mode = "nonvat_return";
@@ -616,7 +616,7 @@ namespace ETech.cls
         public void setDiscount(decimal discount_d) { this.discount = discount_d; }
 
         //get from attributes
-        public int getWid() { return this.wid; }
+        public long getSyncId() { return this.syncid; }
         public string getBarcode()
         {
             return this.barcode;

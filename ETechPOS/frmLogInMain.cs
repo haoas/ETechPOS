@@ -154,8 +154,7 @@ namespace ETech
             //Convert encoded bytes back to a 'readable' string
             string pass = BitConverter.ToString(encodedBytes).Replace("-", "");
 
-            string SQL = @"SELECT * FROM `user` WHERE 
-                            `show`=1 AND username = @username AND password = @password";
+            string SQL = @"SELECT * FROM `user` WHERE `status`=1 AND username = @username AND password = @password";
             List<string> parameters = new List<string>();
             List<string> values = new List<string>();
             parameters.Add("@username");
@@ -175,12 +174,12 @@ namespace ETech
 
             string code = dt.Rows[0]["usercode"].ToString();
             string fullname = dt.Rows[0]["fullname"].ToString();
-            string wid = dt.Rows[0]["wid"].ToString();
+            string SyncId = dt.Rows[0]["SyncId"].ToString();
             string SQLpermissions = @"SELECT * FROM `userpermission` WHERE `userid` = @userwid";
             parameters = new List<string>();
             values = new List<string>();
             parameters.Add("@userwid");
-            values.Add(wid);
+            values.Add(SyncId);
             DataTable dtpermission = mySQLFunc.getdb(SQLpermissions, parameters, values);
             List<int> permissions = new List<int>();
             foreach (DataRow dr in dtpermission.Rows)
@@ -195,7 +194,7 @@ namespace ETech
                 return;
             }
 
-            this.cashier.setcls_user(code, fullname, permissions, Convert.ToInt32(wid));
+            this.cashier.setcls_user(code, fullname, permissions, Convert.ToInt32(SyncId));
 
             //Does not continue if Mac address is incorrect
             //if (!cls_globalfunc.CheckMacAddress() && cashier.getwid() != 0 && cashier.getwid() != 1)
@@ -229,7 +228,7 @@ namespace ETech
                 conn.Close();
 
                 string branchid = cls_globalvariables.BranchCode;
-                string sql = "Select Now() AS `now`, `name` as 'branchname' FROM branch WHERE `wid`=" + branchid;
+                string sql = "Select Now() AS `now`, `name` as 'branchname' FROM branch WHERE `Id`=" + branchid;
                 DataTable dt = mySQLFunc.getdb(sql);
                 if (dt != null && dt.Rows.Count <= 0)
                 {

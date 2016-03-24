@@ -138,9 +138,7 @@ namespace ETech.cls
             set
             {
                 branchcode = value;
-                string selectSql =
-                    @"SELECT `name` FROM `branch`
-                    WHERE wid = '" + value + "'";
+                string selectSql = @"SELECT `name` FROM `branch` WHERE Id = '" + value + "'";
                 DataTable resultDt = mySQLFunc.getdb(selectSql);
                 if (resultDt == null || resultDt.Rows.Count <= 0)
                     return;

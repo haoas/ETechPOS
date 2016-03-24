@@ -36,7 +36,7 @@ namespace ETech.cls
             init();
         }
 
-        public cls_CustomPaymentsInfo(int wid_d)
+        public cls_CustomPaymentsInfo(int syncid_d)
         {
             init();
 
@@ -50,8 +50,8 @@ namespace ETech.cls
 	                       COALESCE(C.`field5`,'') as `field5`,
 	                       COALESCE(C.`field6`,'') as `field6`
                     FROM  `paymentmethod` as P, `collectiondetail` as D
-                    LEFT JOIN  `poscustompayments` as C  ON C.`detailid` = D.`wid` AND C.`detailid` = " + wid_d + @"
-                        WHERE P.`wid`=D.`method` AND D.`wid` = " + wid_d;
+                    LEFT JOIN  `poscustompayments` as C  ON C.`detailid` = D.`SyncId` AND C.`detailid` = " + syncid_d + @"
+                        WHERE P.`SyncId`=D.`method` AND D.`SyncId` = " + syncid_d;
 
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)

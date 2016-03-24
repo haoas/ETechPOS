@@ -17,7 +17,7 @@ namespace ETech
         //public cls_product prod;
         public decimal new_qty;
         public string productname;
-        public int productid;
+        public long productid;
         public bool delete_permission;
         public bool return_permission;
         public bool forcereturn_permission;

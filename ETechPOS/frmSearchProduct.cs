@@ -144,13 +144,13 @@ namespace ETech
             }
 
             string SQL = @"SELECT A.* FROM (
-                            SELECT P.`wid` as 'productwid', P.`product` AS 'productname', 
+                            SELECT P.`SyncId` as 'productwid', P.`product` AS 'productname', 
                                 P.`barcode` AS 'productbarcode',
                                 P.`stockno`, B.`sellingprice` AS 'price', 
                                 B.`wholesaleprice` AS 'wholesaleprice',
                                 P.`description` as 'desc', P.`memo`
                             FROM `product` AS P, `branchprice` AS B 
-                            WHERE B.`branchid` = " + cls_globalvariables.BranchCode + @" AND B.`productid` = P.`wid` AND 
+                            WHERE B.`branchid` = " + cls_globalvariables.BranchCode + @" AND B.`productid` = P.`SyncId` AND 
                                 P.`status` = 1 " + allowZeroPrice + @" AND
                                 CONCAT(P.`product`, ' ', P.`barcode`, ' ', P.`stockno`,' ',
                                     P.`clientbarcode`,' ',P.`clientbarcode2`) LIKE @str_param
@@ -193,7 +193,7 @@ namespace ETech
         {
             if (dgvProduct.SelectedRows.Count <= 0)
                 return;
-            int.TryParse(dgvProduct.SelectedRows[0].Cells["colProductWid"].Value.ToString(), out productwid);
+            int.TryParse(dgvProduct.SelectedRows[0].Cells["colProductSyncid"].Value.ToString(), out productwid);
             this.Close();
         }
     }

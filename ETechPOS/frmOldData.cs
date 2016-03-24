@@ -73,7 +73,7 @@ namespace ETech
 
             ornumber = (branchid + terminalno + ornumber).TrimStart('0');
 
-            int next_wid = mysqlclass.get_next_wid_withlock("saleshead");
+            long next_wid = mysqlclass.GetAndInsertNextSyncId("saleshead");
             string sSQL = @"UPDATE `saleshead` SET
                                 `branchid` = '" + branchid + @"', 
                                 `type` = '3', 
@@ -85,11 +85,11 @@ namespace ETech
                                 `ornumber` = '" + ornumber + @"',  
                                 `terminalno` = '" + terminalno + @"',
                                 `status` = 1, `customerid` = 0
-                            WHERE `wid` = '" + next_wid + @"'";
+                            WHERE `SyncId` = '" + next_wid + @"'";
             mySQLFunc.setdb(sSQL);
 
 
-            int next_detailwid = mysqlclass.get_next_wid_withlock("salesdetail");
+            long next_detailwid = mysqlclass.GetAndInsertNextSyncId("salesdetail");
             string sSQLdetail = @"UPDATE `salesdetail` SET
                                 `headid` = '" + next_wid + @"', 
                                 `productid` = '0',  
@@ -103,10 +103,10 @@ namespace ETech
                                 `soldby` = '0',  
                                 `addbackqty` = '0',  
                                 `addbackbigqty` = '0' 
-                            WHERE `wid` = " + next_detailwid;
+                            WHERE `SyncId` = " + next_detailwid;
             mySQLFunc.setdb(sSQLdetail);
 
-            int collectionheadwid = mysqlclass.get_next_wid_withlock("collectionhead");
+            long collectionheadwid = mysqlclass.GetAndInsertNextSyncId("collectionhead");
             string sSQLch = @"UPDATE `collectionhead` SET
                                 `customerid` = 0, 
                                 `collectiondate` = '" + lastdate + @"', 
@@ -116,7 +116,7 @@ namespace ETech
                                 `lastmodifieddate` = NOW(), 
                                 `lastmodifiedby` = 0, 
                                 `datecreated` = NOW()
-                            WHERE `wid` = " + collectionheadwid;
+                            WHERE `SyncId` = " + collectionheadwid;
             mySQLFunc.setdb(sSQLch);
 
             string sSQLcs = @"INSERT INTO `collectionsales`
@@ -126,12 +126,12 @@ namespace ETech
             mySQLFunc.setdb(sSQLcs);
 
 
-            int collectiondetailwid = mysqlclass.get_next_wid_withlock("collectiondetail");
+            long collectiondetailwid = mysqlclass.GetAndInsertNextSyncId("collectiondetail");
             string sSQLcd = @"UPDATE `collectiondetail` SET
                                 `headid` = " + collectionheadwid.ToString() + @",
                                 `method` = 1, 
                                 `amount` = " + amount.ToString() + @"
-                           WHERE `wid` = " + collectiondetailwid;
+                           WHERE `SyncId` = " + collectiondetailwid;
             mySQLFunc.setdb(sSQLcd);
 
             MessageBox.Show("Saved");

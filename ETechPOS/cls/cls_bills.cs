@@ -123,8 +123,8 @@ namespace ETech.cls
 
             string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
-            int userwid = cashier.getwid();
-            int wid = mysqlclass.get_next_wid_withlock("poscashdenomination");
+            long userwid = cashier.getsyncid();
+            long SyncId = mysqlclass.GetAndInsertNextSyncId("poscashdenomination");
 
             if (this.get_type() == 3)
             {
@@ -142,25 +142,25 @@ namespace ETech.cls
                ", `c10` = " + this.getCash_10() + ", `c5` = " + this.getCash_5() + 
                ", `c1` = " + this.getCash_1() + ", `c25c` = " + this.getCash_25c() + 
                ", `c10c` = " + this.getCash_10c() + ", `c5c` = " + this.getCash_5c() + @" 
-               WHERE `wid` = " + wid + " LIMIT 1";
+               WHERE `SyncId` = " + SyncId + " LIMIT 1";
 
             //Console.WriteLine(sSQL);
             mySQLFunc.setdb(sSQL);
 
-            mysqlclass.update_synctable("poscashdenomination", wid);
+            mysqlclass.update_synctable("poscashdenomination", SyncId);
         }
         public void get_cashdenomination(cls_user cashier, int type)
         {
             string branchid = cls_globalvariables.BranchCode;
             string terminalno = cls_globalvariables.terminalno_v;
-            int userwid = cashier.getwid();
+            long userwid = cashier.getsyncid();
 
             string sSQL = @"SELECT * FROM `poscashdenomination` WHERE 
                             `branchid` = " + branchid + @" AND
                             `terminalno` = " + terminalno + @" AND 
-                            CAST(`datecreated` AS DATE) = CAST(NOW() AS DATE) AND 
+                            DATE(`datecreated`) = DATE(NOW()) AND
                             `type` = " + type + @"
-                            ORDER BY `id` DESC
+                            ORDER BY `datecreated` DESC
                             LIMIT 1";
 
             DataTable dt = mySQLFunc.getdb(sSQL);

@@ -266,13 +266,13 @@ namespace ETech
         {
             string selectSql =
                 @"SELECT
-	                `wid` AS `Payment Id`
+	                `SyncId` AS `Payment Id`
                 FROM
 	                `paymentmethod`
                 WHERE
-	                `wid` >= 100
+	                `SyncId` >= 100
                 ORDER BY
-	                `wid`";
+	                `SyncId`";
             DataTable resultDt = mySQLFunc.getdb(selectSql);
             if (resultDt == null || resultDt.Rows.Count <= 0)
                 return false;

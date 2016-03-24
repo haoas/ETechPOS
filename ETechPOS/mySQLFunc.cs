@@ -345,7 +345,7 @@ namespace ETech
                             `sqlusername` AS `username`,
                             `sqlpassword` AS `password`
                            FROM `branch`
-                           WHERE `wid` = 10 LIMIT 1";
+                           WHERE `Id` = 10 LIMIT 1";
                 DataTable connectionTable = getdb(sql);
                 if (connectionTable != null && connectionTable.Rows.Count != 0)
                 {
@@ -375,7 +375,7 @@ namespace ETech
                             `sqlusername` AS `username`,
                             `sqlpassword` AS `password`
                            FROM `branch`
-                           WHERE `wid` = 10 LIMIT 1";
+                           WHERE `Id` = 10 LIMIT 1";
                 DataTable connectionTable = getdb(sql);
                 if (connectionTable != null && connectionTable.Rows.Count != 0)
                 {
@@ -474,7 +474,7 @@ namespace ETech
                             `sqlusername` AS `username`,
                             `sqlpassword` AS `password`
                            FROM `branch`
-                           WHERE `wid` = 10 LIMIT 1";
+                           WHERE `Id` = 10 LIMIT 1";
                 DataTable connectionTable = getdb(sql);
                 if (connectionTable != null && connectionTable.Rows.Count != 0)
                 {
