@@ -16,6 +16,7 @@ namespace ETech
     {
         public mySQLClass()
         {
+            
         }
 
         private MySqlConnection connecttoSQL()
@@ -510,7 +511,7 @@ namespace ETech
                 List<string> temp = GetListStringAndInsertNextSyncId("salesdetail");
                 foreach (string str in temp)
                     transactionQueryList.Add(str);
-                transactionQueryList.Add("SET @salesdetailwid := @syncid_d");
+                transactionQueryList.Add("SET @salesdetailwid := @SyncId");
                 int issenior = (trans.getsenior().get_idnumber().Length >= 1 && prod.getIsSenior() != 0) ? prod.getIsSenior() : 0;
                 string sSQLdetail = @"UPDATE `salesdetail` SET
                                 `headid` = '" + salesheadwid + @"', 
@@ -527,42 +528,6 @@ namespace ETech
                 //Console.WriteLine(sSQLdetail);
                 //setdb(sSQLdetail);
                 transactionQueryList.Add(sSQLdetail);
-                discquery = "";
-                List<cls_discount> detailDiscounts = prod.getProductDiscountList().get_discount_list();
-                foreach (cls_discount disc in detailDiscounts)
-                {
-                    if (disc.get_status())
-                    {
-                        discquery += @" ,(@salesdetailwid," + disc.get_type() + "," + disc.get_basis() + "," +
-                                            disc.get_value() + "," + disc.get_ismultiple() + "," + disc.get_discounted_amount() + "," + disc.get_SyncId() + ") ";
-                    }
-                }
-
-                //insert detail discounts
-                if (discquery.Length > 0)
-                {
-                    transactionQueryList.Add(@"INSERT INTO `salesdetaildiscounts`
-                            (`salesdetailwid`,`type`,`basis`,`value`,`ismultiple`,`amount`, `discountwid`)
-                            VALUES " + discquery.Substring(2));
-                }
-            }
-
-            //head discounts
-            List<cls_discount> headDiscounts = trans.get_productlist().getTransDisc().get_discount_list();
-            discquery = @"";
-            foreach (cls_discount disc in headDiscounts)
-            {
-                if (disc.get_status())
-                {
-                    discquery += @" ,(" + salesheadwid + "," + disc.get_type() + "," + disc.get_basis() + "," +
-                                        disc.get_value() + "," + disc.get_ismultiple() + "," + disc.get_discounted_amount() + "," + disc.get_SyncId() + ") ";
-                }
-            }
-            if (discquery.Length > 0)
-            {
-                transactionQueryList.Add(@"INSERT INTO `salesheaddiscounts`
-                            (`salesheadwid`,`type`,`basis`,`value`,`ismultiple`,`amount`, `discountwid`)
-                            VALUES " + discquery.Substring(2));
             }
 
             tempStringList = GetListStringAndInsertNextSyncId("collectionhead");

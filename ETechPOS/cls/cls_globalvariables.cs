@@ -130,19 +130,23 @@ namespace ETech.cls
             set { database = value; }
         }
 
-        public static int branchidlen_v = 2;
         private static string branchcode = "";
         public static string BranchCode
         {
             get { return branchcode; }
             set
             {
-                branchcode = value;
-                string selectSql = @"SELECT `name` FROM `branch` WHERE Id = '" + value + "'";
-                DataTable resultDt = mySQLFunc.getdb(selectSql);
-                if (resultDt == null || resultDt.Rows.Count <= 0)
-                    return;
-                BranchName = resultDt.Rows[0]["name"].ToString();
+                if (value.Length != 4)
+                    throw new Exception("Invalid BranchCode");
+                else
+                {
+                    branchcode = value;
+                    string selectSql = @"SELECT `name` FROM `branch` WHERE Id = '" + value + "'";
+                    DataTable resultDt = mySQLFunc.getdb(selectSql);
+                    if (resultDt == null || resultDt.Rows.Count <= 0)
+                        return;
+                    BranchName = resultDt.Rows[0]["name"].ToString();
+                }
             }
         }
 

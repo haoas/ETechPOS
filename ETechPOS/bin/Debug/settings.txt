@@ -1,3 +1,4 @@
+branchcode=1015
 terminal=01
 com=3
 disp1=WELCOME TO
@@ -7,7 +8,6 @@ userid=root
 password=1JvGsFBgA6fydZYfuk3kEw==
 database=landlite
 colortheme=
-branchcode=10
 BusinessName=ETECH
 Owner=ETECH
 TIN=TIN: 000-000-000-000

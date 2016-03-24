@@ -700,6 +700,7 @@ namespace ETech
                         Delete_Unused_saleshead(this.get_curtrans());
                         LOGS.LOG_PRINT("Invoice Cancelled: " + this.get_curtrans().getORnumber().ToString());
                         remove_transaction();
+                        create_new_invoice();
                         isdetected = true;
                     }
                     else if (FPage == 1)

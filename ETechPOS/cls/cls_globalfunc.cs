@@ -349,6 +349,8 @@ namespace ETech.cls
         }
         public static bool CheckDatabaseVersion()
         {
+            return true;
+
             string sql = @"SELECT * FROM config WHERE `particular`='version'";
             DataTable DT = mySQLFunc.getdb(sql);
             if (DT == null)

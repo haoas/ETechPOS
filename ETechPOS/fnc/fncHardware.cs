@@ -366,11 +366,8 @@ namespace ETech.fnc
                 LEFT JOIN
 	                `salesdetail` AS sd
 	                ON sd.`headid` = sh.`SyncId`
-                LEFT JOIN
-	                salesdetaildiscounts AS sdd
-	                ON sdd.`salesdetailwid` = sd.`SyncId`
                 WHERE
-	                sh.`show` = 1 and sh.`status` = 1 and sdd.`type` = 2
+	                sh.`show` = 1 and sh.`status` = 1
                     and `date` between '" + datetime_d.ToString("yyyy-MM-dd") + "' and '" + datetime_d.ToString("yyyy-MM-dd") + " 23:59:59';";
 
             decimal t_senior_disc = 0;
@@ -1280,11 +1277,8 @@ namespace ETech.fnc
                 LEFT JOIN
 	                `salesdetail` AS sd
 	                ON sd.`headid` = sh.`SyncId`
-                LEFT JOIN
-	                salesdetaildiscounts AS sdd
-	                ON sdd.`salesdetailwid` = sd.`SyncId`
                 WHERE
-	                sh.`show` = 1 and sh.`status` = 1 and sdd.`type` = 2
+	                sh.`show` = 1 and sh.`status` = 1
                     and `date` between '" + datetime_d.ToString("yyyy-MM-dd") + "' and '" + datetime_d.ToString("yyyy-MM-dd") + " 23:59:59';";
 
             decimal t_senior_disc = 0;
