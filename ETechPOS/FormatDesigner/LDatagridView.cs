@@ -61,15 +61,23 @@ namespace ETech.FormatDesigner
             int row_index = DGV.CurrentCell.RowIndex;
             int row_index_next = row_index - 1;
 
+            int visiblecolumnindex = 0;
+            foreach (DataGridViewColumn DGVC in DGV.Columns)
+            {
+                visiblecolumnindex++;
+                if (DGVC.Visible == true)
+                    break;
+            }
+
             if (row_index_next <= -1)
             {
                 DGV.Rows[row_index].Selected = true;
-                DGV.CurrentCell = DGV[0, row_index];
+                DGV.CurrentCell = DGV[visiblecolumnindex, row_index];
             }
             else
             {
                 DGV.Rows[row_index_next].Selected = true;
-                DGV.CurrentCell = DGV[0, row_index_next];
+                DGV.CurrentCell = DGV[visiblecolumnindex, row_index_next];
             }
         }
 
@@ -81,15 +89,23 @@ namespace ETech.FormatDesigner
             int row_index = DGV.CurrentCell.RowIndex;
             int row_index_next = row_index + 1;
 
+            int visiblecolumnindex = 0;
+            foreach (DataGridViewColumn DGVC in DGV.Columns)
+            {
+                visiblecolumnindex++;
+                if (DGVC.Visible == true)
+                    break;
+            }
+
             if (row_index_next >= DGV.RowCount)
             {
                 DGV.Rows[row_index].Selected = true;
-                DGV.CurrentCell = DGV[0, row_index];
+                DGV.CurrentCell = DGV[visiblecolumnindex, row_index];
             }
             else
             {
                 DGV.Rows[row_index_next].Selected = true;
-                DGV.CurrentCell = DGV[0, row_index_next];
+                DGV.CurrentCell = DGV[visiblecolumnindex, row_index_next];
             }
         }
 

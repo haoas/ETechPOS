@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ViewUsersPanel = new System.Windows.Forms.Panel();
             this.cbxActive = new System.Windows.Forms.CheckBox();
             this.txtUser = new System.Windows.Forms.TextBox();
@@ -46,6 +46,7 @@
             this.tbx_Password = new System.Windows.Forms.TextBox();
             this.tbx_Username = new System.Windows.Forms.TextBox();
             this.AddOrEditUsersPanel = new System.Windows.Forms.Panel();
+            this.btnDeactivate = new System.Windows.Forms.Button();
             this.btn_UpdateUser = new System.Windows.Forms.Button();
             this.GB_Authorization = new System.Windows.Forms.GroupBox();
             this.cbx_zread = new System.Windows.Forms.CheckBox();
@@ -64,10 +65,13 @@
             this.cbx_ChangeQuantity = new System.Windows.Forms.CheckBox();
             this.cbx_Openitem = new System.Windows.Forms.CheckBox();
             this.cbx_All = new System.Windows.Forms.CheckBox();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btn_AddUser = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.ViewUsersPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVUsers)).BeginInit();
             this.AddOrEditUsersPanel.SuspendLayout();
@@ -76,13 +80,14 @@
             // 
             // ViewUsersPanel
             // 
+            this.ViewUsersPanel.Controls.Add(this.btnAdd);
             this.ViewUsersPanel.Controls.Add(this.cbxActive);
             this.ViewUsersPanel.Controls.Add(this.txtUser);
             this.ViewUsersPanel.Controls.Add(this.lblUser);
             this.ViewUsersPanel.Controls.Add(this.DGVUsers);
             this.ViewUsersPanel.Location = new System.Drawing.Point(12, 12);
             this.ViewUsersPanel.Name = "ViewUsersPanel";
-            this.ViewUsersPanel.Size = new System.Drawing.Size(419, 297);
+            this.ViewUsersPanel.Size = new System.Drawing.Size(419, 361);
             this.ViewUsersPanel.TabIndex = 9;
             // 
             // cbxActive
@@ -129,7 +134,7 @@
             this.DGVUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
-            this.qty,
+            this.code,
             this.price,
             this.amount});
             this.DGVUsers.Enabled = false;
@@ -216,6 +221,9 @@
             // 
             // AddOrEditUsersPanel
             // 
+            this.AddOrEditUsersPanel.Controls.Add(this.btnCancel);
+            this.AddOrEditUsersPanel.Controls.Add(this.btn_AddUser);
+            this.AddOrEditUsersPanel.Controls.Add(this.btnDeactivate);
             this.AddOrEditUsersPanel.Controls.Add(this.btn_UpdateUser);
             this.AddOrEditUsersPanel.Controls.Add(this.GB_Authorization);
             this.AddOrEditUsersPanel.Controls.Add(this.label3);
@@ -231,6 +239,17 @@
             this.AddOrEditUsersPanel.Name = "AddOrEditUsersPanel";
             this.AddOrEditUsersPanel.Size = new System.Drawing.Size(644, 361);
             this.AddOrEditUsersPanel.TabIndex = 18;
+            // 
+            // btnDeactivate
+            // 
+            this.btnDeactivate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeactivate.Location = new System.Drawing.Point(173, 303);
+            this.btnDeactivate.Name = "btnDeactivate";
+            this.btnDeactivate.Size = new System.Drawing.Size(143, 44);
+            this.btnDeactivate.TabIndex = 17;
+            this.btnDeactivate.Text = "Deactivate";
+            this.btnDeactivate.UseVisualStyleBackColor = true;
+            this.btnDeactivate.Click += new System.EventHandler(this.btnDeactivate_Click);
             // 
             // btn_UpdateUser
             // 
@@ -276,7 +295,7 @@
             this.cbx_zread.Location = new System.Drawing.Point(391, 144);
             this.cbx_zread.Name = "cbx_zread";
             this.cbx_zread.Size = new System.Drawing.Size(153, 24);
-            this.cbx_zread.TabIndex = 15;
+            this.cbx_zread.TabIndex = 21;
             this.cbx_zread.Text = "Print Z Reading";
             this.cbx_zread.UseVisualStyleBackColor = false;
             // 
@@ -287,7 +306,7 @@
             this.cbx_xread.Location = new System.Drawing.Point(391, 115);
             this.cbx_xread.Name = "cbx_xread";
             this.cbx_xread.Size = new System.Drawing.Size(154, 24);
-            this.cbx_xread.TabIndex = 14;
+            this.cbx_xread.TabIndex = 20;
             this.cbx_xread.Text = "Print X Reading";
             this.cbx_xread.UseVisualStyleBackColor = false;
             // 
@@ -298,7 +317,7 @@
             this.cbx_pickupcash.Location = new System.Drawing.Point(195, 175);
             this.cbx_pickupcash.Name = "cbx_pickupcash";
             this.cbx_pickupcash.Size = new System.Drawing.Size(127, 24);
-            this.cbx_pickupcash.TabIndex = 13;
+            this.cbx_pickupcash.TabIndex = 16;
             this.cbx_pickupcash.Text = "Pickup Cash";
             this.cbx_pickupcash.UseVisualStyleBackColor = false;
             // 
@@ -309,7 +328,7 @@
             this.cbx_opendrawer.Location = new System.Drawing.Point(195, 145);
             this.cbx_opendrawer.Name = "cbx_opendrawer";
             this.cbx_opendrawer.Size = new System.Drawing.Size(133, 24);
-            this.cbx_opendrawer.TabIndex = 12;
+            this.cbx_opendrawer.TabIndex = 15;
             this.cbx_opendrawer.Text = "Open Drawer";
             this.cbx_opendrawer.UseVisualStyleBackColor = false;
             // 
@@ -320,7 +339,7 @@
             this.cbx_wholesale.Location = new System.Drawing.Point(195, 115);
             this.cbx_wholesale.Name = "cbx_wholesale";
             this.cbx_wholesale.Size = new System.Drawing.Size(189, 24);
-            this.cbx_wholesale.TabIndex = 11;
+            this.cbx_wholesale.TabIndex = 14;
             this.cbx_wholesale.Text = "Set Wholesale Price";
             this.cbx_wholesale.UseVisualStyleBackColor = false;
             // 
@@ -331,7 +350,7 @@
             this.cbx_reprintor.Location = new System.Drawing.Point(195, 55);
             this.cbx_reprintor.Name = "cbx_reprintor";
             this.cbx_reprintor.Size = new System.Drawing.Size(154, 24);
-            this.cbx_reprintor.TabIndex = 10;
+            this.cbx_reprintor.TabIndex = 12;
             this.cbx_reprintor.Text = "Reprint Receipt";
             this.cbx_reprintor.UseVisualStyleBackColor = false;
             // 
@@ -342,7 +361,7 @@
             this.cbx_voidtrans.Location = new System.Drawing.Point(195, 25);
             this.cbx_voidtrans.Name = "cbx_voidtrans";
             this.cbx_voidtrans.Size = new System.Drawing.Size(163, 24);
-            this.cbx_voidtrans.TabIndex = 9;
+            this.cbx_voidtrans.TabIndex = 11;
             this.cbx_voidtrans.Text = "Void Transaction";
             this.cbx_voidtrans.UseVisualStyleBackColor = false;
             // 
@@ -353,7 +372,7 @@
             this.cbx_seniortrans.Location = new System.Drawing.Point(391, 85);
             this.cbx_seniortrans.Name = "cbx_seniortrans";
             this.cbx_seniortrans.Size = new System.Drawing.Size(163, 24);
-            this.cbx_seniortrans.TabIndex = 8;
+            this.cbx_seniortrans.TabIndex = 19;
             this.cbx_seniortrans.Text = "Set Senior Trans";
             this.cbx_seniortrans.UseVisualStyleBackColor = false;
             // 
@@ -364,7 +383,7 @@
             this.cbx_membertrans.Location = new System.Drawing.Point(391, 55);
             this.cbx_membertrans.Name = "cbx_membertrans";
             this.cbx_membertrans.Size = new System.Drawing.Size(175, 24);
-            this.cbx_membertrans.TabIndex = 7;
+            this.cbx_membertrans.TabIndex = 18;
             this.cbx_membertrans.Text = "Set Member Trans";
             this.cbx_membertrans.UseVisualStyleBackColor = false;
             // 
@@ -375,7 +394,7 @@
             this.cbx_Refunditem.Location = new System.Drawing.Point(6, 115);
             this.cbx_Refunditem.Name = "cbx_Refunditem";
             this.cbx_Refunditem.Size = new System.Drawing.Size(137, 24);
-            this.cbx_Refunditem.TabIndex = 6;
+            this.cbx_Refunditem.TabIndex = 9;
             this.cbx_Refunditem.Text = "Refund Items";
             this.cbx_Refunditem.UseVisualStyleBackColor = false;
             // 
@@ -386,7 +405,7 @@
             this.cbx_nonvattrans.Location = new System.Drawing.Point(391, 25);
             this.cbx_nonvattrans.Name = "cbx_nonvattrans";
             this.cbx_nonvattrans.Size = new System.Drawing.Size(171, 24);
-            this.cbx_nonvattrans.TabIndex = 5;
+            this.cbx_nonvattrans.TabIndex = 17;
             this.cbx_nonvattrans.Text = "Set NonVat Trans";
             this.cbx_nonvattrans.UseVisualStyleBackColor = false;
             // 
@@ -397,7 +416,7 @@
             this.cbx_discount.Location = new System.Drawing.Point(195, 85);
             this.cbx_discount.Name = "cbx_discount";
             this.cbx_discount.Size = new System.Drawing.Size(156, 24);
-            this.cbx_discount.TabIndex = 4;
+            this.cbx_discount.TabIndex = 13;
             this.cbx_discount.Text = "Make Discounts";
             this.cbx_discount.UseVisualStyleBackColor = false;
             // 
@@ -408,7 +427,7 @@
             this.cbx_Removeitem.Location = new System.Drawing.Point(6, 144);
             this.cbx_Removeitem.Name = "cbx_Removeitem";
             this.cbx_Removeitem.Size = new System.Drawing.Size(134, 24);
-            this.cbx_Removeitem.TabIndex = 3;
+            this.cbx_Removeitem.TabIndex = 10;
             this.cbx_Removeitem.Text = "Remove Item";
             this.cbx_Removeitem.UseVisualStyleBackColor = false;
             // 
@@ -419,7 +438,7 @@
             this.cbx_ChangeQuantity.Location = new System.Drawing.Point(6, 85);
             this.cbx_ChangeQuantity.Name = "cbx_ChangeQuantity";
             this.cbx_ChangeQuantity.Size = new System.Drawing.Size(162, 24);
-            this.cbx_ChangeQuantity.TabIndex = 2;
+            this.cbx_ChangeQuantity.TabIndex = 8;
             this.cbx_ChangeQuantity.Text = "Change Quantity";
             this.cbx_ChangeQuantity.UseVisualStyleBackColor = false;
             // 
@@ -430,7 +449,7 @@
             this.cbx_Openitem.Location = new System.Drawing.Point(6, 55);
             this.cbx_Openitem.Name = "cbx_Openitem";
             this.cbx_Openitem.Size = new System.Drawing.Size(144, 24);
-            this.cbx_Openitem.TabIndex = 1;
+            this.cbx_Openitem.TabIndex = 7;
             this.cbx_Openitem.Text = "Add OpenItem";
             this.cbx_Openitem.UseVisualStyleBackColor = false;
             // 
@@ -441,49 +460,61 @@
             this.cbx_All.Location = new System.Drawing.Point(6, 25);
             this.cbx_All.Name = "cbx_All";
             this.cbx_All.Size = new System.Drawing.Size(111, 24);
-            this.cbx_All.TabIndex = 0;
+            this.cbx_All.TabIndex = 6;
             this.cbx_All.Text = "All Access";
             this.cbx_All.UseVisualStyleBackColor = false;
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdd.Location = new System.Drawing.Point(14, 303);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(143, 44);
+            this.btnAdd.TabIndex = 18;
+            this.btnAdd.Text = "Add new user";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // id
             // 
             this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.id.DataPropertyName = "syncid";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.id.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.id.DefaultCellStyle = dataGridViewCellStyle9;
             this.id.FillWeight = 200F;
             this.id.HeaderText = "Id";
             this.id.MinimumWidth = 10;
             this.id.Name = "id";
             this.id.ReadOnly = true;
-            this.id.Width = 41;
+            this.id.Visible = false;
+            this.id.Width = 22;
             // 
-            // qty
+            // code
             // 
-            this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.qty.DataPropertyName = "usercode";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.qty.DefaultCellStyle = dataGridViewCellStyle6;
-            this.qty.FillWeight = 46.81124F;
-            this.qty.HeaderText = "Code";
-            this.qty.MinimumWidth = 10;
-            this.qty.Name = "qty";
-            this.qty.ReadOnly = true;
-            this.qty.Width = 57;
+            this.code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.code.DataPropertyName = "code";
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.code.DefaultCellStyle = dataGridViewCellStyle10;
+            this.code.FillWeight = 46.81124F;
+            this.code.HeaderText = "Code";
+            this.code.MinimumWidth = 10;
+            this.code.Name = "code";
+            this.code.ReadOnly = true;
+            this.code.Width = 57;
             // 
             // price
             // 
             this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.price.DataPropertyName = "fullname";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.price.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.price.DefaultCellStyle = dataGridViewCellStyle11;
             this.price.FillWeight = 61.91541F;
             this.price.HeaderText = "Full Name";
             this.price.MinimumWidth = 10;
@@ -494,14 +525,36 @@
             // 
             this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.amount.DataPropertyName = "username";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.amount.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle12.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.amount.DefaultCellStyle = dataGridViewCellStyle12;
             this.amount.HeaderText = "Username";
             this.amount.MinimumWidth = 10;
             this.amount.Name = "amount";
             this.amount.ReadOnly = true;
             this.amount.Width = 80;
+            // 
+            // btn_AddUser
+            // 
+            this.btn_AddUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_AddUser.Location = new System.Drawing.Point(332, 303);
+            this.btn_AddUser.Name = "btn_AddUser";
+            this.btn_AddUser.Size = new System.Drawing.Size(143, 44);
+            this.btn_AddUser.TabIndex = 18;
+            this.btn_AddUser.Text = "Add";
+            this.btn_AddUser.UseVisualStyleBackColor = true;
+            this.btn_AddUser.Click += new System.EventHandler(this.btn_AddUser_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Location = new System.Drawing.Point(13, 303);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(143, 44);
+            this.btnCancel.TabIndex = 19;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // AddUserForm
             // 
@@ -560,10 +613,14 @@
         private System.Windows.Forms.CheckBox cbx_zread;
         private System.Windows.Forms.CheckBox cbx_xread;
         private System.Windows.Forms.Button btn_UpdateUser;
+        private System.Windows.Forms.Button btnDeactivate;
+        private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn qty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn code;
         private System.Windows.Forms.DataGridViewTextBoxColumn price;
         private System.Windows.Forms.DataGridViewTextBoxColumn amount;
+        private System.Windows.Forms.Button btn_AddUser;
+        private System.Windows.Forms.Button btnCancel;
 
     }
 }

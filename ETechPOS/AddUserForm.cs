@@ -25,6 +25,8 @@ namespace ETech
         private void AddUserForm_Load(object sender, EventArgs e)
         {
             DGVUsers.Standardize();
+            RefrshDGVUsers();
+            ClearAddOrEditUsersPanel();
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
@@ -36,13 +38,6 @@ namespace ETech
         {
             string statuscondition = (cbxActive.Checked) ? "1" : "0";
 
-            if (this.txtUser.Text.Trim().Length == 0)
-            {
-                dt_temp.Clear();
-                DGVUsers.DataSource = dt_temp;
-                fncFilter.set_dgv_display(DGVUsers);
-                return;
-            }
             string str_input = "%" + this.txtUser.Text.Trim() + "%";
 
             string SQL = @"SELECT `SyncId`, `usercode` AS 'code', `fullname`, `username`
@@ -95,38 +90,35 @@ namespace ETech
 
         private void EditUser()
         {
-            ViewUsersPanel.Enabled = false;
-
             if (DGVUsers.SelectedRows.Count <= 0)
                 return;
 
             long SyncId = Convert.ToInt64(DGVUsers.SelectedRows[0].Cells["id"].Value);
-            user = new cls_user(SyncId);
+            user = new cls_user();
+            user.setcls_user_by_wid(SyncId, true);
+
+            EnableUserModifierPanel();
 
             tbx_Usercode.Text = user.getusercode().Trim();
             tbx_Fullname.Text = user.getfullname().Trim();
             tbx_Username.Text = user.username.Trim();
             tbx_Password.Text = user.password.Trim();
             cbx_All.Checked = user.authorization.Contains("ALL");
-            cbx_ChangeQuantity.Checked= user.authorization.Contains("CHANGEQTY");
-            cbx_discount.Checked= user.authorization.Contains("DISCOUNT");
-            cbx_membertrans.Checked= user.authorization.Contains("MEMBERTRANS");
-            cbx_nonvattrans.Checked= user.authorization.Contains("NONVATTRANS");
-            cbx_opendrawer.Checked= user.authorization.Contains("OPENDRAWER");
-            cbx_Openitem.Checked= user.authorization.Contains("OPENITEM");
-            cbx_pickupcash.Checked= user.authorization.Contains("PICKUPCASH");
-            cbx_Refunditem.Checked= user.authorization.Contains("REFUNDITEM");
-            cbx_Removeitem.Checked= user.authorization.Contains("REMOVEITEM");
-            cbx_reprintor.Checked= user.authorization.Contains("REPRINTOR");
-            cbx_seniortrans.Checked= user.authorization.Contains("SENIORTRANS");
-            cbx_voidtrans.Checked= user.authorization.Contains("VOIDTRANS");
-            cbx_wholesale.Checked= user.authorization.Contains("WSALETRANS");
-            cbx_xread.Checked= user.authorization.Contains("XREAD");
-            cbx_zread.Checked= user.authorization.Contains("ZREAD");
-
-
-            AddOrEditUsersPanel.Enabled = true;
-            tbx_Usercode.Focus();
+            cbx_ChangeQuantity.Checked = user.authorization.Contains("CHANGEQTY");
+            cbx_discount.Checked = user.authorization.Contains("DISCOUNT");
+            cbx_membertrans.Checked = user.authorization.Contains("MEMBERTRANS");
+            cbx_nonvattrans.Checked = user.authorization.Contains("NONVATTRANS");
+            cbx_opendrawer.Checked = user.authorization.Contains("OPENDRAWER");
+            cbx_Openitem.Checked = user.authorization.Contains("OPENITEM");
+            cbx_pickupcash.Checked = user.authorization.Contains("PICKUPCASH");
+            cbx_Refunditem.Checked = user.authorization.Contains("REFUNDITEM");
+            cbx_Removeitem.Checked = user.authorization.Contains("REMOVEITEM");
+            cbx_reprintor.Checked = user.authorization.Contains("REPRINTOR");
+            cbx_seniortrans.Checked = user.authorization.Contains("SENIORTRANS");
+            cbx_voidtrans.Checked = user.authorization.Contains("VOIDTRANS");
+            cbx_wholesale.Checked = user.authorization.Contains("WSALETRANS");
+            cbx_xread.Checked = user.authorization.Contains("XREAD");
+            cbx_zread.Checked = user.authorization.Contains("ZREAD");
         }
 
         private void btn_UpdateUser_Click(object sender, EventArgs e)
@@ -139,13 +131,16 @@ namespace ETech
             if (usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0)
             {
                 MessageBox.Show("Fields cannot be empty");
+                return;
             }
 
             string SQL =
             @"UPDATE `user` SET `usercode`= '" + usercode + @"', `fullname`='" + fullname + @"', 
-                     `username`='" + username + @"', `password`='" + password + @"' 
+                     `username`='" + username + @"', `password`='" + password + @"', lastmodifieddate=NOW()  
                 WHERE `Syncid`=" + user.getsyncid() + @" LIMIT 1";
             mySQLFunc.setdb(SQL);
+            //lastmodifiedby
+            //make sure no duplicate fields
 
             List<string> AuthorizationCodes = new List<string>();
             if (cbx_All.Checked) AuthorizationCodes.Add("ALL");
@@ -173,12 +168,7 @@ namespace ETech
                 SQL = @"INSERT INTO `userauth` (`userid`,`authorization`) VALUES ( " + user.getsyncid() + @", '" + Auth + @"' )";
                 mySQLFunc.setdb(SQL);
             }
-
-            ClearAddOrEditUsersPanel();
-            AddOrEditUsersPanel.Enabled = false;
-            ViewUsersPanel.Enabled = true;
-            txtUser.Focus();
-            RefrshDGVUsers();
+            EnableViewUsersPanel();
         }
 
         private void ClearAddOrEditUsersPanel()
@@ -193,6 +183,95 @@ namespace ETech
                 if (ctr is CheckBox)
                     ((CheckBox)ctr).Checked = false;
             }
+            btn_AddUser.Visible = false;
+            btn_UpdateUser.Visible = false;
+            btnDeactivate.Visible = false;
+        }
+
+        private void btnDeactivate_Click(object sender, EventArgs e)
+        {
+            string SQL = @"UPDATE `user` SET `status`=" + ((user.status == 0) ? "1" : "0") +
+                         @"  WHERE `SyncId`=" + user.getsyncid();
+            //lastmodifiedby
+            //lastdeactivatedby
+            //make sure no duplicate fields
+            mySQLFunc.setdb(SQL);
+
+            EnableViewUsersPanel();
+            fncFilter.alert("user " + user.getfullname() + ((user.status == 0) ? " Reactivated" : " Deactivated"));
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            user = new cls_user();
+            EnableUserModifierPanel();
+        }
+
+        private void EnableViewUsersPanel()
+        {
+            ViewUsersPanel.Enabled = true;
+            AddOrEditUsersPanel.Enabled = false;
+            ClearAddOrEditUsersPanel();
+            txtUser.Focus();
+            RefrshDGVUsers();
+        }
+
+        private void EnableUserModifierPanel()
+        {
+            AddOrEditUsersPanel.Enabled = true;
+            ViewUsersPanel.Enabled = false;
+            ClearAddOrEditUsersPanel();
+            btnCancel.Enabled = true;
+
+            if (user.getsyncid() == 0) //Add User
+            {
+                btn_AddUser.Visible = true;
+            }
+            else
+            {
+                btnDeactivate.Visible = true;
+                if (user.status == 0) //Activating Deactivated User
+                {
+                    btnDeactivate.Text = "Activate";
+                    btn_UpdateUser.Visible = false;
+                }
+                else //Deactivating Activated User
+                {
+                    btnDeactivate.Text = "Deactivate";
+                    btn_UpdateUser.Visible = true;
+                }
+            }
+            tbx_Usercode.Focus();
+        }
+
+        private void btn_AddUser_Click(object sender, EventArgs e)
+        {
+            string usercode = tbx_Usercode.Text;
+            string fullname = tbx_Fullname.Text;
+            string username = tbx_Username.Text;
+            string password = tbx_Password.Text;
+
+            if (usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0)
+            {
+                MessageBox.Show("Fields cannot be empty");
+                return;
+            }
+
+            user.syncid = new mySQLClass().GetAndInsertNextSyncId("user");
+            string SQL =
+            @"UPDATE `user` SET `usercode`= '" + usercode + @"', `fullname`='" + fullname + @"', 
+                     `username`='" + username + @"', `password`='" + password + @"',
+                     `status`=1,`datecreated`=NOW(),`lastmodifieddate`=NOW()  
+                WHERE `Syncid`=" + user.getsyncid() + @" LIMIT 1";
+            //lastmodifiedby
+            //make sure no duplicate fields
+            mySQLFunc.setdb(SQL);
+            EnableViewUsersPanel();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            EnableViewUsersPanel();
         }
     }
 }

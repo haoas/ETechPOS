@@ -16,7 +16,8 @@ namespace ETech.cls
         public string password { get; private set; }
         private List<int> permission;
         public List<string> authorization { get; private set; }
-        private long syncid;
+        public long syncid;
+        public int status { get; private set; }
 
         public void init()
         {
@@ -27,6 +28,7 @@ namespace ETech.cls
             this.permission = new List<int>();
             this.authorization = new List<string>();
             this.syncid = 0;
+            this.status = 0;
         }
 
         //constructor
@@ -102,6 +104,7 @@ namespace ETech.cls
             this.fullname = dr["fullname"].ToString();
             this.username = dr["username"].ToString();
             this.password = dr["password"].ToString();
+            this.status = int.Parse(dr["status"].ToString());
 
             sSQL = "SELECT * FROM `userpermission` WHERE `userid` = " + SyncId;
             dt = mySQLFunc.getdb(sSQL);
