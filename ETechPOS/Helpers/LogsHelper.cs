@@ -11,15 +11,15 @@ namespace ETECHPOS.Helpers
     {
         public static void Clear()
         {
-            while (IsFileInUse(new FileInfo(cls_globalvariables.SystemLogsFilePath)) == true) { }
-            File.WriteAllText(cls_globalvariables.SystemLogsFilePath, "");
+            while (IsFileInUse(new FileInfo(cls_globalvariables.PosTLogsFilePath)) == true) { }
+            File.WriteAllText(cls_globalvariables.PosTLogsFilePath, "");
         }
         public static void Print(string message)
         {
             try
             {
                 if (message == "") return;
-                using (StreamWriter w = File.AppendText(cls_globalvariables.SystemLogsFilePath))
+                using (StreamWriter w = File.AppendText(cls_globalvariables.PosTLogsFilePath))
                 {
                     w.WriteLine("[" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "] " + message);
                     w.Close();

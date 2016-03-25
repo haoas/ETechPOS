@@ -30,7 +30,8 @@ namespace ETech.cls
         public static string ApplicationDataLocalCompanyNameFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/" + CompanyName;
         public static string ApplicationDataLocalApplicationFolderPath = ApplicationDataLocalCompanyNameFolderPath + "/" + ApplicationName;
 
-        public static string SystemLogsFilePath = ApplicationDataLocalApplicationFolderPath + "/System Logs.txt";
+        public static string PosTLogsFilePath = ApplicationDataLocalApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".T";
+        public static string PosCsvLogsFilePath = ApplicationDataLocalApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".C";
         public static string ConnectionSettingsXmlPath = ApplicationFolderPath + "/Connection Settings.xml";
 
         public static ConnectionSettings ConnectionSettings = null;
@@ -434,12 +435,6 @@ namespace ETech.cls
         public static string confirm_logout_deleteitem = "Do you want to delete selected item?";
         public static string confirm_customer_debt = "There's still remaining amount due. Add to Customer's debt?";
         public static string confirm_unlock_zreading = "Do you want to continue transacting?\nnote: You need to generate Zreading again \n\n 今天结账单已被打印过。\n如果再开单，要从新打印结账单。是否继续？";
-        public static string POS_TLogs_path =
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                + @"\ETECH POS\" + DateTime.Now.ToString("yyMMdd") + @"POS" + cls_globalvariables.terminalno_v + @".T";
-        public static string POS_CSVLogs_path =
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                + @"\ETECH POS\" + DateTime.Now.ToString("yyMMdd") + @"POS" + cls_globalvariables.terminalno_v + @".C";
         public static string CashierAcct_wid = "";
 
     }

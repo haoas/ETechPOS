@@ -13,7 +13,7 @@ namespace ETech.cls
         private string singlebarcode;
         private string productname;
 
-        
+
         private RoundedDecimal retailpprice;
         private decimal retailprice;
 
@@ -709,5 +709,19 @@ namespace ETech.cls
         public decimal get_basis_before_discount(int filter) { return this.productdiscount.get_basis_before_discount(filter, this.getOrigPrice()); }
         public decimal get_price_no_head_discount() { return this.getOrigPrice() * (1 - this.getProductDiscountList().get_discounts_percentage(this.getOrigPrice())); }
         public decimal get_discount_amt(int type) { return this.productdiscount.get_all_discount_amount_of_type(type); }
+
+        public string CurrentVatStatus
+        {
+            get
+            {
+                string vatStatus = "V";
+                if (issenior == 1)
+                    vatStatus = "S - NV";
+                else if (!isvat)
+                    vatStatus = "NV";
+                return vatStatus;
+            }
+
+        }
     }
 }

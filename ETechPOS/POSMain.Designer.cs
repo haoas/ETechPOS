@@ -33,11 +33,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvProduct = new System.Windows.Forms.DataGridView();
-            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtBarcode = new System.Windows.Forms.TextBox();
             this.lblMode_d = new System.Windows.Forms.Label();
             this.lblMode = new System.Windows.Forms.Label();
@@ -92,6 +89,11 @@
             this.ButtonF09 = new System.Windows.Forms.Button();
             this.ButtonF08 = new System.Windows.Forms.Button();
             this.ButtonF07 = new System.Windows.Forms.Button();
+            this.dgvcVatStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).BeginInit();
             this.ssApplicationDetails.SuspendLayout();
             this.ssOtherInformation.SuspendLayout();
@@ -106,6 +108,7 @@
             this.dgvProduct.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvProduct.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProduct.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvcVatStatus,
             this.description,
             this.qty,
             this.price,
@@ -119,61 +122,6 @@
             this.dgvProduct.Size = new System.Drawing.Size(852, 306);
             this.dgvProduct.TabIndex = 1;
             this.dgvProduct.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProduct_CellClick);
-            // 
-            // description
-            // 
-            this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.description.DataPropertyName = "productname";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.description.DefaultCellStyle = dataGridViewCellStyle1;
-            this.description.FillWeight = 200F;
-            this.description.HeaderText = "Description";
-            this.description.MinimumWidth = 300;
-            this.description.Name = "description";
-            this.description.ReadOnly = true;
-            // 
-            // qty
-            // 
-            this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.qty.DataPropertyName = "qty";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.qty.DefaultCellStyle = dataGridViewCellStyle2;
-            this.qty.FillWeight = 46.81124F;
-            this.qty.HeaderText = "Qty";
-            this.qty.MinimumWidth = 100;
-            this.qty.Name = "qty";
-            this.qty.ReadOnly = true;
-            // 
-            // price
-            // 
-            this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.price.DataPropertyName = "price";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.price.DefaultCellStyle = dataGridViewCellStyle3;
-            this.price.FillWeight = 61.91541F;
-            this.price.HeaderText = "Price";
-            this.price.MinimumWidth = 100;
-            this.price.Name = "price";
-            this.price.ReadOnly = true;
-            // 
-            // amount
-            // 
-            this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.amount.DataPropertyName = "amount";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.amount.DefaultCellStyle = dataGridViewCellStyle4;
-            this.amount.HeaderText = "Amount";
-            this.amount.MinimumWidth = 100;
-            this.amount.Name = "amount";
-            this.amount.ReadOnly = true;
             // 
             // txtBarcode
             // 
@@ -388,7 +336,7 @@
             this.tsslTransactionsTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsslTransactionsTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslTransactionsTxt.Name = "tsslTransactionsTxt";
-            this.tsslTransactionsTxt.Size = new System.Drawing.Size(83, 19);
+            this.tsslTransactionsTxt.Size = new System.Drawing.Size(82, 19);
             this.tsslTransactionsTxt.Text = "Transactions:";
             this.tsslTransactionsTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -426,7 +374,7 @@
             this.tsslSpace2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslSpace2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslSpace2.Name = "tsslSpace2";
-            this.tsslSpace2.Size = new System.Drawing.Size(391, 19);
+            this.tsslSpace2.Size = new System.Drawing.Size(392, 19);
             this.tsslSpace2.Spring = true;
             this.tsslSpace2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -800,6 +748,72 @@
             this.ButtonF07.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.ButtonF07.UseVisualStyleBackColor = false;
             // 
+            // dgvcVatStatus
+            // 
+            this.dgvcVatStatus.DataPropertyName = "VatStatus";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dgvcVatStatus.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvcVatStatus.FillWeight = 50F;
+            this.dgvcVatStatus.HeaderText = "";
+            this.dgvcVatStatus.MinimumWidth = 50;
+            this.dgvcVatStatus.Name = "dgvcVatStatus";
+            this.dgvcVatStatus.ReadOnly = true;
+            // 
+            // description
+            // 
+            this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.description.DataPropertyName = "productname";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.description.DefaultCellStyle = dataGridViewCellStyle2;
+            this.description.FillWeight = 200F;
+            this.description.HeaderText = "Description";
+            this.description.MinimumWidth = 300;
+            this.description.Name = "description";
+            this.description.ReadOnly = true;
+            // 
+            // qty
+            // 
+            this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.qty.DataPropertyName = "qty";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.qty.DefaultCellStyle = dataGridViewCellStyle3;
+            this.qty.FillWeight = 46.81124F;
+            this.qty.HeaderText = "Qty";
+            this.qty.MinimumWidth = 100;
+            this.qty.Name = "qty";
+            this.qty.ReadOnly = true;
+            // 
+            // price
+            // 
+            this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.price.DataPropertyName = "price";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.price.DefaultCellStyle = dataGridViewCellStyle4;
+            this.price.FillWeight = 61.91541F;
+            this.price.HeaderText = "Price";
+            this.price.MinimumWidth = 100;
+            this.price.Name = "price";
+            this.price.ReadOnly = true;
+            // 
+            // amount
+            // 
+            this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.amount.DataPropertyName = "amount";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.amount.DefaultCellStyle = dataGridViewCellStyle5;
+            this.amount.HeaderText = "Amount";
+            this.amount.MinimumWidth = 100;
+            this.amount.Name = "amount";
+            this.amount.ReadOnly = true;
+            // 
             // POSMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -866,10 +880,6 @@
         public System.Windows.Forms.DataGridView dgvProduct;
         public System.Windows.Forms.TextBox txtBarcode;
         private System.Windows.Forms.Timer tmrcheckposdsetting;
-        private System.Windows.Forms.DataGridViewTextBoxColumn description;
-        private System.Windows.Forms.DataGridViewTextBoxColumn qty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn price;
-        private System.Windows.Forms.DataGridViewTextBoxColumn amount;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblTotal;
@@ -914,5 +924,10 @@
         private System.Windows.Forms.Button ButtonF09;
         private System.Windows.Forms.Button ButtonF08;
         private System.Windows.Forms.Button ButtonF07;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcVatStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn description;
+        private System.Windows.Forms.DataGridViewTextBoxColumn qty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn price;
+        private System.Windows.Forms.DataGridViewTextBoxColumn amount;
     }
 }
