@@ -482,8 +482,17 @@ namespace ETech
                     }
                     else if (FPage == 2)
                     {
-                        AddUserForm userform = new AddUserForm();
-                        userform.ShowDialog();
+                        bool permcheck_modifyuser = false;
+                        if (this.cur_cashier.CheckAuth("MODIFYUSER"))
+                            permcheck_modifyuser = true;
+                        else
+                            permcheck_modifyuser = isInput_auth_code("MODIFYUSER");
+
+                        if (permcheck_modifyuser)
+                        {
+                            AddUserForm userform = new AddUserForm(cur_cashier);
+                            userform.ShowDialog();
+                        }
                     }
                     break;
                 //Do not delete

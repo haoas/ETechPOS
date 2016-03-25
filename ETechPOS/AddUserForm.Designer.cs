@@ -28,15 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ViewUsersPanel = new System.Windows.Forms.Panel();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.cbxActive = new System.Windows.Forms.CheckBox();
             this.txtUser = new System.Windows.Forms.TextBox();
             this.lblUser = new System.Windows.Forms.Label();
             this.DGVUsers = new System.Windows.Forms.DataGridView();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,9 +54,12 @@
             this.tbx_Password = new System.Windows.Forms.TextBox();
             this.tbx_Username = new System.Windows.Forms.TextBox();
             this.AddOrEditUsersPanel = new System.Windows.Forms.Panel();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btn_AddUser = new System.Windows.Forms.Button();
             this.btnDeactivate = new System.Windows.Forms.Button();
             this.btn_UpdateUser = new System.Windows.Forms.Button();
             this.GB_Authorization = new System.Windows.Forms.GroupBox();
+            this.cbx_modifyuser = new System.Windows.Forms.CheckBox();
             this.cbx_zread = new System.Windows.Forms.CheckBox();
             this.cbx_xread = new System.Windows.Forms.CheckBox();
             this.cbx_pickupcash = new System.Windows.Forms.CheckBox();
@@ -65,13 +76,6 @@
             this.cbx_ChangeQuantity = new System.Windows.Forms.CheckBox();
             this.cbx_Openitem = new System.Windows.Forms.CheckBox();
             this.cbx_All = new System.Windows.Forms.CheckBox();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btn_AddUser = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.ViewUsersPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVUsers)).BeginInit();
             this.AddOrEditUsersPanel.SuspendLayout();
@@ -90,6 +94,17 @@
             this.ViewUsersPanel.Size = new System.Drawing.Size(419, 361);
             this.ViewUsersPanel.TabIndex = 9;
             // 
+            // btnAdd
+            // 
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdd.Location = new System.Drawing.Point(14, 303);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(143, 44);
+            this.btnAdd.TabIndex = 18;
+            this.btnAdd.Text = "Add new user";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
             // cbxActive
             // 
             this.cbxActive.AutoSize = true;
@@ -102,7 +117,7 @@
             this.cbxActive.TabIndex = 12;
             this.cbxActive.Text = "Active";
             this.cbxActive.UseVisualStyleBackColor = true;
-            this.cbxActive.CheckedChanged += new System.EventHandler(this.cbxActive_CheckedChanged_1);
+            this.cbxActive.CheckedChanged += new System.EventHandler(this.cbxActive_CheckedChanged);
             // 
             // txtUser
             // 
@@ -131,20 +146,102 @@
             this.DGVUsers.AllowUserToResizeColumns = false;
             this.DGVUsers.AllowUserToResizeRows = false;
             this.DGVUsers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGVUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DGVUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
             this.code,
             this.price,
             this.amount});
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGVUsers.DefaultCellStyle = dataGridViewCellStyle6;
             this.DGVUsers.Enabled = false;
             this.DGVUsers.Location = new System.Drawing.Point(14, 44);
             this.DGVUsers.Name = "DGVUsers";
             this.DGVUsers.ReadOnly = true;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGVUsers.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.DGVUsers.RowHeadersVisible = false;
             this.DGVUsers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DGVUsers.Size = new System.Drawing.Size(392, 236);
             this.DGVUsers.TabIndex = 9;
+            // 
+            // id
+            // 
+            this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.id.DataPropertyName = "syncid";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.id.DefaultCellStyle = dataGridViewCellStyle2;
+            this.id.FillWeight = 200F;
+            this.id.HeaderText = "Id";
+            this.id.MinimumWidth = 10;
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            // 
+            // code
+            // 
+            this.code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.code.DataPropertyName = "code";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.code.DefaultCellStyle = dataGridViewCellStyle3;
+            this.code.FillWeight = 46.81124F;
+            this.code.HeaderText = "Code";
+            this.code.MinimumWidth = 10;
+            this.code.Name = "code";
+            this.code.ReadOnly = true;
+            this.code.Width = 57;
+            // 
+            // price
+            // 
+            this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.price.DataPropertyName = "fullname";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.price.DefaultCellStyle = dataGridViewCellStyle4;
+            this.price.FillWeight = 61.91541F;
+            this.price.HeaderText = "Full Name";
+            this.price.MinimumWidth = 10;
+            this.price.Name = "price";
+            this.price.ReadOnly = true;
+            // 
+            // amount
+            // 
+            this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.amount.DataPropertyName = "username";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.amount.DefaultCellStyle = dataGridViewCellStyle5;
+            this.amount.HeaderText = "Username";
+            this.amount.MinimumWidth = 10;
+            this.amount.Name = "amount";
+            this.amount.ReadOnly = true;
+            this.amount.Width = 80;
             // 
             // label2
             // 
@@ -240,6 +337,28 @@
             this.AddOrEditUsersPanel.Size = new System.Drawing.Size(644, 361);
             this.AddOrEditUsersPanel.TabIndex = 18;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Location = new System.Drawing.Point(13, 303);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(143, 44);
+            this.btnCancel.TabIndex = 19;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btn_AddUser
+            // 
+            this.btn_AddUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_AddUser.Location = new System.Drawing.Point(332, 303);
+            this.btn_AddUser.Name = "btn_AddUser";
+            this.btn_AddUser.Size = new System.Drawing.Size(143, 44);
+            this.btn_AddUser.TabIndex = 18;
+            this.btn_AddUser.Text = "Add";
+            this.btn_AddUser.UseVisualStyleBackColor = true;
+            this.btn_AddUser.Click += new System.EventHandler(this.btn_AddUser_Click);
+            // 
             // btnDeactivate
             // 
             this.btnDeactivate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -264,6 +383,7 @@
             // 
             // GB_Authorization
             // 
+            this.GB_Authorization.Controls.Add(this.cbx_modifyuser);
             this.GB_Authorization.Controls.Add(this.cbx_zread);
             this.GB_Authorization.Controls.Add(this.cbx_xread);
             this.GB_Authorization.Controls.Add(this.cbx_pickupcash);
@@ -288,10 +408,21 @@
             this.GB_Authorization.TabStop = false;
             this.GB_Authorization.Text = "Authorizations";
             // 
+            // cbx_modifyuser
+            // 
+            this.cbx_modifyuser.AutoSize = true;
+            this.cbx_modifyuser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.cbx_modifyuser.Location = new System.Drawing.Point(391, 174);
+            this.cbx_modifyuser.Name = "cbx_modifyuser";
+            this.cbx_modifyuser.Size = new System.Drawing.Size(123, 24);
+            this.cbx_modifyuser.TabIndex = 22;
+            this.cbx_modifyuser.Text = "Modify User";
+            this.cbx_modifyuser.UseVisualStyleBackColor = false;
+            // 
             // cbx_zread
             // 
             this.cbx_zread.AutoSize = true;
-            this.cbx_zread.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_zread.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_zread.Location = new System.Drawing.Point(391, 144);
             this.cbx_zread.Name = "cbx_zread";
             this.cbx_zread.Size = new System.Drawing.Size(153, 24);
@@ -302,7 +433,7 @@
             // cbx_xread
             // 
             this.cbx_xread.AutoSize = true;
-            this.cbx_xread.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_xread.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_xread.Location = new System.Drawing.Point(391, 115);
             this.cbx_xread.Name = "cbx_xread";
             this.cbx_xread.Size = new System.Drawing.Size(154, 24);
@@ -313,7 +444,7 @@
             // cbx_pickupcash
             // 
             this.cbx_pickupcash.AutoSize = true;
-            this.cbx_pickupcash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_pickupcash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_pickupcash.Location = new System.Drawing.Point(195, 175);
             this.cbx_pickupcash.Name = "cbx_pickupcash";
             this.cbx_pickupcash.Size = new System.Drawing.Size(127, 24);
@@ -324,7 +455,7 @@
             // cbx_opendrawer
             // 
             this.cbx_opendrawer.AutoSize = true;
-            this.cbx_opendrawer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_opendrawer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_opendrawer.Location = new System.Drawing.Point(195, 145);
             this.cbx_opendrawer.Name = "cbx_opendrawer";
             this.cbx_opendrawer.Size = new System.Drawing.Size(133, 24);
@@ -335,7 +466,7 @@
             // cbx_wholesale
             // 
             this.cbx_wholesale.AutoSize = true;
-            this.cbx_wholesale.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_wholesale.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_wholesale.Location = new System.Drawing.Point(195, 115);
             this.cbx_wholesale.Name = "cbx_wholesale";
             this.cbx_wholesale.Size = new System.Drawing.Size(189, 24);
@@ -346,7 +477,7 @@
             // cbx_reprintor
             // 
             this.cbx_reprintor.AutoSize = true;
-            this.cbx_reprintor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_reprintor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_reprintor.Location = new System.Drawing.Point(195, 55);
             this.cbx_reprintor.Name = "cbx_reprintor";
             this.cbx_reprintor.Size = new System.Drawing.Size(154, 24);
@@ -357,7 +488,7 @@
             // cbx_voidtrans
             // 
             this.cbx_voidtrans.AutoSize = true;
-            this.cbx_voidtrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_voidtrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_voidtrans.Location = new System.Drawing.Point(195, 25);
             this.cbx_voidtrans.Name = "cbx_voidtrans";
             this.cbx_voidtrans.Size = new System.Drawing.Size(163, 24);
@@ -368,7 +499,7 @@
             // cbx_seniortrans
             // 
             this.cbx_seniortrans.AutoSize = true;
-            this.cbx_seniortrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_seniortrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_seniortrans.Location = new System.Drawing.Point(391, 85);
             this.cbx_seniortrans.Name = "cbx_seniortrans";
             this.cbx_seniortrans.Size = new System.Drawing.Size(163, 24);
@@ -379,7 +510,7 @@
             // cbx_membertrans
             // 
             this.cbx_membertrans.AutoSize = true;
-            this.cbx_membertrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_membertrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_membertrans.Location = new System.Drawing.Point(391, 55);
             this.cbx_membertrans.Name = "cbx_membertrans";
             this.cbx_membertrans.Size = new System.Drawing.Size(175, 24);
@@ -390,7 +521,7 @@
             // cbx_Refunditem
             // 
             this.cbx_Refunditem.AutoSize = true;
-            this.cbx_Refunditem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_Refunditem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_Refunditem.Location = new System.Drawing.Point(6, 115);
             this.cbx_Refunditem.Name = "cbx_Refunditem";
             this.cbx_Refunditem.Size = new System.Drawing.Size(137, 24);
@@ -401,7 +532,7 @@
             // cbx_nonvattrans
             // 
             this.cbx_nonvattrans.AutoSize = true;
-            this.cbx_nonvattrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_nonvattrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_nonvattrans.Location = new System.Drawing.Point(391, 25);
             this.cbx_nonvattrans.Name = "cbx_nonvattrans";
             this.cbx_nonvattrans.Size = new System.Drawing.Size(171, 24);
@@ -412,7 +543,7 @@
             // cbx_discount
             // 
             this.cbx_discount.AutoSize = true;
-            this.cbx_discount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_discount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_discount.Location = new System.Drawing.Point(195, 85);
             this.cbx_discount.Name = "cbx_discount";
             this.cbx_discount.Size = new System.Drawing.Size(156, 24);
@@ -423,7 +554,7 @@
             // cbx_Removeitem
             // 
             this.cbx_Removeitem.AutoSize = true;
-            this.cbx_Removeitem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_Removeitem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_Removeitem.Location = new System.Drawing.Point(6, 144);
             this.cbx_Removeitem.Name = "cbx_Removeitem";
             this.cbx_Removeitem.Size = new System.Drawing.Size(134, 24);
@@ -434,7 +565,7 @@
             // cbx_ChangeQuantity
             // 
             this.cbx_ChangeQuantity.AutoSize = true;
-            this.cbx_ChangeQuantity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_ChangeQuantity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_ChangeQuantity.Location = new System.Drawing.Point(6, 85);
             this.cbx_ChangeQuantity.Name = "cbx_ChangeQuantity";
             this.cbx_ChangeQuantity.Size = new System.Drawing.Size(162, 24);
@@ -445,7 +576,7 @@
             // cbx_Openitem
             // 
             this.cbx_Openitem.AutoSize = true;
-            this.cbx_Openitem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_Openitem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_Openitem.Location = new System.Drawing.Point(6, 55);
             this.cbx_Openitem.Name = "cbx_Openitem";
             this.cbx_Openitem.Size = new System.Drawing.Size(144, 24);
@@ -456,105 +587,13 @@
             // cbx_All
             // 
             this.cbx_All.AutoSize = true;
-            this.cbx_All.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cbx_All.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cbx_All.Location = new System.Drawing.Point(6, 25);
             this.cbx_All.Name = "cbx_All";
             this.cbx_All.Size = new System.Drawing.Size(111, 24);
             this.cbx_All.TabIndex = 6;
             this.cbx_All.Text = "All Access";
             this.cbx_All.UseVisualStyleBackColor = false;
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdd.Location = new System.Drawing.Point(14, 303);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(143, 44);
-            this.btnAdd.TabIndex = 18;
-            this.btnAdd.Text = "Add new user";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // id
-            // 
-            this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.id.DataPropertyName = "syncid";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.id.DefaultCellStyle = dataGridViewCellStyle9;
-            this.id.FillWeight = 200F;
-            this.id.HeaderText = "Id";
-            this.id.MinimumWidth = 10;
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Visible = false;
-            this.id.Width = 22;
-            // 
-            // code
-            // 
-            this.code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.code.DataPropertyName = "code";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.code.DefaultCellStyle = dataGridViewCellStyle10;
-            this.code.FillWeight = 46.81124F;
-            this.code.HeaderText = "Code";
-            this.code.MinimumWidth = 10;
-            this.code.Name = "code";
-            this.code.ReadOnly = true;
-            this.code.Width = 57;
-            // 
-            // price
-            // 
-            this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.price.DataPropertyName = "fullname";
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle11.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.price.DefaultCellStyle = dataGridViewCellStyle11;
-            this.price.FillWeight = 61.91541F;
-            this.price.HeaderText = "Full Name";
-            this.price.MinimumWidth = 10;
-            this.price.Name = "price";
-            this.price.ReadOnly = true;
-            // 
-            // amount
-            // 
-            this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.amount.DataPropertyName = "username";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle12.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.amount.DefaultCellStyle = dataGridViewCellStyle12;
-            this.amount.HeaderText = "Username";
-            this.amount.MinimumWidth = 10;
-            this.amount.Name = "amount";
-            this.amount.ReadOnly = true;
-            this.amount.Width = 80;
-            // 
-            // btn_AddUser
-            // 
-            this.btn_AddUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_AddUser.Location = new System.Drawing.Point(332, 303);
-            this.btn_AddUser.Name = "btn_AddUser";
-            this.btn_AddUser.Size = new System.Drawing.Size(143, 44);
-            this.btn_AddUser.TabIndex = 18;
-            this.btn_AddUser.Text = "Add";
-            this.btn_AddUser.UseVisualStyleBackColor = true;
-            this.btn_AddUser.Click += new System.EventHandler(this.btn_AddUser_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(13, 303);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(143, 44);
-            this.btnCancel.TabIndex = 19;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // AddUserForm
             // 
@@ -621,6 +660,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn amount;
         private System.Windows.Forms.Button btn_AddUser;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.CheckBox cbx_modifyuser;
 
     }
 }

@@ -15,11 +15,15 @@ namespace ETech
     public partial class AddUserForm : Form
     {
         private cls_user user = null;
+        private cls_user Cashier = null;
         private DataTable dt_temp = new DataTable();
+        private Color enabledcolor = Color.LightPink;
+        private Dictionary<string, CheckBox> AuthDictionary = null;
 
-        public AddUserForm()
+        public AddUserForm(cls_user cashier_d)
         {
             InitializeComponent();
+            Cashier = cashier_d;
         }
 
         private void AddUserForm_Load(object sender, EventArgs e)
@@ -27,6 +31,27 @@ namespace ETech
             DGVUsers.Standardize();
             RefrshDGVUsers();
             ClearAddOrEditUsersPanel();
+
+            AuthDictionary = new Dictionary<string, CheckBox>()
+            {
+                { "ALL", cbx_All },
+                { "CHANGEQTY", cbx_ChangeQuantity },
+                { "DISCOUNT", cbx_discount },
+                { "MEMBERTRANS", cbx_membertrans },
+                { "NONVATTRANS", cbx_nonvattrans },
+                { "OPENDRAWER", cbx_opendrawer },
+                { "OPENITEM", cbx_Openitem },
+                { "PICKUPCASH", cbx_pickupcash },
+                { "REFUNDITEM", cbx_Refunditem },
+                { "REMOVEITEM", cbx_Removeitem },
+                { "REPRINTOR", cbx_reprintor },
+                { "SENIORTRANS", cbx_seniortrans },
+                { "VOIDTRANS", cbx_voidtrans },
+                { "WSALETRANS", cbx_wholesale },
+                { "XREAD", cbx_xread },
+                { "ZREAD", cbx_zread },
+                { "MODIFYUSER", cbx_modifyuser }
+            };
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
@@ -83,7 +108,7 @@ namespace ETech
             RefrshDGVUsers();
         }
 
-        private void cbxActive_CheckedChanged_1(object sender, EventArgs e)
+        private void cbxActive_CheckedChanged(object sender, EventArgs e)
         {
             RefrshDGVUsers();
         }
@@ -103,22 +128,11 @@ namespace ETech
             tbx_Fullname.Text = user.getfullname().Trim();
             tbx_Username.Text = user.username.Trim();
             tbx_Password.Text = user.password.Trim();
-            cbx_All.Checked = user.AuthorizationList.Contains("ALL");
-            cbx_ChangeQuantity.Checked = user.AuthorizationList.Contains("CHANGEQTY");
-            cbx_discount.Checked = user.AuthorizationList.Contains("DISCOUNT");
-            cbx_membertrans.Checked = user.AuthorizationList.Contains("MEMBERTRANS");
-            cbx_nonvattrans.Checked = user.AuthorizationList.Contains("NONVATTRANS");
-            cbx_opendrawer.Checked = user.AuthorizationList.Contains("OPENDRAWER");
-            cbx_Openitem.Checked = user.AuthorizationList.Contains("OPENITEM");
-            cbx_pickupcash.Checked = user.AuthorizationList.Contains("PICKUPCASH");
-            cbx_Refunditem.Checked = user.AuthorizationList.Contains("REFUNDITEM");
-            cbx_Removeitem.Checked = user.AuthorizationList.Contains("REMOVEITEM");
-            cbx_reprintor.Checked = user.AuthorizationList.Contains("REPRINTOR");
-            cbx_seniortrans.Checked = user.AuthorizationList.Contains("SENIORTRANS");
-            cbx_voidtrans.Checked = user.AuthorizationList.Contains("VOIDTRANS");
-            cbx_wholesale.Checked = user.AuthorizationList.Contains("WSALETRANS");
-            cbx_xread.Checked = user.AuthorizationList.Contains("XREAD");
-            cbx_zread.Checked = user.AuthorizationList.Contains("ZREAD");
+
+            foreach (KeyValuePair<string, CheckBox> dicentry in AuthDictionary)
+            {
+                dicentry.Value.Checked = (user.AuthorizationList.Contains(dicentry.Key)) ? true : false;
+            }
         }
 
         private void btn_UpdateUser_Click(object sender, EventArgs e)
@@ -136,30 +150,18 @@ namespace ETech
 
             string SQL =
             @"UPDATE `user` SET `usercode`= '" + usercode + @"', `fullname`='" + fullname + @"', 
-                     `username`='" + username + @"', `password`='" + password + @"', lastmodifieddate=NOW()  
+                     `username`='" + username + @"', `password`='" + password + @"', lastmodifieddate=NOW(), `lastmodifiedby` = " + user.syncid + @"
                 WHERE `Syncid`=" + user.getsyncid() + @" LIMIT 1";
             mySQLFunc.setdb(SQL);
             //lastmodifiedby
             //make sure no duplicate fields
 
             List<string> AuthorizationCodes = new List<string>();
-            if (cbx_All.Checked) AuthorizationCodes.Add("ALL");
-            if (cbx_ChangeQuantity.Checked) AuthorizationCodes.Add("CHANGEQTY");
-            if (cbx_discount.Checked) AuthorizationCodes.Add("DISCOUNT");
-            if (cbx_membertrans.Checked) AuthorizationCodes.Add("MEMBERTRANS");
-            if (cbx_nonvattrans.Checked) AuthorizationCodes.Add("NONVATTRANS");
-            if (cbx_opendrawer.Checked) AuthorizationCodes.Add("OPENDRAWER");
-            if (cbx_Openitem.Checked) AuthorizationCodes.Add("OPENITEM");
-            if (cbx_pickupcash.Checked) AuthorizationCodes.Add("PICKUPCASH");
-            if (cbx_Refunditem.Checked) AuthorizationCodes.Add("REFUNDITEM");
-            if (cbx_Removeitem.Checked) AuthorizationCodes.Add("REMOVEITEM");
-            if (cbx_reprintor.Checked) AuthorizationCodes.Add("REPRINTOR");
-            if (cbx_seniortrans.Checked) AuthorizationCodes.Add("SENIORTRANS");
-            if (cbx_voidtrans.Checked) AuthorizationCodes.Add("VOIDTRANS");
-            if (cbx_wholesale.Checked) AuthorizationCodes.Add("WSALETRANS");
-            if (cbx_xread.Checked) AuthorizationCodes.Add("XREAD");
-            if (cbx_zread.Checked) AuthorizationCodes.Add("ZREAD");
-            AuthorizationCodes = AuthorizationCodes.Distinct().ToList();
+            foreach (KeyValuePair<string, CheckBox> dicentry in AuthDictionary)
+            {
+                if (dicentry.Value.Checked)
+                    AuthorizationCodes.Add(dicentry.Key);
+            }
 
             SQL = @"DELETE FROM `userauth` WHERE `userid`=" + user.getsyncid();
             mySQLFunc.setdb(SQL);
@@ -181,7 +183,11 @@ namespace ETech
             foreach (Control ctr in GB_Authorization.Controls)
             {
                 if (ctr is CheckBox)
+                {
                     ((CheckBox)ctr).Checked = false;
+                    ((CheckBox)ctr).BackColor = enabledcolor;
+                    ((CheckBox)ctr).Visible = false;
+                }
             }
             btn_AddUser.Visible = false;
             btn_UpdateUser.Visible = false;
@@ -191,7 +197,7 @@ namespace ETech
         private void btnDeactivate_Click(object sender, EventArgs e)
         {
             string SQL = @"UPDATE `user` SET `status`=" + ((user.status == 0) ? "1" : "0") +
-                         @"  WHERE `SyncId`=" + user.getsyncid();
+                         @"`lastmodifiedby` = " + user.syncid + @"  WHERE `SyncId`=" + user.getsyncid();
             //lastmodifiedby
             //lastdeactivatedby
             //make sure no duplicate fields
@@ -242,6 +248,16 @@ namespace ETech
                 }
             }
             tbx_Usercode.Focus();
+
+            foreach (KeyValuePair<string, CheckBox> dicentry in AuthDictionary)
+            {
+                if (Cashier.AuthorizationList.Contains("ALL") ||
+                    Cashier.AuthorizationList.Contains(dicentry.Key))
+                {
+                    dicentry.Value.BackColor = enabledcolor;
+                    dicentry.Value.Visible = true;
+                }
+            }
         }
 
         private void btn_AddUser_Click(object sender, EventArgs e)
@@ -261,11 +277,25 @@ namespace ETech
             string SQL =
             @"UPDATE `user` SET `usercode`= '" + usercode + @"', `fullname`='" + fullname + @"', 
                      `username`='" + username + @"', `password`='" + password + @"',
-                     `status`=1,`datecreated`=NOW(),`lastmodifieddate`=NOW()  
+                     `status`=1,`datecreated`=NOW(),`lastmodifieddate`=NOW(),`userid`= " + user.syncid + @", `lastmodifiedby` = " + user.syncid + @"
                 WHERE `Syncid`=" + user.getsyncid() + @" LIMIT 1";
             //lastmodifiedby
             //make sure no duplicate fields
             mySQLFunc.setdb(SQL);
+            SQL = @"DELETE FROM `userauth` WHERE `userid`=" + user.getsyncid();
+            mySQLFunc.setdb(SQL);
+
+            List<string> AuthorizationCodes = new List<string>();
+            foreach (KeyValuePair<string, CheckBox> dicentry in AuthDictionary)
+            {
+                if (dicentry.Value.Checked)
+                    AuthorizationCodes.Add(dicentry.Key);
+            }
+            foreach (string Auth in AuthorizationCodes)
+            {
+                SQL = @"INSERT INTO `userauth` (`userid`,`authorization`) VALUES ( " + user.getsyncid() + @", '" + Auth + @"' )";
+                mySQLFunc.setdb(SQL);
+            }
             EnableViewUsersPanel();
         }
 
