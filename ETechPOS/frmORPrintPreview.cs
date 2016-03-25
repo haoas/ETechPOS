@@ -20,8 +20,8 @@ namespace ETech
     {
         public long or_number;
         public long currenttrans_ornumber;
-        public List<int> cur_permissions;
-        public frmPermissionCode frmpermcode;
+        public List<string> CurrentUserAuthlist;
+        public frmPermissionCode frmauthcode;
         public int origwidth = 296;
         public int origheight = 3000;
         public int zoompercent = 200;
@@ -35,7 +35,7 @@ namespace ETech
             cls_globalfunc.formaddkbkpevent(this);
 
             this.or_number = 0;
-            this.cur_permissions = new List<int>();
+            this.CurrentUserAuthlist = new List<string>();
 
             pbPreview.Width = origwidth;
             pbPreview.Height = origheight;
@@ -168,25 +168,24 @@ namespace ETech
             pbPreview.Image = bitmap;
         }
 
-        private bool isInput_permission_code(int permissioncode)
+        private bool isInput_permission_code(string permissioncode)
         {
             bool permcheck = false;
-            frmpermcode = new frmPermissionCode();
-            frmpermcode.permission_needed = permissioncode;
-            frmpermcode.ShowDialog();
-            permcheck = frmpermcode.permcode;
+            frmauthcode = new frmPermissionCode();
+            frmauthcode.auth_needed = permissioncode;
+            frmauthcode.ShowDialog();
+            permcheck = frmauthcode.permcode;
 
             return permcheck;
         }
         private bool Check_ReprintReceiptPermission(bool isSwitch)
         {
             bool permcheck_reprintreceipt = false;
-            if (fncFilter.check_permission_reprint(this.cur_permissions))
+            if (this.CurrentUserAuthlist.Contains("ALL") || this.CurrentUserAuthlist.Contains("REPRINTOR"))
                 permcheck_reprintreceipt = true;
             else
-            {
-                permcheck_reprintreceipt = isInput_permission_code(fncFilter.get_permission_reprint());
-            }
+                permcheck_reprintreceipt = isInput_permission_code("REPRINTOR");
+
             return permcheck_reprintreceipt;
         }
         private void ClearGraphics(Control control)

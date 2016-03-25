@@ -10,13 +10,12 @@ namespace ETech.cls
     public class cls_user
     {
         //attributes
+        public long syncid;
         private string code;
         private string fullname;
         public string username { get; private set; }
         public string password { get; private set; }
-        private List<int> permission;
-        public List<string> authorization { get; private set; }
-        public long syncid;
+        public List<string> AuthorizationList { get; private set; }
         public int status { get; private set; }
 
         public void init()
@@ -25,8 +24,7 @@ namespace ETech.cls
             this.fullname = "";
             this.username = "";
             this.password = "";
-            this.permission = new List<int>();
-            this.authorization = new List<string>();
+            this.AuthorizationList = new List<string>();
             this.syncid = 0;
             this.status = 0;
         }
@@ -49,12 +47,12 @@ namespace ETech.cls
             setcls_user_by_wid(wid_d, is_history);
         }
 
-        public void setcls_user(string code_d, string fullname_d, List<int> permission_d, int wid_d)
+        public void setcls_user(string code_d, string fullname_d, List<string> authorization_d, long syncId_d)
         {
             this.code = code_d;
             this.fullname = fullname_d;
-            this.permission = permission_d;
-            this.syncid = wid_d;
+            this.AuthorizationList = authorization_d;
+            this.syncid = syncId_d;
         }
 
         public string getusercode()
@@ -67,15 +65,14 @@ namespace ETech.cls
         {
             return this.fullname;
         }
-        //checkpermission - return true or false if permission is included in the list
-        public bool checkpermission(int perm)
-        {
-            return permission.Contains(perm);
-        }
 
-        public List<int> getpermission()
+        public bool CheckAuth(string auth)
         {
-            return this.permission;
+            if (AuthorizationList.Contains("ALL") || 
+                AuthorizationList.Contains(auth))
+                return true;
+            else
+                return false;
         }
 
         public long getsyncid()
@@ -106,20 +103,12 @@ namespace ETech.cls
             this.password = dr["password"].ToString();
             this.status = int.Parse(dr["status"].ToString());
 
-            sSQL = "SELECT * FROM `userpermission` WHERE `userid` = " + SyncId;
-            dt = mySQLFunc.getdb(sSQL);
-            this.permission.Clear();
-            foreach (DataRow dr_d in dt.Rows)
-            {
-                this.permission.Add(Convert.ToInt32(dr_d["code"]));
-            }
-
             sSQL = "SELECT * FROM `userauth` WHERE `userid` = " + SyncId;
             dt = mySQLFunc.getdb(sSQL);
-            this.authorization.Clear();
+            this.AuthorizationList.Clear();
             foreach (DataRow dr_d in dt.Rows)
             {
-                this.authorization.Add(dr_d["authorization"].ToString());
+                this.AuthorizationList.Add(dr_d["authorization"].ToString());
             }
         }
 

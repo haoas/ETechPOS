@@ -20,7 +20,6 @@ namespace ETech
         public string remarks;
         public string salesdetailmemo;
         public bool issuccess;
-        public bool forcereturn_permission;
 
         public frmRefundInfo()
         {
@@ -47,20 +46,15 @@ namespace ETech
         private void btnOK_Click(object sender, EventArgs e)
         {
             this.issuccess = false;
-            string ornumber = txtORno.Text.Trim();
+            long ornumber = long.Parse(txtORno.Text.Trim());
 
-            if (ornumber == "")
+            if (ornumber == 0)
             {
-                if (forcereturn_permission)
+                frmPermissionCode frmauthcode = new frmPermissionCode();
+                frmauthcode.auth_needed = "REFUNDITEM";
+                frmauthcode.ShowDialog();
+                if (frmauthcode.permcode)
                     successReturn();
-                else
-                {
-                    frmPermissionCode frmpermcode = new frmPermissionCode();
-                    frmpermcode.permission_needed = fncFilter.get_permission_forcereturn();
-                    frmpermcode.ShowDialog();
-                    if (frmpermcode.permcode)
-                        successReturn();
-                }
             }
             else
             {
@@ -93,7 +87,7 @@ namespace ETech
             this.Close();
         }
 
-        public decimal get_productCountFromOR(long productid, string ornumber)
+        public decimal get_productCountFromOR(long productid, long ornumber)
         {
             string branchid = cls_globalvariables.BranchCode;
 

@@ -16,8 +16,8 @@ namespace ETech
     {
         public long or_number;
         public long currenttrans_ornumber;
-        public List<int> cur_permissions;
-        public frmPermissionCode frmpermcode;
+        public List<string> CurrentUserAuthList;
+        public frmPermissionCode frmauthcode;
 
         public frmReprintReceipt()
         {
@@ -28,7 +28,7 @@ namespace ETech
             cls_globalfunc.formaddkbkpevent(this);
 
             this.or_number = 0;
-            this.cur_permissions = new List<int>();
+            this.CurrentUserAuthList = new List<string>();
         }
 
         public void btnOK_Click(object sender, EventArgs e)
@@ -59,13 +59,13 @@ namespace ETech
                 return;
         }
 
-        private bool isInput_permission_code(int permissioncode)
+        private bool isInput_permission_code(string permissioncode)
         {
             bool permcheck = false;
-            frmpermcode = new frmPermissionCode();
-            frmpermcode.permission_needed = permissioncode;
-            frmpermcode.ShowDialog();
-            permcheck = frmpermcode.permcode;
+            frmauthcode = new frmPermissionCode();
+            frmauthcode.auth_needed = permissioncode;
+            frmauthcode.ShowDialog();
+            permcheck = frmauthcode.permcode;
 
             return permcheck;
         }
@@ -128,12 +128,11 @@ namespace ETech
         private bool Check_ReprintReceiptPermission(bool isSwitch)
         {
             bool permcheck_reprintreceipt = false;
-            if (fncFilter.check_permission_reprint(this.cur_permissions))
+            if (this.CurrentUserAuthList.Contains("REPRINTOR") || this.CurrentUserAuthList.Contains("ALL"))
                 permcheck_reprintreceipt = true;
             else
-            {
-                permcheck_reprintreceipt = isInput_permission_code(fncFilter.get_permission_reprint());
-            }
+                permcheck_reprintreceipt = isInput_permission_code("REPRINTOR");
+
             return permcheck_reprintreceipt;
         }
     }

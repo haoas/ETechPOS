@@ -14,7 +14,6 @@ namespace ETech.cls
         private List<cls_giftcheque> giftchequenew;
         private List<cls_CustomPaymentsInfo> list_custompayment;
         private decimal cash;
-        private decimal dept;
         private decimal points;
         private string memo;
 
@@ -25,7 +24,6 @@ namespace ETech.cls
             this.giftchequenew = new List<cls_giftcheque>();
             this.list_custompayment = new List<cls_CustomPaymentsInfo>();
             this.cash = 0;
-            this.dept = 0;
             this.points = 0;
             this.memo = "";
         }
@@ -37,7 +35,6 @@ namespace ETech.cls
             this.giftchequenew = new List<cls_giftcheque>();
             this.list_custompayment = new List<cls_CustomPaymentsInfo>();
             this.cash = 0;
-            this.dept = 0;
             this.points = 0;
             this.memo = "";
 
@@ -112,11 +109,6 @@ namespace ETech.cls
             this.points = points_d;
         }
 
-        public void set_dept(decimal dept_d)
-        {
-            this.dept = dept_d;
-        }
-
         public void set_custompayments(List<cls_CustomPaymentsInfo> custompayments_d)
         {
             this.list_custompayment = custompayments_d;
@@ -128,7 +120,6 @@ namespace ETech.cls
         public List<cls_giftcheque> get_giftchequenew() { return this.giftchequenew; }
         public List<cls_CustomPaymentsInfo> get_custompayments() { return this.list_custompayment; }
         public decimal get_cash() { return this.cash; }
-        public decimal get_dept() { return this.dept; }
         public decimal get_points() { return this.points; }
 
         public decimal get_creditamount()

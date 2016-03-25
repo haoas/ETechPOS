@@ -201,10 +201,10 @@ namespace ETech
 
             if (!Trans.Exists(x => x.get_productlist().get_productlist().Count > 0))
                 permcheck_exit = true;
-            else if (fncFilter.check_permission_void(this.cur_cashier.getpermission()))
+            else if (cur_cashier.CheckAuth("VOIDTRANS"))
                 permcheck_exit = true;
             else
-                permcheck_exit = isInput_permission_code(fncFilter.get_permission_void());
+                permcheck_exit = isInput_auth_code("VOIDTRANS");
 
             if (permcheck_exit)
             {
@@ -359,7 +359,7 @@ namespace ETech
              */
             int mode = 0;
 
-            cls_user permissiongiver = new cls_user();
+            cls_user UserAuthorizer = new cls_user();
             switch (e.KeyCode)
             {
 
@@ -449,12 +449,10 @@ namespace ETech
                     {
                         //Open Item
                         bool permcheck_openitem = false;
-                        if (fncFilter.check_permission_openitem(this.cur_cashier.getpermission()))
-                        {
+                        if (cur_cashier.CheckAuth("OPENITEM"))
                             permcheck_openitem = true;
-                        }
                         else
-                            permcheck_openitem = isInput_permission_code(fncFilter.get_permission_openitem());
+                            permcheck_openitem = isInput_auth_code("OPENITEM");
 
                         if (permcheck_openitem)
                         {
@@ -473,7 +471,13 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
-                        if (check_permission("opendrawer"))
+                        bool permcheck_opendrawer = false;
+                        if (this.cur_cashier.CheckAuth("OPENDRAWER"))
+                            permcheck_opendrawer = true;
+                        else
+                            permcheck_opendrawer = isInput_auth_code("OPENDRAWER");
+
+                        if (permcheck_opendrawer)
                             RawPrinterHelper.OpenCashDrawer(false);
                     }
                     else if (FPage == 2)
@@ -506,15 +510,16 @@ namespace ETech
                 case Keys.F2:
                     if (FPage == 0)
                     {
+                        if (!ctrlproductgridview.hasRows())
+                            break;
+
                         bool permcheck_deleteproduct = false;
                         bool permcheck_return = false;
-                        bool permcheck_forcereturn = false;
-                        if (fncFilter.check_permission_delete(this.cur_cashier.getpermission()))
+
+                        if (this.cur_cashier.CheckAuth("REMOVEITEM"))
                             permcheck_deleteproduct = true;
-                        if (fncFilter.check_permission_return(this.cur_cashier.getpermission()))
+                        if (this.cur_cashier.CheckAuth("REFUNDITEM"))
                             permcheck_return = true;
-                        if (fncFilter.check_permission_forcereturn(this.cur_cashier.getpermission()))
-                            permcheck_forcereturn = true;
 
                         row_index = this.ctrlproductgridview.get_currentrow().Index;
                         cls_product prod = tran.get_productlist().get_product(row_index);
@@ -527,9 +532,8 @@ namespace ETech
                         frmprodqty.productid = prod.getSyncId();
                         frmprodqty.productname = productname;
                         frmprodqty.new_qty = cur_prodqty;
-                        frmprodqty.delete_permission = permcheck_deleteproduct;
-                        frmprodqty.return_permission = permcheck_return;
-                        frmprodqty.forcereturn_permission = permcheck_forcereturn;
+                        frmprodqty.delete_auth = permcheck_deleteproduct;
+                        frmprodqty.return_auth = permcheck_return;
                         frmprodqty.ShowDialog();
 
                         if (cur_prodqty == frmprodqty.new_qty)
@@ -550,7 +554,13 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
-                        if (check_permission("opendrawer"))
+                        bool permcheck_opendrawer = false;
+                        if (this.cur_cashier.CheckAuth("PICKUPCASH"))
+                            permcheck_opendrawer = true;
+                        else
+                            permcheck_opendrawer = isInput_auth_code("PICKUPCASH");
+
+                        if (permcheck_opendrawer)
                         {
                             RawPrinterHelper.OpenCashDrawer(false);
                             frmCashDenomination cashform = new frmCashDenomination();
@@ -624,6 +634,9 @@ namespace ETech
                 case Keys.F3:
                     if (FPage == 0)
                     {
+                        if (!ctrlproductgridview.hasRows())
+                            break;
+
                         long prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getSyncId();
                         if (prodWid == 1 || prodWid == 2)
                         {
@@ -632,7 +645,7 @@ namespace ETech
                         }
 
                         bool permcheck_delete = false;
-                        if (fncFilter.check_permission_delete(this.cur_cashier.getpermission()))
+                        if (this.cur_cashier.CheckAuth("REMOVEITEM"))
                         {
                             permcheck_delete = true;
 
@@ -641,17 +654,16 @@ namespace ETech
                             {
                                 isdetected = true; break;
                             }
-
                         }
                         else
                         {
                             //permcheck_delete = isInput_permission_code(fncFilter.get_permission_delete());
                             frmPermissionCode frmpermcode = new frmPermissionCode();
-                            frmpermcode.permission_needed = fncFilter.get_permission_delete();
+                            frmpermcode.auth_needed = "REMOVEITEM";
                             frmpermcode.ShowDialog();
                             permcheck_delete = frmpermcode.permcode;
-                            permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                            tran.set_permissiongiver(permissiongiver);
+                            UserAuthorizer.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
+                            tran.set_UserAuthorizer(UserAuthorizer);
                         }
 
                         int row_index_delete = this.ctrlproductgridview.get_currentrow().Index;
@@ -670,15 +682,18 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
-                        tran = this.get_curtrans();
-                        if (tran == null) return true;
+                        bool permcheck_nonvattrans = false;
+                        if (this.cur_cashier.CheckAuth("NONVATTRANS"))
+                            permcheck_nonvattrans = true;
+                        else
+                            permcheck_nonvattrans = isInput_auth_code("NONVATTRANS");
 
-                        if (check_permission("nonvat"))
+                        if (permcheck_nonvattrans)
                         {
                             if (tran.get_productlist().get_isnonvat())
-                                LOGS.LOG_PRINT("[F9] NonVat Transaction Deactivated");
+                                LOGS.LOG_PRINT("NonVat Transaction Deactivated");
                             else
-                                LOGS.LOG_PRINT("[F9] NonVat Transaction Activated");
+                                LOGS.LOG_PRINT("NonVat Transaction Activated");
                             tran.get_productlist().set_isnonvat(!tran.get_productlist().get_isnonvat());
 
                             frmNonVatInfo nonvattrans = new frmNonVatInfo();
@@ -687,7 +702,6 @@ namespace ETech
 
                             tran.setnonvat(nonvattrans.nonvat);
                         }
-
                         refresh_productlist_data(tran);
                     }
                     else if (FPage == 2)
@@ -751,17 +765,17 @@ namespace ETech
                         }
 
                         bool permcheck_discountproduct = false;
-                        if (fncFilter.check_permission_discount(this.cur_cashier.getpermission()))
+                        if (this.cur_cashier.CheckAuth("DISCOUNT"))
                             permcheck_discountproduct = true;
                         else
                         {
                             //permcheck_discountproduct = isInput_permission_code(fncFilter.get_permission_discount());
                             frmPermissionCode frmpermcode = new frmPermissionCode();
-                            frmpermcode.permission_needed = fncFilter.get_permission_discount();
+                            frmpermcode.auth_needed = "DISCOUNT";
                             frmpermcode.ShowDialog();
                             permcheck_discountproduct = frmpermcode.permcode;
-                            permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                            tran.set_permissiongiver(permissiongiver);
+                            UserAuthorizer.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
+                            tran.set_UserAuthorizer(UserAuthorizer);
                         }
 
                         if (permcheck_discountproduct)
@@ -840,10 +854,13 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
-                        tran = this.get_curtrans();
-                        if (tran == null) return true;
+                        bool permcheck_seniortrans = false;
+                        if (this.cur_cashier.CheckAuth("SENIORTRANS"))
+                            permcheck_seniortrans = true;
+                        else
+                            permcheck_seniortrans = isInput_auth_code("SENIORTRANS");
 
-                        if (check_permission("senior"))
+                        if (permcheck_seniortrans)
                         {
                             frmSenior seniorform = new frmSenior();
                             seniorform.senior = tran.getsenior();
@@ -868,17 +885,17 @@ namespace ETech
                             return true;
                         }
                         bool permcheck_discounttransaction = false;
-                        if (fncFilter.check_permission_discount(this.cur_cashier.getpermission()))
+                        if (this.cur_cashier.CheckAuth("DISCOUNT"))
                             permcheck_discounttransaction = true;
                         else
                         {
                             //permcheck_discounttransaction = isInput_permission_code(fncFilter.get_permission_discount());
                             frmPermissionCode frmpermcode = new frmPermissionCode();
-                            frmpermcode.permission_needed = fncFilter.get_permission_discount();
+                            frmpermcode.auth_needed = "DISCOUNT";
                             frmpermcode.ShowDialog();
                             permcheck_discounttransaction = frmpermcode.permcode;
-                            permissiongiver.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                            tran.set_permissiongiver(permissiongiver);
+                            UserAuthorizer.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
+                            tran.set_UserAuthorizer(UserAuthorizer);
                         }
 
                         if (permcheck_discounttransaction)
@@ -1066,42 +1083,9 @@ namespace ETech
                         decimal total_amount_paid = tran.getpayments().get_totalamount();
 
                         bool istransactiondone = false;
-                        //LESTER
-                        //if (total_amount_due < -0.1)
-                        //{
-                        //    fncFilter.alert(cls_globalvariables.warning_transaction_invalid);
-                        //    istransactiondone = false;
-                        //}
-                        //else 
                         if (ispaymentdone && total_amount_due <= (total_amount_paid))
                         {
                             istransactiondone = true;
-                        }
-                        else if (ispaymentdone && total_amount_due > (total_amount_paid) && tran.getcustomer().getwid() > 0)
-                        {
-                            if (MessageBox.Show(cls_globalvariables.confirm_customer_debt, "Confirm Box",
-                                    MessageBoxButtons.YesNo) == DialogResult.No)
-                            {
-                                istransactiondone = false;
-                            }
-                            else
-                            {
-                                bool permcheck_debt = false;
-                                if (fncFilter.check_permission_debt(this.cur_cashier.getpermission()))
-                                {
-                                    permcheck_debt = true;
-                                }
-                                else
-                                    permcheck_debt = isInput_permission_code(fncFilter.get_permission_debt());
-
-                                if (!permcheck_debt)
-                                    istransactiondone = false;
-
-                                istransactiondone = true;
-                                tran.getpayments().set_dept(total_amount_due - total_amount_paid);
-                                LOGS.LOG_PRINT("Customer Transacts with Debt: " + tran.getcustomer().getfullname() + " "
-                                    + (total_amount_due - total_amount_paid).ToString());
-                            }
                         }
                         else if (ispaymentdone && total_amount_due > (total_amount_paid))
                         {
@@ -1138,11 +1122,6 @@ namespace ETech
                         {
                             this.ctrlCustDisp.refresh_display_payment();
 
-                            if (tran.getpayments().get_dept() > 0)
-                            {
-                                //print receipt copy
-                                fncHardware.print_receipt(tran, false, false);
-                            }
                             remove_transaction();
 
                             LOGS.LOG_PRINT("Transaction Complete: " + tran.getORnumber());
@@ -1180,13 +1159,13 @@ namespace ETech
 
                         if (cls_globalvariables.PreviewOR_v)
                         {
-                            frmorprintpreview.cur_permissions = this.cur_cashier.getpermission();
+                            frmorprintpreview.CurrentUserAuthlist = this.cur_cashier.AuthorizationList;
                             frmorprintpreview.ShowDialog();
                             ORNumber = frmorprintpreview.or_number;
                         }
                         else
                         {
-                            reprintfrm.cur_permissions = this.cur_cashier.getpermission();
+                            reprintfrm.CurrentUserAuthList = this.cur_cashier.AuthorizationList;
                             reprintfrm.ShowDialog();
                             ORNumber = reprintfrm.or_number;
                         }
@@ -1260,7 +1239,7 @@ namespace ETech
                             break;
                         }
                         frmInventory invform = new frmInventory();
-                        invform.cur_permissions = this.cur_cashier.getpermission();
+                        invform.UserAuthorizationList = this.cur_cashier.AuthorizationList;
                         invform.ShowDialog();
                         string inv_cmd = invform.commandentered;
                         DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
@@ -1290,14 +1269,14 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
-                        tran = this.get_curtrans();
+                        //tran = this.get_curtrans();
                         if (tran != null)
                         {
                             MessageBox.Show("Please Void Current Transaction First! (F6 - Void)");
                             break;
                         }
                         frmInventory invform = new frmInventory();
-                        invform.cur_permissions = this.cur_cashier.getpermission();
+                        invform.UserAuthorizationList = this.cur_cashier.AuthorizationList;
                         invform.ShowDialog();
                         string inv_cmd = invform.commandentered;
                         DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
@@ -1346,54 +1325,17 @@ namespace ETech
             this.txtBarcode.Focus();
             return isdetected;
         }
-        private bool isInput_permission_code(int permissioncode)
+        private bool isInput_auth_code(string permissioncode)
         {
             bool permcheck = false;
             frmPermissionCode frmpermcode = new frmPermissionCode();
-            frmpermcode.permission_needed = permissioncode;
+            frmpermcode.auth_needed = permissioncode;
             frmpermcode.ShowDialog();
             permcheck = frmpermcode.permcode;
 
             return permcheck;
         }
-        public bool check_permission(string permission)
-        {
-            bool permcheck = false;
-            int permissioncode = 0;
-            string endcaseprint = "";
-
-            switch (permission)
-            {
-                case "opendrawer":
-                    permcheck = (fncFilter.check_permission_opendrawer(this.cur_cashier.getpermission()));
-                    permissioncode = fncFilter.get_permission_opendrawer();
-                    break;
-                case "wholesale":
-                    permcheck = (fncFilter.check_permission_wholesale(this.cur_cashier.getpermission()));
-                    permissioncode = fncFilter.get_permission_wholesale();
-                    break;
-                case "nonvat":
-                    permcheck = (fncFilter.check_permission_nonvat(this.cur_cashier.getpermission()));
-                    permissioncode = fncFilter.get_permission_nonvat();
-                    break;
-                case "senior":
-                    permcheck = (fncFilter.check_permission_senior(this.cur_cashier.getpermission()));
-                    permissioncode = fncFilter.get_permission_senior();
-                    break;
-                default:
-                    break;
-            }
-
-            if (!permcheck)
-            {
-                if (!isInput_permission_code(permissioncode))
-                {
-                    return false;
-                }
-            }
-            LOGS.LOG_PRINT(endcaseprint);
-            return true;
-        }
+        
         public cls_POSTransaction get_curtrans()
         {
             try

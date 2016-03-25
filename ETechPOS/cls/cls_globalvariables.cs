@@ -14,7 +14,7 @@ namespace ETech.cls
         public static string ApplicationName = Assembly.GetExecutingAssembly().GetName().Name;
         public static string ApplicationVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(4);
 
-        public static string MainBranchCode = "10"; //Lester: to change to 1000
+        public static string MainBranchCode = "1000";
 
         public static decimal vat = 0.12M;
         public static decimal senior = 0.20M;
@@ -399,15 +399,10 @@ namespace ETech.cls
         public static string warning_refunded_transaction_cannot_be_voided = "This transaction cannot be void because it has refunded item/s. Please void the refund item/s first before void this transaction.";
 
         public static string warning_customer_needed = "Select a registered customer first.";
-        public static string warning_bankname_needed = "Please indicated Bank Name.";
-        public static string warning_acctname_needed = "Please indicated Account Name.";
-        public static string warning_payto_needed = "Please fill up Pay To Field.";
-        public static string warning_chequeno_needed = "Please indicated Cheque Number.";
-        public static string warning_permissioncode_needed = "Please fill up permission code!";
+        public static string warning_authcode_needed = "Please fill up auth code!";
         public static string warning_cardholder_needed = "Please indicated Card Holder.";
         public static string warning_invalid_amount = "Invalid Amount.";
         public static string warning_approvalcode_needed = "Please enter Approval Code.";
-
         public static string warning_input_invalid = "Invalid Input!";
         public static string warning_acctno_invalid = "Invalid Account Number!";
         public static string warning_chequedate_invalid = "Invalid Cheque Date!";
@@ -418,7 +413,7 @@ namespace ETech.cls
         public static string warning_monthofexp_invalid = "Invalid Month of Expiry!";
         public static string warning_yearofexp_invalid = "Invalid Year of Expiry!";
         public static string warning_userpass_invalid = "Invalid Username or Password.";
-        public static string warning_permissioncode_invalid = "Invalid Permission Code!";
+        public static string warning_authcode_invalid = "Invalid Permission Code!";
         public static string warning_quantity_invalid = "Invalid Quantity!";
         public static string warning_transaction_invalid = "Invalid Transaction!";
         public static string warning_price_invalid = "Invalid Price!";
@@ -431,7 +426,7 @@ namespace ETech.cls
         public static string warning_discount_outofrange = "Discount percentage out of range.";
         public static string warning_samecashierchecker = "Cashier and Checker must be two different person.";
 
-        public static string warning_userpermission_denied = "User's permission denied.";
+        public static string warning_userauthorization_denied = "User is not authorized to use this function.";
         public static string warning_member_notregistered = "Member not yet registered.";
         public static string warning_product_notfound = "Product not found.";
         public static string warning_notransactionyet = "No Transaction Found.";

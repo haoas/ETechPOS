@@ -7,6 +7,7 @@ using System.Data;
 using System.ComponentModel;
 using ETech.cls;
 using ETech.fnc;
+using ETech.FormatDesigner;
 
 namespace ETech.ctrl
 {
@@ -32,6 +33,11 @@ namespace ETech.ctrl
             this.dgvProduct.DataSource = this.bdsProduct;
         }
 
+        public bool hasRows()
+        {
+            return (dgvProduct.Rows.Count > 0) ? true : false;
+        }
+
         public void set_databinding(DataTable dtProduct_d)
         {
             this.dtProduct = dtProduct_d;
@@ -54,12 +60,12 @@ namespace ETech.ctrl
 
         public void select_next()
         {
-            fncFilter.gridview_selectnextrow(dgvProduct);
+            dgvProduct.SelectNextRow();
         }
 
         public void select_previous()
         {
-            fncFilter.gridview_selectpreviousrow(dgvProduct);
+            dgvProduct.SelectPreviousRow();
         }
 
         private void bdsProduct_ListChanged(object sender, ListChangedEventArgs e)

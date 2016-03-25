@@ -103,22 +103,22 @@ namespace ETech
             tbx_Fullname.Text = user.getfullname().Trim();
             tbx_Username.Text = user.username.Trim();
             tbx_Password.Text = user.password.Trim();
-            cbx_All.Checked = user.authorization.Contains("ALL");
-            cbx_ChangeQuantity.Checked = user.authorization.Contains("CHANGEQTY");
-            cbx_discount.Checked = user.authorization.Contains("DISCOUNT");
-            cbx_membertrans.Checked = user.authorization.Contains("MEMBERTRANS");
-            cbx_nonvattrans.Checked = user.authorization.Contains("NONVATTRANS");
-            cbx_opendrawer.Checked = user.authorization.Contains("OPENDRAWER");
-            cbx_Openitem.Checked = user.authorization.Contains("OPENITEM");
-            cbx_pickupcash.Checked = user.authorization.Contains("PICKUPCASH");
-            cbx_Refunditem.Checked = user.authorization.Contains("REFUNDITEM");
-            cbx_Removeitem.Checked = user.authorization.Contains("REMOVEITEM");
-            cbx_reprintor.Checked = user.authorization.Contains("REPRINTOR");
-            cbx_seniortrans.Checked = user.authorization.Contains("SENIORTRANS");
-            cbx_voidtrans.Checked = user.authorization.Contains("VOIDTRANS");
-            cbx_wholesale.Checked = user.authorization.Contains("WSALETRANS");
-            cbx_xread.Checked = user.authorization.Contains("XREAD");
-            cbx_zread.Checked = user.authorization.Contains("ZREAD");
+            cbx_All.Checked = user.AuthorizationList.Contains("ALL");
+            cbx_ChangeQuantity.Checked = user.AuthorizationList.Contains("CHANGEQTY");
+            cbx_discount.Checked = user.AuthorizationList.Contains("DISCOUNT");
+            cbx_membertrans.Checked = user.AuthorizationList.Contains("MEMBERTRANS");
+            cbx_nonvattrans.Checked = user.AuthorizationList.Contains("NONVATTRANS");
+            cbx_opendrawer.Checked = user.AuthorizationList.Contains("OPENDRAWER");
+            cbx_Openitem.Checked = user.AuthorizationList.Contains("OPENITEM");
+            cbx_pickupcash.Checked = user.AuthorizationList.Contains("PICKUPCASH");
+            cbx_Refunditem.Checked = user.AuthorizationList.Contains("REFUNDITEM");
+            cbx_Removeitem.Checked = user.AuthorizationList.Contains("REMOVEITEM");
+            cbx_reprintor.Checked = user.AuthorizationList.Contains("REPRINTOR");
+            cbx_seniortrans.Checked = user.AuthorizationList.Contains("SENIORTRANS");
+            cbx_voidtrans.Checked = user.AuthorizationList.Contains("VOIDTRANS");
+            cbx_wholesale.Checked = user.AuthorizationList.Contains("WSALETRANS");
+            cbx_xread.Checked = user.AuthorizationList.Contains("XREAD");
+            cbx_zread.Checked = user.AuthorizationList.Contains("ZREAD");
         }
 
         private void btn_UpdateUser_Click(object sender, EventArgs e)

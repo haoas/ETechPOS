@@ -24,7 +24,7 @@ namespace ETech.cls
         private string memo;
         private int show;
         private int status;
-        private cls_user permissiongiver;
+        private cls_user UserAuthorizer;
 
         private cls_productlist productlist;
 
@@ -49,7 +49,7 @@ namespace ETech.cls
             this.senior = new cls_senior();
             this.nonvat = new cls_nonvat();
             this.memo = "";
-            this.permissiongiver = new cls_user();
+            this.UserAuthorizer = new cls_user();
             this.show = 0;
             this.status = 0;
         }
@@ -169,11 +169,6 @@ namespace ETech.cls
             this.productlist = new cls_productlist();
             this.productlist.set_productlist_by_wid(SyncId, status);
 
-            if (Convert.ToInt32(dr["customerid"]) > 0 && this.productlist.get_totalamount() > this.payments.get_totalamount())
-            {
-                this.payments.set_dept(this.productlist.get_totalamount() - this.payments.get_totalamount());
-            }
-
         }
 
         public void set_transaction_by_ornumber(long or_num)
@@ -250,25 +245,25 @@ namespace ETech.cls
             return totalamt / ratio;
         }
 
-        public cls_user get_permissiongiver()
+        public cls_user get_UserAuthorizer()
         {
-            return this.permissiongiver;
+            return this.UserAuthorizer;
         }
-        public void set_permissiongiver(cls_user permissiongiver_d)
+        public void set_UserAuthorizer(cls_user permissiongiver_d)
         {
-            this.permissiongiver = permissiongiver_d;
+            this.UserAuthorizer = permissiongiver_d;
         }
 
-        public long get_permissiongiver_wid()
+        public long get_UserAuthorizer_SyncId()
         {
-            long permissiongiverwid = this.get_permissiongiver().getsyncid();
+            long permissiongiverwid = this.get_UserAuthorizer().getsyncid();
             long clerkwid = this.getclerk().getsyncid();
             return (permissiongiverwid != 0) ? permissiongiverwid : clerkwid;
         }
 
         public string get_permissiongiver_fullname()
         {
-            string permissiongiverfullname = this.get_permissiongiver().getfullname();
+            string permissiongiverfullname = this.get_UserAuthorizer().getfullname();
             string clerkfullname = this.getclerk().getfullname();
 
             return (permissiongiverfullname != "") ? permissiongiverfullname : clerkfullname;

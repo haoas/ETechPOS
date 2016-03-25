@@ -14,7 +14,7 @@ namespace ETech
 {
     public partial class frmPermissionCode : Form
     {
-        public int permission_needed;
+        public string auth_needed;
         public bool permcode;
         public string permissionwid = "0";
 
@@ -26,7 +26,7 @@ namespace ETech
             fncFilter.set_theme_color(this);
             cls_globalfunc.formaddkbkpevent(this);
 
-            permission_needed = 100;
+            auth_needed = "ALL";
         }
 
         public void done_process()
@@ -53,26 +53,26 @@ namespace ETech
             DataTable dt = mySQLFunc.getdb(SQL, parameters, values);
             if (dt.Rows.Count <= 0)
             {
-                fncFilter.alert(cls_globalvariables.warning_permissioncode_invalid);
+                fncFilter.alert(cls_globalvariables.warning_authcode_invalid);
                 txtPermissionCode.Focus();
                 txtPermissionCode.SelectAll();
                 return;
             }
 
             string SyncId = dt.Rows[0]["SyncId"].ToString();
-            string SQLpermissions = @"SELECT * FROM `userpermission` WHERE `userid` = @userwid";
+            string SQLpermissions = @"SELECT * FROM `userauth` WHERE `userid` = @userwid";
             parameters = new List<string>();
             values = new List<string>();
             parameters.Add("@userwid");
             values.Add(SyncId);
             DataTable dtpermission = mySQLFunc.getdb(SQLpermissions, parameters, values);
-            List<int> permissions = new List<int>();
+            List<string> permissions = new List<string>();
             foreach (DataRow dr in dtpermission.Rows)
             {
-                permissions.Add(Convert.ToInt32(dr["code"]));
+                permissions.Add(dr["authorization"].ToString());
             }
 
-            if (permissions.Contains(100) || permissions.Contains(this.permission_needed))
+            if (permissions.Contains("ALL") || permissions.Contains(this.auth_needed))
             {
                 permcode = true;
                 this.permissionwid = SyncId;
@@ -81,7 +81,7 @@ namespace ETech
             }
             else
             {
-                fncFilter.alert(cls_globalvariables.warning_permissioncode_invalid);
+                fncFilter.alert(cls_globalvariables.warning_authcode_invalid);
                 return;
             }
         }

@@ -120,7 +120,7 @@ namespace ETech.fnc
 
         public static void void_transaction(cls_POSTransaction tran)
         {
-            long lastmodifiedby = tran.get_permissiongiver_wid();
+            long lastmodifiedby = tran.get_UserAuthorizer_SyncId();
 
             mySQLFunc.setdb(@"UPDATE collectionhead SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status`=2 WHERE SyncId = ( SELECT `headid` FROM collectionsales where `saleswid` = '" + tran.getSyncId() + "') LIMIT 1");
             mySQLFunc.setdb(@"UPDATE saleshead SET `VoidedOn`=NOW(),`VoidedBy`='" + lastmodifiedby + @"' `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status` = 2 WHERE `SyncId` = '" + tran.getSyncId() + "' LIMIT 1");
@@ -1591,7 +1591,6 @@ namespace ETech.fnc
             decimal tendered_gift = tran.getpayments().get_giftchequenewamount();
             decimal tendered_mempoints = tran.getpayments().get_points();
             decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
-            decimal dept = tran.getpayments().get_dept();
             decimal tendered_total = tran.getpayments().get_totalamount();
             decimal changeamt = tran.get_changeamount();
             DataTable dt_tendered = new DataTable();
@@ -1647,7 +1646,6 @@ namespace ETech.fnc
                 cnt_item_t++;
             }
 
-            if (dept > 0) { dt_tendered.Rows.Add("Debt:", dept.ToString("N2")); cnt_item_t++; }
             if (cnt_item_t >= 2)
                 dt_tendered.Rows.Add("Total Tendered:", tendered_total.ToString("N2"));
 
@@ -1678,15 +1676,6 @@ namespace ETech.fnc
             dt_footer.Rows.Add(cls_globalvariables.orfooter2_v);
             dt_footer.Rows.Add(cls_globalvariables.orfooter3_v);
             dt_footer.Rows.Add(cls_globalvariables.orfooter4_v);
-
-            if (dept > 0)
-            {
-                dt_footer.Rows.Add(" ");
-                dt_footer.Rows.Add(" ");
-                dt_footer.Rows.Add("_________________________________");
-                dt_footer.Rows.Add("CUSTOMER SIGNATURE");
-                dt_footer.Rows.Add(" ");
-            }
 
             //------------------------------data end---------------------------------
             int nY = 0;
@@ -2064,7 +2053,6 @@ namespace ETech.fnc
             decimal tendered_gift = tran.getpayments().get_giftchequenewamount();
             decimal tendered_mempoints = tran.getpayments().get_points();
             decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
-            decimal debt = tran.getpayments().get_dept();
             decimal tendered_total = tran.getpayments().get_totalamount();
             decimal changeamt = tran.get_changeamount();
             tempDataTable = new DataTable();
@@ -2119,11 +2107,6 @@ namespace ETech.fnc
                 tempDataTable.Rows.Add("Custom Payments:", tendered_custompayments.ToString("N2")); cnt_item_t++;
                 foreach (cls_CustomPaymentsInfo custompaymentsinfo in tran.getpayments().get_custompayments())
                     tempDataTable.Rows.Add("    " + custompaymentsinfo.get_paymentname(), custompaymentsinfo.get_amount().ToString("N2"));
-                cnt_item_t++;
-            }
-            if (debt > 0)
-            {
-                tempDataTable.Rows.Add("Debt:", debt.ToString("N2"));
                 cnt_item_t++;
             }
             if (cnt_item_t >= 2)

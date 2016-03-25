@@ -16,8 +16,8 @@ namespace ETech
         public string commandentered = "none";
         public DateTime datetime_d = DateTime.Now;
         public DateTime datetimeTO_d = DateTime.Now;
-        public List<int> cur_permissions;
-        public frmPermissionCode frmpermcode;
+        public List<string> UserAuthorizationList;
+        public frmPermissionCode frmauthcode;
 
         public frmInventory()
         {
@@ -55,18 +55,12 @@ namespace ETech
             this.Close();
             return;
         }
-        public void H()
-        {
-            this.commandentered = "H";
-            this.Close();
-            return;
-        }
 
         public void frmInventory_Load(object sender, EventArgs e)
         {
-            if (!fncFilter.check_permission_collectioncash(this.cur_permissions))
+            if (!UserAuthorizationList.Contains("ZREAD"))
             {
-                bool permcheck_collectioncash = isInput_permission_code(fncFilter.get_permission_collectioncash());
+                bool permcheck_collectioncash = isInput_permission_code("ZREAD");
                 if (!permcheck_collectioncash)
                 {
                     this.Close();
@@ -78,13 +72,13 @@ namespace ETech
             fncfullscreen.ResizeFormsControls();
         }
 
-        private bool isInput_permission_code(int permissioncode)
+        private bool isInput_permission_code(string permissioncode)
         {
             bool permcheck = false;
-            frmpermcode = new frmPermissionCode();
-            frmpermcode.permission_needed = permissioncode;
-            frmpermcode.ShowDialog();
-            permcheck = frmpermcode.permcode;
+            frmauthcode = new frmPermissionCode();
+            frmauthcode.auth_needed = permissioncode;
+            frmauthcode.ShowDialog();
+            permcheck = frmauthcode.permcode;
 
             return permcheck;
         }

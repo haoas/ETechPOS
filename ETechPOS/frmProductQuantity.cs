@@ -18,9 +18,8 @@ namespace ETech
         public decimal new_qty;
         public string productname;
         public long productid;
-        public bool delete_permission;
-        public bool return_permission;
-        public bool forcereturn_permission;
+        public bool delete_auth;
+        public bool return_auth;
         public string salesdetailmemo;
 
         public frmProductQuantity()
@@ -28,8 +27,8 @@ namespace ETech
             InitializeComponent();
             mySQLFunc.initialize_global_variables();
 
-            delete_permission = false;
-            return_permission = false;
+            delete_auth = false;
+            return_auth = false;
         }
 
         private void frmProductQuantity_Load(object sender, EventArgs e)
@@ -86,33 +85,29 @@ namespace ETech
                 }
 
                 bool permcheck = false;
-                if (new_qty == 0 && this.delete_permission == true)
+                if (new_qty == 0 && this.delete_auth == true)
                 {
                     permcheck = true;
                 }
-                else if (new_qty < 0 && this.return_permission == true)
+                else if (new_qty < 0 && this.return_auth == true)
                 {
                     permcheck = true;
                 }
-                else if (new_qty < old_qty && this.return_permission == true)
-                {
-                    permcheck = true;
-                }
-                else if (new_qty < old_qty && this.forcereturn_permission == true)
+                else if (new_qty < old_qty && this.return_auth == true)
                 {
                     permcheck = true;
                 }
                 else if (new_qty == 0)
                 {
-                    frmPermissionCode frmpermcode = new frmPermissionCode();
-                    frmpermcode.permission_needed = fncFilter.get_permission_delete();
-                    frmpermcode.ShowDialog();
-                    permcheck = frmpermcode.permcode;
+                    frmPermissionCode frmauthcode = new frmPermissionCode();
+                    frmauthcode.auth_needed = "REMOVEITEM";
+                    frmauthcode.ShowDialog();
+                    permcheck = frmauthcode.permcode;
                 }
                 else
                 {
                     frmPermissionCode frmpermcode = new frmPermissionCode();
-                    frmpermcode.permission_needed = fncFilter.get_permission_return();
+                    frmpermcode.auth_needed = "REFUNDITEM";
                     frmpermcode.ShowDialog();
                     permcheck = frmpermcode.permcode;
                 }
@@ -125,7 +120,6 @@ namespace ETech
                         refundinfo.productid = productid;
                         refundinfo.negative_qty = new_qty;
                         refundinfo.productname = productname;
-                        refundinfo.forcereturn_permission = forcereturn_permission;
                         refundinfo.ShowDialog();
                         if (refundinfo.issuccess)
                         {

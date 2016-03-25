@@ -175,26 +175,17 @@ namespace ETech
             string code = dt.Rows[0]["usercode"].ToString();
             string fullname = dt.Rows[0]["fullname"].ToString();
             string SyncId = dt.Rows[0]["SyncId"].ToString();
-            string SQLpermissions = @"SELECT * FROM `userpermission` WHERE `userid` = @userwid";
+            string SQLauth = @"SELECT * FROM `userauth` WHERE `userid` = @userwid";
             parameters = new List<string>();
             values = new List<string>();
             parameters.Add("@userwid");
             values.Add(SyncId);
-            DataTable dtpermission = mySQLFunc.getdb(SQLpermissions, parameters, values);
-            List<int> permissions = new List<int>();
-            foreach (DataRow dr in dtpermission.Rows)
-                permissions.Add(Convert.ToInt32(dr["code"]));
+            DataTable dtauth = mySQLFunc.getdb(SQLauth, parameters, values);
+            List<string> Authorizations = new List<string>();
+            foreach (DataRow dr in dtauth.Rows)
+                Authorizations.Add(dr["authorization"].ToString());
 
-            if (!fncFilter.check_permission_login(permissions))
-            {
-                fncFilter.alert(cls_globalvariables.warning_userpermission_denied);
-                txtUsername.Focus();
-                txtUsername.SelectAll();
-                btnLogIn.Enabled = true;
-                return;
-            }
-
-            this.cashier.setcls_user(code, fullname, permissions, Convert.ToInt32(SyncId));
+            this.cashier.setcls_user(code, fullname, Authorizations, Convert.ToInt32(SyncId));
 
             //Does not continue if Mac address is incorrect
             //if (!cls_globalfunc.CheckMacAddress() && cashier.getwid() != 0 && cashier.getwid() != 1)

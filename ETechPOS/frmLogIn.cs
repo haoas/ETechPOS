@@ -74,30 +74,22 @@ namespace ETech
             string fullname = dt.Rows[0]["fullname"].ToString();
             string SyncId = dt.Rows[0]["SyncId"].ToString();
 
-            string SQLpermissions = @"SELECT * FROM `userpermission` WHERE `userid` = @userwid";
+            string SQLauth = @"SELECT * FROM `userauth` WHERE `userid` = @userwid";
             parameters = new List<string>();
             values = new List<string>();
             parameters.Add("@userwid");
             values.Add(SyncId);
-            DataTable dtpermission = mySQLFunc.getdb(SQLpermissions, parameters, values);
-            List<int> permissions = new List<int>();
-            foreach (DataRow dr in dtpermission.Rows)
+            DataTable dtauth = mySQLFunc.getdb(SQLauth, parameters, values);
+            List<string> authorization = new List<string>();
+            foreach (DataRow dr in dtauth.Rows)
             {
-                permissions.Add(Convert.ToInt32(dr["code"]));
-            }
-
-            if (!fncFilter.check_permission_login(permissions))
-            {
-                fncFilter.alert(cls_globalvariables.warning_userpermission_denied);
-                txtUsername.Focus();
-                txtUsername.SelectAll();
-                return;
+                authorization.Add(dr["authorization"].ToString());
             }
 
             if (user == "checker")
-                this.checker.setcls_user(code, fullname, permissions, Convert.ToInt32(SyncId));
+                this.checker.setcls_user(code, fullname, authorization, Convert.ToInt64(SyncId));
             if (user == "salesman")
-                this.salesman.setcls_user(code, fullname, permissions, Convert.ToInt32(SyncId));
+                this.salesman.setcls_user(code, fullname, authorization, Convert.ToInt64(SyncId));
 
             this.Close();
         }
