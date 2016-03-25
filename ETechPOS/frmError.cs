@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -29,7 +30,7 @@ namespace ETech
         {
             this.lblError.Text = this.errormessage;
 
-            LOGS.LOG_PRINT("ERROR MESSAGE: " + this.errormessage);
+            LogsHelper.Print("ERROR MESSAGE: " + this.errormessage);
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();

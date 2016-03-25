@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Threading;
 using ETech.cls;
+using System.IO;
 
 namespace ETech
 {
@@ -30,16 +31,8 @@ namespace ETech
 
                 GC.Collect();
 
-                //try
-                //{
-                //    cls_globalvariables.is4By3ratio_v = ((double)Screen.PrimaryScreen.Bounds.Width / (double)Screen.PrimaryScreen.Bounds.Height) == 1.3333333333333333;
-                
-                //}
-                //catch (Exception ex )
-                //{
-                //    MessageBox.Show(ex.ToString());
-                //    throw;
-                //}
+                if (!Directory.Exists(cls_globalvariables.ApplicationDataLocalApplicationFolderPath))
+                    Directory.CreateDirectory(cls_globalvariables.ApplicationDataLocalApplicationFolderPath);
                 
                 Application.Run(new POSMain());
             }

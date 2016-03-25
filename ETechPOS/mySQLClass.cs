@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
+using ETECHPOS.Helpers;
 
 
 namespace ETech
@@ -21,10 +22,10 @@ namespace ETech
 
         private MySqlConnection connecttoSQL()
         {
-            string server = cls_globalvariables.server_v;
-            string userid = cls_globalvariables.userid_v;
-            string password = cls_globalvariables.password_v;
-            string database = cls_globalvariables.database_v;
+            string server = cls_globalvariables.ConnectionSettings.Server;
+            string userid = cls_globalvariables.ConnectionSettings.UserId;
+            string password = cls_globalvariables.ConnectionSettings.Password;
+            string database = cls_globalvariables.ConnectionSettings.Database;
 
             string cs = @"server=" + server + ";userid=" + userid + ";password=" + password + ";database=" + database;
 
@@ -47,10 +48,10 @@ namespace ETech
             {
                 try
                 {
-                    string server = cls_globalvariables.server_v;
-                    string userid = cls_globalvariables.userid_v;
-                    string password = cls_globalvariables.password_v;
-                    string database = cls_globalvariables.database_v;
+                    string server = cls_globalvariables.ConnectionSettings.Server;
+                    string userid = cls_globalvariables.ConnectionSettings.UserId;
+                    string password = cls_globalvariables.ConnectionSettings.Password;
+                    string database = cls_globalvariables.ConnectionSettings.Database;
 
                     string cs = @"server=" + server + ";userid=" + userid + ";password=" + password + ";database=" + database + ";Allow Zero Datetime=true;Connect Timeout=300;";
 
@@ -80,10 +81,10 @@ namespace ETech
         {
             DataTable dataTable = new DataTable();
 
-            string server = cls_globalvariables.server_v;
-            string userid = cls_globalvariables.userid_v;
-            string password = cls_globalvariables.password_v;
-            string database = cls_globalvariables.database_v;
+            string server = cls_globalvariables.ConnectionSettings.Server;
+            string userid = cls_globalvariables.ConnectionSettings.UserId;
+            string password = cls_globalvariables.ConnectionSettings.Password;
+            string database = cls_globalvariables.ConnectionSettings.Database;
 
             string cs = @"server=" + server + ";userid=" + userid + ";password=" + password + ";database=" + database;
 
@@ -118,10 +119,10 @@ namespace ETech
         {
             DataTable dataTable = new DataTable();
 
-            string server = cls_globalvariables.server_v;
-            string userid = cls_globalvariables.userid_v;
-            string password = cls_globalvariables.password_v;
-            string database = cls_globalvariables.database_v;
+            string server = cls_globalvariables.ConnectionSettings.Server;
+            string userid = cls_globalvariables.ConnectionSettings.UserId;
+            string password = cls_globalvariables.ConnectionSettings.Password;
+            string database = cls_globalvariables.ConnectionSettings.Database;
             string cs = @"server=" + server + ";userid=" + userid + ";password=" + password + ";database=" + database;
 
             MySqlConnection myconn = null;
@@ -176,8 +177,8 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                LOGS.LOG_PRINT("[getdb_branch] " + ex.Message.ToString());
-                LOGS.LOG_PRINT("[getdb_branch(sql)] " + SQL);
+                LogsHelper.Print("[getdb_branch] " + ex.Message.ToString());
+                LogsHelper.Print("[getdb_branch(sql)] " + SQL);
 
                 Console.WriteLine("getdb_branch error: " + SQL);
                 Console.WriteLine(ex.Message.ToString());
@@ -214,8 +215,8 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                LOGS.LOG_PRINT("[setdb_branch] " + ex.Message.ToString());
-                LOGS.LOG_PRINT("[setdb_branch(sql)] " + SQL);
+                LogsHelper.Print("[setdb_branch] " + ex.Message.ToString());
+                LogsHelper.Print("[setdb_branch(sql)] " + SQL);
 
                 Console.WriteLine("setdb_branch error: " + SQL);
                 Console.WriteLine(ex.Message.ToString());
@@ -782,7 +783,7 @@ namespace ETech
         }
         public string exec_trans(List<string> SQL, int retryMax)
         {
-            return exec_trans_branch(SQL, cls_globalvariables.server_v, cls_globalvariables.userid_v, cls_globalvariables.password_v, cls_globalvariables.database_v, retryMax);
+            return exec_trans_branch(SQL, cls_globalvariables.ConnectionSettings.Server, cls_globalvariables.ConnectionSettings.UserId, cls_globalvariables.ConnectionSettings.Password, cls_globalvariables.ConnectionSettings.Database, retryMax);
         }
         public string exec_trans_branch(List<string> SQL, string server, string userid, string password, string database)
         {

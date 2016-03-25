@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using ETech.fnc;
 using ETech.FormatDesigner;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -58,7 +59,7 @@ namespace ETech
             dgvProduct.Standardize();
             dgvProduct.FillColumn(new List<string> { "Description" });
 
-            LOGS.CLEAR();
+            LogsHelper.Clear();
             isLoadSuccessful = mySQLFunc.initialize_global_variables();
 
             if (!isLoadSuccessful)
@@ -111,7 +112,7 @@ namespace ETech
                 return;
             }
 
-            LOGS.LOG_PRINT("LOGGED IN: " + cur_cashier.getfullname());
+            LogsHelper.Print("LOGGED IN: " + cur_cashier.getfullname());
 
             this.cur_checker = new cls_user();
 
@@ -215,7 +216,7 @@ namespace ETech
                     for (int i = Trans.Count - 1; i >= 0; i--)
                         Delete_Unused_saleshead(Trans[i]);
                     ctrl_CustomerDisplay.initial_display();
-                    LOGS.LOG_PRINT("[EXIT]LOGGED OUT: " + cur_cashier.getfullname());
+                    LogsHelper.Print("[EXIT]LOGGED OUT: " + cur_cashier.getfullname());
                     return;
                 }
             }
@@ -284,7 +285,7 @@ namespace ETech
                 txtBarcode.Text = "";
                 frmposmainext.UpdateDGV(tran);
                 refresh_productlist_data(get_curtrans());
-                LOGS.LOG_PRINT("[BARCODE]Product Added: " + searchedproduct.getProductName());
+                LogsHelper.Print("[BARCODE]Product Added: " + searchedproduct.getProductName());
             }
         }
         private void POSMain_Load(object sender, EventArgs e)
@@ -390,7 +391,7 @@ namespace ETech
                         foreach (cls_product tempprod in searchprodbtn.tempProductlist.get_productlist())
                         {
                             lastaddedrownumber = tran.get_productlist().add_product(tempprod);
-                            LOGS.LOG_PRINT("[F4-2]Product Added (" + tempprod.getQty() + "): " + tempprod.getProductName());
+                            LogsHelper.Print("[F4-2]Product Added (" + tempprod.getQty() + "): " + tempprod.getProductName());
                         }
 
                         refresh_productlist_data(tran);
@@ -432,7 +433,7 @@ namespace ETech
 
                         }
                         //if (searchedproduct != null) {
-                        LOGS.LOG_PRINT("[F4-1]Product Added: " + searchedproduct.getProductName());
+                        LogsHelper.Print("[F4-1]Product Added: " + searchedproduct.getProductName());
                         lastaddedrownumber = tran.get_productlist().add_product(searchedproduct);
                         refresh_productlist_data(tran);
                         //}
@@ -551,7 +552,7 @@ namespace ETech
                         cur_prodqty = frmprodqty.new_qty;
                         cur_prodmemo = frmprodqty.salesdetailmemo;
 
-                        LOGS.LOG_PRINT("Product Changed Qty : " + productname + " " + cur_prodqty);
+                        LogsHelper.Print("Product Changed Qty : " + productname + " " + cur_prodqty);
                         tran.get_productlist().set_quantity(row_index, cur_prodqty);
                         tran.get_productlist().set_salesdetailmemo(row_index, cur_prodmemo);
                         refresh_productlist_data(tran);
@@ -578,7 +579,7 @@ namespace ETech
                             cashform.cash_bills.set_type(2);
                             cashform.cash_bills.save_cashdenomination(this.cur_cashier);
 
-                            LOGS.LOG_PRINT("[F5] Print Pickup Cash");
+                            LogsHelper.Print("[F5] Print Pickup Cash");
                             fncHardware.print_pickupcash(DateTime.Now, cur_cashier.getsyncid());
                         }
                     }
@@ -678,7 +679,7 @@ namespace ETech
                         int row_index_delete = this.ctrlproductgridview.get_currentrow().Index;
                         if (permcheck_delete)
                         {
-                            LOGS.LOG_PRINT("Product Removed : " + tran.get_productlist().get_product(row_index_delete).getProductName() + " BY " + tran.get_permissiongiver_fullname());
+                            LogsHelper.Print("Product Removed : " + tran.get_productlist().get_product(row_index_delete).getProductName() + " BY " + tran.get_permissiongiver_fullname());
                             tran.get_productlist().remove_product(row_index_delete);
                             lastaddedrownumber = tran.get_productlist().get_productlist().Count - 1;
                         }
@@ -700,9 +701,9 @@ namespace ETech
                         if (permcheck_nonvattrans)
                         {
                             if (tran.get_productlist().get_isnonvat())
-                                LOGS.LOG_PRINT("NonVat Transaction Deactivated");
+                                LogsHelper.Print("NonVat Transaction Deactivated");
                             else
-                                LOGS.LOG_PRINT("NonVat Transaction Activated");
+                                LogsHelper.Print("NonVat Transaction Activated");
                             tran.get_productlist().set_isnonvat(!tran.get_productlist().get_isnonvat());
 
                             frmNonVatInfo nonvattrans = new frmNonVatInfo();
@@ -722,7 +723,7 @@ namespace ETech
                     if (FPage == 0)
                     {
                         Delete_Unused_saleshead(this.get_curtrans());
-                        LOGS.LOG_PRINT("Invoice Cancelled: " + this.get_curtrans().getORnumber().ToString());
+                        LogsHelper.Print("Invoice Cancelled: " + this.get_curtrans().getORnumber().ToString());
                         remove_transaction();
                         create_new_invoice();
                         isdetected = true;
@@ -736,10 +737,10 @@ namespace ETech
                         memberform.ShowDialog();
 
                         if (memberform.member.getSyncId() != 0)
-                            LOGS.LOG_PRINT("[F8] Set Member: " + memberform.member.getfullname() + ", "
+                            LogsHelper.Print("[F8] Set Member: " + memberform.member.getfullname() + ", "
                                 + memberform.member.get_memberrate_name());
                         else
-                            LOGS.LOG_PRINT("[F8] Removed Member");
+                            LogsHelper.Print("[F8] Removed Member");
 
                         tran.setmember(memberform.member);
                         decimal dcpercent = tran.getmember().get_member_discount_amount(tran.get_productlist().get_totalamount());
@@ -827,7 +828,7 @@ namespace ETech
                                     prod_discount.getProductDiscountList().activateDiscount_using_wid(frmprodadjust.disc.get_SyncId(), 1 - cur_proddiscount, true);
                                     refresh_productlist_data(tran);
                                     tran.get_productlist().sync_product_row(row_index_discount);
-                                    LOGS.LOG_PRINT("[F11]Product Custom Discount (" + frmprodadjust.disc.get_name() + "(" + frmprodadjust.disc.get_value() + "%)): " +
+                                    LogsHelper.Print("[F11]Product Custom Discount (" + frmprodadjust.disc.get_name() + "(" + frmprodadjust.disc.get_value() + "%)): " +
                                         frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
                                         " BY " + tran.get_permissiongiver_fullname());
                                 }
@@ -836,7 +837,7 @@ namespace ETech
                                     prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, cur_prodadjust, false);
                                     refresh_productlist_data(tran);
                                     tran.get_productlist().sync_product_row(row_index_discount);
-                                    LOGS.LOG_PRINT("[F11]Product Adjusted (" + (cur_prodadjust * 100) + "): " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
+                                    LogsHelper.Print("[F11]Product Adjusted (" + (cur_prodadjust * 100) + "): " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
                                         " BY " + tran.get_permissiongiver_fullname());
                                 }
                                 else if (cur_proddiscount != 0)
@@ -844,14 +845,14 @@ namespace ETech
                                     prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_discounttype, 1 - cur_proddiscount, true);
                                     refresh_productlist_data(tran);
                                     tran.get_productlist().sync_product_row(row_index_discount);
-                                    LOGS.LOG_PRINT("[F11]Product Discounted (" + (cur_proddiscount * 100) + "%): " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
+                                    LogsHelper.Print("[F11]Product Discounted (" + (cur_proddiscount * 100) + "%): " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
                                         " BY " + tran.get_permissiongiver_fullname());
                                 }
                                 else
                                 {
                                     refresh_productlist_data(tran);
                                     tran.get_productlist().sync_product_row(row_index_discount);
-                                    LOGS.LOG_PRINT("[F11]Product Adjust/Discount Removed: " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
+                                    LogsHelper.Print("[F11]Product Adjust/Discount Removed: " + frmprodadjust.productname + " " + prod_discount.getOrigPrice() + " -> " + prod_discount.getPrice() +
                                            " BY " + tran.get_permissiongiver_fullname());
                                 }
                                 lastaddedrownumber = row_index_discount;
@@ -887,7 +888,7 @@ namespace ETech
                 case Keys.F6:
                     if (FPage == 0)
                     {
-                        LOGS.LOG_PRINT("[F6] Transaction Discount/Adjust");
+                        LogsHelper.Print("[F6] Transaction Discount/Adjust");
                         if (tran.get_productlist().get_totalqty() == 0)
                         {
                             fncFilter.alert("No Products to Adjust!");
@@ -924,7 +925,7 @@ namespace ETech
                             {
                                 transdisc.activateDiscount_using_wid(transAdjust.disc.get_SyncId(), 1 - transAdjust.new_discount, true);
                                 refresh_productlist_data(tran);
-                                LOGS.LOG_PRINT("[F12][F6]Transaction Custom Discount (" + transAdjust.disc.get_name() + " (" + (transAdjust.disc.get_value() * 100) + "%)): OR: "
+                                LogsHelper.Print("[F12][F6]Transaction Custom Discount (" + transAdjust.disc.get_name() + " (" + (transAdjust.disc.get_value() * 100) + "%)): OR: "
                                     + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
                                     " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
                             }
@@ -932,7 +933,7 @@ namespace ETech
                             {
                                 transdisc.appendDiscount(cls_globalvariables.dchead_adjusttype, transAdjust.new_adjust, false);
                                 refresh_productlist_data(tran);
-                                LOGS.LOG_PRINT("[F12][F6]Transaction Adjust (" + transAdjust.new_adjust + ")): OR: "
+                                LogsHelper.Print("[F12][F6]Transaction Adjust (" + transAdjust.new_adjust + ")): OR: "
                                     + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
                                     " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
                             }
@@ -940,14 +941,14 @@ namespace ETech
                             {
                                 transdisc.appendDiscount(cls_globalvariables.dchead_discounttype, 1 - transAdjust.new_discount, true);
                                 refresh_productlist_data(tran);
-                                LOGS.LOG_PRINT("[F12][F6]Transaction Discount (" + (transAdjust.new_discount * 100) + "%)): OR: "
+                                LogsHelper.Print("[F12][F6]Transaction Discount (" + (transAdjust.new_discount * 100) + "%)): OR: "
                                     + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
                                     " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
                             }
                             else
                             {
                                 refresh_productlist_data(tran);
-                                LOGS.LOG_PRINT("[F12][F6]Transaction Adjust/Discount Removed: OR: "
+                                LogsHelper.Print("[F12][F6]Transaction Adjust/Discount Removed: OR: "
                                     + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
                                     " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
                             }
@@ -1110,7 +1111,7 @@ namespace ETech
                             //mythread.Start();
                             //if (cls_globalvariables.testmode_v)
                             //    while (mythread.IsAlive) { }
-                            LOGS.LOG_PRINT("[F8] AMOUNT DUE: " + total_amount_due + " CASH: " + payment.paymentdata.get_cash());
+                            LogsHelper.Print("[F8] AMOUNT DUE: " + total_amount_due + " CASH: " + payment.paymentdata.get_cash());
 
                             //print receipt
                             for (int x = 0; x < cls_globalvariables.ORPrintCount_v + (temp == -1 ? 1 : 0); x++)
@@ -1133,12 +1134,12 @@ namespace ETech
 
                             remove_transaction();
 
-                            LOGS.LOG_PRINT("Transaction Complete: " + tran.getORnumber());
+                            LogsHelper.Print("Transaction Complete: " + tran.getORnumber());
 
                             if (fncHardware.PulloutCashCollection())
                             {
                                 MessageBox.Show("Cash amount already exceeds. Please remove the money.", "Cash Collection Warning");
-                                LOGS.LOG_PRINT("Cash Collection Warning");
+                                LogsHelper.Print("Cash Collection Warning");
                             }
 
                             //After successful payment, create new payment if no other open transactions
@@ -1235,7 +1236,7 @@ namespace ETech
                 case Keys.F9:
                     if (FPage == 0)
                     {
-                        LOGS.LOG_PRINT("[F9] Create New Transaction");
+                        LogsHelper.Print("[F9] Create New Transaction");
                         this.create_new_invoice();
                         isdetected = true;
                     }
@@ -1253,7 +1254,7 @@ namespace ETech
                         string inv_cmd = invform.commandentered;
                         DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
                         DateTime datetimeTO_d = zreadFunc.getZreadDate(invform.datetimeTO_d);
-                        LOGS.LOG_PRINT("[F1] Open Drawer");
+                        LogsHelper.Print("[F1] Open Drawer");
 
                         RawPrinterHelper.OpenCashDrawer(false);
 
@@ -1272,7 +1273,7 @@ namespace ETech
                 case Keys.F10:
                     if (FPage == 0)
                     {
-                        LOGS.LOG_PRINT("[F10] Previous Transaction");
+                        LogsHelper.Print("[F10] Previous Transaction");
                         this.view_previoustransaction();
                         isdetected = true;
                     }
@@ -1291,7 +1292,7 @@ namespace ETech
                         DateTime datetime_d = zreadFunc.getZreadDate(invform.datetime_d);
                         DateTime datetimeTO_d = zreadFunc.getZreadDate(invform.datetimeTO_d);
 
-                        LOGS.LOG_PRINT("[F2] Print Z-Reading: " + datetime_d.ToString());
+                        LogsHelper.Print("[F2] Print Z-Reading: " + datetime_d.ToString());
                         Print_Date_Ranged_Zread(datetime_d, datetimeTO_d);
 
                     }
@@ -1303,13 +1304,13 @@ namespace ETech
                 case Keys.F11:
                     if (FPage == 0)
                     {
-                        LOGS.LOG_PRINT("[F11] Next Transaction");
+                        LogsHelper.Print("[F11] Next Transaction");
                         this.view_nexttransaction();
                         isdetected = true;
                     }
                     else if (FPage == 1)
                     {
-                        LOGS.LOG_PRINT("[S] Settings");
+                        LogsHelper.Print("[S] Settings");
                         frmSetting settingform = new frmSetting();
                         settingform.ShowDialog();
                     }
@@ -1319,7 +1320,7 @@ namespace ETech
                     }
                     break;
                 case Keys.F12:
-                    LOGS.LOG_PRINT("[F12] Open Advanced Functions");
+                    LogsHelper.Print("[F12] Open Advanced Functions");
                     SwitchFunctionPage();
                     isdetected = true;
                     break;
@@ -1452,7 +1453,7 @@ namespace ETech
 
             refresh_productlist_data(tran);
 
-            LOGS.LOG_PRINT("Invoice Created: " + tran.getORnumber());
+            LogsHelper.Print("Invoice Created: " + tran.getORnumber());
         }
         public void add_transaction(cls_POSTransaction tran)
         {
@@ -1527,7 +1528,7 @@ namespace ETech
         }
         private void display_POStran(cls_POSTransaction tran)
         {
-            LOGS.LOG_PRINT("CURRENT OR: " + tran.getORnumber());
+            LogsHelper.Print("CURRENT OR: " + tran.getORnumber());
             //this.lblORNumber_d.Text = tran.getORnumber().ToString();
             this.tsslOfficialReceiptNumber.Text = tran.getORnumber().ToString();
             this.lblQty_d.Text = tran.get_productlist().get_totalqty().ToString();
@@ -1626,7 +1627,7 @@ namespace ETech
                     `terminalno` = " + cls_globalvariables.terminalno_v + @" AND 
                     `SyncId` = '" + tran.getSyncId() + @"' LIMIT 1";
             mySQLFunc.setdb(SQLDelete);
-            LOGS.LOG_PRINT("DELETED1 in saleshead or = " + tran.getORnumber());
+            LogsHelper.Print("DELETED1 in saleshead or = " + tran.getORnumber());
         }
 
         public void Print_Date_Ranged_Zread(DateTime datefrom, DateTime dateto)

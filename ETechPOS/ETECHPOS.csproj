@@ -284,6 +284,12 @@
     <Compile Include="frmWholesale.Designer.cs">
       <DependentUpon>frmWholesale.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\LogsHelper.cs" />
+    <Compile Include="Helpers\MessageBoxHelper.cs" />
+    <Compile Include="Models\Global\ConnectionSettings.cs" />
+    <Compile Include="Models\Global\ConnectionSettingsController.cs" />
+    <Compile Include="Models\Global\SqlDetail.cs" />
+    <Compile Include="Models\Global\SqlParameter.cs" />
     <Compile Include="mySQLClass.cs" />
     <Compile Include="mySQLFunc.cs" />
     <Compile Include="frmORPrintPreview.cs">
@@ -440,6 +446,7 @@
     <Compile Include="frmTerminalReadings.Designer.cs">
       <DependentUpon>frmTerminalReadings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Variables\MessagesVariable.cs" />
     <Compile Include="zreadFunc.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -461,6 +468,9 @@
     <Content Include="resources\images\diagmonds-red.PNG" />
     <Content Include="resources\images\diagmonds.png" />
     <Content Include="resources\images\etechposbg.jpg" />
+    <Content Include="Connection Settings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="tools\Keypad.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
