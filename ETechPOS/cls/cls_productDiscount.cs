@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Windows.Forms;
+using ETECHPOS.Helpers;
 namespace ETech.cls
 {
     public class cls_productDiscount
@@ -56,7 +57,7 @@ namespace ETech.cls
             else if (type == this.dcdetail_senior)
             {
                 //get amount
-                decimal a = (amount * -1) / ( 1 - ((1-cls_globalvariables.senior)/(1 + cls_globalvariables.vat)));
+                decimal a = (amount * -1) / (1 - ((1 - cls_globalvariables.senior) / (1 + cls_globalvariables.vat)));
                 //recompute vat
                 decimal v = a - (a / (1 + cls_globalvariables.vat));
                 //recompute senior
@@ -65,17 +66,19 @@ namespace ETech.cls
                 setNonVatDisc(getNonVatDisc() + v);
                 setSeniorDisc(s);
             }
-            else if (type == this.dcdetail_nonvat){
+            else if (type == this.dcdetail_nonvat)
+            {
                 setNonVatDisc(amount * -1);
             }
-            else if (type == this.dcdetail_promoqty){
+            else if (type == this.dcdetail_promoqty)
+            {
                 setPromoQtyDisc(amount * -1);
             }
             else if (type == dcdetail_customdiscounttype)
             {
                 setCustomDisc(getCustomDisc() + (amount * -1));
             }
-            else {}
+            else { }
         }
 
         public void activateDiscount(int type, decimal value, bool isMultiple)
@@ -104,15 +107,14 @@ namespace ETech.cls
                 }
                 else if (SyncId == Convert.ToInt32(dr["SyncId"]) && Convert.ToBoolean(dr["status"]))
                 {
-                    if (MessageBox.Show("This discount is already being used. Do you want to remove the discount?", "Confirm Box",
-                                MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (DialogHelper.ShowDialog("This discount is already being used. Do you want to remove the discount?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         dr["status"] = false;
                         break;
                     }
-                    
+
                 }
-                else{}
+                else { }
             }
         }
 

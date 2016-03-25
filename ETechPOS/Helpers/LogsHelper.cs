@@ -27,7 +27,7 @@ namespace ETECHPOS.Helpers
             }
             catch (Exception ex)
             {
-                MessageBoxHelper.ShowErrorMessage(ex.ToString());
+                DialogHelper.ShowDialog(ex.ToString());
             }
         }
 

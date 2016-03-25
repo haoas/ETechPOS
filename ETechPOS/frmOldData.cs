@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -67,7 +68,7 @@ namespace ETech
 
             if ((ornumber.Length != 7))
             {
-                MessageBox.Show("ornumber should be 7");
+                DialogHelper.ShowDialog("ornumber should be 7");
                 return;
             }
 
@@ -134,7 +135,7 @@ namespace ETech
                            WHERE `SyncId` = " + collectiondetailwid;
             mySQLFunc.setdb(sSQLcd);
 
-            MessageBox.Show("Saved");
+            DialogHelper.ShowDialog("Saved");
 
             this.Close();
         }

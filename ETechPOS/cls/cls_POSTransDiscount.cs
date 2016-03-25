@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data;
 using ETech.cls;
+using ETECHPOS.Helpers;
 namespace ETech.cls
 {
     public class cls_POSTransDiscount
@@ -93,8 +94,7 @@ namespace ETech.cls
                 }
                 else if (SyncId == Convert.ToInt32(dr["SyncId"]) && Convert.ToBoolean(dr["status"]))
                 {
-                    if (MessageBox.Show("This discount is already being used. Do you want to remove the discount?", "Confirm Box",
-                                MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (DialogHelper.ShowDialog("This discount is already being used. Do you want to remove the discount?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         dr["status"] = false;
                         break;

@@ -87,17 +87,15 @@ namespace ETech
                     else if (temp == -1)
                     {
                         LogsHelper.Print("Tender failed: General Saving failure");
-                        DialogResult result = MessageBox.Show("An error occured in saving transaction. Would you like to retry?", "", MessageBoxButtons.YesNo);
-                        switch (result)
+                        if (DialogHelper.ShowDialog("An error occured in saving transaction. Would you like to retry?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
-                            case DialogResult.Yes:
-                                retry = true;
-                                LogsHelper.Print("Tender failure popup: Retry");
-                                break;
-                            case DialogResult.No:
-                                LogsHelper.Print("Tender failure popup: Ignore");
-                                fncHardware.print_receipt(tran, false, false);
-                                break;
+                            retry = true;
+                            LogsHelper.Print("Tender failure popup: Retry");
+                        }
+                        else
+                        {
+                            LogsHelper.Print("Tender failure popup: Ignore");
+                            fncHardware.print_receipt(tran, false, false);
                         }
                     }
                 }

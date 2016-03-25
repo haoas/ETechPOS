@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using System.Drawing;
+using ETECHPOS.Helpers;
 
 namespace ETech.fnc
 {
@@ -42,11 +43,12 @@ namespace ETech.fnc
             }
         }
 
-        public static void alert(string str)
+        public static void alert(string message)
         {
             frmError Errorform = new frmError();
-            Errorform.errormessage = str;
+            Errorform.errormessage = message;
             Errorform.ShowDialog();
+            //DialogHelper.ShowDialog(message);
         }
 
         public static void gridview_selectrow(DataGridView dgv, int row_index)

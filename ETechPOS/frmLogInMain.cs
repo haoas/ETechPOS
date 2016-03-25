@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Security.Cryptography;
-using ETECHPOS.cls;
 using MySql.Data.MySqlClient;
 using str_encode_decode;
 using System.Threading;
 using System.IO;
-using ETECHPOS.fnc;
+using ETech.cls;
+using ETech.fnc;
+using ETech;
+using ETECHPOS.Helpers;
 
 namespace ETECHPOS
 {
@@ -239,8 +241,7 @@ namespace ETECHPOS
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                MessageBox.Show(ex.ToString());
+                DialogHelper.ShowDialog(ex.ToString());
                 isconnected = false;
             }
         }

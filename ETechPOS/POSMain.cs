@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using ETech.fnc;
 using ETech.FormatDesigner;
 using ETECHPOS.Helpers;
+using ETECHPOS;
 
 namespace ETech
 {
@@ -145,13 +146,13 @@ namespace ETech
                 DataTable DT = mySQLFunc.getdb(sql);
                 if (DT.Rows.Count == 0)
                 {
-                    MessageBox.Show("Config Table Doesn't have branchid!");
+                    DialogHelper.ShowDialog("Config Table Doesn't have branchid!");
                     isLoadSuccessful = false;
                     return;
                 }
                 if (cls_globalvariables.BranchCode != DT.Rows[0]["value"].ToString())
                 {
-                    MessageBox.Show("Branchid in Config is not the same in settings!");
+                    DialogHelper.ShowDialog("Branchid in Config is not the same in settings!");
                     isLoadSuccessful = false;
                     return;
                 }
@@ -209,8 +210,7 @@ namespace ETech
 
             if (permcheck_exit)
             {
-                if (MessageBox.Show(cls_globalvariables.confirm_logout_voidtran, "Confirm Box",
-                        MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (DialogHelper.ShowDialog(cls_globalvariables.confirm_logout_voidtran, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     // reverse traverse and delete salesheads
                     for (int i = Trans.Count - 1; i >= 0; i--)
@@ -351,7 +351,7 @@ namespace ETech
             cls_POSTransaction tran = this.get_curtrans();
 
             if (tran == null)
-                MessageBox.Show("NULL TRANS");
+                DialogHelper.ShowDialog("NULL TRANS");
 
             bool isdetected = false;
 
@@ -658,11 +658,10 @@ namespace ETech
                         if (this.cur_cashier.CheckAuth("REMOVEITEM"))
                         {
                             permcheck_delete = true;
-
-                            if (MessageBox.Show(cls_globalvariables.confirm_logout_deleteitem, "Confirm Box",
-                                    MessageBoxButtons.YesNo) == DialogResult.No)
+                            if (DialogHelper.ShowDialog(cls_globalvariables.confirm_logout_deleteitem, MessageBoxButtons.YesNo) == DialogResult.No)
                             {
-                                isdetected = true; break;
+                                isdetected = true;
+                                break;
                             }
                         }
                         else
@@ -1221,7 +1220,7 @@ namespace ETech
                         tran = this.get_curtrans();
                         if (tran != null)
                         {
-                            MessageBox.Show("Please Void Current Transaction First!");
+                            DialogHelper.ShowDialog("Please Void Current Transaction First! (F6 - Void)");
                             break;
                         }
 
@@ -1245,7 +1244,7 @@ namespace ETech
                         tran = this.get_curtrans();
                         if (tran != null)
                         {
-                            MessageBox.Show("Please Void Current Transaction First! (F6 - Void)");
+                            DialogHelper.ShowDialog("Please Void Current Transaction First! (F6 - Void)");
                             break;
                         }
                         frmInventory invform = new frmInventory();
@@ -1282,7 +1281,7 @@ namespace ETech
                         //tran = this.get_curtrans();
                         if (tran != null)
                         {
-                            MessageBox.Show("Please Void Current Transaction First! (F6 - Void)");
+                            DialogHelper.ShowDialog("Please Void Current Transaction First! (F6 - Void)");
                             break;
                         }
                         frmInventory invform = new frmInventory();

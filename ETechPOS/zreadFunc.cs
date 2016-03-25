@@ -9,6 +9,7 @@ using System.IO;
 using System.Net;
 using ETech;
 using ETech.fnc;
+using ETECHPOS.Helpers;
 
 public static class zreadFunc
 {
@@ -67,7 +68,7 @@ public static class zreadFunc
         }
         catch (Exception e)
         {
-            MessageBox.Show("ERROR in get_readcount: " + e.ToString());
+            DialogHelper.ShowDialog("ERROR in get_readcount: " + e.ToString());
         }
         return 0;
     }

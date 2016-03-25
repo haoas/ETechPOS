@@ -114,12 +114,6 @@ namespace ETech.cls
             LogsHelper.Print("DELETED2 in saleshead ors = " + ornumbers);
         }
 
-        public static void MSGBXLOG(string message)
-        {
-            LogsHelper.Print(message);
-            MessageBox.Show(message);
-        }
-
         public static void CreateIfMissing(string path)
         {
             if (!Directory.Exists(path))

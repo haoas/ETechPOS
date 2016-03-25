@@ -28,7 +28,7 @@ namespace ETECHPOS.Models.Global
             }
             catch (Exception ex)
             {
-                MessageBoxHelper.ShowExceptionMessageWithPrintLogs(MessagesVariable.FailedLoadingSettings, ex.ToString());
+                DialogHelper.ShowDialogWithPrintLogs(MessagesVariable.FailedLoadingSettings, ex.ToString());
                 return null;
             }
         }

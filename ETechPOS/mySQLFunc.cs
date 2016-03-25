@@ -121,7 +121,7 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in settings \n" + ex.ToString());
+                DialogHelper.ShowDialog("Error in settings \n" + ex.ToString());
                 return false;
             }
 

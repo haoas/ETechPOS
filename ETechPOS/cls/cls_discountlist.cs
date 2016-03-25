@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Windows.Forms;
+using ETECHPOS.Helpers;
 
 namespace ETech.cls
 {
@@ -261,8 +262,7 @@ namespace ETech.cls
                 }
                 else if (SyncId == disc.get_SyncId() && disc.get_status())
                 {
-                    if (MessageBox.Show("This discount is already being used. Do you want to remove the discount?", "Confirm Box",
-                                MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (DialogHelper.ShowDialog("This discount is already being used. Do you want to remove the discount?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         disc.set_status(false);
                         break;
@@ -285,8 +285,7 @@ namespace ETech.cls
             }
             else if (SyncId == disc.get_SyncId() && disc.get_status())
             {
-                if (MessageBox.Show("This discount is already being used. Do you want to remove the discount?", "Confirm Box",
-                            MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (DialogHelper.ShowDialog("This discount is already being used. Do you want to remove the discount?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     disc.set_status(false);
                 }

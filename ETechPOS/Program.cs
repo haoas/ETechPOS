@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 using System.Threading;
 using ETech.cls;
 using System.IO;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -24,16 +25,13 @@ namespace ETech
             {
                 if (!mutex.WaitOne(1000, false))
                 {
-                    MessageBox.Show("POS is Already Open");
+                    DialogHelper.ShowDialog("POS is Already Open");
                     return;
 
                 }
-
                 GC.Collect();
-
                 if (!Directory.Exists(cls_globalvariables.ApplicationDataLocalApplicationFolderPath))
                     Directory.CreateDirectory(cls_globalvariables.ApplicationDataLocalApplicationFolderPath);
-                
                 Application.Run(new POSMain());
             }
         }
