@@ -151,5 +151,15 @@ namespace ETech
             if (keyData == Keys.F10) return true;
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        private void Btn_ESC_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Btn_Proceed_Click(object sender, EventArgs e)
+        {
+            done_process();
+        }
     }
 }

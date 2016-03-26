@@ -38,7 +38,6 @@
             this.lblDiscount = new System.Windows.Forms.Label();
             this.lblAdjustTo = new System.Windows.Forms.Label();
             this.lblOrigPrice = new System.Windows.Forms.Label();
-            this.lblCustomDiscount = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnESC = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
@@ -152,17 +151,6 @@
             this.lblOrigPrice.Text = "Orig. Amount:";
             this.lblOrigPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblCustomDiscount
-            // 
-            this.lblCustomDiscount.AutoSize = true;
-            this.lblCustomDiscount.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomDiscount.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblCustomDiscount.Location = new System.Drawing.Point(171, 184);
-            this.lblCustomDiscount.Name = "lblCustomDiscount";
-            this.lblCustomDiscount.Size = new System.Drawing.Size(103, 15);
-            this.lblCustomDiscount.TabIndex = 33;
-            this.lblCustomDiscount.Text = "Regular Discount";
-            // 
             // btnOK
             // 
             this.btnOK.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -204,7 +192,6 @@
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnESC);
-            this.Controls.Add(this.lblCustomDiscount);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblNewPrice_d);
             this.Controls.Add(this.lblOrigPrice_d);
@@ -241,7 +228,6 @@
         private System.Windows.Forms.Label lblDiscount;
         private System.Windows.Forms.Label lblAdjustTo;
         private System.Windows.Forms.Label lblOrigPrice;
-        private System.Windows.Forms.Label lblCustomDiscount;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnESC;
         private System.Windows.Forms.Button btnRemove;

@@ -391,7 +391,7 @@ namespace ETech
                         foreach (cls_product tempprod in searchprodbtn.tempProductlist.get_productlist())
                         {
                             lastaddedrownumber = tran.get_productlist().add_product(tempprod);
-                            LogsHelper.Print("[F4-2]Product Added (" + tempprod.getQty() + "): " + tempprod.getProductName());
+                            LogsHelper.Print("Product Added (" + tempprod.getQty() + "): " + tempprod.getProductName());
                         }
 
                         refresh_productlist_data(tran);
@@ -433,7 +433,7 @@ namespace ETech
 
                         }
                         //if (searchedproduct != null) {
-                        LogsHelper.Print("[F4-1]Product Added: " + searchedproduct.getProductName());
+                        LogsHelper.Print("[Product Added: " + searchedproduct.getProductName());
                         lastaddedrownumber = tran.get_productlist().add_product(searchedproduct);
                         refresh_productlist_data(tran);
                         //}
@@ -460,11 +460,8 @@ namespace ETech
                             frmOpenItem openitemform = new frmOpenItem();
                             openitemform.ShowDialog();
 
-                            decimal price = openitemform.prodprice;
-                            decimal qty = openitemform.quantity;
-
-                            if (price != 0 && qty != 0)
-                                lastaddedrownumber = tran.get_productlist().add_product(new cls_product(price, 0, qty));
+                            if (openitemform.openitem != null)
+                                lastaddedrownumber = tran.get_productlist().add_product(openitemform.openitem);
                         }
 
                         refresh_productlist_data(tran);
@@ -756,9 +753,10 @@ namespace ETech
                     }
                     break;
                 case Keys.F5:
-                    if (FPage == 0)
+                    if (FPage == 0) // Transaction Discount
                     {
-                        tran = this.get_curtrans();
+                        if (!ctrlproductgridview.hasRows())
+                            break;
 
                         long prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getSyncId();
                         if (prodWid == 1 || prodWid == 2)
@@ -799,18 +797,6 @@ namespace ETech
                             decimal cur_prodprice = prod_discount.getPrice();
 
                             frmProductAdjust frmprodadjust = new frmProductAdjust();
-                            if (tran.getcustomer().getwid() == 0)
-                            {
-                                frmprodadjust.Width = 500;
-                            }
-                            else
-                            {
-                                frmprodadjust.orig_pricea = prod_discount.getPrice("A");
-                                frmprodadjust.orig_priceb = prod_discount.getPrice("B");
-                                frmprodadjust.orig_pricec = prod_discount.getPrice("C");
-                                frmprodadjust.orig_priced = prod_discount.getPrice("D");
-                                frmprodadjust.orig_pricee = prod_discount.getPrice("E");
-                            }
                             frmprodadjust.orig_price = prod_discount.getOrigPrice();
                             frmprodadjust.disclist = prod_discount.getProductDiscountList();
                             frmprodadjust.productname = prod_discount.getProductName();

@@ -188,7 +188,6 @@ namespace ETech
             if (DialogHelper.ShowDialog("Are you sure you want to clear the transaction discounts?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 this.disc = new cls_discount();
-                this.lblCustomDiscount.Text = "Regular Discount";
                 this.disclist.disable_all_discounts();
                 this.iscomplete = true;
                 this.Close();
