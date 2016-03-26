@@ -47,11 +47,11 @@ namespace ETech.cls
         {
             try
             {
-                this.dtproducts.Rows[row_index]["VatStatus"] = this.list_product[row_index].CurrentVatStatus;
+                this.dtproducts.Rows[row_index]["VatStatus"] = this.list_product[row_index].VatStatus;
                 this.dtproducts.Rows[row_index]["productname"] = this.list_product[row_index].getProductName();
-                this.dtproducts.Rows[row_index]["qty"] = this.list_product[row_index].getQty().ToString("G29");
+                this.dtproducts.Rows[row_index]["qty"] = this.list_product[row_index].Quantity.ToString("G29");
                 this.dtproducts.Rows[row_index]["price"] = this.list_product[row_index].getPrice().ToString("N2");
-                this.dtproducts.Rows[row_index]["amount"] = this.list_product[row_index].getAmount().ToString("N2");
+                this.dtproducts.Rows[row_index]["amount"] = Convert.ToString(this.list_product[row_index].amount);
             }
             catch (Exception) { }
         }
@@ -65,52 +65,27 @@ namespace ETech.cls
         public int add_product(cls_product prod)
         {
             //prod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype);
-            if (prod.getQty() == 0)
+            if (prod.Quantity == 0)
                 return -1;
             for (int i = 0; i < list_product.Count; i++)
             {
                 if (list_product[i].getSyncId() == prod.getSyncId()
                         && prod.getSyncId() != 0
-                        && prod.getBarcode() != "-")
+                        && prod.barcode != "-")
                 {
-                    decimal qty = list_product[i].getQty() + prod.getQty();
+                    decimal qty = list_product[i].Quantity + prod.Quantity;
                     if (qty == 0)
                     {
                         this.remove_product(i);
                         return i;
                     }
-                    list_product[i].setQty(qty);
+                    list_product[i].Quantity = qty;
                     list_product[i].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
                     this.sync_product_row(i);
                     return i;
                 }
             }
 
-            int row_index = this.list_product.Count;
-            this.list_product.Add(prod);
-            this.dtproducts.Rows.Add(dtproducts.NewRow());
-            this.sync_product_row(row_index);
-            return row_index;
-        }
-
-        public int add_offline_product(cls_product prod)
-        {
-            for (int i = 0; i < list_product.Count; i++)
-            {
-                Console.WriteLine(prod.getBarcode() + " == " + prod.getBarcode());
-                if (list_product[i].getBarcode() == prod.getBarcode())
-                {
-                    decimal qty = list_product[i].getQty() + prod.getQty();
-                    if (qty == 0)
-                    {
-                        this.remove_product(i);
-                        return i;
-                    }
-                    list_product[i].setQty(qty);
-                    list_product[i].setPrice(prod.getPrice());
-                    return i;
-                }
-            }
             int row_index = this.list_product.Count;
             this.list_product.Add(prod);
             this.dtproducts.Rows.Add(dtproducts.NewRow());
@@ -192,8 +167,7 @@ namespace ETech.cls
                 Console.WriteLine("productwid " + prod.getSyncId() + "\nproductmode " + prod.getTransaction_Mode());
                 if (mode.Equals(prod.getTransaction_Mode()))
                 {
-                    sum += prod.getAmount();
-                    //sum += prod.getAmount() / total_noheaddisc * total_wheaddisc;
+                    sum += prod.amount;
                 }
             }
             return sum;
@@ -218,7 +192,7 @@ namespace ETech.cls
                 {
                     disc = prd.get_discount_amt(cls_globalvariables.dcdetail_senior5);
                 }
-                sum += prd.getQty() * disc;
+                sum += prd.Quantity * disc;
             }
             return sum;
         }
@@ -251,7 +225,7 @@ namespace ETech.cls
             decimal sum = 0;
             foreach (cls_product prod in list_product)
             {
-                sum += prod.getQty();
+                sum += prod.Quantity;
             }
             return sum;
         }
@@ -271,7 +245,7 @@ namespace ETech.cls
             decimal sum = 0;
             foreach (cls_product prod in list_product)
             {
-                sum += prod.getAmount();
+                sum += prod.amount;
             }
             return sum;
         }
@@ -283,7 +257,7 @@ namespace ETech.cls
             decimal sum = 0;
             foreach (cls_product prod in list_product)
             {
-                sum += prod.getQty() * Math.Round(prod.getProductDiscountList().get_amount_after_discount(prod.getOrigPrice()), 2);
+                sum += prod.Quantity * Math.Round(prod.getProductDiscountList().get_amount_after_discount(prod.getOrigPrice()), 2);
             }
             return sum;
         }
@@ -294,7 +268,7 @@ namespace ETech.cls
             decimal sum = 0;
             foreach (cls_product prod in list_product)
             {
-                sum += prod.getQty() * prod.getOrigPrice();
+                sum += prod.Quantity * prod.getOrigPrice();
             }
             return sum;
         }
@@ -311,7 +285,7 @@ namespace ETech.cls
             }
             else
             {
-                this.list_product[row_index].setQty(new_qty);
+                this.list_product[row_index].Quantity = new_qty;
                 this.list_product[row_index].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
                 //Console.WriteLine(this.list_product[row_index].getPrice() + "");
                 this.sync_product_row(row_index);
@@ -323,7 +297,7 @@ namespace ETech.cls
             if (row_index < 0 || row_index >= this.list_product.Count)
                 return;
 
-            this.list_product[row_index].setMemo(memo);
+            this.list_product[row_index].memo = memo;
             this.sync_product_row(row_index);
         }
 
@@ -433,33 +407,33 @@ namespace ETech.cls
                 cls_product prod;
                 if (pwid == 0)
                 {
-                    prod = new cls_product(0, false, false);
+                    prod = new cls_product(0, false);
                     prod.setProductName(dr_d["product"].ToString());
                 }
                 else if (pwid == 1)
                 {
-                    prod = new cls_product(1, false, true);
+                    prod = new cls_product(1, true);
                     prod.setProductName("Service Charge: " + cls_globalvariables.ServiceCharge_v + "%");
                 }
                 else if (pwid == 2)
                 {
-                    prod = new cls_product(2, false, true);
+                    prod = new cls_product(2, true);
                     prod.setProductName("Local Tax: " + cls_globalvariables.LocalTax_v + "%");
                     prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
                 }
                 else if (pwid != 0)
                 {
-                    prod = new cls_product(pwid, true, true);
+                    prod = new cls_product(pwid, true);
                 }
                 else
                 {
-                    prod = new cls_product(pwid, false, true);
+                    prod = new cls_product(pwid, true);
                 }
 
                 int tempWid = int.TryParse(dr_d["SyncId"].ToString(), out tempWid) ? tempWid : 0;
                 prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
                 prod.setOrigPrice(Convert.ToDecimal(dr_d["oprice"]));
-                prod.setQty(Convert.ToDecimal(dr_d["quantity"]));
+                prod.Quantity = Convert.ToDecimal(dr_d["quantity"]);
                 prod.setSoldBy(new cls_user(Convert.ToInt32(dr_d["soldby"])));
                 prod.setPrice(Convert.ToDecimal(dr_d["aprice"]));
 
@@ -510,24 +484,12 @@ namespace ETech.cls
             this.sync_product_all();
         }
 
-        //ROBI
         public void refresh_discountlist() { this.transDiscount.refresh_discountlist(this.get_totalamount_no_head_discount()); }
-        public decimal get_last_amt_before_discount(int filter) { return this.transDiscount.get_last_amt_before_discount(filter, this.get_totalamount_no_head_discount()); }
-        public decimal get_basis_before_discount(int filter) { return this.transDiscount.get_basis_before_discount(filter, this.get_totalamount_no_head_discount()); }
         public decimal get_discount_percentage() { return this.transDiscount.get_discounts_percentage(this.get_totalamount_no_head_discount()); }
         public void refresh_all_discounts()
         {
             this.refresh_discountlist();
             this.refresh_product_data_by_mode();
-        }
-        public decimal get_detail_discount_amt(int type)
-        {
-            decimal sum = 0;
-            foreach (cls_product prod in this.get_productlist())
-            {
-                sum += prod.get_discount_amt(type);
-            }
-            return sum;
         }
         public DataTable get_discount_amt_summary(int choice)
         {
@@ -541,7 +503,7 @@ namespace ETech.cls
             {
                 foreach (cls_product prod in this.get_productlist())
                 {
-                    get_summary(prod.getQty(), dt, prod.getProductDiscountList().get_discount_list(), choice);
+                    get_summary(prod.Quantity, dt, prod.getProductDiscountList().get_discount_list(), choice);
                 }
             }
             else
@@ -581,6 +543,5 @@ namespace ETech.cls
                     dt.Rows.Add(disc.get_name(), disc.get_type(), disc_value, Math.Round((disc.get_discounted_amount() * qty), 2));
             }
         }
-        //ROBI
     }
 }

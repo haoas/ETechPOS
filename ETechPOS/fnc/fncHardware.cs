@@ -1501,8 +1501,8 @@ namespace ETech.fnc
                 if ((prod.getPrice() != prod.getOrigPrice()) && (prod.getOrigPrice() != 0)
                     && (printformat != 57) && cls_globalvariables.DiscountDetails_v == 1)
                     proddesc += "(P" + prod.getOrigPrice().ToString("N2") + " - " + ((1 - (prod.getPrice() / prod.getOrigPrice())) * 100).ToString("N2") + "%)";
-                dt_items.Rows.Add(prod.getQty().ToString("G29"), "", proddesc, prod.getAmount().ToString("N2"));
-                if (prod.getQty() < 0)
+                dt_items.Rows.Add(prod.Quantity.ToString("G29"), "", proddesc, prod.amount.ToString());
+                if (prod.Quantity < 0)
                 {
                     dt_items.Rows.Add("", "", "ITEM REFUND!", "");
                 }
@@ -1936,11 +1936,11 @@ namespace ETech.fnc
                 string proddesc = prod.getProductName();
                 if ((prod.getSyncId() != 1) && (prod.getSyncId() != 2))
                     proddesc += " @P" + prod.getPrice().ToString("N2") + "ea";
-                tempDataTable.Rows.Add(prod.getQty().ToString("G29"), "", proddesc, prod.getAmount().ToString("N2"));
+                tempDataTable.Rows.Add(prod.Quantity.ToString("G29"), "", proddesc, prod.amount.ToString());
                 if ((prod.getPrice() != prod.getOrigPrice()) && (prod.getOrigPrice() != 0)
                     && cls_globalvariables.DiscountDetails_v == 1)
                     tempDataTable.Rows.Add("", "", "(P" + prod.getOrigPrice().ToString("N2") + " - " + ((1 - (prod.getPrice() / prod.getOrigPrice())) * 100).ToString("N2") + "%)", "");
-                if (prod.getQty() < 0)
+                if (prod.Quantity < 0)
                 {
                     tempDataTable.Rows.Add("", "", "ITEM REFUND!", "");
                 }

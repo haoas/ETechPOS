@@ -500,9 +500,9 @@ namespace ETech
 
             foreach (cls_product prod in trans.get_productlist().get_productlist())
             {
-                string qty = prod.getQty().ToString("G29");
+                string qty = Convert.ToString(prod.Quantity);
                 string price = (prod.getPrice()).ToString();
-                string vat = prod.getVat().ToString();
+                string vat = prod.vat.ToString();
 
                 cls_user soldby = (cls_user)prod.getSoldBy();
                 long soldbywid = 0;
@@ -524,7 +524,7 @@ namespace ETech
                                 `pprice` = '" + prod.getPurchasePrice().ToString() + @"', 
                                 `vat` = '" + vat + @"',
                                 `soldby` = '" + soldbywid + @"',  
-                                `memo` = '" + prod.getMemo() + @"'
+                                `memo` = '" + prod.memo + @"'
                             WHERE `SyncId` = @salesdetailwid";
                 //Console.WriteLine(sSQLdetail);
                 //setdb(sSQLdetail);

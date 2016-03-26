@@ -126,27 +126,6 @@ namespace ETech.cls
             return SyncId + 1000;
         }
 
-        public void setPosPromo(decimal val, bool ismultiple)
-        {
-            setPosPromo(val, ismultiple, 0, false);
-        }
-
-        public void setPosPromo(decimal val, bool ismultiple, decimal amount, bool isHistory)
-        {
-            int discRow = search_discount_row(this.dchead_pospromotype, false);
-            //if pos promo active, add another promo row
-            if (discRow == -1)
-            {
-                //get position of last active 
-                int rownum = search_discount_row(this.dchead_pospromotype, true);
-                add_new_discount(getDynamicSyncId(), this.dchead_pospromotype, rownum, val, amount, ismultiple, isHistory, true, rownum + 1);
-            }
-            else
-            {
-                activateDiscount(this.dchead_pospromotype, val, amount, ismultiple, isHistory);
-            }
-        }
-
         public void add_new_discount(long SyncId, int type, int basis, decimal value, bool ismultiple, bool status, int position)
         {
             add_new_discount(SyncId, type, basis, value, 0, ismultiple, false, status, position);
@@ -341,26 +320,6 @@ namespace ETech.cls
             return 0;
         }
 
-        private void add_to_discount_amount(int type, decimal amount)
-        {
-            foreach (cls_discount disc in this.disclist)
-            {
-                if (type == disc.get_type())
-                {
-                    //special case for pospromo
-                    if (type == dchead_pospromotype && disc.get_discounted_amount() != 0)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        disc.add_discounted_amount(amount);
-                    }
-
-                }
-            }
-        }
-
         private void add_to_discount_amount_using_wid(long SyncId, decimal amount)
         {
             foreach (cls_discount disc in this.disclist)
@@ -368,17 +327,6 @@ namespace ETech.cls
                 if (SyncId == disc.get_SyncId())
                 {
                     disc.add_discounted_amount(amount);
-                }
-            }
-        }
-
-        private void set_discount_amount(int type, decimal amount)
-        {
-            foreach (cls_discount disc in this.disclist)
-            {
-                if (type == disc.get_type())
-                {
-                    disc.set_discounted_amount(amount);
                 }
             }
         }

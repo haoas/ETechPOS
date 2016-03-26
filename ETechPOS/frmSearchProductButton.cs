@@ -184,7 +184,7 @@ namespace ETech
 
             foreach (cls_product prod in tempProductlist.get_productlist())
             {
-                DGVTempProd.Rows.Add(prod.getProductName(), prod.getQty());
+                DGVTempProd.Rows.Add(prod.getProductName(), prod.Quantity);
             }
 
             fncFilter.set_dgv_controls(DGVTempProd);
@@ -225,9 +225,9 @@ namespace ETech
             if (e.ColumnIndex == 2 && e.RowIndex >= 0)
             {
                 cls_product prod = tempProductlist.get_productlist()[e.RowIndex];
-                prod.setQty(prod.getQty() - 1);
+                prod.Quantity = prod.Quantity - 1;
 
-                if (prod.getQty() <= 0)
+                if (prod.Quantity <= 0)
                     tempProductlist.get_productlist().Remove(prod);
 
                 Refresh_TempProduct_DGV();

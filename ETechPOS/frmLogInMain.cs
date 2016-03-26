@@ -176,7 +176,7 @@ namespace ETech
             foreach (DataRow dr in dtauth.Rows)
                 Authorizations.Add(dr["authorization"].ToString());
 
-            this.cashier.setcls_user(code, fullname, Authorizations, Convert.ToInt32(SyncId));
+            this.cashier.setcls_user(code, fullname, Authorizations, Convert.ToInt64(SyncId));
 
             //Does not continue if Mac address is incorrect
             //if (!cls_globalfunc.CheckMacAddress() && cashier.getwid() != 0 && cashier.getwid() != 1)

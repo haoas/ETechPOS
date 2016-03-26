@@ -152,8 +152,7 @@ namespace ETech
                             FROM `product` AS P, `branchprice` AS B 
                             WHERE B.`branchid` = " + cls_globalvariables.BranchCode + @" AND B.`productid` = P.`SyncId` AND 
                                 P.`status` = 1 " + allowZeroPrice + @" AND
-                                CONCAT(P.`product`, ' ', P.`barcode`, ' ', P.`stockno`,' ',
-                                    P.`clientbarcode`,' ',P.`clientbarcode2`) LIKE @str_param
+                                CONCAT(P.`product`, ' ', P.`barcode`, ' ', P.`stockno`) LIKE @str_param
                             LIMIT 50)A ";
 
             //SQL = sqlsearchstring();

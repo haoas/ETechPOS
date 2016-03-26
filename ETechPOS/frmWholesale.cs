@@ -81,7 +81,7 @@ namespace ETech
                 return;
             }
 
-            this.cproduct.setQty(new_qty);        
+            this.cproduct.Quantity = new_qty;
 
             this.Close();
             return;
@@ -93,7 +93,7 @@ namespace ETech
         }
         private void btnESC_Click(object sender, EventArgs e)
         {
-            cproduct.setQty(0);
+            cproduct.Quantity = 0;
             this.Close();
         }
 

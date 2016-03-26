@@ -131,7 +131,7 @@ namespace ETech
             tbx_Usercode.Text = user.getusercode().Trim();
             tbx_Fullname.Text = user.getfullname().Trim();
             tbx_Username.Text = user.username.Trim();
-            tbx_Password.Text = user.password.Trim();
+            tbx_Password.Text = string.Empty;
             cmbx_position.Text = user.position.Trim();
 
             foreach (KeyValuePair<string, CheckBox> dicentry in AuthDictionary)
@@ -143,10 +143,13 @@ namespace ETech
         private void btn_UpdateUser_Click(object sender, EventArgs e)
         {
             string usercode = tbx_Usercode.Text;
+            string position = cmbx_position.Text;
             string fullname = tbx_Fullname.Text;
             string username = tbx_Username.Text;
-            string password = tbx_Password.Text;
-            string position = cmbx_position.Text;
+
+            string password = string.Empty;
+            if (tbx_Password.Text != string.Empty)
+                password = MD5EncryptionFunction.Encrypt(tbx_Password.Text);
 
             if (usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0)
             {
@@ -154,13 +157,12 @@ namespace ETech
                 return;
             }
 
+            string passwordcondition = (password != string.Empty) ? "', `password`='" + password : "";
             string SQL =
             @"UPDATE `user` SET `usercode`= '" + usercode + @"', `fullname`='" + fullname + @"', `position` = '" + position + @"',
-                     `username`='" + username + @"', `password`='" + password + @"', lastmodifieddate=NOW(), `lastmodifiedby` = " + user.syncid + @"
+                     `username`='" + username + passwordcondition + @"', lastmodifieddate=NOW(), `lastmodifiedby` = " + user.syncid + @"
                 WHERE `Syncid`=" + user.getsyncid() + @" LIMIT 1";
             mySQLFunc.setdb(SQL);
-            //lastmodifiedby
-            //make sure no duplicate fields
 
             List<string> AuthorizationCodes = new List<string>();
             foreach (KeyValuePair<string, CheckBox> dicentry in AuthDictionary)
@@ -272,19 +274,23 @@ namespace ETech
             string usercode = tbx_Usercode.Text;
             string fullname = tbx_Fullname.Text;
             string username = tbx_Username.Text;
-            string password = tbx_Password.Text;
             string position = cmbx_position.Text;
 
-            if (usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0)
+            string password = string.Empty;
+            if (tbx_Password.Text != string.Empty)
+                password = MD5EncryptionFunction.Encrypt(tbx_Password.Text);
+
+            if (usercode.Length == 0 || fullname.Length == 0 || username.Length == 0 || password.Length == 0)
             {
                 DialogHelper.ShowDialog("Fields cannot be empty");
                 return;
             }
 
+            string passwordcondition = (password != string.Empty) ? "', `password`='" + password : "";
             user.syncid = new mySQLClass().GetAndInsertNextSyncId("user");
             string SQL =
             @"UPDATE `user` SET `usercode`= '" + usercode + @"', `fullname`='" + fullname + @"', 
-                     `username`='" + username + @"', `password`='" + password + @"', `position` = '" + position + @"',
+                     `username`='" + username + passwordcondition + @"', `position` = '" + position + @"',
                      `status`=1,`datecreated`=NOW(),`lastmodifieddate`=NOW(),`userid`= " + user.syncid + @", `lastmodifiedby` = " + user.syncid + @"
                 WHERE `Syncid`=" + user.getsyncid() + @" LIMIT 1";
             //lastmodifiedby

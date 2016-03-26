@@ -265,8 +265,8 @@ namespace ETech
 
                 if (cls_globalvariables.avoidinvalidpprice_v == "1")
                 {
-                    if ((searchedproduct.getPrice() <= searchedproduct.getPPrice() && !tran.get_productlist().get_iswholesale()) ||
-                        (searchedproduct.getWholesalePrice() <= searchedproduct.getPPrice() && tran.get_productlist().get_iswholesale()))
+                    if ((searchedproduct.getPrice() <= searchedproduct.pprice && !tran.get_productlist().get_iswholesale()) ||
+                        (searchedproduct.getWholesalePrice() <= searchedproduct.pprice && tran.get_productlist().get_iswholesale()))
                     {
                         fncFilter.alert(cls_globalvariables.warning_price_invalid + "\n Purchase Price is Greater Than Selling Price");
                         this.txtBarcode.SelectAll();
@@ -386,7 +386,7 @@ namespace ETech
                         foreach (cls_product tempprod in searchprodbtn.tempProductlist.get_productlist())
                         {
                             lastaddedrownumber = tran.get_productlist().add_product(tempprod);
-                            LogsHelper.Print("Product Added (" + tempprod.getQty() + "): " + tempprod.getProductName());
+                            LogsHelper.Print("Product Added (" + tempprod.Quantity + "): " + tempprod.getProductName());
                         }
 
                         refresh_productlist_data(tran);
@@ -400,7 +400,8 @@ namespace ETech
                     int productwid = prodform.productwid;
                     if (productwid != 0)
                     {
-                        cls_product searchedproduct = new cls_product(productwid, false, false);
+                        cls_product searchedproduct = new cls_product();
+                        searchedproduct.setcls_product_by_syncid(productwid, false);
                         if (searchedproduct.getSyncId() == 0)
                         {
                             fncFilter.alert(cls_globalvariables.warning_product_notfound);
@@ -418,8 +419,8 @@ namespace ETech
 
                         if (cls_globalvariables.avoidinvalidpprice_v == "1")
                         {
-                            if ((searchedproduct.getPrice() <= searchedproduct.getPPrice() && !tran.get_productlist().get_iswholesale()) ||
-                                (searchedproduct.getWholesalePrice() <= searchedproduct.getPPrice() && tran.get_productlist().get_iswholesale()))
+                            if ((searchedproduct.getPrice() <= searchedproduct.pprice && !tran.get_productlist().get_iswholesale()) ||
+                                (searchedproduct.getWholesalePrice() <= searchedproduct.pprice && tran.get_productlist().get_iswholesale()))
                             {
                                 fncFilter.alert(cls_globalvariables.warning_price_invalid);
                                 this.txtBarcode.SelectAll();
@@ -509,8 +510,8 @@ namespace ETech
                         cls_product prod = tran.get_productlist().get_product(row_index);
                         string productname = prod.getProductName();
                         if ((prod.getSyncId() == 1) || (prod.getSyncId() == 2)) { isdetected = true; break; }
-                        decimal cur_prodqty = prod.getQty();
-                        string cur_prodmemo = prod.getMemo();
+                        decimal cur_prodqty = prod.Quantity;
+                        string cur_prodmemo = prod.memo;
 
                         frmProductQuantity frmprodqty = new frmProductQuantity();
                         frmprodqty.productid = prod.getSyncId();
@@ -1008,7 +1009,7 @@ namespace ETech
                         {
                             for (int i = 0; i < tran.get_productlist().get_productlist().Count; i++)
                             {
-                                if (tran.get_productlist().get_product(i).getQty() < 0)
+                                if (tran.get_productlist().get_product(i).Quantity < 0)
                                 {
                                     frmSalesmemo salesmemo = new frmSalesmemo();
                                     salesmemo.salesheadwid = tran.getSyncId();
