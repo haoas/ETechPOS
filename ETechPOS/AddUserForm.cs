@@ -86,22 +86,25 @@ namespace ETech
 
         private void AddUserForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Down)
+            if (ViewUsersPanel.Enabled)
             {
-                DGVUsers.SelectNextRow();
-            }
-            else if (e.KeyCode == Keys.Up)
-            {
-                DGVUsers.SelectPreviousRow();
-            }
-            else if (e.KeyCode == Keys.Enter)
-            {
-                EditUser();
-            }
-            else if (e.KeyCode == Keys.Escape)
-                this.Close();
+                if (e.KeyCode == Keys.Down)
+                {
+                    DGVUsers.SelectNextRow();
+                }
+                else if (e.KeyCode == Keys.Up)
+                {
+                    DGVUsers.SelectPreviousRow();
+                }
+                else if (e.KeyCode == Keys.Enter)
+                {
+                    EditUser();
+                }
+                else if (e.KeyCode == Keys.Escape)
+                    this.Close();
 
-            e.Handled = true;
+                e.Handled = true;
+            }
         }
 
         private void txtUser_TextChanged(object sender, EventArgs e)
@@ -129,6 +132,7 @@ namespace ETech
             tbx_Fullname.Text = user.getfullname().Trim();
             tbx_Username.Text = user.username.Trim();
             tbx_Password.Text = user.password.Trim();
+            cmbx_position.Text = user.position.Trim();
 
             foreach (KeyValuePair<string, CheckBox> dicentry in AuthDictionary)
             {
@@ -142,6 +146,7 @@ namespace ETech
             string fullname = tbx_Fullname.Text;
             string username = tbx_Username.Text;
             string password = tbx_Password.Text;
+            string position = cmbx_position.Text;
 
             if (usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0)
             {
@@ -150,7 +155,7 @@ namespace ETech
             }
 
             string SQL =
-            @"UPDATE `user` SET `usercode`= '" + usercode + @"', `fullname`='" + fullname + @"', 
+            @"UPDATE `user` SET `usercode`= '" + usercode + @"', `fullname`='" + fullname + @"', `position` = '" + position + @"',
                      `username`='" + username + @"', `password`='" + password + @"', lastmodifieddate=NOW(), `lastmodifiedby` = " + user.syncid + @"
                 WHERE `Syncid`=" + user.getsyncid() + @" LIMIT 1";
             mySQLFunc.setdb(SQL);
@@ -180,6 +185,7 @@ namespace ETech
             tbx_Fullname.Text = string.Empty;
             tbx_Username.Text = string.Empty;
             tbx_Password.Text = string.Empty;
+            cmbx_position.Text = string.Empty;
 
             foreach (Control ctr in GB_Authorization.Controls)
             {
@@ -198,7 +204,7 @@ namespace ETech
         private void btnDeactivate_Click(object sender, EventArgs e)
         {
             string SQL = @"UPDATE `user` SET `status`=" + ((user.status == 0) ? "1" : "0") +
-                         @"`lastmodifiedby` = " + user.syncid + @"  WHERE `SyncId`=" + user.getsyncid();
+                         @",`lastmodifiedby` = " + user.syncid + @"  WHERE `SyncId`=" + user.getsyncid();
             //lastmodifiedby
             //lastdeactivatedby
             //make sure no duplicate fields
@@ -267,6 +273,7 @@ namespace ETech
             string fullname = tbx_Fullname.Text;
             string username = tbx_Username.Text;
             string password = tbx_Password.Text;
+            string position = cmbx_position.Text;
 
             if (usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0)
             {
@@ -277,7 +284,7 @@ namespace ETech
             user.syncid = new mySQLClass().GetAndInsertNextSyncId("user");
             string SQL =
             @"UPDATE `user` SET `usercode`= '" + usercode + @"', `fullname`='" + fullname + @"', 
-                     `username`='" + username + @"', `password`='" + password + @"',
+                     `username`='" + username + @"', `password`='" + password + @"', `position` = '" + position + @"',
                      `status`=1,`datecreated`=NOW(),`lastmodifieddate`=NOW(),`userid`= " + user.syncid + @", `lastmodifiedby` = " + user.syncid + @"
                 WHERE `Syncid`=" + user.getsyncid() + @" LIMIT 1";
             //lastmodifiedby
