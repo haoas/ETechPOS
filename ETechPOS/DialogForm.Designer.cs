@@ -1,4 +1,4 @@
-﻿namespace ETECHPOS
+﻿namespace ETech
 {
     partial class DialogForm
     {
@@ -92,10 +92,8 @@
             this.Controls.Add(this.btnCommand2);
             this.Controls.Add(this.lblMessage);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "DialogForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Dialog";
             this.Load += new System.EventHandler(this.DialogForm_Load);
             this.ResumeLayout(false);

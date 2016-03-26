@@ -10,7 +10,7 @@ using ETech.cls;
 using System.IO;
 using System.Text.RegularExpressions;
 using ETech.fnc;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 
 namespace ETech
 {

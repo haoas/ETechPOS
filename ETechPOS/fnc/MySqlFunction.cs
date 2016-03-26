@@ -5,12 +5,12 @@ using System.Text;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
-using ETECHPOS.Models.Global;
+using ETech.Models.Global;
 using ETech.cls;
-using ETECHPOS.Helpers;
-using ETECHPOS.Variables;
+using ETech.Helpers;
+using ETech.Variables;
 
-namespace ETECHPOS.fnc
+namespace ETech.fnc
 {
     public static class MySqlFunction
     {

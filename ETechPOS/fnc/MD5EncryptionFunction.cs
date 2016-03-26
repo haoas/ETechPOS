@@ -5,7 +5,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace ETECHPOS.fnc
+namespace ETech.fnc
 {
     public class MD5EncryptionFunction
     {

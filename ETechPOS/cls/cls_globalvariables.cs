@@ -6,7 +6,7 @@ using System.Data;
 using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
-using ETECHPOS.Models.Global;
+using ETech.Models.Global;
 
 namespace ETech.cls
 {

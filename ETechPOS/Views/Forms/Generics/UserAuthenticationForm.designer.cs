@@ -1,4 +1,4 @@
-﻿namespace ETECHPOS.Views.Forms.Generics
+﻿namespace ETech.Views.Forms.Generics
 {
     partial class UserAuthenticationForm
     {
@@ -111,9 +111,7 @@
             this.Controls.Add(this.tbUserName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblUserNameTxt);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "UserAuthenticationForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "User Authentication";
             this.Load += new System.EventHandler(this.UserAuthenticationForm_Load);
             this.ResumeLayout(false);

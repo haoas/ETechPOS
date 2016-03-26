@@ -8,10 +8,11 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.fnc;
 using ETech.cls;
+using ETech.Built_In_Views;
 
-namespace ETECHPOS.Views.Forms.Generics
+namespace ETech.Views.Forms.Generics
 {
-    public partial class UserAuthenticationForm : Form
+    public partial class UserAuthenticationForm : StandardDialogForm
     {
         public string UserAuthorization;
         public bool HasAuthorization;

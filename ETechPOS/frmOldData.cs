@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 
 namespace ETech
 {

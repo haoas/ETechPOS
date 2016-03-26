@@ -15,10 +15,9 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using ETech.fnc;
 using ETech.FormatDesigner;
-using ETECHPOS.Helpers;
-using ETECHPOS;
-using ETECHPOS.fnc;
-using ETECHPOS.Views.Forms.Generics;
+using ETech.Helpers;
+using ETech;
+using ETech.Views.Forms.Generics;
 
 namespace ETech
 {

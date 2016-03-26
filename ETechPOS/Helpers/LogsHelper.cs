@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using ETech.cls;
 
-namespace ETECHPOS.Helpers
+namespace ETech.Helpers
 {
     public static class LogsHelper
     {

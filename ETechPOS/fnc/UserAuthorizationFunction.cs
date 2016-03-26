@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ETECHPOS.Views.Forms.Generics;
+using ETech.Views.Forms.Generics;
 using ETech.cls;
 
-namespace ETECHPOS.fnc
+namespace ETech.fnc
 {
     public class UserAuthorizationFunction
     {

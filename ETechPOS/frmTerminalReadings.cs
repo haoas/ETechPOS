@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
 using System.IO;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 
 namespace ETech
 {

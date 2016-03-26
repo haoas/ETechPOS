@@ -61,6 +61,12 @@
     <Compile Include="AddUserForm.Designer.cs">
       <DependentUpon>AddUserForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Built In Views\StandardDialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Built In Views\StandardDialogForm.Designer.cs">
+      <DependentUpon>StandardDialogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="cls\cls_buttonGrid.cs" />
     <Compile Include="cls\cls_creditCardParser.cs" />
     <Compile Include="cls\cls_CustomPaymentsInfo.cs" />
@@ -463,7 +469,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\Forms\Generics\UserAuthenticationForm.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\Forms\Generics\UserAuthenticationForm.designer.cs">
       <DependentUpon>UserAuthenticationForm.cs</DependentUpon>
@@ -502,6 +507,10 @@
     </Content>
     <EmbeddedResource Include="AddUserForm.resx">
       <DependentUpon>AddUserForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Built In Views\StandardDialogForm.resx">
+      <DependentUpon>StandardDialogForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DialogForm.resx">

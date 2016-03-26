@@ -6,7 +6,7 @@ using MySql.Data.MySqlClient;
 using System.Threading;
 using ETech.cls;
 using System.IO;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 
 namespace ETech
 {

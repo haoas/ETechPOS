@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ETECHPOS.Variables
+namespace ETech.Variables
 {
     public static class MessagesVariable
     {

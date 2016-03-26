@@ -8,12 +8,13 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 using ETech;
+using ETech.Built_In_Views;
 
-namespace ETECHPOS
+namespace ETech
 {
-    public partial class DialogForm : Form
+    public partial class DialogForm : StandardDialogForm
     {
         private string _Message;
         private MessageBoxButtons _MessageBoxButtons;

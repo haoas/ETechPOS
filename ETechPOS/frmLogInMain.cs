@@ -13,10 +13,10 @@ using System.IO;
 using ETech.cls;
 using ETech.fnc;
 using ETech;
-using ETECHPOS.Helpers;
-using ETECHPOS.fnc;
+using ETech.Helpers;
+using ETech.fnc;
 
-namespace ETECHPOS
+namespace ETech
 {
     public partial class frmLogInMain : Form
     {

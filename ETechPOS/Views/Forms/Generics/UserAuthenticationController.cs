@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ETECHPOS.Helpers;
-using ETECHPOS.Variables;
-using ETECHPOS.fnc;
+using ETech.Helpers;
+using ETech.Variables;
+using ETech.fnc;
 using ETech.cls;
 using System.Data;
-using ETECHPOS.Models.Global;
+using ETech.Models.Global;
 using ETech.fnc;
 
-namespace ETECHPOS.Views.Forms.Generics
+namespace ETech.Views.Forms.Generics
 {
     public partial class UserAuthenticationForm
     {

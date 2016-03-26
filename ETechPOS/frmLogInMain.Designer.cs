@@ -1,4 +1,4 @@
-﻿namespace ETECHPOS
+﻿namespace ETech
 {
     partial class frmLogInMain
     {

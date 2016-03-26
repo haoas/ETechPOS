@@ -5,11 +5,11 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using System.Drawing;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 
 namespace ETech.fnc
 {
-    class fncFilter
+    public static class fncFilter
     {
         public static int getIntegerValue(string str)
         {

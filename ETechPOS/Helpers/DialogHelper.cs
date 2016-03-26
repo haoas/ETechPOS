@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 
-namespace ETECHPOS.Helpers
+namespace ETech.Helpers
 {
     public static class DialogHelper
     {

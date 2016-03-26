@@ -9,7 +9,7 @@ using System.IO;
 using System.Net;
 using ETech;
 using ETech.fnc;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 
 public static class zreadFunc
 {

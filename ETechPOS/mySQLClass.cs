@@ -8,7 +8,7 @@ using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 
 
 namespace ETech

@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data;
 using ETech.cls;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 namespace ETech.cls
 {
     public class cls_POSTransDiscount

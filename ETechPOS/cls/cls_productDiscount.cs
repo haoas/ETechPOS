@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Windows.Forms;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 namespace ETech.cls
 {
     public class cls_productDiscount

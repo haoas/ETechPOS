@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace ETECHPOS.Models.Global
+namespace ETech.Models.Global
 {
     [Serializable]
     public class SqlDetail

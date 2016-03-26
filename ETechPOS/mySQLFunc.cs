@@ -8,8 +8,8 @@ using System.Windows.Forms;
 using System.IO;
 using ETech.cls;
 using System.Net.NetworkInformation;
-using ETECHPOS.Models.Global;
-using ETECHPOS.Helpers;
+using ETech.Models.Global;
+using ETech.Helpers;
 
 namespace ETech
 {

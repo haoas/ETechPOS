@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using ETech.cls;
-using ETECHPOS.Variables;
-using ETECHPOS.Helpers;
-using ETECHPOS.fnc;
+using ETech.Variables;
+using ETech.Helpers;
+using ETech.fnc;
 
-namespace ETECHPOS.Models.Global
+namespace ETech.Models.Global
 {
     public static class ConnectionSettingsController
     {

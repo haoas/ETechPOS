@@ -12,7 +12,7 @@ using System.Net.NetworkInformation;
 using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
-using ETECHPOS.Helpers;
+using ETech.Helpers;
 
 namespace ETech.cls
 {
