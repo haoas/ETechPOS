@@ -53,11 +53,11 @@
             // 
             this.lblOldQty.AutoSize = true;
             this.lblOldQty.Font = new System.Drawing.Font("Arial", 25F);
-            this.lblOldQty.Location = new System.Drawing.Point(124, 9);
+            this.lblOldQty.Location = new System.Drawing.Point(58, 9);
             this.lblOldQty.Name = "lblOldQty";
-            this.lblOldQty.Size = new System.Drawing.Size(267, 39);
+            this.lblOldQty.Size = new System.Drawing.Size(399, 39);
             this.lblOldQty.TabIndex = 1;
-            this.lblOldQty.Text = "Change Quantity";
+            this.lblOldQty.Text = "Add Quantity/Refund Item";
             // 
             // lblNewQty
             // 

@@ -31,13 +31,10 @@
             this.lblProductName = new System.Windows.Forms.Label();
             this.lblOrigPrice = new System.Windows.Forms.Label();
             this.lblAdjustTo = new System.Windows.Forms.Label();
-            this.lblDiscount = new System.Windows.Forms.Label();
             this.lblNewPrice = new System.Windows.Forms.Label();
             this.txtAdjustTo = new System.Windows.Forms.TextBox();
-            this.txtDiscount = new System.Windows.Forms.TextBox();
             this.lblOrigPrice_d = new System.Windows.Forms.Label();
             this.lblNewPrice_d = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.BtnF2 = new System.Windows.Forms.Button();
             this.BtnF1 = new System.Windows.Forms.Button();
@@ -46,6 +43,9 @@
             this.BtnProceed = new System.Windows.Forms.Button();
             this.BtnESC = new System.Windows.Forms.Button();
             this.BtnF11 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtDiscount = new System.Windows.Forms.TextBox();
+            this.lblDiscount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblProductName
@@ -75,29 +75,18 @@
             // 
             this.lblAdjustTo.BackColor = System.Drawing.Color.White;
             this.lblAdjustTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAdjustTo.Location = new System.Drawing.Point(12, 252);
+            this.lblAdjustTo.Location = new System.Drawing.Point(13, 294);
             this.lblAdjustTo.Name = "lblAdjustTo";
             this.lblAdjustTo.Size = new System.Drawing.Size(249, 51);
             this.lblAdjustTo.TabIndex = 4;
             this.lblAdjustTo.Text = "Set Fixed Price:";
             this.lblAdjustTo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblDiscount
-            // 
-            this.lblDiscount.BackColor = System.Drawing.Color.White;
-            this.lblDiscount.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDiscount.Location = new System.Drawing.Point(12, 309);
-            this.lblDiscount.Name = "lblDiscount";
-            this.lblDiscount.Size = new System.Drawing.Size(249, 51);
-            this.lblDiscount.TabIndex = 5;
-            this.lblDiscount.Text = "Discount by:";
-            this.lblDiscount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // lblNewPrice
             // 
             this.lblNewPrice.BackColor = System.Drawing.Color.White;
-            this.lblNewPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNewPrice.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.lblNewPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNewPrice.ForeColor = System.Drawing.Color.Black;
             this.lblNewPrice.Location = new System.Drawing.Point(12, 370);
             this.lblNewPrice.Name = "lblNewPrice";
             this.lblNewPrice.Size = new System.Drawing.Size(250, 51);
@@ -109,7 +98,7 @@
             // 
             this.txtAdjustTo.BackColor = System.Drawing.Color.White;
             this.txtAdjustTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAdjustTo.Location = new System.Drawing.Point(284, 259);
+            this.txtAdjustTo.Location = new System.Drawing.Point(285, 301);
             this.txtAdjustTo.MaxLength = 20;
             this.txtAdjustTo.Name = "txtAdjustTo";
             this.txtAdjustTo.Size = new System.Drawing.Size(203, 44);
@@ -119,52 +108,28 @@
             this.txtAdjustTo.TextChanged += new System.EventHandler(this.txtAdjustTo_TextChanged);
             this.txtAdjustTo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAdjustTo_KeyPress);
             // 
-            // txtDiscount
-            // 
-            this.txtDiscount.BackColor = System.Drawing.Color.White;
-            this.txtDiscount.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDiscount.Location = new System.Drawing.Point(284, 316);
-            this.txtDiscount.MaxLength = 10;
-            this.txtDiscount.Name = "txtDiscount";
-            this.txtDiscount.Size = new System.Drawing.Size(151, 44);
-            this.txtDiscount.TabIndex = 1;
-            this.txtDiscount.Tag = "num";
-            this.txtDiscount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.txtDiscount.TextChanged += new System.EventHandler(this.txtDiscount_TextChanged);
-            this.txtDiscount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDiscount_KeyPress);
-            // 
             // lblOrigPrice_d
             // 
             this.lblOrigPrice_d.BackColor = System.Drawing.Color.White;
-            this.lblOrigPrice_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOrigPrice_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOrigPrice_d.Location = new System.Drawing.Point(284, 193);
             this.lblOrigPrice_d.Name = "lblOrigPrice_d";
             this.lblOrigPrice_d.Size = new System.Drawing.Size(203, 51);
             this.lblOrigPrice_d.TabIndex = 0;
-            this.lblOrigPrice_d.Text = "0.00";
+            this.lblOrigPrice_d.Text = "000,000.00";
             this.lblOrigPrice_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblNewPrice_d
             // 
             this.lblNewPrice_d.BackColor = System.Drawing.Color.White;
-            this.lblNewPrice_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNewPrice_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.lblNewPrice_d.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNewPrice_d.ForeColor = System.Drawing.Color.Black;
             this.lblNewPrice_d.Location = new System.Drawing.Point(284, 370);
             this.lblNewPrice_d.Name = "lblNewPrice_d";
             this.lblNewPrice_d.Size = new System.Drawing.Size(203, 51);
             this.lblNewPrice_d.TabIndex = 0;
-            this.lblNewPrice_d.Text = "0.00";
+            this.lblNewPrice_d.Text = "0,000,000.00";
             this.lblNewPrice_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("Arial", 24F);
-            this.label2.Location = new System.Drawing.Point(447, 312);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 51);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "%";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label1
             // 
@@ -282,12 +247,48 @@
             this.BtnF11.UseVisualStyleBackColor = false;
             this.BtnF11.Click += new System.EventHandler(this.Btn11_Click);
             // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Arial", 24F);
+            this.label2.Location = new System.Drawing.Point(448, 247);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 51);
+            this.label2.TabIndex = 119;
+            this.label2.Text = "%";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtDiscount
+            // 
+            this.txtDiscount.BackColor = System.Drawing.Color.White;
+            this.txtDiscount.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDiscount.Location = new System.Drawing.Point(285, 251);
+            this.txtDiscount.MaxLength = 10;
+            this.txtDiscount.Name = "txtDiscount";
+            this.txtDiscount.Size = new System.Drawing.Size(151, 44);
+            this.txtDiscount.TabIndex = 117;
+            this.txtDiscount.Tag = "num";
+            this.txtDiscount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // lblDiscount
+            // 
+            this.lblDiscount.BackColor = System.Drawing.Color.White;
+            this.lblDiscount.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDiscount.Location = new System.Drawing.Point(13, 244);
+            this.lblDiscount.Name = "lblDiscount";
+            this.lblDiscount.Size = new System.Drawing.Size(249, 51);
+            this.lblDiscount.TabIndex = 118;
+            this.lblDiscount.Text = "Discount by:";
+            this.lblDiscount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frmProductAdjust
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(717, 435);
+            this.ClientSize = new System.Drawing.Size(714, 432);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.txtDiscount);
+            this.Controls.Add(this.lblDiscount);
             this.Controls.Add(this.BtnF11);
             this.Controls.Add(this.BtnProceed);
             this.Controls.Add(this.BtnESC);
@@ -297,13 +298,10 @@
             this.Controls.Add(this.BtnF1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblProductName);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.lblNewPrice_d);
             this.Controls.Add(this.lblOrigPrice_d);
-            this.Controls.Add(this.txtDiscount);
             this.Controls.Add(this.txtAdjustTo);
             this.Controls.Add(this.lblNewPrice);
-            this.Controls.Add(this.lblDiscount);
             this.Controls.Add(this.lblAdjustTo);
             this.Controls.Add(this.lblOrigPrice);
             this.DoubleBuffered = true;
@@ -325,13 +323,10 @@
         private System.Windows.Forms.Label lblProductName;
         private System.Windows.Forms.Label lblOrigPrice;
         private System.Windows.Forms.Label lblAdjustTo;
-        private System.Windows.Forms.Label lblDiscount;
         private System.Windows.Forms.Label lblNewPrice;
         private System.Windows.Forms.TextBox txtAdjustTo;
-        private System.Windows.Forms.TextBox txtDiscount;
         private System.Windows.Forms.Label lblOrigPrice_d;
         private System.Windows.Forms.Label lblNewPrice_d;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button BtnF2;
         private System.Windows.Forms.Button BtnF1;
@@ -340,5 +335,8 @@
         private System.Windows.Forms.Button BtnProceed;
         private System.Windows.Forms.Button BtnESC;
         private System.Windows.Forms.Button BtnF11;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtDiscount;
+        private System.Windows.Forms.Label lblDiscount;
     }
 }

@@ -56,9 +56,12 @@ namespace ETech
 
         private void frmTransactionAdjust_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F1)   done_process();
-            else if (e.KeyCode == Keys.Escape)  this.Close();
-            else if(e.KeyCode == Keys.F12)  RemoveButtonClicked();
+            if (e.KeyCode == Keys.Escape) this.Close();
+            else if (e.KeyCode == Keys.F1) BtnF1.PerformClick();
+            else if (e.KeyCode == Keys.F2) BtnF2.PerformClick();
+            else if (e.KeyCode == Keys.F3) BtnF3.PerformClick();
+            else if (e.KeyCode == Keys.F11) RemoveButtonClicked();
+            else if (e.KeyCode == Keys.F12) Proceed();
             return;
         }
 
@@ -73,7 +76,7 @@ namespace ETech
             {
                 if (txtDiscount.Enabled == false)
                 {
-                    done_process();
+                    Proceed();
                 }
                 else
                 {
@@ -97,7 +100,7 @@ namespace ETech
                     }
                     else
                     {
-                        done_process();
+                        Proceed();
                     }
                 }
                 else
@@ -152,7 +155,7 @@ namespace ETech
                 lblNewPrice_d.Text = this.new_price.ToString("N2");
             }
         }
-        public void done_process()
+        public void Proceed()
         {
             decimal prodadjust = (this.txtAdjustTo.Enabled) ? fncFilter.getDecimalValue(this.txtAdjustTo.Text) : 0;
             decimal discount = (this.txtDiscount.Enabled) ? fncFilter.getDecimalValue(this.txtDiscount.Text) : 0;
@@ -172,7 +175,7 @@ namespace ETech
             else if (discount != 0)
             {
                 this.new_adjust = 0;
-                this.new_discount = Math.Round( discount / 100, 6);
+                this.new_discount = Math.Round(discount / 100, 6);
             }
             else
             {
@@ -193,17 +196,38 @@ namespace ETech
                 this.Close();
             }
         }
-        private void btnRemove_Click(object sender, EventArgs e)
+
+        private void BtnF11_Click(object sender, EventArgs e)
         {
             RemoveButtonClicked();
         }
-        private void btnOK_Click(object sender, EventArgs e)
+
+        private void BtnProceed_Click(object sender, EventArgs e)
         {
-            done_process();
+            Proceed();
         }
-        private void btnESC_Click(object sender, EventArgs e)
+
+        private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void BtnF1_Click(object sender, EventArgs e)
+        {
+            txtDiscount.Text = "5";
+            Proceed();
+        }
+
+        private void BtnF2_Click(object sender, EventArgs e)
+        {
+            txtDiscount.Text = "10";
+            Proceed();
+        }
+
+        private void BtnF3_Click(object sender, EventArgs e)
+        {
+            txtDiscount.Text = "15";
+            Proceed();
         }
     }
 }
