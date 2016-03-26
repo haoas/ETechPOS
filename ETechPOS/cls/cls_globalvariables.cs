@@ -213,7 +213,6 @@ namespace ETech.cls
         public static int print_receipt_buffer = 0;
         public static int print_receipt_actual = 0;
         public static int print_receipt_limit = 0;
-        public static int print_receipt_linespacing = 0;
 
         public static string PosProviderName_v;
         public static string PosProviderAddress_v;
@@ -363,9 +362,10 @@ namespace ETech.cls
         public static string DefaultPrinter_v
         { get { return DefaultPrinter; } set { DefaultPrinter = value; } }
 
-        private static string PrinterODByte = "";
-        public static string PrinterODByte_v
-        { get { return PrinterODByte; } set { PrinterODByte = value; } }
+        public static byte[] OpenDrawerBytes
+        {
+            get { return new byte[] { 27, 112, 0, 25, 250 }; }
+        }
 
         private static bool PreviewOR = false;
         public static bool PreviewOR_v

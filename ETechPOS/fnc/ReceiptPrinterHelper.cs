@@ -9,40 +9,37 @@ using System.Data;
 using Cobainsoft.Windows.Forms;
 using System.IO;
 using System.Drawing.Imaging;
+using ETech.cls;
 
 namespace ETech.fnc
 {
     public class ReceiptPrinterHelper
     {
-        private byte[] buffer;
+        /// <summary>
+        /// Get or sets the maximum possible number of characters that can be printed per line.
+        /// </summary>
         public int StringFullWidth { get; set; }
+        /// <summary>
+        /// Gets or sets the number of characters that will actually be printed per line.
+        /// </summary>
         public int StringWidth { get; set; }
+        /// <summary>
+        /// Gets or sets the number of whitespaces to be inserted in front of every line.
+        /// </summary>
         public int StringBufferWidth { get; set; }
         public string PrinterName { get; set; }
-        public int LineSpacing 
-        {
-            get { return _lineSpacing; } 
-            set
-            {
-                if (_lineSpacing == value)
-                    return;
-                _lineSpacing = value;
-                setSpacingForText();
-            }
-        }
 
         public ReceiptPrinterHelper(int stringWidth)
             : this(stringWidth, new PrintDocument().PrinterSettings.PrinterName) { }
         public ReceiptPrinterHelper(int stringWidth, string printerName)
-            : this(stringWidth, printerName, 0) { }
-        public ReceiptPrinterHelper(int stringWidth, string printerName, int lineSpacing)
         {
             this.StringWidth = stringWidth;
             this.StringFullWidth = this.StringWidth;
             this.PrinterName = printerName;
-            this.LineSpacing = lineSpacing;
             this.buffer = new byte[] { };
             this.setSpacingForText();
+            this.NormalFont();
+            this.CPI12();
         }
 
         public void ActivateCutter()
@@ -77,6 +74,14 @@ namespace ETech.fnc
             byte[] bytes = new byte[] { 0x1B, 0x21, 0x00 };
             addBytesToBuffer(bytes);
         }
+        public void OpenCashDrawer()
+        {
+            byte[] DrawerOpen = cls_globalvariables.OpenDrawerBytes;
+            IntPtr unmanagedPointer = Marshal.AllocHGlobal(DrawerOpen.Length);
+            Marshal.Copy(DrawerOpen, 0, unmanagedPointer, DrawerOpen.Length);
+            RawPrinterHelper.SendBytesToPrinter(PrinterName, unmanagedPointer, DrawerOpen.Length);
+            Marshal.FreeHGlobal(unmanagedPointer);
+        }
 
         public void WriteBarcode(string barcode)
         {
@@ -94,7 +99,7 @@ namespace ETech.fnc
             BCctrl.Data = barcode;
             Rectangle rect = new Rectangle(0, 0, BCctrl.Width, BCctrl.Height);
             Bitmap bitmap = new Bitmap(BCctrl.Width, BCctrl.Height);
-            
+
             BCctrl.DrawToBitmap(bitmap, rect);
             WriteImage(bitmap);
         }
@@ -108,7 +113,7 @@ namespace ETech.fnc
             if (tempImage.Width > 255)
                 tempImage = new Bitmap(image, new Size(255, (int)(255 / scale)));
             if (tempImage.Height > 255)
-                tempImage = new Bitmap(image, new Size((int)(scale / 255 ), 255));
+                tempImage = new Bitmap(image, new Size((int)(scale / 255), 255));
             image = tempImage;
 
             Bitmap bmp = new Bitmap(image);
@@ -121,7 +126,7 @@ namespace ETech.fnc
             IntPtr ptr = bmpData.Scan0;
 
             // Declare an array to hold the bytes of the bitmap.
-            int bytes  = Math.Abs(bmpData.Stride) * bmp.Height;
+            int bytes = Math.Abs(bmpData.Stride) * bmp.Height;
             byte[] rgbValues = new byte[bytes];
 
             // Copy the RGB values into the array.
@@ -148,7 +153,7 @@ namespace ETech.fnc
             }
             int[][] thefinalarray = tempList.ToArray();
 
-            int[][] anotherarray = (int[][]) thefinalarray.Clone();
+            int[][] anotherarray = (int[][])thefinalarray.Clone();
             for (int i = 0; i < anotherarray.Length; i++)
             {
                 for (int j = 0; j < anotherarray[i].Length; j++)
@@ -181,7 +186,7 @@ namespace ETech.fnc
         }
         public void WriteRow(string[] strings, StringAlignment[] alignments, int[] columnWidths)
         {
-            if(strings.Length != alignments.Length || strings.Length != columnWidths.Length)
+            if (strings.Length != alignments.Length || strings.Length != columnWidths.Length)
                 throw new Exception("All arrays must have the same lengths.");
 
             columnWidths[columnWidths.Length - 1] += this.StringWidth - columnWidths.Sum();
@@ -197,7 +202,7 @@ namespace ETech.fnc
             for (int i = 0; i < numberOfLines; i++)
             {
                 string line = "";
-                for(int j = 0; j < stringListToPrint.Count; j++)
+                for (int j = 0; j < stringListToPrint.Count; j++)
                 {
 
                     if (stringListToPrint[j].Count > i)
@@ -218,7 +223,7 @@ namespace ETech.fnc
         }
         public void WriteTable(string[][] strings, StringAlignment[] alignments, int[] columnWidths)
         {
-            for (int i=0; i<strings.Length; i++)
+            for (int i = 0; i < strings.Length; i++)
             {
                 WriteRow(strings[i], alignments, columnWidths);
             }
@@ -235,11 +240,63 @@ namespace ETech.fnc
         }
         public void Print()
         {
+            if (this.PrinterName == "Microsoft XPS Document Writer")
+            {
+                PrintDocument doc = new PrintDocument();
+                doc.PrinterSettings.PrinterName = this.PrinterName;
+                doc.PrintPage += (sender, e) =>
+                {
+                    int y = 0;
+                    SolidBrush solidBrush = new SolidBrush(Color.Black);
+                    Font font = new Font(FontFamily.GenericMonospace, 12f);
+                    int yMultiplier = (int)e.Graphics.MeasureString("Og", font).Height;
+                    string text = "";
+                    List<byte> byteListTemp = new List<byte>();
+                    foreach (byte cmd in this.buffer)
+                    {
+                        // Command bytes
+                        if (cmd == 0x1B || byteListTemp.Count > 0)
+                        {
+                            byteListTemp.Add(cmd);
+                            byte[] array = byteListTemp.ToArray();
+
+                            // CPI12()
+                            if (array.Count() == 3 && array[0] == 0x1B && array[1] == 0x4D)
+                                byteListTemp.Clear();
+                            // NormalFont(), LargeFont()
+                            else if (array.Count() == 3 && array[0] == 0x1B && array[1] == 0x21)
+                                byteListTemp.Clear();
+                            else if (array.Count() == 3 && array[0] == 0x1B && array[1] == 0x33)
+                                byteListTemp.Clear();
+                        }
+                        // Text
+                        else
+                        {
+                            text += (char)cmd;
+                            if (text.Contains("\n\r") || text.Length == this.StringFullWidth)
+                            {
+                                e.Graphics.DrawString(text, font, solidBrush, new PointF(0, y * yMultiplier));
+                                y++;
+                                text = "";
+                            }
+                        }
+                    }
+                };
+                try
+                {
+                    doc.Print();
+                }
+                catch (InvalidPrinterException e)
+                {
+
+                }
+                return;
+            }
             IntPtr unmanagedPointer = Marshal.AllocHGlobal(buffer.Length);
             Marshal.Copy(buffer, 0, unmanagedPointer, buffer.Length);
             RawPrinterHelper.SendBytesToPrinter(this.PrinterName, unmanagedPointer, buffer.Length);
             Marshal.FreeHGlobal(unmanagedPointer);
-            buffer = new byte[] { }; 
+            buffer = new byte[] { };
         }
 
         private void betterPrintImage(int[][] pixels)
@@ -287,17 +344,10 @@ namespace ETech.fnc
         private void setSpacingForText()
         {
             // Special case where spacing becomes very small for EPSON TM-T82 (Thermal Printer)
-            if (this.LineSpacing == 0)
-            {
-                if (StringFullWidth == 64)
-                    addBytesToBuffer(new byte[] { 0x1B, 0x33, 50 });
-                else
-                    addBytesToBuffer(new byte[] { 0x1B, 0x33, 20 });
-            }
+            if (StringFullWidth == 64)
+                addBytesToBuffer(new byte[] { 0x1B, 0x33, 50 });
             else
-            {
-                addBytesToBuffer(new byte[] { 0x1B, 0x33, (byte)LineSpacing });
-            }
+                addBytesToBuffer(new byte[] { 0x1B, 0x33, 20 });
         }
         private void setSpacingForImage()
         {
@@ -318,7 +368,6 @@ namespace ETech.fnc
                     alignmentMethod = leftAlignString;
                     break;
             }
-            Font font = new Font("Consolas", 10f);
             if (text.Length > maxLineLength)
             {
                 string tempString1 = "";
@@ -338,9 +387,9 @@ namespace ETech.fnc
                             tempString2 = tempString2.Substring(1, tempString2.Length - 1);
                         text += alignmentMethod(tempString2 + ' ' + partsOfIterator, maxLineLength) + "\n\r";
 
-                        for(; truncateIndex < textIterator.Length; truncateIndex += maxLineLength)
+                        for (; truncateIndex < textIterator.Length; truncateIndex += maxLineLength)
                         {
-                            if(truncateIndex + maxLineLength <= textIterator.Length)
+                            if (truncateIndex + maxLineLength <= textIterator.Length)
                                 text += textIterator.Substring(truncateIndex, maxLineLength) + "\n\r";
                             else
                                 text += textIterator.Substring(truncateIndex, textIterator.Length - truncateIndex);
@@ -369,7 +418,7 @@ namespace ETech.fnc
                         tempString2 = "";
                     }
                 }
-                if(tempString1 != "")
+                if (tempString1 != "")
                     text += alignmentMethod(tempString1.Substring(1, tempString1.Length - 1), maxLineLength);
             }
             else
@@ -379,7 +428,7 @@ namespace ETech.fnc
             List<string> padderListString = text.Split('\n', '\r').ToList();
             padderListString.RemoveAll(x => x == "");
             text = "";
-            for (int i = 0; i<padderListString.Count; i++)
+            for (int i = 0; i < padderListString.Count; i++)
             {
                 string tempText = padderListString[i];
                 int length = maxLineLength - tempText.Length;
@@ -437,6 +486,6 @@ namespace ETech.fnc
 
         private delegate string AlignmentMethod(string text, int maxLength);
 
-        private int _lineSpacing;
+        private byte[] buffer;
     }
 }

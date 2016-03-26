@@ -120,20 +120,6 @@ namespace ETech.cls
                 Directory.CreateDirectory(path);
         }
 
-        public static byte[] getPrinterODByte()
-        {
-            byte[] code = new byte[] { };
-            try
-            {
-                if ((code = cls_globalvariables.PrinterODByte_v.Split(',').Select(n => Convert.ToByte(n)).ToArray()).Length != 5)
-                    code = new byte[] { };
-            }
-            catch
-            {
-            }
-            return code;
-        }
-
         public static void formaddkbkpevent(Form form)
         {
             if (!cls_globalvariables.AutoShowKeyboard_v)

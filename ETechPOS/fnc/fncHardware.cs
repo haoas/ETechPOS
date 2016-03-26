@@ -1883,8 +1883,6 @@ namespace ETech.fnc
                 printer.StringFullWidth = cls_globalvariables.print_receipt_actual;
             if (cls_globalvariables.print_receipt_limit != 0)
                 printer.StringWidth = cls_globalvariables.print_receipt_limit;
-            if (cls_globalvariables.print_receipt_linespacing != 0)
-                printer.LineSpacing = cls_globalvariables.print_receipt_linespacing;
 
             printer.NormalFont();
             printer.CPI12();
