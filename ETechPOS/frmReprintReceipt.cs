@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
+using ETECHPOS.fnc;
 
 namespace ETech
 {
@@ -17,7 +18,6 @@ namespace ETech
         public long or_number;
         public long currenttrans_ornumber;
         public List<string> CurrentUserAuthList;
-        public frmPermissionCode frmauthcode;
 
         public frmReprintReceipt()
         {
@@ -57,17 +57,6 @@ namespace ETech
             }
             else
                 return;
-        }
-
-        private bool isInput_permission_code(string permissioncode)
-        {
-            bool permcheck = false;
-            frmauthcode = new frmPermissionCode();
-            frmauthcode.auth_needed = permissioncode;
-            frmauthcode.ShowDialog();
-            permcheck = frmauthcode.permcode;
-
-            return permcheck;
         }
 
         private void done_process()
@@ -127,13 +116,8 @@ namespace ETech
 
         private bool Check_ReprintReceiptPermission(bool isSwitch)
         {
-            bool permcheck_reprintreceipt = false;
-            if (this.CurrentUserAuthList.Contains("REPRINTOR") || this.CurrentUserAuthList.Contains("ALL"))
-                permcheck_reprintreceipt = true;
-            else
-                permcheck_reprintreceipt = isInput_permission_code("REPRINTOR");
-
-            return permcheck_reprintreceipt;
+            UserAuthorizationFunction userAuthorizationFunction = new UserAuthorizationFunction(CurrentUserAuthList);
+            return userAuthorizationFunction.IsVerifiedAuthorization("REPRINTOR");
         }
     }
 }

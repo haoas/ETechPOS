@@ -17,6 +17,8 @@ using ETech.fnc;
 using ETech.FormatDesigner;
 using ETECHPOS.Helpers;
 using ETECHPOS;
+using ETECHPOS.fnc;
+using ETECHPOS.Views.Forms.Generics;
 
 namespace ETech
 {
@@ -39,6 +41,7 @@ namespace ETech
         public int row_index;
         private fncFullScreen fncfullscreen;
         private frmPOSMainExt frmposmainext;
+        private UserAuthorizationFunction _UserAuthorizationFunction;
 
         private int lastaddedrownumber = -1;
         private bool isLoadSuccessful = true;
@@ -112,6 +115,8 @@ namespace ETech
                 isLoadSuccessful = false;
                 return;
             }
+            _UserAuthorizationFunction = new UserAuthorizationFunction();
+            _UserAuthorizationFunction.UserAuthorizations = cur_cashier.AuthorizationList;
 
             LogsHelper.Print("LOGGED IN: " + cur_cashier.getfullname());
 
@@ -198,19 +203,11 @@ namespace ETech
             {
                 this.spcustdisp.Close();
             }
-
-            bool permcheck_exit = false;
-
-            if (!Trans.Exists(x => x.get_productlist().get_productlist().Count > 0))
-                permcheck_exit = true;
-            else if (cur_cashier.CheckAuth("VOIDTRANS"))
-                permcheck_exit = true;
-            else
-                permcheck_exit = isInput_auth_code("VOIDTRANS");
-
-            if (permcheck_exit)
+            if (Trans.Exists(x => x.get_productlist().get_productlist().Count <= 0))
+                return;
+            if (DialogHelper.ShowDialog(cls_globalvariables.confirm_logout_voidtran, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                if (DialogHelper.ShowDialog(cls_globalvariables.confirm_logout_voidtran, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (_UserAuthorizationFunction.IsVerifiedAuthorization("VOIDTRANS"))
                 {
                     // reverse traverse and delete salesheads
                     for (int i = Trans.Count - 1; i >= 0; i--)
@@ -220,7 +217,6 @@ namespace ETech
                     return;
                 }
             }
-
             e.Cancel = true;
         }
         public void POSMain_KeyDown(object sender, KeyEventArgs e)
@@ -449,13 +445,7 @@ namespace ETech
                     if (FPage == 0)
                     {
                         //Open Item
-                        bool permcheck_openitem = false;
-                        if (cur_cashier.CheckAuth("OPENITEM"))
-                            permcheck_openitem = true;
-                        else
-                            permcheck_openitem = isInput_auth_code("OPENITEM");
-
-                        if (permcheck_openitem)
+                        if (_UserAuthorizationFunction.IsVerifiedAuthorization("OPENITEM"))
                         {
                             frmOpenItem openitemform = new frmOpenItem();
                             openitemform.ShowDialog();
@@ -472,24 +462,12 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
-                        bool permcheck_opendrawer = false;
-                        if (this.cur_cashier.CheckAuth("OPENDRAWER"))
-                            permcheck_opendrawer = true;
-                        else
-                            permcheck_opendrawer = isInput_auth_code("OPENDRAWER");
-
-                        if (permcheck_opendrawer)
+                        if (_UserAuthorizationFunction.IsVerifiedAuthorization("OPENDRAWER"))
                             RawPrinterHelper.OpenCashDrawer(false);
                     }
                     else if (FPage == 2)
                     {
-                        bool permcheck_modifyuser = false;
-                        if (this.cur_cashier.CheckAuth("MODIFYUSER"))
-                            permcheck_modifyuser = true;
-                        else
-                            permcheck_modifyuser = isInput_auth_code("MODIFYUSER");
-
-                        if (permcheck_modifyuser)
+                        if (_UserAuthorizationFunction.IsVerifiedAuthorization("MODIFYUSER"))
                         {
                             AddUserForm userform = new AddUserForm(cur_cashier);
                             userform.ShowDialog();
@@ -564,13 +542,7 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
-                        bool permcheck_opendrawer = false;
-                        if (this.cur_cashier.CheckAuth("PICKUPCASH"))
-                            permcheck_opendrawer = true;
-                        else
-                            permcheck_opendrawer = isInput_auth_code("PICKUPCASH");
-
-                        if (permcheck_opendrawer)
+                        if (_UserAuthorizationFunction.IsVerifiedAuthorization("PICKUPCASH"))
                         {
                             RawPrinterHelper.OpenCashDrawer(false);
                             frmCashDenomination cashform = new frmCashDenomination();
@@ -666,13 +638,15 @@ namespace ETech
                         }
                         else
                         {
-                            //permcheck_delete = isInput_permission_code(fncFilter.get_permission_delete());
-                            frmPermissionCode frmpermcode = new frmPermissionCode();
-                            frmpermcode.auth_needed = "REMOVEITEM";
-                            frmpermcode.ShowDialog();
-                            permcheck_delete = frmpermcode.permcode;
-                            UserAuthorizer.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                            tran.set_UserAuthorizer(UserAuthorizer);
+                            UserAuthenticationForm userAuthenticationForm = new UserAuthenticationForm();
+                            userAuthenticationForm.UserAuthorization = "REMOVEITEM";
+                            userAuthenticationForm.ShowDialog();
+                            permcheck_delete = userAuthenticationForm.HasAuthorization;
+                            if (permcheck_delete)
+                            {
+                                UserAuthorizer.setcls_user_by_wid(userAuthenticationForm.User.syncid, false);
+                                tran.set_UserAuthorizer(UserAuthorizer);
+                            }
                         }
 
                         int row_index_delete = this.ctrlproductgridview.get_currentrow().Index;
@@ -691,13 +665,7 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
-                        bool permcheck_nonvattrans = false;
-                        if (this.cur_cashier.CheckAuth("NONVATTRANS"))
-                            permcheck_nonvattrans = true;
-                        else
-                            permcheck_nonvattrans = isInput_auth_code("NONVATTRANS");
-
-                        if (permcheck_nonvattrans)
+                        if (_UserAuthorizationFunction.IsVerifiedAuthorization("NONVATTRANS"))
                         {
                             if (tran.get_productlist().get_isnonvat())
                                 LogsHelper.Print("NonVat Transaction Deactivated");
@@ -778,13 +746,15 @@ namespace ETech
                             permcheck_discountproduct = true;
                         else
                         {
-                            //permcheck_discountproduct = isInput_permission_code(fncFilter.get_permission_discount());
-                            frmPermissionCode frmpermcode = new frmPermissionCode();
-                            frmpermcode.auth_needed = "DISCOUNT";
-                            frmpermcode.ShowDialog();
-                            permcheck_discountproduct = frmpermcode.permcode;
-                            UserAuthorizer.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                            tran.set_UserAuthorizer(UserAuthorizer);
+                            UserAuthenticationForm userAuthenticationForm = new UserAuthenticationForm();
+                            userAuthenticationForm.UserAuthorization = "DISCOUNT";
+                            userAuthenticationForm.ShowDialog();
+                            permcheck_discountproduct = userAuthenticationForm.HasAuthorization;
+                            if (permcheck_discountproduct)
+                            {
+                                UserAuthorizer.setcls_user_by_wid(userAuthenticationForm.User.syncid, false);
+                                tran.set_UserAuthorizer(UserAuthorizer);
+                            }
                         }
 
                         if (permcheck_discountproduct)
@@ -863,13 +833,7 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
-                        bool permcheck_seniortrans = false;
-                        if (this.cur_cashier.CheckAuth("SENIORTRANS"))
-                            permcheck_seniortrans = true;
-                        else
-                            permcheck_seniortrans = isInput_auth_code("SENIORTRANS");
-
-                        if (permcheck_seniortrans)
+                        if (_UserAuthorizationFunction.IsVerifiedAuthorization("SENIORTRANS"))
                         {
                             frmSenior seniorform = new frmSenior();
                             seniorform.senior = tran.getsenior();
@@ -898,13 +862,15 @@ namespace ETech
                             permcheck_discounttransaction = true;
                         else
                         {
-                            //permcheck_discounttransaction = isInput_permission_code(fncFilter.get_permission_discount());
-                            frmPermissionCode frmpermcode = new frmPermissionCode();
-                            frmpermcode.auth_needed = "DISCOUNT";
-                            frmpermcode.ShowDialog();
-                            permcheck_discounttransaction = frmpermcode.permcode;
-                            UserAuthorizer.setcls_user_by_wid(Convert.ToInt32(frmpermcode.permissionwid), false);
-                            tran.set_UserAuthorizer(UserAuthorizer);
+                            UserAuthenticationForm userAuthenticationForm = new UserAuthenticationForm();
+                            userAuthenticationForm.UserAuthorization = "DISCOUNT";
+                            userAuthenticationForm.ShowDialog();
+                            permcheck_discounttransaction = userAuthenticationForm.HasAuthorization;
+                            if (permcheck_discounttransaction)
+                            {
+                                UserAuthorizer.setcls_user_by_wid(userAuthenticationForm.User.syncid, false);
+                                tran.set_UserAuthorizer(UserAuthorizer);
+                            }
                         }
 
                         if (permcheck_discounttransaction)
@@ -1334,17 +1300,7 @@ namespace ETech
             this.txtBarcode.Focus();
             return isdetected;
         }
-        private bool isInput_auth_code(string permissioncode)
-        {
-            bool permcheck = false;
-            frmPermissionCode frmpermcode = new frmPermissionCode();
-            frmpermcode.auth_needed = permissioncode;
-            frmpermcode.ShowDialog();
-            permcheck = frmpermcode.permcode;
 
-            return permcheck;
-        }
-        
         public cls_POSTransaction get_curtrans()
         {
             try

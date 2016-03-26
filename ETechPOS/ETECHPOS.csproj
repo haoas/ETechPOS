@@ -69,7 +69,6 @@
     <Compile Include="cls\cls_cardinfo.cs" />
     <Compile Include="cls\cls_customer.cs" />
     <Compile Include="cls\cls_discountlist.cs" />
-    <Compile Include="cls\cls_encdec.cs" />
     <Compile Include="cls\cls_globalfunc.cs" />
     <Compile Include="cls\cls_globalvariables.cs" />
     <Compile Include="cls\cls_member.cs" />
@@ -97,9 +96,12 @@
     <Compile Include="ctrl\ctrl_otherinfo.cs" />
     <Compile Include="ctrl\ctrl_payment.cs" />
     <Compile Include="ctrl\ctrl_productgrid.cs" />
+    <Compile Include="fnc\MD5EncryptionFunction.cs" />
+    <Compile Include="fnc\SaltEncryptionFunction.cs" />
     <Compile Include="fnc\fncFilter.cs" />
     <Compile Include="fnc\fncHardware.cs" />
     <Compile Include="fnc\fncFullScreen.cs" />
+    <Compile Include="fnc\MySqlFunction.cs" />
     <Compile Include="fnc\RawPrinterHelper.cs" />
     <Compile Include="fnc\ReceiptPrinterHelper.cs" />
     <Compile Include="FormatDesigner\LDatagridView.cs" />
@@ -290,6 +292,10 @@
     <Compile Include="frmWholesale.Designer.cs">
       <DependentUpon>frmWholesale.cs</DependentUpon>
     </Compile>
+    <Compile Include="fnc\UserAuthorizationFunction.cs" />
+    <Compile Include="Helpers\ControlEventHelper.cs" />
+    <Compile Include="Helpers\ControlManipulationHelper.cs" />
+    <Compile Include="Helpers\DataValidateHelper.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Helpers\LogsHelper.cs" />
     <Compile Include="Models\Global\ConnectionSettings.cs" />
@@ -453,6 +459,15 @@
       <DependentUpon>frmTerminalReadings.cs</DependentUpon>
     </Compile>
     <Compile Include="Variables\MessagesVariable.cs" />
+    <Compile Include="Views\Forms\Generics\UserAuthenticationController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\Generics\UserAuthenticationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\Generics\UserAuthenticationForm.designer.cs">
+      <DependentUpon>UserAuthenticationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="zreadFunc.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -535,6 +550,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmTerminalReadings.resx">
       <DependentUpon>frmTerminalReadings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\Generics\UserAuthenticationForm.resx">
+      <DependentUpon>UserAuthenticationForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

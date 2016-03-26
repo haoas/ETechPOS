@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using ETech.cls;
 using System.IO;
 using System.Text.RegularExpressions;
-using str_encode_decode;
 using ETech.fnc;
 using ETECHPOS.Helpers;
 

@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using System.IO;
 using ETech.cls;
 using System.Net.NetworkInformation;
-using str_encode_decode;
 using ETECHPOS.Models.Global;
 using ETECHPOS.Helpers;
 

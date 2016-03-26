@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
+using ETECHPOS.Views.Forms.Generics;
 
 namespace ETech
 {
@@ -50,10 +51,10 @@ namespace ETech
 
             if (ornumber == 0)
             {
-                frmPermissionCode frmauthcode = new frmPermissionCode();
-                frmauthcode.auth_needed = "REFUNDITEM";
-                frmauthcode.ShowDialog();
-                if (frmauthcode.permcode)
+                UserAuthenticationForm userAuthenticationForm = new UserAuthenticationForm();
+                userAuthenticationForm.UserAuthorization = "REFUNDITEM";
+                userAuthenticationForm.ShowDialog();
+                if (userAuthenticationForm.HasAuthorization)
                     successReturn();
             }
             else

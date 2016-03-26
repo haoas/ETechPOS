@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using ETech.cls;
 using ETECHPOS.Variables;
 using ETECHPOS.Helpers;
+using ETECHPOS.fnc;
 
 namespace ETECHPOS.Models.Global
 {
@@ -22,7 +23,7 @@ namespace ETECHPOS.Models.Global
                 connectionSettings.Server = settingsElem.Element("Server").Value;
                 connectionSettings.Database = settingsElem.Element("Database").Value;
                 connectionSettings.UserId = settingsElem.Element("UserId").Value;
-                connectionSettings.Password = str_encode_decode.cls_encdec.Decrypt(settingsElem.Element("Password").Value);
+                connectionSettings.Password = SaltEncryptionFunction.Decrypt(settingsElem.Element("Password").Value);
 
                 return connectionSettings;
             }
