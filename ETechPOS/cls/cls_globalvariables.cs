@@ -27,11 +27,13 @@ namespace ETech.cls
         }
 
         public static string ApplicationFolderPath = Application.StartupPath;
+        public static string ApplicationErrorFolderPath = Application.StartupPath + "/Errors";
+        public static string MyDocumentApplicationFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/" + ApplicationName;
         public static string ApplicationDataLocalCompanyNameFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/" + CompanyName;
         public static string ApplicationDataLocalApplicationFolderPath = ApplicationDataLocalCompanyNameFolderPath + "/" + ApplicationName;
 
-        public static string PosTLogsFilePath = ApplicationDataLocalApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".T";
-        public static string PosCsvLogsFilePath = ApplicationDataLocalApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".C";
+        public static string PosTLogsFilePath = MyDocumentApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".T";
+        public static string PosCsvLogsFilePath = ApplicationErrorFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".C";
         public static string ConnectionSettingsXmlPath = ApplicationFolderPath + "/Connection Settings.xml";
 
         public static ConnectionSettings ConnectionSettings = null;
@@ -64,7 +66,7 @@ namespace ETech.cls
 
         public static string settingspath = Application.StartupPath + "/settings.txt";
 
-        public static string mydocumentpath = createDirIfNotExists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\ETECH POS\");
+        public static string mydocumentpath = createDirIfNotExists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/" + ApplicationName + "/");
 
         public static string createDirIfNotExists(string directory)
         {
