@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ETech.FormatDesigner;
 using ETech.fnc;
 using ETech.cls;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -149,7 +150,7 @@ namespace ETech
 
             if (usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0)
             {
-                MessageBox.Show("Fields cannot be empty");
+                DialogHelper.ShowDialog("Fields cannot be empty");
                 return;
             }
 
@@ -276,7 +277,7 @@ namespace ETech
 
             if (usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0 && usercode.Length == 0)
             {
-                MessageBox.Show("Fields cannot be empty");
+                DialogHelper.ShowDialog("Fields cannot be empty");
                 return;
             }
 

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
 using System.IO;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -90,12 +91,12 @@ namespace ETech
             {
                 if (Ddatefrom == Ddateto)
                 {
-                    MessageBox.Show("Date To/From cannot be the same");
+                    DialogHelper.ShowDialog("Date To/From cannot be the same");
                     return;
                 }
                 if (!zreadFunc.Zread_exist(Ddateto))
                 {
-                    MessageBox.Show("Z-reading for " + Ddateto.ToString("yyyy-MM-dd") + @" is not yet generated!.");
+                    DialogHelper.ShowDialog("Z-reading for " + Ddateto.ToString("yyyy-MM-dd") + @" is not yet generated!.");
                     return;
                 }
             }
@@ -234,7 +235,7 @@ namespace ETech
             if (DT_report.Rows.Count <= 0)
             {
                 ClearGraphics(pbPreview);
-                MessageBox.Show("No Transactions");
+                DialogHelper.ShowDialog("No Transactions");
                 return;
             }
 

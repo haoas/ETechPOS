@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -75,28 +76,26 @@ namespace ETech
                     loadForm.ShowDialog();
                     if (temp == 0)
                     {
-                        LOGS.LOG_PRINT("Tender success");
+                        LogsHelper.Print("Tender success");
                     }
                     else if (temp == 1)
                     {
                         fncFilter.alert("Member transaction was unable to complete due to connection problems. F8 - Payment to try again.");
-                        LOGS.LOG_PRINT("Tender failed: Member Feature Offline");
+                        LogsHelper.Print("Tender failed: Member Feature Offline");
                         isTransactionDone = false;
                     }
                     else if (temp == -1)
                     {
-                        LOGS.LOG_PRINT("Tender failed: General Saving failure");
-                        DialogResult result = MessageBox.Show("An error occured in saving transaction. Would you like to retry?", "", MessageBoxButtons.YesNo);
-                        switch (result)
+                        LogsHelper.Print("Tender failed: General Saving failure");
+                        if (DialogHelper.ShowDialog("An error occured in saving transaction. Would you like to retry?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
-                            case DialogResult.Yes:
-                                retry = true;
-                                LOGS.LOG_PRINT("Tender failure popup: Retry");
-                                break;
-                            case DialogResult.No:
-                                LOGS.LOG_PRINT("Tender failure popup: Ignore");
-                                fncHardware.print_receipt(tran, false, false);
-                                break;
+                            retry = true;
+                            LogsHelper.Print("Tender failure popup: Retry");
+                        }
+                        else
+                        {
+                            LogsHelper.Print("Tender failure popup: Ignore");
+                            fncHardware.print_receipt(tran, false, false);
                         }
                     }
                 }

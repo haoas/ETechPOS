@@ -9,6 +9,8 @@ using System.IO;
 using ETech.cls;
 using System.Net.NetworkInformation;
 using str_encode_decode;
+using ETECHPOS.Models.Global;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -21,15 +23,12 @@ namespace ETech
                 string[] setting_lines = File.ReadAllLines(cls_globalvariables.settingspath);
                 IEnumerable<string[]> setting_enu = setting_lines.Select(l => l.Split(new[] { '=' }, 2));
                 var dic = setting_enu.ToDictionary(s => s[0].Trim(), s => s[1].Trim());
-
+                if (!ConnectionSettingsController.TryGetData(out cls_globalvariables.ConnectionSettings))
+                    return false;
                 cls_globalvariables.terminalno_v = dic["terminal"];
                 cls_globalvariables.com_v = dic["com"];
                 cls_globalvariables.disp1_v = dic["disp1"];
                 cls_globalvariables.disp2_v = dic["disp2"];
-                cls_globalvariables.server_v = dic["server"];
-                cls_globalvariables.userid_v = dic["userid"];
-                cls_globalvariables.password_v = cls_encdec.Decrypt(dic["password"]);
-                cls_globalvariables.database_v = dic["database"];
                 cls_globalvariables.colortheme_v = dic["colortheme"];
                 cls_globalvariables.BranchCode = dic["branchcode"];
                 cls_globalvariables.BusinessName_v = dic["BusinessName"];
@@ -122,7 +121,7 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in settings \n" + ex.ToString());
+                DialogHelper.ShowDialog("Error in settings \n" + ex.ToString());
                 return false;
             }
 
@@ -135,10 +134,10 @@ namespace ETech
             {
                 try
                 {
-                    string server = cls_globalvariables.server_v;
-                    string userid = cls_globalvariables.userid_v;
-                    string password = cls_globalvariables.password_v;
-                    string database = cls_globalvariables.database_v;
+                    string server = cls_globalvariables.ConnectionSettings.Server;
+                    string userid = cls_globalvariables.ConnectionSettings.UserId;
+                    string password = cls_globalvariables.ConnectionSettings.Password;
+                    string database = cls_globalvariables.ConnectionSettings.Database;
 
                     string cs = @"server=" + server + ";userid=" + userid + ";password=" + password + ";database=" + database + ";Allow Zero Datetime=true;Connect Timeout=300;";
 
@@ -168,10 +167,10 @@ namespace ETech
         {
             DataTable dataTable = new DataTable();
 
-            string server = cls_globalvariables.server_v;
-            string userid = cls_globalvariables.userid_v;
-            string password = cls_globalvariables.password_v;
-            string database = cls_globalvariables.database_v;
+            string server = cls_globalvariables.ConnectionSettings.Server;
+            string userid = cls_globalvariables.ConnectionSettings.UserId;
+            string password = cls_globalvariables.ConnectionSettings.Password;
+            string database = cls_globalvariables.ConnectionSettings.Database;
 
             string cs = @"server=" + server + ";userid=" + userid + ";password=" + password + ";database=" + database;
 
@@ -209,10 +208,10 @@ namespace ETech
         {
             DataTable dataTable = new DataTable();
 
-            string server = cls_globalvariables.server_v;
-            string userid = cls_globalvariables.userid_v;
-            string password = cls_globalvariables.password_v;
-            string database = cls_globalvariables.database_v;
+            string server = cls_globalvariables.ConnectionSettings.Server;
+            string userid = cls_globalvariables.ConnectionSettings.UserId;
+            string password = cls_globalvariables.ConnectionSettings.Password;
+            string database = cls_globalvariables.ConnectionSettings.Database;
             string cs = @"server=" + server + ";userid=" + userid + ";password=" + password + ";database=" + database + ";Allow Zero Datetime=true";
             MySqlConnection myconn = null;
             try
@@ -281,8 +280,8 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                LOGS.LOG_PRINT("[getdb_branch] " + ex.Message.ToString());
-                LOGS.LOG_PRINT("[getdb_branch(sql)] " + SQL);
+                LogsHelper.Print("[getdb_branch] " + ex.Message.ToString());
+                LogsHelper.Print("[getdb_branch(sql)] " + SQL);
 
                 Console.WriteLine("getdb_branch error: " + SQL);
                 Console.WriteLine(ex.Message.ToString());
@@ -322,8 +321,8 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                LOGS.LOG_PRINT("[setdb_branch] " + ex.Message.ToString());
-                LOGS.LOG_PRINT("[setdb_branch(sql)] " + SQL);
+                LogsHelper.Print("[setdb_branch] " + ex.Message.ToString());
+                LogsHelper.Print("[setdb_branch(sql)] " + SQL);
 
                 Console.WriteLine("setdb_branch error: " + SQL);
                 Console.WriteLine(ex.Message.ToString());
@@ -422,10 +421,10 @@ namespace ETech
         {
             try
             {
-                string server = cls_globalvariables.server_v;
-                string userid = cls_globalvariables.userid_v;
-                string password = cls_globalvariables.password_v;
-                string database = cls_globalvariables.database_v;
+                string server = cls_globalvariables.ConnectionSettings.Server;
+                string userid = cls_globalvariables.ConnectionSettings.UserId;
+                string password = cls_globalvariables.ConnectionSettings.Password;
+                string database = cls_globalvariables.ConnectionSettings.Database;
                 string cs = @"server=" + server
                             + ";userid=" + userid
                             + ";password=" + password

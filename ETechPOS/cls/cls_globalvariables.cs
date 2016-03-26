@@ -6,6 +6,7 @@ using System.Data;
 using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using ETECHPOS.Models.Global;
 
 namespace ETech.cls
 {
@@ -13,6 +14,27 @@ namespace ETech.cls
     {
         public static string ApplicationName = Assembly.GetExecutingAssembly().GetName().Name;
         public static string ApplicationVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(4);
+        public static string CompanyName
+        {
+            get
+            {
+                string companyName = "";
+                foreach (Attribute attr in Attribute.GetCustomAttributes(Assembly.GetExecutingAssembly()))
+                    if (attr.GetType() == typeof(AssemblyCompanyAttribute))
+                        companyName = ((AssemblyCompanyAttribute)attr).Company;
+                return companyName;
+            }
+        }
+
+        public static string ApplicationFolderPath = Application.StartupPath;
+        public static string ApplicationDataLocalCompanyNameFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/" + CompanyName;
+        public static string ApplicationDataLocalApplicationFolderPath = ApplicationDataLocalCompanyNameFolderPath + "/" + ApplicationName;
+
+        public static string PosTLogsFilePath = ApplicationDataLocalApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".T";
+        public static string PosCsvLogsFilePath = ApplicationDataLocalApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".C";
+        public static string ConnectionSettingsXmlPath = ApplicationFolderPath + "/Connection Settings.xml";
+
+        public static ConnectionSettings ConnectionSettings = null;
 
         public static string MainBranchCode = "1000";
 
@@ -100,34 +122,6 @@ namespace ETech.cls
         {
             get { return disp2; }
             set { disp2 = value; }
-        }
-
-        private static string server = "";
-        public static string server_v
-        {
-            get { return server; }
-            set { server = value; }
-        }
-
-        private static string userid = "";
-        public static string userid_v
-        {
-            get { return userid; }
-            set { userid = value; }
-        }
-
-        private static string password = "";
-        public static string password_v
-        {
-            get { return password; }
-            set { password = value; }
-        }
-
-        private static string database = "";
-        public static string database_v
-        {
-            get { return database; }
-            set { database = value; }
         }
 
         private static string branchcode = "";
@@ -441,12 +435,6 @@ namespace ETech.cls
         public static string confirm_logout_deleteitem = "Do you want to delete selected item?";
         public static string confirm_customer_debt = "There's still remaining amount due. Add to Customer's debt?";
         public static string confirm_unlock_zreading = "Do you want to continue transacting?\nnote: You need to generate Zreading again \n\n 今天结账单已被打印过。\n如果再开单，要从新打印结账单。是否继续？";
-        public static string POS_TLogs_path =
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                + @"\ETECH POS\" + DateTime.Now.ToString("yyMMdd") + @"POS" + cls_globalvariables.terminalno_v + @".T";
-        public static string POS_CSVLogs_path =
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                + @"\ETECH POS\" + DateTime.Now.ToString("yyMMdd") + @"POS" + cls_globalvariables.terminalno_v + @".C";
         public static string CashierAcct_wid = "";
 
     }

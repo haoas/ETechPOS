@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -63,7 +64,7 @@ namespace ETech
         {
             if (disc.get_SyncId() != 0)
             {
-                MessageBox.Show("Please remove custom discount first.");
+                DialogHelper.ShowDialog("Please remove custom discount first.");
                 e.Handled = true;
             }
             if (e.KeyChar == 13)
@@ -215,8 +216,7 @@ namespace ETech
 
         private void RemoveButtonClicked()
         {
-            if (MessageBox.Show("Are you sure you want to clear product discount?", "Confirm Box",
-                                    MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (DialogHelper.ShowDialog("Are you sure you want to clear product discount?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 this.lblCustomDiscount.Text = "";
                 this.new_discount = 0;

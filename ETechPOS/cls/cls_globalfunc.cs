@@ -12,10 +12,11 @@ using System.Net.NetworkInformation;
 using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
+using ETECHPOS.Helpers;
 
 namespace ETech.cls
 {
-    class cls_globalfunc
+    public static class cls_globalfunc
     {
         [DllImport("User32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         private static extern bool MoveWindow(IntPtr hWnd, int x, int y, int cx, int cy, bool repaint);
@@ -110,13 +111,7 @@ namespace ETech.cls
 
             sql = @"DELETE FROM saleshead WHERE `SyncId` IN (" + wids + ")";
             mySQLFunc.setdb(sql);
-            LOGS.LOG_PRINT("DELETED2 in saleshead ors = " + ornumbers);
-        }
-
-        public static void MSGBXLOG(string message)
-        {
-            LOGS.LOG_PRINT(message);
-            MessageBox.Show(message);
+            LogsHelper.Print("DELETED2 in saleshead ors = " + ornumbers);
         }
 
         public static void CreateIfMissing(string path)
@@ -373,99 +368,6 @@ namespace ETech.cls
                     fncFilter.alert("OR is still in Transaction List!");
                     return true;
                 }
-            }
-            return false;
-        }
-    }
-
-    static class LOGS
-    {
-        public static void CLEAR()
-        {
-            //while (IsFileinUse(new FileInfo(mt.mtsystemlogpath)) == true) { }
-            //File.WriteAllText(mt.mtsystemlogpath, "");
-        }
-        public static void LOG_PRINT(string logMessage)
-        {
-            try
-            {
-                if (logMessage == "") return;
-                using (StreamWriter w = File.AppendText(cls_globalvariables.POS_TLogs_path))
-                {
-                    w.WriteLine("[" + DateTime.Now + "]" + logMessage);
-                    w.Close();
-                }
-            }
-            catch (Exception)
-            { }
-        }
-        public static List<string> LOG_CHECK(string testcasepath)
-        {
-            List<String> errorlist = new List<string>();
-            int w = 0;
-            try
-            {
-                string systemlogdir = cls_globalvariables.POS_TLogs_path;
-                List<string> systemloglist = new List<string>();
-                StreamReader systemstreamReader = new StreamReader(systemlogdir);
-                while (!systemstreamReader.EndOfStream)
-                    systemloglist.Add(systemstreamReader.ReadLine());
-
-                if (systemloglist.Count == 0)
-                {
-                    errorlist.Add("SystemLogs is empty");
-                    return errorlist;
-                }
-
-                testcasepath = Application.StartupPath + @"/mt_basis/" + testcasepath;
-                List<string> testcaseloglist = new List<string>();
-                StreamReader testcasestreamReader = new StreamReader(testcasepath);
-                while (!testcasestreamReader.EndOfStream)
-                    testcaseloglist.Add(testcasestreamReader.ReadLine());
-                systemstreamReader.Close();
-                testcasestreamReader.Close();
-
-                for (int i = 0; i < systemloglist.Count; i++)
-                {
-                    systemloglist[i] = Regex.Replace(systemloglist[i], "\\[.*\\]", "");
-                    systemloglist[i] = Regex.Replace(systemloglist[i], ":.*", "");
-                    testcaseloglist[i] = Regex.Replace(testcaseloglist[i], "\\[.*\\]", "");
-                    testcaseloglist[i] = Regex.Replace(testcaseloglist[i], ":.*", "");
-                    if (systemloglist[i] == testcaseloglist[w])
-                    {
-                        w = w + 1;
-                        if (w == testcaseloglist.Count)
-                            return errorlist;
-                    }
-                }
-                for (int x = w; x < systemloglist.Count; x++)
-                {
-                    errorlist.Add(systemloglist[x]);
-                }
-                return errorlist;
-
-            }
-            catch (Exception) { }
-            return errorlist;
-        }
-        public static bool IsFileinUse(FileInfo file)
-        {
-            FileStream stream = null;
-
-            try
-            {
-                if (!File.Exists(file.FullName))
-                    File.Create(file.FullName);
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                    stream.Close();
             }
             return false;
         }

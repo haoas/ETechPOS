@@ -7,14 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Security.Cryptography;
-using ETech.cls;
 using MySql.Data.MySqlClient;
 using str_encode_decode;
 using System.Threading;
 using System.IO;
+using ETech.cls;
 using ETech.fnc;
+using ETech;
+using ETECHPOS.Helpers;
 
-namespace ETech
+namespace ETECHPOS
 {
     public partial class frmLogInMain : Form
     {
@@ -204,10 +206,10 @@ namespace ETech
         {
             try
             {
-                string server = cls_globalvariables.server_v;
-                string userid = cls_globalvariables.userid_v;
-                string password = cls_globalvariables.password_v;
-                string database = cls_globalvariables.database_v;
+                string server = cls_globalvariables.ConnectionSettings.Server;
+                string userid = cls_globalvariables.ConnectionSettings.UserId;
+                string password = cls_globalvariables.ConnectionSettings.Password;
+                string database = cls_globalvariables.ConnectionSettings.Database;
                 string cs = @"server=" + server
                             + ";userid=" + userid
                             + ";password=" + password
@@ -239,8 +241,7 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                MessageBox.Show(ex.ToString());
+                DialogHelper.ShowDialog(ex.ToString());
                 isconnected = false;
             }
         }

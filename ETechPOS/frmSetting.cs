@@ -11,6 +11,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using str_encode_decode;
 using ETech.fnc;
+using ETECHPOS.Helpers;
 
 namespace ETech
 {
@@ -107,7 +108,7 @@ namespace ETech
             cls_globalvariables.orfooter3_v = this.txtFooter3.Text;
             cls_globalvariables.orfooter4_v = this.txtFooter4.Text;
 
-            MessageBox.Show("Saved. Please restart the program.");
+            DialogHelper.ShowDialog("Saved. Please restart the program.");
             this.Close();
         }
 

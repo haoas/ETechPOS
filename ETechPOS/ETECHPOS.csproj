@@ -86,6 +86,12 @@
     <Compile Include="cls\cls_CustomPayments.cs" />
     <Compile Include="cls\cls_user.cs" />
     <Compile Include="cls\CustomDatatype.cs" />
+    <Compile Include="DialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogForm.Designer.cs">
+      <DependentUpon>DialogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ctrl\ctrl_btnpanel.cs" />
     <Compile Include="ctrl\ctrl_CustomerDisplay.cs" />
     <Compile Include="ctrl\ctrl_otherinfo.cs" />
@@ -284,6 +290,12 @@
     <Compile Include="frmWholesale.Designer.cs">
       <DependentUpon>frmWholesale.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DialogHelper.cs" />
+    <Compile Include="Helpers\LogsHelper.cs" />
+    <Compile Include="Models\Global\ConnectionSettings.cs" />
+    <Compile Include="Models\Global\ConnectionSettingsController.cs" />
+    <Compile Include="Models\Global\SqlDetail.cs" />
+    <Compile Include="Models\Global\SqlParameter.cs" />
     <Compile Include="mySQLClass.cs" />
     <Compile Include="mySQLFunc.cs" />
     <Compile Include="frmORPrintPreview.cs">
@@ -440,6 +452,7 @@
     <Compile Include="frmTerminalReadings.Designer.cs">
       <DependentUpon>frmTerminalReadings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Variables\MessagesVariable.cs" />
     <Compile Include="zreadFunc.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -461,6 +474,9 @@
     <Content Include="resources\images\diagmonds-red.PNG" />
     <Content Include="resources\images\diagmonds.png" />
     <Content Include="resources\images\etechposbg.jpg" />
+    <Content Include="Connection Settings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="tools\Keypad.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -471,6 +487,10 @@
     </Content>
     <EmbeddedResource Include="AddUserForm.resx">
       <DependentUpon>AddUserForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogForm.resx">
+      <DependentUpon>DialogForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCustomPayments.resx">

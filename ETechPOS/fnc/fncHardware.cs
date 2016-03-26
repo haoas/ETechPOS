@@ -10,6 +10,7 @@ using ETech.cls;
 using System.IO;
 using System.Data;
 using System.Windows.Forms;
+using ETECHPOS.Helpers;
 
 namespace ETech.fnc
 {
@@ -152,11 +153,9 @@ namespace ETech.fnc
                 print_zread(0, datetime_d, datetime_d, userwid);
             else
             {
-                if (MessageBox.Show("Are you sure you want to Generate Z reading?", "Confirm Box",
-                                        MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (DialogHelper.ShowDialog("Are you sure you want to Generate Z reading?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    if (MessageBox.Show("Final Confirmation to Generate Z reading?", "Confirm Box",
-                            MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (DialogHelper.ShowDialog("Final Confirmation to Generate Z reading?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         print_zread(0, datetime_d, datetime_d, userwid);
                     }
@@ -1340,8 +1339,7 @@ namespace ETech.fnc
             bool recompute = false;
             if (userwid == 1)
             {
-                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-                if (MessageBox.Show("superadmin: recompute?", "Confirm Box", buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (DialogHelper.ShowDialog("superadmin: recompute?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     recompute = true;
                 }

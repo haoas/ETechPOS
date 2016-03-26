@@ -26,6 +26,7 @@ namespace ETech.cls
             this.list_product = new List<cls_product>();
 
             this.dtproducts = new DataTable();
+            this.dtproducts.Columns.Add("VatStatus");
             this.dtproducts.Columns.Add("productname");
             this.dtproducts.Columns.Add("qty");
             this.dtproducts.Columns.Add("price");
@@ -46,6 +47,7 @@ namespace ETech.cls
         {
             try
             {
+                this.dtproducts.Rows[row_index]["VatStatus"] = this.list_product[row_index].CurrentVatStatus;
                 this.dtproducts.Rows[row_index]["productname"] = this.list_product[row_index].getProductName();
                 this.dtproducts.Rows[row_index]["qty"] = this.list_product[row_index].getQty().ToString("G29");
                 this.dtproducts.Rows[row_index]["price"] = this.list_product[row_index].getPrice().ToString("N2");
