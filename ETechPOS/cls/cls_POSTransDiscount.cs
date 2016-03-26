@@ -272,12 +272,12 @@ namespace ETech.cls
                 }
                 
                 amts.Add(newValue);
-                /*MessageBox.Show("particular: " + dr["particular"] + " \n" +
+                /*DialogHelper.ShowDialog("particular: " + dr["particular"] + " \n" +
                                 "type: " + dr["type"] + " \n" +
                                 "basis: " + dr["basis"] + " \n" +
                                 "value: " + dr["value"] + " \n" +
                                 "ismultiple: " + dr["ismultiple"] + " \n" +
-                                "status: " + dr["status"] + " \n" );*/
+                                "status: " + dr["status"] + " \n");*/
             }
             return (getBasis(amts, amts.Count - 1) == 0) ? totalAmt : getBasis(amts, amts.Count - 1);
         }

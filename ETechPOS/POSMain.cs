@@ -689,8 +689,7 @@ namespace ETech
                 case Keys.F4:
                     if (FPage == 0)
                     {
-                        if (MessageBox.Show("Are you sure you want to clear the current transaction?", "",
-                                MessageBoxButtons.YesNo) == DialogResult.No)
+                        if (DialogHelper.ShowDialog("Are you sure you want to clear the current transaction?", MessageBoxButtons.YesNo) == DialogResult.No)
                             break;
 
                         Delete_Unused_saleshead(tran);
@@ -939,8 +938,7 @@ namespace ETech
                 //{
                 //    permcheck_void = true;
 
-                //    if (MessageBox.Show(cls_globalvariables.confirm_logout_deletetran, "Confirm Box",
-                //                MessageBoxButtons.YesNo) == DialogResult.No)
+                //if (DialogHelper.ShowDialog(cls_globalvariables.confirm_logout_deletetran, MessageBoxButtons.YesNo) == DialogResult.No)
                 //    {
                 //        isdetected = true; break;
                 //    }
@@ -997,9 +995,7 @@ namespace ETech
                 //        }
                 //        if (temp_tran.getShow() == 0)
                 //        {
-                //            DialogResult dialogResult =
-                //                MessageBox.Show("This OR# is already voided!\nDo you want to reprint?", "Message", MessageBoxButtons.YesNo);
-                //            if (dialogResult == DialogResult.Yes)
+                //            if (if (DialogHelper.ShowDialog("This OR# is already voided!\nDo you want to reprint?", MessageBoxButtons.YesNo) == DialogResult.Yes))
                 //                fncHardware.print_receipt(temp_tran, true, true);
                 //            break;
                 //        }
@@ -1105,7 +1101,7 @@ namespace ETech
 
                             if (fncHardware.PulloutCashCollection())
                             {
-                                MessageBox.Show("Cash amount already exceeds. Please remove the money.", "Cash Collection Warning");
+                                DialogHelper.ShowDialog("Cash amount already exceeds. Please remove the money.");
                                 LogsHelper.Print("Cash Collection Warning");
                             }
 

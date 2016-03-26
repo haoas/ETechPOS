@@ -37,7 +37,7 @@ namespace ETech
             }
             catch (Exception)
             {
-                //MessageBox.Show("Error detected while connecting to database");
+                //DialogHelper.ShowDialog("Error detected while connecting to database");
             }
             return conn;
         }
@@ -97,7 +97,7 @@ namespace ETech
             }
             catch (MySqlException)
             {
-                //MessageBox.Show("Error detected while connecting to database");
+                //DialogHelper.ShowDialog("Error detected while connecting to database");
                 return null;
             }
 
@@ -133,7 +133,7 @@ namespace ETech
             }
             catch (MySqlException)
             {
-                //MessageBox.Show("Error detected while connecting to database");
+                //DialogHelper.ShowDialog("Error detected while connecting to database");
                 return null;
             }
 

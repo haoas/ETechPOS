@@ -44,7 +44,7 @@ public static class zreadFunc
         string SQLDateFrom = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
         string SQLDateTo = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
         string SQLDateRangeQuery = " AND " + SQLdate + @" BETWEEN '" + SQLDateFrom + @"' AND '" + SQLDateTo + @"' ";
-        //MessageBox.Show(SQLDateRangeQuery);
+        //DialogHelper.ShowDialog(SQLDateRangeQuery);
         return SQLDateRangeQuery;
     }
 

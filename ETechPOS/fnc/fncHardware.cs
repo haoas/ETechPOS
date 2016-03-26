@@ -2666,16 +2666,16 @@ namespace ETech.fnc
                 }
             if (statusReport == null)
             {
-                MessageBox.Show("Printer default name is blank or wrong.", "Printer");
+                DialogHelper.ShowDialog("Printer default name is blank or wrong.");
                 return;
             }
             if (statusReport.Length > 0)
             {
                 statusReport = "Printer has encounter problem/s:\n\n" + statusReport;
-                MessageBox.Show(statusReport, "Printer");
+                DialogHelper.ShowDialog(statusReport);
             }
             else
-                MessageBox.Show("Printer has no problem.", "Printer");
+                DialogHelper.ShowDialog("Printer has no problem.");
         }
     }
 }

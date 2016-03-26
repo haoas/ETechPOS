@@ -185,7 +185,7 @@ namespace ETech
                 WriteToErrorLog(" \n Date: " + DateTime.Now + " \n Exception: \n " + ex.ToString() +
                   " \n getdb Query: \n " + SQL + " \n ");
 
-                //MessageBox.Show("Error detected while connecting to database");
+                //DialogHelper.ShowDialog("Error detected while connecting to database");
                 return new DataTable();
             }
 
@@ -223,8 +223,8 @@ namespace ETech
                 WriteToErrorLog(" \n Date: " + DateTime.Now + " \n Exception: \n " + ex.ToString() +
                   " \n getdb Query: \n " + SQL + " \n ");
 
-                //MessageBox.Show("Error detected while connecting to database");
-                //MessageBox.Show(ex.ToString());
+                //DialogHelper.ShowDialog("Error detected while connecting to database");
+                //DialogHelper.ShowDialog(ex.ToString());
                 return null;
             }
 
@@ -240,8 +240,8 @@ namespace ETech
                 WriteToErrorLog(" \n Date: " + DateTime.Now + " \n Exception: \n " + ex.ToString() +
                   " \n getdb Query: \n " + SQL + " \n ");
 
-                //MessageBox.Show("Error detected while connecting to database");
-                //MessageBox.Show(ex.ToString());
+                //DialogHelper.ShowDialog("Error detected while connecting to database");
+                //DialogHelper.ShowDialog(ex.ToString());
                 dataTable = new DataTable();
             }
 
