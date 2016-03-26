@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.lblMessage = new System.Windows.Forms.Label();
+            this.btnCommand1 = new System.Windows.Forms.Button();
             this.btnCommand2 = new System.Windows.Forms.Button();
             this.btnCommand3 = new System.Windows.Forms.Button();
-            this.btnCommand1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblMessage
@@ -44,17 +44,27 @@
             this.lblMessage.Text = "Message";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnCommand1
+            // 
+            this.btnCommand1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCommand1.Location = new System.Drawing.Point(301, 227);
+            this.btnCommand1.Name = "btnCommand1";
+            this.btnCommand1.Size = new System.Drawing.Size(139, 38);
+            this.btnCommand1.TabIndex = 0;
+            this.btnCommand1.Text = "Command1";
+            this.btnCommand1.UseVisualStyleBackColor = false;
+            this.btnCommand1.Visible = false;
+            // 
             // btnCommand2
             // 
             this.btnCommand2.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCommand2.Location = new System.Drawing.Point(156, 227);
             this.btnCommand2.Name = "btnCommand2";
             this.btnCommand2.Size = new System.Drawing.Size(139, 38);
-            this.btnCommand2.TabIndex = 1;
+            this.btnCommand2.TabIndex = 22;
             this.btnCommand2.Text = "Command2";
             this.btnCommand2.UseVisualStyleBackColor = false;
             this.btnCommand2.Visible = false;
-            this.btnCommand2.Click += new System.EventHandler(this.btnCommand2_Click);
             // 
             // btnCommand3
             // 
@@ -66,36 +76,21 @@
             this.btnCommand3.Text = "Command3";
             this.btnCommand3.UseVisualStyleBackColor = false;
             this.btnCommand3.Visible = false;
-            this.btnCommand3.Click += new System.EventHandler(this.btnCommand3_Click);
-            // 
-            // btnCommand1
-            // 
-            this.btnCommand1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCommand1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCommand1.Location = new System.Drawing.Point(301, 227);
-            this.btnCommand1.Name = "btnCommand1";
-            this.btnCommand1.Size = new System.Drawing.Size(139, 38);
-            this.btnCommand1.TabIndex = 0;
-            this.btnCommand1.Text = "Command1";
-            this.btnCommand1.UseVisualStyleBackColor = false;
-            this.btnCommand1.Visible = false;
-            this.btnCommand1.Click += new System.EventHandler(this.btnCommand1_Click);
             // 
             // DialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCommand1;
             this.ClientSize = new System.Drawing.Size(451, 271);
+            this.Controls.Add(this.btnCommand2);
             this.Controls.Add(this.btnCommand1);
             this.Controls.Add(this.btnCommand3);
-            this.Controls.Add(this.btnCommand2);
             this.Controls.Add(this.lblMessage);
             this.DoubleBuffered = true;
-            this.KeyPreview = true;
             this.Name = "DialogForm";
             this.Text = "Dialog";
             this.Load += new System.EventHandler(this.DialogForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DialogForm_KeyDown);
             this.ResumeLayout(false);
 
         }
@@ -103,8 +98,8 @@
         #endregion
 
         private System.Windows.Forms.Label lblMessage;
+        private System.Windows.Forms.Button btnCommand1;
         private System.Windows.Forms.Button btnCommand2;
         private System.Windows.Forms.Button btnCommand3;
-        private System.Windows.Forms.Button btnCommand1;
     }
 }
