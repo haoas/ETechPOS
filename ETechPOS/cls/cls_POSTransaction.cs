@@ -183,8 +183,8 @@ namespace ETech.cls
                 return;
             }
 
-            int wid_d = Convert.ToInt32(dt.Rows[0]["SyncId"]);
-            set_transaction_by_wid(wid_d, true);
+            int syncid = Convert.ToInt32(dt.Rows[0]["SyncId"]);
+            set_transaction_by_wid(syncid, true);
         }
 
         public decimal get_memberpoint_earn()

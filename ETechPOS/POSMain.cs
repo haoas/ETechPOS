@@ -721,16 +721,18 @@ namespace ETech
                 case Keys.F4:
                     if (FPage == 0)
                     {
-                        Delete_Unused_saleshead(this.get_curtrans());
-                        LOGS.LOG_PRINT("Invoice Cancelled: " + this.get_curtrans().getORnumber().ToString());
+                        if (MessageBox.Show("Are you sure you want to clear the current transaction?", "",
+                                MessageBoxButtons.YesNo) == DialogResult.No)
+                            break;
+
+                        Delete_Unused_saleshead(tran);
+                        LOGS.LOG_PRINT("Invoice Cancelled: " + tran.getORnumber().ToString());
                         remove_transaction();
                         create_new_invoice();
                         isdetected = true;
                     }
                     else if (FPage == 1)
                     {
-                        tran = this.get_curtrans();
-                        if (tran == null) return true;
                         frmMember memberform = new frmMember();
                         memberform.member = tran.getmember().ShallowCopy();
                         memberform.ShowDialog();

@@ -40,15 +40,14 @@
             this.txtMemo_d.MaxLength = 30000;
             this.txtMemo_d.Multiline = true;
             this.txtMemo_d.Name = "txtMemo_d";
-            this.txtMemo_d.Size = new System.Drawing.Size(362, 108);
+            this.txtMemo_d.Size = new System.Drawing.Size(603, 83);
             this.txtMemo_d.TabIndex = 18;
-            this.txtMemo_d.Text = "000000000000000";
             this.txtMemo_d.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnOK
             // 
             this.btnOK.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOK.Location = new System.Drawing.Point(74, 126);
+            this.btnOK.Location = new System.Drawing.Point(26, 101);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(120, 38);
             this.btnOK.TabIndex = 106;
@@ -59,7 +58,7 @@
             // btnESC
             // 
             this.btnESC.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnESC.Location = new System.Drawing.Point(200, 126);
+            this.btnESC.Location = new System.Drawing.Point(467, 101);
             this.btnESC.Name = "btnESC";
             this.btnESC.Size = new System.Drawing.Size(139, 38);
             this.btnESC.TabIndex = 107;
@@ -71,7 +70,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(414, 174);
+            this.ClientSize = new System.Drawing.Size(641, 156);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnESC);
             this.Controls.Add(this.txtMemo_d);

@@ -15,6 +15,7 @@ namespace ETech.cls
         private string fullname;
         public string username { get; private set; }
         public string password { get; private set; }
+        public string position { get; private set; }
         public List<string> AuthorizationList { get; private set; }
         public int status { get; private set; }
 
@@ -24,6 +25,7 @@ namespace ETech.cls
             this.fullname = "";
             this.username = "";
             this.password = "";
+            this.position = "";
             this.AuthorizationList = new List<string>();
             this.syncid = 0;
             this.status = 0;
@@ -101,6 +103,7 @@ namespace ETech.cls
             this.fullname = dr["fullname"].ToString();
             this.username = dr["username"].ToString();
             this.password = dr["password"].ToString();
+            this.position = dr["position"].ToString();
             this.status = int.Parse(dr["status"].ToString());
 
             sSQL = "SELECT * FROM `userauth` WHERE `userid` = " + SyncId;
