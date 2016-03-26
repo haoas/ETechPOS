@@ -70,6 +70,7 @@
             // 
             // btnCommand1
             // 
+            this.btnCommand1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCommand1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCommand1.Location = new System.Drawing.Point(301, 227);
             this.btnCommand1.Name = "btnCommand1";
@@ -84,6 +85,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCommand1;
             this.ClientSize = new System.Drawing.Size(451, 271);
             this.Controls.Add(this.btnCommand1);
             this.Controls.Add(this.btnCommand3);

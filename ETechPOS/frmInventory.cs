@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
+using ETECHPOS.fnc;
 
 namespace ETech
 {
@@ -17,7 +18,6 @@ namespace ETech
         public DateTime datetime_d = DateTime.Now;
         public DateTime datetimeTO_d = DateTime.Now;
         public List<string> UserAuthorizationList;
-        public frmPermissionCode frmauthcode;
 
         public frmInventory()
         {
@@ -58,29 +58,15 @@ namespace ETech
 
         public void frmInventory_Load(object sender, EventArgs e)
         {
-            if (!UserAuthorizationList.Contains("ZREAD"))
+            UserAuthorizationFunction userAuthorizationFunction = new UserAuthorizationFunction(UserAuthorizationList);
+            if (userAuthorizationFunction.IsVerifiedAuthorization("ZREAD"))
             {
-                bool permcheck_collectioncash = isInput_permission_code("ZREAD");
-                if (!permcheck_collectioncash)
-                {
-                    this.Close();
-                    return;
-                }
+                this.Close();
+                return;
             }
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
-        }
-
-        private bool isInput_permission_code(string permissioncode)
-        {
-            bool permcheck = false;
-            frmauthcode = new frmPermissionCode();
-            frmauthcode.auth_needed = permissioncode;
-            frmauthcode.ShowDialog();
-            permcheck = frmauthcode.permcode;
-
-            return permcheck;
         }
 
         private void frmInventory_KeyDown(object sender, KeyEventArgs e)
@@ -130,7 +116,7 @@ namespace ETech
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             this.datetime_d = this.dateTimePicker1.Value;
-            this.dateTimePicker2.Value = this.datetime_d; 
+            this.dateTimePicker2.Value = this.datetime_d;
         }
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {

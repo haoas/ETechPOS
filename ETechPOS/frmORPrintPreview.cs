@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using ETech.fnc;
 using ETech.FormatDesigner;
+using ETECHPOS.fnc;
 
 namespace ETech
 {
@@ -21,7 +22,6 @@ namespace ETech
         public long or_number;
         public long currenttrans_ornumber;
         public List<string> CurrentUserAuthlist;
-        public frmPermissionCode frmauthcode;
         public int origwidth = 296;
         public int origheight = 3000;
         public int zoompercent = 200;
@@ -168,25 +168,10 @@ namespace ETech
             pbPreview.Image = bitmap;
         }
 
-        private bool isInput_permission_code(string permissioncode)
-        {
-            bool permcheck = false;
-            frmauthcode = new frmPermissionCode();
-            frmauthcode.auth_needed = permissioncode;
-            frmauthcode.ShowDialog();
-            permcheck = frmauthcode.permcode;
-
-            return permcheck;
-        }
         private bool Check_ReprintReceiptPermission(bool isSwitch)
         {
-            bool permcheck_reprintreceipt = false;
-            if (this.CurrentUserAuthlist.Contains("ALL") || this.CurrentUserAuthlist.Contains("REPRINTOR"))
-                permcheck_reprintreceipt = true;
-            else
-                permcheck_reprintreceipt = isInput_permission_code("REPRINTOR");
-
-            return permcheck_reprintreceipt;
+            UserAuthorizationFunction userAuthorizationFunction = new UserAuthorizationFunction(CurrentUserAuthlist);
+            return userAuthorizationFunction.IsVerifiedAuthorization("REPRINTOR");
         }
         private void ClearGraphics(Control control)
         {

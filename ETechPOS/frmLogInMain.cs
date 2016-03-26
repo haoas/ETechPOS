@@ -8,13 +8,13 @@ using System.Text;
 using System.Windows.Forms;
 using System.Security.Cryptography;
 using MySql.Data.MySqlClient;
-using str_encode_decode;
 using System.Threading;
 using System.IO;
 using ETech.cls;
 using ETech.fnc;
 using ETech;
 using ETECHPOS.Helpers;
+using ETECHPOS.fnc;
 
 namespace ETECHPOS
 {
@@ -143,18 +143,7 @@ namespace ETECHPOS
 
             btnLogIn.Enabled = false;
 
-            //Declarations
-            Byte[] originalBytes;
-            Byte[] encodedBytes;
-            MD5 md5;
-
-            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
-            md5 = new MD5CryptoServiceProvider();
-            originalBytes = ASCIIEncoding.Default.GetBytes(txtPassword.Text);
-            encodedBytes = md5.ComputeHash(originalBytes);
-
-            //Convert encoded bytes back to a 'readable' string
-            string pass = BitConverter.ToString(encodedBytes).Replace("-", "");
+            string pass = MD5EncryptionFunction.Encrypt(txtPassword.Text);
 
             string SQL = @"SELECT * FROM `user` WHERE `status`=1 AND username = @username AND password = @password";
             List<string> parameters = new List<string>();

@@ -5,9 +5,9 @@ using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace str_encode_decode
+namespace ETECHPOS.fnc
 {
-    class cls_encdec
+    public class SaltEncryptionFunction
     {
         static readonly string PasswordHash = "P@@Sw0rd";
         static readonly string SaltKey = "S@LT&KEY";
@@ -36,7 +36,6 @@ namespace str_encode_decode
             }
             return Convert.ToBase64String(cipherTextBytes);
         }
-
         public static string Decrypt(string encryptedText)
         {
             string strret = "";

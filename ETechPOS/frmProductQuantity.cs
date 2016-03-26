@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
+using ETECHPOS.Views.Forms.Generics;
 
 namespace ETech
 {
@@ -99,17 +100,17 @@ namespace ETech
                 }
                 else if (new_qty == 0)
                 {
-                    frmPermissionCode frmauthcode = new frmPermissionCode();
-                    frmauthcode.auth_needed = "REMOVEITEM";
-                    frmauthcode.ShowDialog();
-                    permcheck = frmauthcode.permcode;
+                    UserAuthenticationForm userAuthenticationForm = new UserAuthenticationForm();
+                    userAuthenticationForm.UserAuthorization = "REMOVEITEM";
+                    userAuthenticationForm.ShowDialog();
+                    permcheck = userAuthenticationForm.HasAuthorization;
                 }
                 else
                 {
-                    frmPermissionCode frmpermcode = new frmPermissionCode();
-                    frmpermcode.auth_needed = "REFUNDITEM";
-                    frmpermcode.ShowDialog();
-                    permcheck = frmpermcode.permcode;
+                    UserAuthenticationForm userAuthenticationForm = new UserAuthenticationForm();
+                    userAuthenticationForm.UserAuthorization = "REFUNDITEM";
+                    userAuthenticationForm.ShowDialog();
+                    permcheck = userAuthenticationForm.HasAuthorization;
                 }
 
                 if (permcheck)
