@@ -29,53 +29,74 @@
         private void InitializeComponent()
         {
             this.txtMemo_d = new System.Windows.Forms.TextBox();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnESC = new System.Windows.Forms.Button();
+            this.BtnF12 = new System.Windows.Forms.Button();
+            this.BtnESC = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtMemo_d
             // 
             this.txtMemo_d.Font = new System.Drawing.Font("Arial Narrow", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMemo_d.Location = new System.Drawing.Point(26, 12);
+            this.txtMemo_d.Location = new System.Drawing.Point(24, 77);
             this.txtMemo_d.MaxLength = 30000;
             this.txtMemo_d.Multiline = true;
             this.txtMemo_d.Name = "txtMemo_d";
-            this.txtMemo_d.Size = new System.Drawing.Size(603, 83);
+            this.txtMemo_d.Size = new System.Drawing.Size(495, 165);
             this.txtMemo_d.TabIndex = 18;
             this.txtMemo_d.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // btnOK
+            // BtnF12
             // 
-            this.btnOK.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOK.Location = new System.Drawing.Point(26, 101);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(120, 38);
-            this.btnOK.TabIndex = 106;
-            this.btnOK.Text = "Okay (F1)";
-            this.btnOK.UseVisualStyleBackColor = false;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.BtnF12.BackColor = System.Drawing.Color.White;
+            this.BtnF12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnF12.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnF12.ForeColor = System.Drawing.Color.Black;
+            this.BtnF12.Location = new System.Drawing.Point(525, 162);
+            this.BtnF12.Name = "BtnF12";
+            this.BtnF12.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.BtnF12.Size = new System.Drawing.Size(100, 80);
+            this.BtnF12.TabIndex = 120;
+            this.BtnF12.Text = "[ F12 ]\r\nPROCEED";
+            this.BtnF12.UseVisualStyleBackColor = false;
+            this.BtnF12.Click += new System.EventHandler(this.BtnF12_Click);
             // 
-            // btnESC
+            // BtnESC
             // 
-            this.btnESC.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnESC.Location = new System.Drawing.Point(467, 101);
-            this.btnESC.Name = "btnESC";
-            this.btnESC.Size = new System.Drawing.Size(139, 38);
-            this.btnESC.TabIndex = 107;
-            this.btnESC.Text = "Close (ESC)";
-            this.btnESC.UseVisualStyleBackColor = false;
-            this.btnESC.Click += new System.EventHandler(this.btnESC_Click);
+            this.BtnESC.BackColor = System.Drawing.Color.White;
+            this.BtnESC.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnESC.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnESC.ForeColor = System.Drawing.Color.Black;
+            this.BtnESC.Location = new System.Drawing.Point(525, 76);
+            this.BtnESC.Name = "BtnESC";
+            this.BtnESC.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.BtnESC.Size = new System.Drawing.Size(100, 80);
+            this.BtnESC.TabIndex = 119;
+            this.BtnESC.Text = "[ ESC ]\r\nCANCEL";
+            this.BtnESC.UseVisualStyleBackColor = false;
+            this.BtnESC.Click += new System.EventHandler(this.BtnESC_Click);
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(180, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(288, 51);
+            this.label1.TabIndex = 121;
+            this.label1.Text = "Transaction Memo";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frmSalesmemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(641, 156);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.btnESC);
+            this.ClientSize = new System.Drawing.Size(649, 257);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.BtnF12);
+            this.Controls.Add(this.BtnESC);
             this.Controls.Add(this.txtMemo_d);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "frmSalesmemo";
@@ -91,7 +112,8 @@
         #endregion
 
         public System.Windows.Forms.TextBox txtMemo_d;
-        private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.Button btnESC;
+        private System.Windows.Forms.Button BtnF12;
+        private System.Windows.Forms.Button BtnESC;
+        private System.Windows.Forms.Label label1;
     }
 }

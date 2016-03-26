@@ -23,11 +23,6 @@ namespace ETech
         public string productname;
 
         public decimal orig_price;
-        public decimal orig_pricea;
-        public decimal orig_priceb;
-        public decimal orig_pricec;
-        public decimal orig_priced;
-        public decimal orig_pricee;
         public cls_discountlist disclist;
         public cls_discount disc;
 
@@ -48,16 +43,14 @@ namespace ETech
 
         private void frmProductAdjust_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F1) done_process();
-            else if (e.KeyCode == Keys.Escape) this.Close();
-            else if (e.KeyCode == Keys.F6) CustomerPrices("A");
-            else if (e.KeyCode == Keys.F7) CustomerPrices("B");
-            else if (e.KeyCode == Keys.F8) CustomerPrices("C");
-            else if (e.KeyCode == Keys.F9) CustomerPrices("D");
-            else if (e.KeyCode == Keys.F10) CustomerPrices("E");
-            else if (e.KeyCode == Keys.F12) RemoveButtonClicked();
-            else
-                return;
+            if (e.KeyCode == Keys.Escape) this.Close();
+            else if (e.KeyCode == Keys.F1) BtnF1.PerformClick();
+            else if (e.KeyCode == Keys.F2) BtnF2.PerformClick();
+            else if (e.KeyCode == Keys.F3) BtnF3.PerformClick();
+            else if (e.KeyCode == Keys.F4) BtnF4.PerformClick();
+            else if (e.KeyCode == Keys.F11) RemoveButtonClicked();
+            else if (e.KeyCode == Keys.F12) done_process();
+            else return;
         }
 
         private void txtAdjustTo_KeyPress(object sender, KeyPressEventArgs e)
@@ -218,32 +211,12 @@ namespace ETech
         {
             if (DialogHelper.ShowDialog("Are you sure you want to clear product discount?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                this.lblCustomDiscount.Text = "";
                 this.new_discount = 0;
                 this.new_adjust = 0;
                 this.disc = new cls_discount();
                 this.disclist.disable_all_discounts();
-                this.lblCustomDiscount.Text = "Regular Discount";
                 this.iscomplete = true;
                 this.Close();
-            }
-        }
-
-        private void CustomerPrices(string pricingtype)
-        {
-            if (this.txtAdjustTo.Enabled)
-            {
-                decimal price = 0;
-                if (pricingtype == "A") price = this.orig_pricea;
-                else if (pricingtype == "B") price = this.orig_priceb;
-                else if (pricingtype == "C") price = this.orig_pricec;
-                else if (pricingtype == "D") price = this.orig_priced;
-                else if (pricingtype == "E") price = this.orig_pricee;
-                else price = 0;
-
-                if (price == 0) price = this.orig_price;
-
-                txtAdjustTo.Text = price.ToString();
             }
         }
 
@@ -251,37 +224,44 @@ namespace ETech
         {
             this.Close();
         }
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            done_process();
-        }
-        private void btnESC_Click(object sender, EventArgs e)
+
+        private void button4_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-        private void btnRemove_Click(object sender, EventArgs e)
+
+        private void BtnProceed_Click(object sender, EventArgs e)
+        {
+            done_process();
+        }
+
+        private void Btn11_Click(object sender, EventArgs e)
         {
             RemoveButtonClicked();
         }
-        private void btnPriceA_Click(object sender, EventArgs e)
+
+        private void BtnF1_Click(object sender, EventArgs e)
         {
-            CustomerPrices("A");
+            txtDiscount.Text = "5";
+            done_process();
         }
-        private void btnPriceB_Click(object sender, EventArgs e)
+
+        private void BtnF2_Click(object sender, EventArgs e)
         {
-            CustomerPrices("B");
+            txtDiscount.Text = "10";
+            done_process();
         }
-        private void btnPriceC_Click(object sender, EventArgs e)
+
+        private void BtnF3_Click(object sender, EventArgs e)
         {
-            CustomerPrices("C");
+            txtDiscount.Text = "15";
+            done_process();
         }
-        private void btnPriceD_Click(object sender, EventArgs e)
+
+        private void BtnF4_Click(object sender, EventArgs e)
         {
-            CustomerPrices("D");
-        }
-        private void btnPriceE_Click(object sender, EventArgs e)
-        {
-            CustomerPrices("E");
+            txtDiscount.Text = "20";
+            done_process();
         }
     }
 }

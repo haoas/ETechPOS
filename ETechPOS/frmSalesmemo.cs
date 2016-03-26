@@ -79,7 +79,7 @@ namespace ETech
 
         public void frmRefundmemo_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.F1)
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.F12)
                 done_process();
             else if (e.KeyCode == Keys.Escape)
             {
@@ -89,6 +89,17 @@ namespace ETech
             }
             else
                 return;
+        }
+
+        private void BtnF12_Click(object sender, EventArgs e)
+        {
+            done_process();
+        }
+
+        private void BtnESC_Click(object sender, EventArgs e)
+        {
+            this.txtmemo = "";
+            this.Close();
         }
     }
 }

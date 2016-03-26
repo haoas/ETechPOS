@@ -30,11 +30,6 @@ namespace ETech.cls
 
         private decimal price;
         private decimal wholesaleprice;
-        private decimal pricea;
-        private decimal priceb;
-        private decimal pricec;
-        private decimal priced;
-        private decimal pricee;
         private decimal amount;
         private decimal vat;
         private string price_suffix;
@@ -66,11 +61,6 @@ namespace ETech.cls
             this.qty = 1;
             this.price = 0;
             this.wholesaleprice = 0;
-            this.pricea = 0;
-            this.priceb = 0;
-            this.pricec = 0;
-            this.priced = 0;
-            this.pricee = 0;
             this.memo = "";
 
             this.retailpprice = 0;
@@ -246,11 +236,6 @@ namespace ETech.cls
             this.origprice = price_d;
             this.retailprice = price_d;
             this.wholesaleprice = price_d;
-            this.pricea = price_d;
-            this.priceb = price_d;
-            this.pricec = price_d;
-            this.priced = price_d;
-            this.pricee = price_d;
             this.amount = this.qty * price_d;
             string sql = @"
                 SELECT `product` 
@@ -304,12 +289,7 @@ namespace ETech.cls
             sSQL = @"SELECT P.`SyncId` AS 'pwid', P.`product` AS 'productname', 
                             P.`packbarcode`, P.`barcode`, P.`isvat`, P.`senior`,
                             COALESCE(B.`sellingprice`, 0) AS 'price', 
-                            COALESCE(B.`wholesaleprice`, 0) AS 'wholesaleprice', 
-                            COALESCE(B.`pricea`, 0) AS 'pricea',
-                            COALESCE(B.`priceb`, 0) AS 'priceb',
-                            COALESCE(B.`pricec`, 0) AS 'pricec',
-                            COALESCE(B.`priced`, 0) AS 'priced',
-                            COALESCE(B.`pricee`, 0) AS 'pricee',
+                            COALESCE(B.`wholesaleprice`, 0) AS 'wholesaleprice',
                             COALESCE(B.`purchaseprice`, 0) AS 'pprice'
                         FROM `product` AS P
                         LEFT JOIN `branchprice` AS B ON B.`productid` = P.`SyncId` 
@@ -337,11 +317,6 @@ namespace ETech.cls
 
             this.retailpprice = Convert.ToDecimal(dr["pprice"]);
             this.retailprice = Convert.ToDecimal(dr["price"]);
-            this.pricea = Convert.ToDecimal(dr["pricea"]);
-            this.priceb = Convert.ToDecimal(dr["priceb"]);
-            this.pricec = Convert.ToDecimal(dr["pricec"]);
-            this.priced = Convert.ToDecimal(dr["priced"]);
-            this.pricee = Convert.ToDecimal(dr["pricee"]);
 
             this.isvat = (Convert.ToInt32(dr["isvat"]) == 1);
             this.issenior = Convert.ToInt32(dr["senior"]);
@@ -381,11 +356,6 @@ namespace ETech.cls
                 {
                     if (pricingtype == 2) this.origprice = Math.Round(this.pprice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
                     else if (pricingtype == 3) this.origprice = Math.Round(this.wholesaleprice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
-                    else if (pricingtype == 4) this.origprice = this.pricea;
-                    else if (pricingtype == 5) this.origprice = this.priceb;
-                    else if (pricingtype == 6) this.origprice = this.pricec;
-                    else if (pricingtype == 7) this.origprice = this.priced;
-                    else if (pricingtype == 8) this.origprice = this.pricee;
                     else if (pricingtype == 9) this.origprice = this.retailprice;
                     else this.origprice = this.wholesaleprice;
                     this.price = this.origprice;
@@ -644,12 +614,7 @@ namespace ETech.cls
 
         public decimal getPrice(string pricingtype)
         {
-            if (pricingtype == "A") return Math.Round(this.pricea, 2, MidpointRounding.AwayFromZero);
-            else if (pricingtype == "B") return Math.Round(this.priceb, 2, MidpointRounding.AwayFromZero);
-            else if (pricingtype == "C") return Math.Round(this.pricec, 2, MidpointRounding.AwayFromZero);
-            else if (pricingtype == "D") return Math.Round(this.priced, 2, MidpointRounding.AwayFromZero);
-            else if (pricingtype == "E") return Math.Round(this.pricee, 2, MidpointRounding.AwayFromZero);
-            else return Math.Round(this.price, 2, MidpointRounding.AwayFromZero);
+            return Math.Round(this.price, 2, MidpointRounding.AwayFromZero);
         }
 
         public decimal getPPrice()

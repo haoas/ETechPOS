@@ -14,8 +14,7 @@ namespace ETech
 {
     public partial class frmOpenItem : Form
     {
-        public decimal prodprice;
-        public decimal quantity;
+        public cls_product openitem = null;
 
         public frmOpenItem()
         {
@@ -26,43 +25,26 @@ namespace ETech
             cls_globalfunc.formaddkbkpevent(this);
         }
 
-        public void done_process()
+        public void proceed()
         {
-            decimal price = fncFilter.getDecimalValue(txtPrice.Text);
-            decimal qty = fncFilter.getDecimalValue(txtQty.Text);
-            if (qty == 0)
-                qty = 1;
+            string memo = txtMemo.Text.Trim();
+            decimal price = txtPrice.Text.ToRoundedDecimal();
+            decimal qty = txtQty.Text.ToRoundedDecimal();
 
-
-            if (price <= 0)
+            qty = (qty == 0) ? 1 : qty;
+            if (memo.Length <= 0 && price <= 0)
             {
                 fncFilter.alert(cls_globalvariables.warning_input_invalid);
-                this.txtPrice.Focus();
-                this.txtPrice.SelectAll();
+                this.txtMemo.Focus();
+                this.txtMemo.SelectAll();
                 return;
             }
 
-            if (qty < 0)
-            {
-                fncFilter.alert("Refund is only allowed through 'Change Qty'.");
-                return;
-            }
-
-            this.prodprice = price;
-            this.quantity = qty;
+            openitem = new cls_product(price, 0, qty);
+            openitem.setMemo(memo);
+            openitem.setProductName("[OPENITEM]: " + memo);
             this.Close();
             return;
-        }
-
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            done_process();
-        }
-        private void btnESC_Click(object sender, EventArgs e)
-        {
-            this.prodprice = 0;
-            this.quantity = 0;
-            this.Close();
         }
 
         private void frmOpenItem_KeyDown(object sender, KeyEventArgs e)
@@ -75,12 +57,10 @@ namespace ETech
                     nextControl = GetNextControl(null, true);
                 nextControl.Focus();
             }
-            else if (e.KeyCode == Keys.F1)
-                done_process();
+            else if (e.KeyCode == Keys.F12)
+                proceed();
             else if (e.KeyCode == Keys.Escape)
             {
-                this.prodprice = 0;
-                this.quantity = 0;
                 this.Close();
                 return;
             }
@@ -89,19 +69,19 @@ namespace ETech
         }
         private void frmOpenItem_Load(object sender, EventArgs e)
         {
-            txtPrice.Focus();
-
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
 
-            txtQty.AsSigned2DecimalTextBox();
             txtPrice.AsUnsigned2DecimalTextBox();
+            txtQty.AsSigned2DecimalTextBox();
+            txtMemo.Focus();
         }
 
         private void txtPrice_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 13)
             {
+                txtQty.Focus();
                 e.Handled = true;
             }
         }
@@ -109,7 +89,7 @@ namespace ETech
         {
             if (e.KeyChar == 13)
             {
-                done_process();
+                proceed();
                 e.Handled = true;
             }
         }
@@ -118,6 +98,16 @@ namespace ETech
         {
             if (keyData == Keys.F10) return true;
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void Btn_ESC_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Btn_Proceed_Click(object sender, EventArgs e)
+        {
+            proceed();
         }
     }
 }

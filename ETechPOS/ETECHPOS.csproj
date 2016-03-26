@@ -111,6 +111,7 @@
     <Compile Include="fnc\RawPrinterHelper.cs" />
     <Compile Include="fnc\ReceiptPrinterHelper.cs" />
     <Compile Include="FormatDesigner\LDatagridView.cs" />
+    <Compile Include="FormatDesigner\LParsers.cs" />
     <Compile Include="FormatDesigner\LTextBox.cs" />
     <Compile Include="frmCustomPayments.cs">
       <SubType>Form</SubType>
@@ -129,12 +130,6 @@
     </Compile>
     <Compile Include="frmPOSMainExt.Designer.cs">
       <DependentUpon>frmPOSMainExt.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmReadingSummary.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReadingSummary.Designer.cs">
-      <DependentUpon>frmReadingSummary.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSalesmemo.cs">
       <SubType>Form</SubType>
@@ -469,6 +464,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\Forms\Generics\UserAuthenticationForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\Forms\Generics\UserAuthenticationForm.designer.cs">
       <DependentUpon>UserAuthenticationForm.cs</DependentUpon>
@@ -527,10 +523,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPOSMainExt.resx">
       <DependentUpon>frmPOSMainExt.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmReadingSummary.resx">
-      <DependentUpon>frmReadingSummary.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmRefundInfo.resx">

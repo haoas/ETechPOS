@@ -18,7 +18,6 @@ orfooter3=
 orfooter4= 
 avoidinvalidpprice=0
 print_receipt_format=
-xzdesign_unite=1
 allowzeroprice=1
 grossmethod=1
 showdetailCCinZRead=1

@@ -10,6 +10,7 @@ using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
 using ETech.Views.Forms.Generics;
+using ETech.Helpers;
 
 namespace ETech
 {
@@ -80,6 +81,15 @@ namespace ETech
                 decimal old_qty = fncFilter.getDecimalValue(this.lblOldQty_d.Text);
                 if (new_qty >= old_qty)
                 {
+                    if (new_qty - old_qty > 99)
+                    {
+                        if (DialogHelper.ShowDialog("Are you sure you want to increase the item quantity by this much?", MessageBoxButtons.YesNo) == DialogResult.No)
+                        {
+                            this.Close();
+                            return;
+                        }
+                    }
+                    
                     this.new_qty = new_qty;
                     this.Close();
                     return;
@@ -151,6 +161,16 @@ namespace ETech
         {
             if (keyData == Keys.F10) return true;
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void Btn_ESC_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Btn_Proceed_Click(object sender, EventArgs e)
+        {
+            done_process();
         }
     }
 }
