@@ -26,10 +26,21 @@ namespace ETech
         public DialogForm(string message, MessageBoxButtons messageBoxButtons)
         {
             InitializeComponent();
+
+            btnCommand1.Click += new EventHandler(CommandButton_Click);
+            btnCommand2.Click += new EventHandler(CommandButton_Click);
+            btnCommand3.Click += new EventHandler(CommandButton_Click);
+
             _Message = message;
             _MessageBoxButtons = messageBoxButtons;
         }
 
+        private void DialogForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            Button button = GetButtonByDialogResult(e.KeyData);
+            if (button != null)
+                button.PerformClick();
+        }
         private void DialogForm_Load(object sender, EventArgs e)
         {
             lblMessage.Text = _Message;
@@ -66,27 +77,16 @@ namespace ETech
             fncfullscreen.ResizeFormsControls();
         }
 
-        private void btnCommand1_Click(object sender, EventArgs e)
+        private void CommandButton_Click(object sender, EventArgs e)
         {
-            CommandButton_Click((Button)sender);
-        }
-        private void btnCommand2_Click(object sender, EventArgs e)
-        {
-            CommandButton_Click((Button)sender);
-        }
-        private void btnCommand3_Click(object sender, EventArgs e)
-        {
-            CommandButton_Click((Button)sender);
-        }
-
-        private void CommandButton_Click(Button button)
-        {
-            DialogResult = button.DialogResult;
+            DialogResult = ((Button)sender).DialogResult;
             Close();
         }
+
         private void ActivateCommandButton_Click(int commandButtonNumber, DialogResult dialogResult)
         {
             Button button = null;
+            string tag = "";
             switch (commandButtonNumber)
             {
                 case 1:
@@ -100,8 +100,45 @@ namespace ETech
                     break;
             }
             button.Visible = true;
-            button.Text = dialogResult.ToString();
+            button.Text = dialogResult.ToString() + " (" + ConvertDialogResultToKeyText(dialogResult, ref tag) + ")";
+            button.Tag = tag;
             button.DialogResult = dialogResult;
+        }
+        private string ConvertDialogResultToKeyText(DialogResult dialogResult, ref string tag)
+        {
+            string keyText = "";
+            switch (dialogResult)
+            {
+                case DialogResult.OK:
+                    keyText = "F12";
+                    tag = Keys.F12.ToString();
+                    break;
+                case DialogResult.Yes:
+                    keyText = "F12";
+                    tag = Keys.F12.ToString();
+                    break;
+                case DialogResult.No:
+                    keyText = "ESC";
+                    tag = Keys.Escape.ToString();
+                    break;
+                case DialogResult.Cancel:
+                    keyText = "ENTER";
+                    tag = Keys.Enter.ToString();
+                    break;
+            }
+            return keyText;
+        }
+        private Button GetButtonByDialogResult(Keys keys)
+        {
+            Button button = null;
+            string keyText = keys.ToString();
+            if (btnCommand1.Tag.ToString() == keyText)
+                button = btnCommand1;
+            else if (btnCommand2.Tag.ToString() == keyText)
+                button = btnCommand2;
+            else if (btnCommand3.Tag.ToString() == keyText)
+                button = btnCommand3;
+            return button;
         }
     }
 }

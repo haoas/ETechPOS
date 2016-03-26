@@ -49,8 +49,6 @@ namespace ETech
                 catch { cls_globalvariables.print_receipt_actual = 0; }
                 try { cls_globalvariables.print_receipt_limit = int.Parse(dic["print_receipt_limit"]); }
                 catch { cls_globalvariables.print_receipt_limit = 0; }
-                try { cls_globalvariables.print_receipt_linespacing = int.Parse(dic["print_receipt_linespacing"]); }
-                catch { cls_globalvariables.print_receipt_linespacing = 0; }
 
                 cls_globalvariables.ACC_date_v = dic["ACC_date"];
 
@@ -91,11 +89,6 @@ namespace ETech
 
                 try { cls_globalvariables.DefaultPrinter_v = dic["DefaultPrinter"]; }
                 catch { cls_globalvariables.DefaultPrinter_v = ""; }
-
-                try { cls_globalvariables.PrinterODByte_v = dic["PrinterODByte"]; }
-                catch { cls_globalvariables.PrinterODByte_v = ""; }
-                if (cls_globalvariables.PrinterODByte_v == "")
-                    cls_globalvariables.PrinterODByte_v = "27,112,0,25,250";
 
                 try { cls_globalvariables.PreviewOR_v = (dic["PreviewOR"] == "1"); }
                 catch { cls_globalvariables.PreviewOR_v = false; }

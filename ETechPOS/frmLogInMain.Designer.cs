@@ -91,7 +91,6 @@
             // 
             // tmrConnecting
             // 
-            this.tmrConnecting.Enabled = true;
             this.tmrConnecting.Interval = 1000;
             this.tmrConnecting.Tick += new System.EventHandler(this.tmrConnecting_Tick);
             // 

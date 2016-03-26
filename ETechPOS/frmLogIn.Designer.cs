@@ -111,11 +111,7 @@
             this.Controls.Add(this.lblpassword);
             this.Controls.Add(this.lblusername);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
             this.Name = "frmLogIn";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Log In";
             this.Load += new System.EventHandler(this.frmLogIn_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmLogIn_KeyDown);

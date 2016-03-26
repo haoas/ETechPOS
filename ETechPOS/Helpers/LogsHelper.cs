@@ -11,15 +11,28 @@ namespace ETech.Helpers
     {
         public static void Clear()
         {
-            while (IsFileInUse(new FileInfo(cls_globalvariables.PosTLogsFilePath)) == true) { }
-            File.WriteAllText(cls_globalvariables.PosTLogsFilePath, "");
+            try
+            {
+                FileInfo fileInfo = new FileInfo(cls_globalvariables.PosTLogsFilePath);
+                if (!File.Exists(fileInfo.FullName))
+                    File.Create(fileInfo.FullName).Dispose();
+                File.WriteAllText(fileInfo.FullName, String.Empty);
+            }
+            catch (Exception ex)
+            {
+                DialogHelper.ShowDialog(ex.ToString());
+            }
         }
         public static void Print(string message)
         {
             try
             {
-                if (message == "") return;
-                using (StreamWriter w = File.AppendText(cls_globalvariables.PosTLogsFilePath))
+                if (message == "")
+                    return;
+                FileInfo fileInfo = new FileInfo(cls_globalvariables.PosTLogsFilePath);
+                if (!File.Exists(fileInfo.FullName))
+                    File.Create(fileInfo.FullName).Dispose();
+                using (StreamWriter w = File.AppendText(fileInfo.FullName))
                 {
                     w.WriteLine("[" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "] " + message);
                     w.Close();
@@ -29,27 +42,6 @@ namespace ETech.Helpers
             {
                 DialogHelper.ShowDialog(ex.ToString());
             }
-        }
-
-        private static bool IsFileInUse(FileInfo fileInfo)
-        {
-            FileStream stream = null;
-            try
-            {
-                if (!File.Exists(fileInfo.FullName))
-                    File.Create(fileInfo.FullName);
-                stream = fileInfo.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                    stream.Close();
-            }
-            return false;
         }
     }
 }

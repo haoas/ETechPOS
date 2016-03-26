@@ -21,7 +21,7 @@ namespace ETech
     public partial class frmLogInMain : Form
     {
         private string serverDateTime;
-        private bool isconnected;
+        //private bool isconnected;
         public cls_user cashier;
 
         public frmLogInMain()
@@ -29,7 +29,7 @@ namespace ETech
             InitializeComponent();
 
             serverDateTime = "";
-            isconnected = false;
+            //isconnected = false;
             cashier = null;
 
             //fncFilter.set_theme_color(this);
@@ -51,7 +51,12 @@ namespace ETech
         }
         private void frmLogInMain_Load(object sender, EventArgs e)
         {
-            try_connection();
+            if (!try_connection())
+            {
+                fncFilter.alert("This device is not connected to the server.");
+                this.Close();
+                return;
+            }
 
             RefreshServerDateTime();
 
@@ -96,13 +101,13 @@ namespace ETech
             }
         }
 
-        private void txtPassword_Enter(object sender, EventArgs e)
-        {
-            txtPassword.SelectAll();
-        }
         private void txtUsername_Enter(object sender, EventArgs e)
         {
             txtUsername.SelectAll();
+        }
+        private void txtPassword_Enter(object sender, EventArgs e)
+        {
+            txtPassword.SelectAll();
         }
 
         private void tmrConnecting_Tick(object sender, EventArgs e)
@@ -128,15 +133,7 @@ namespace ETech
 
         public void login()
         {
-            try_connection();
             txtUsername.Text = txtUsername.Text.Trim();
-
-            if (!isconnected)
-            {
-                fncFilter.alert("This device is not connected to the server.");
-                this.Close();
-                return;
-            }
 
             if (btnLogIn.Enabled == false)
                 return;
@@ -191,7 +188,7 @@ namespace ETech
 
             this.Close();
         }
-        private void try_connection()
+        private bool try_connection()
         {
             try
             {
@@ -212,11 +209,9 @@ namespace ETech
                 string branchid = cls_globalvariables.BranchCode;
                 string sql = "Select Now() AS `now`, `name` as 'branchname' FROM branch WHERE `Id`=" + branchid;
                 DataTable dt = mySQLFunc.getdb(sql);
-                if (dt != null && dt.Rows.Count <= 0)
-                {
-                    isconnected = false;
-                    return;
-                }
+                if (dt != null &&
+                    dt.Rows.Count <= 0)
+                    return false;
 
                 DateTime dateTime = Convert.ToDateTime(dt.Rows[0]["now"]);
                 string branchName = dt.Rows[0]["branchname"].ToString();
@@ -226,12 +221,15 @@ namespace ETech
                 lbl_BranchCode.Text = "Branch: " + cls_globalvariables.BranchCode + @"-" + branchName + @"";
                 lbl_Terminalno.Text = "Terminal#: " + cls_globalvariables.terminalno_v + @"";
 
-                isconnected = true;
+                return true;
             }
             catch (Exception ex)
             {
-                DialogHelper.ShowDialog(ex.ToString());
-                isconnected = false;
+                string nw = DateTime.Now.ToString();
+                string terminalno = cls_globalvariables.terminalno_v.ToString();
+                string errcode = ex.ToString();
+                mySQLFunc.WriteToErrorLog(" \n Date: " + nw + " \n Exception: \n " + errcode);
+                return false;
             }
         }
 

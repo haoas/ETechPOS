@@ -9,10 +9,11 @@ using System.Windows.Forms;
 using ETech.cls;
 using System.Security.Cryptography;
 using ETech.fnc;
+using ETech.Built_In_Views;
 
 namespace ETech
 {
-    public partial class frmLogIn : Form
+    public partial class frmLogIn : StandardDialogForm
     {
         public cls_user cashier;
         public cls_user checker;

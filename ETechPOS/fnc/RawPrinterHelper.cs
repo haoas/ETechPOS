@@ -95,7 +95,7 @@ namespace ETech.fnc
         public static bool OpenCashDrawer(bool justprinted)
         {
             //set justprinted = true if previous line is start_print
-            byte[] DrawerOpen = cls_globalfunc.getPrinterODByte();
+            byte[] DrawerOpen = cls_globalvariables.OpenDrawerBytes;
             IntPtr unmanagedPointer = Marshal.AllocHGlobal(DrawerOpen.Length);
             Marshal.Copy(DrawerOpen, 0, unmanagedPointer, DrawerOpen.Length);
             SendBytesToPrinter(new PrintDocument().PrinterSettings.PrinterName, unmanagedPointer, DrawerOpen.Length);
