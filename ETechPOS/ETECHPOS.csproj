@@ -469,6 +469,30 @@
     <Compile Include="Views\Forms\Generics\UserAuthenticationForm.designer.cs">
       <DependentUpon>UserAuthenticationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Generic Controls\KeyboardControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Generic Controls\KeyboardControl.designer.cs">
+      <DependentUpon>KeyboardControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Generic Controls\KeyboardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Generic Controls\KeyboardForm.designer.cs">
+      <DependentUpon>KeyboardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Generic Controls\NumericKeypadControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Generic Controls\NumericKeypadControl.designer.cs">
+      <DependentUpon>NumericKeypadControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Generic Controls\NumericKeypadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Generic Controls\NumericKeypadForm.designer.cs">
+      <DependentUpon>NumericKeypadForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="zreadFunc.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -555,6 +579,22 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Forms\Generics\UserAuthenticationForm.resx">
       <DependentUpon>UserAuthenticationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Generic Controls\KeyboardControl.resx">
+      <DependentUpon>KeyboardControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Generic Controls\KeyboardForm.resx">
+      <DependentUpon>KeyboardForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Generic Controls\NumericKeypadControl.resx">
+      <DependentUpon>NumericKeypadControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Generic Controls\NumericKeypadForm.resx">
+      <DependentUpon>NumericKeypadForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

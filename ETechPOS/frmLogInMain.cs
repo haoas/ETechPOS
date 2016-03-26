@@ -14,7 +14,6 @@ using ETech.cls;
 using ETech.fnc;
 using ETech;
 using ETech.Helpers;
-using ETech.fnc;
 
 namespace ETech
 {
@@ -225,10 +224,7 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                string nw = DateTime.Now.ToString();
-                string terminalno = cls_globalvariables.terminalno_v.ToString();
-                string errcode = ex.ToString();
-                mySQLFunc.WriteToErrorLog(" \n Date: " + nw + " \n Exception: \n " + errcode);
+                LogsHelper.WriteToExceptionLog(ex.ToString());
                 return false;
             }
         }

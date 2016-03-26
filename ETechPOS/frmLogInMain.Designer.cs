@@ -40,6 +40,7 @@
             this.bgwConnecting = new System.ComponentModel.BackgroundWorker();
             this.lbl_Terminalno = new System.Windows.Forms.Label();
             this.lbl_BranchCode = new System.Windows.Forms.Label();
+            this.keyboardControl1 = new ETech.Views.Generic_Controls.KeyboardControl();
             this.SuspendLayout();
             // 
             // LBL_Username
@@ -68,7 +69,7 @@
             this.txtUsername.Location = new System.Drawing.Point(125, 112);
             this.txtUsername.MaxLength = 30;
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(297, 29);
+            this.txtUsername.Size = new System.Drawing.Size(331, 29);
             this.txtUsername.TabIndex = 4;
             this.txtUsername.Tag = "";
             this.txtUsername.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -81,7 +82,7 @@
             this.txtPassword.Location = new System.Drawing.Point(125, 149);
             this.txtPassword.MaxLength = 30;
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(297, 29);
+            this.txtPassword.Size = new System.Drawing.Size(331, 29);
             this.txtPassword.TabIndex = 5;
             this.txtPassword.Tag = "";
             this.txtPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -110,9 +111,9 @@
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.btnCancel.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnCancel.Location = new System.Drawing.Point(21, 184);
+            this.btnCancel.Location = new System.Drawing.Point(462, 144);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(159, 60);
+            this.btnCancel.Size = new System.Drawing.Size(139, 38);
             this.btnCancel.TabIndex = 32;
             this.btnCancel.Text = "CANCEL";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -123,9 +124,9 @@
             this.btnLogIn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.btnLogIn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogIn.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnLogIn.Location = new System.Drawing.Point(263, 184);
+            this.btnLogIn.Location = new System.Drawing.Point(462, 100);
             this.btnLogIn.Name = "btnLogIn";
-            this.btnLogIn.Size = new System.Drawing.Size(159, 60);
+            this.btnLogIn.Size = new System.Drawing.Size(139, 38);
             this.btnLogIn.TabIndex = 31;
             this.btnLogIn.Text = "Log In";
             this.btnLogIn.UseVisualStyleBackColor = false;
@@ -160,11 +161,24 @@
             this.lbl_BranchCode.TabIndex = 34;
             this.lbl_BranchCode.Text = "Branch: 1000-Main Branch";
             // 
+            // keyboardControl1
+            // 
+            this.keyboardControl1.Capslock = false;
+            this.keyboardControl1.HorizontalButtonSpacing = 0;
+            this.keyboardControl1.Location = new System.Drawing.Point(21, 204);
+            this.keyboardControl1.Name = "keyboardControl1";
+            this.keyboardControl1.Shift = false;
+            this.keyboardControl1.Size = new System.Drawing.Size(580, 202);
+            this.keyboardControl1.Symbols = false;
+            this.keyboardControl1.TabIndex = 35;
+            this.keyboardControl1.VerticalButtonSpacing = 0;
+            // 
             // frmLogInMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(439, 256);
+            this.ClientSize = new System.Drawing.Size(613, 426);
+            this.Controls.Add(this.keyboardControl1);
             this.Controls.Add(this.lbl_BranchCode);
             this.Controls.Add(this.lbl_Terminalno);
             this.Controls.Add(this.btnLogIn);
@@ -201,5 +215,6 @@
         private System.ComponentModel.BackgroundWorker bgwConnecting;
         private System.Windows.Forms.Label lbl_Terminalno;
         private System.Windows.Forms.Label lbl_BranchCode;
+        private ETech.Views.Generic_Controls.KeyboardControl keyboardControl1;
     }
 }

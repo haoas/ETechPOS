@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.IO;
 using ETech.fnc;
 using ETech.FormatDesigner;
-using ETech.fnc;
 
 namespace ETech
 {

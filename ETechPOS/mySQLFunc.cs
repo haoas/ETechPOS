@@ -144,14 +144,11 @@ namespace ETech
                 }
                 catch (Exception ex)
                 {
-                    string nw = DateTime.Now.ToString();
-                    string terminalno = cls_globalvariables.terminalno_v.ToString();
-                    string errcode = ex.ToString();
-                    WriteToErrorLog(" \n Date: " + nw + " - Terminalno: " + terminalno + " - Retry #: " + retryno + " \n Exception: \n " + errcode + " \n Query: \n " + SQL + " \n ");
+                    LogsHelper.WriteToExceptionLog(ex.ToString(), retryno, SQL);
                     System.Threading.Thread.Sleep(500);
                 }
             }
-            WriteToErrorLog(" \n Date: " + DateTime.Now.ToString() + " - Terminalno: " + cls_globalvariables.terminalno_v.ToString() + " \n Exception: \n Unable to execute query after many tries. \n Query: \n " + SQL + " \n ");
+            LogsHelper.WriteToExceptionLog("Unable to execute query after many tries.", SQL);
             return false;
         }
 
@@ -175,10 +172,7 @@ namespace ETech
             }
             catch (MySqlException ex)
             {
-                WriteToErrorLog(" \n Date: " + DateTime.Now + " \n Exception: \n " + ex.ToString() +
-                  " \n getdb Query: \n " + SQL + " \n ");
-
-                //DialogHelper.ShowDialog("Error detected while connecting to database");
+                LogsHelper.WriteToExceptionLog(ex.ToString(), SQL);
                 return new DataTable();
             }
 
@@ -213,11 +207,7 @@ namespace ETech
             }
             catch (MySqlException ex)
             {
-                WriteToErrorLog(" \n Date: " + DateTime.Now + " \n Exception: \n " + ex.ToString() +
-                  " \n getdb Query: \n " + SQL + " \n ");
-
-                //DialogHelper.ShowDialog("Error detected while connecting to database");
-                //DialogHelper.ShowDialog(ex.ToString());
+                LogsHelper.WriteToExceptionLog(ex.ToString(), SQL);
                 return null;
             }
 
@@ -230,11 +220,7 @@ namespace ETech
             }
             catch (MySqlException ex)
             {
-                WriteToErrorLog(" \n Date: " + DateTime.Now + " \n Exception: \n " + ex.ToString() +
-                  " \n getdb Query: \n " + SQL + " \n ");
-
-                //DialogHelper.ShowDialog("Error detected while connecting to database");
-                //DialogHelper.ShowDialog(ex.ToString());
+                LogsHelper.WriteToExceptionLog(ex.ToString(), SQL);
                 dataTable = new DataTable();
             }
 
@@ -272,8 +258,8 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                LogsHelper.Print("[getdb_branch] " + ex.Message.ToString());
-                LogsHelper.Print("[getdb_branch(sql)] " + SQL);
+                LogsHelper.WriteToTLog("[getdb_branch] " + ex.Message.ToString());
+                LogsHelper.WriteToTLog("[getdb_branch(sql)] " + SQL);
 
                 Console.WriteLine("getdb_branch error: " + SQL);
                 Console.WriteLine(ex.Message.ToString());
@@ -313,8 +299,8 @@ namespace ETech
             }
             catch (Exception ex)
             {
-                LogsHelper.Print("[setdb_branch] " + ex.Message.ToString());
-                LogsHelper.Print("[setdb_branch(sql)] " + SQL);
+                LogsHelper.WriteToTLog("[setdb_branch] " + ex.Message.ToString());
+                LogsHelper.WriteToTLog("[setdb_branch(sql)] " + SQL);
 
                 Console.WriteLine("setdb_branch error: " + SQL);
                 Console.WriteLine(ex.Message.ToString());
@@ -380,33 +366,6 @@ namespace ETech
             }
             else
                 return setdb(SQL);
-        }
-
-        public static void WriteToErrorLog(string msg)
-        {
-            if (!(System.IO.Directory.Exists(Application.StartupPath + "\\Errors\\")))
-            {
-                System.IO.Directory.CreateDirectory(Application.StartupPath + "\\Errors\\");
-            }
-
-            try
-            {
-                FileStream fs = new FileStream(Application.StartupPath + "\\Errors\\ExcemptionErrors.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                StreamWriter s = new StreamWriter(fs);
-                s.Close();
-                fs.Close();
-            }
-            catch (Exception) { }
-
-            try
-            {
-                FileStream fs1 = new FileStream(Application.StartupPath + "\\Errors\\ExcemptionErrors.txt", FileMode.Append, FileAccess.Write);
-                StreamWriter s1 = new StreamWriter(fs1);
-                s1.WriteLine(msg);
-                s1.Close();
-                fs1.Close();
-            }
-            catch (Exception) { }
         }
 
         public static bool check_connection()

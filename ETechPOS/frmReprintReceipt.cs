@@ -9,8 +9,6 @@ using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
-using ETech.fnc;
-
 namespace ETech
 {
     public partial class frmReprintReceipt : Form

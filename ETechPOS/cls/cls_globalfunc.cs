@@ -111,7 +111,7 @@ namespace ETech.cls
 
             sql = @"DELETE FROM saleshead WHERE `SyncId` IN (" + wids + ")";
             mySQLFunc.setdb(sql);
-            LogsHelper.Print("DELETED2 in saleshead ors = " + ornumbers);
+            LogsHelper.WriteToTLog("DELETED2 in saleshead ors = " + ornumbers);
         }
 
         public static void CreateIfMissing(string path)

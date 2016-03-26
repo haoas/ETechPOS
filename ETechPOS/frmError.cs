@@ -30,7 +30,7 @@ namespace ETech
         {
             this.lblError.Text = this.errormessage;
 
-            LogsHelper.Print("ERROR MESSAGE: " + this.errormessage);
+            LogsHelper.WriteToTLog("ERROR MESSAGE: " + this.errormessage);
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();

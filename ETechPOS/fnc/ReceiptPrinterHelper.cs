@@ -286,9 +286,8 @@ namespace ETech.fnc
                 {
                     doc.Print();
                 }
-                catch (InvalidPrinterException e)
+                catch (InvalidPrinterException ex)
                 {
-
                 }
                 return;
             }

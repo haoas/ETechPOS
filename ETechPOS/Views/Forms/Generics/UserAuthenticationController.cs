@@ -8,7 +8,6 @@ using ETech.fnc;
 using ETech.cls;
 using System.Data;
 using ETech.Models.Global;
-using ETech.fnc;
 
 namespace ETech.Views.Forms.Generics
 {

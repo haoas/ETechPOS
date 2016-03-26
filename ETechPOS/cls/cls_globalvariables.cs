@@ -32,6 +32,7 @@ namespace ETech.cls
         public static string ApplicationDataLocalCompanyNameFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/" + CompanyName;
         public static string ApplicationDataLocalApplicationFolderPath = ApplicationDataLocalCompanyNameFolderPath + "/" + ApplicationName;
 
+        public static string ErrorExceptionLogsFilePath = ApplicationFolderPath + "/Errors/ExcemptionErrors.txt";
         public static string PosTLogsFilePath = MyDocumentApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".T";
         public static string PosCsvLogsFilePath = ApplicationErrorFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".C";
         public static string ConnectionSettingsXmlPath = ApplicationFolderPath + "/Connection Settings.xml";

@@ -113,7 +113,7 @@ namespace ETech.fnc
             {
                 transaction.Rollback();
                 connection.Close();
-                LogsHelper.Print(MessagesVariable.FailedFetchDataInMySql + "\n" + ex.ToString());
+                LogsHelper.WriteToTLog(MessagesVariable.FailedFetchDataInMySql + "\n" + ex.ToString());
                 return resultDt;
             }
         }
@@ -143,7 +143,7 @@ namespace ETech.fnc
             }
             catch (Exception ex)
             {
-                LogsHelper.Print(MessagesVariable.FailedFetchDataInMySql + "\n" + ex.ToString());
+                LogsHelper.WriteToTLog(MessagesVariable.FailedFetchDataInMySql + "\n" + ex.ToString());
                 return null;
             }
         }
@@ -192,7 +192,7 @@ namespace ETech.fnc
             {
                 transaction.Rollback();
                 connection.Close();
-                LogsHelper.Print(MessagesVariable.FailedExecuteQueryInMySql + "\n" + ex.ToString());
+                LogsHelper.WriteToTLog(MessagesVariable.FailedExecuteQueryInMySql + "\n" + ex.ToString());
                 return false;
             }
         }
@@ -216,7 +216,7 @@ namespace ETech.fnc
             }
             catch (Exception ex)
             {
-                LogsHelper.Print(MessagesVariable.FailedExecuteQueryInMySql + "\n" + ex.ToString());
+                LogsHelper.WriteToTLog(MessagesVariable.FailedExecuteQueryInMySql + "\n" + ex.ToString());
                 return false;
             }
         }

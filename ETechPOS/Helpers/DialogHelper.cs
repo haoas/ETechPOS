@@ -23,7 +23,7 @@ namespace ETech.Helpers
         public static void ShowDialogWithPrintLogs(string message, string errorMessage)
         {
             ShowDialog(message);
-            LogsHelper.Print(message + "\n" + errorMessage);
+            LogsHelper.WriteToTLog(message + "\n" + errorMessage);
         }
     }
 }
