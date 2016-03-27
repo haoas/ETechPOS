@@ -28,17 +28,23 @@ namespace ETech.Models.Global
             get;
             set;
         }
+        public int TerminalNumber
+        {
+            get;
+            set;
+        }
 
         public ConnectionSettings()
-            : this("", "", "", "")
+            : this("", "", "", "", 0)
         {
         }
-        public ConnectionSettings(string server, string database, string userId, string password)
+        public ConnectionSettings(string server, string database, string userId, string password, int terminalNumber)
         {
             Server = server;
             Database = database;
             UserId = userId;
             Password = password;
+            TerminalNumber = terminalNumber;
         }
     }
 }

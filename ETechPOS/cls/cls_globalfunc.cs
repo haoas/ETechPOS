@@ -83,8 +83,8 @@ namespace ETech.cls
                 FROM
                     `saleshead`
                 WHERE
-                    `branchid`=" + cls_globalvariables.BranchCode + @"
-                    AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
+                    `branchid`=" + cls_globalvariables.Branch.Id + @"
+                    AND `terminalno` = " + cls_globalvariables.TerminalNumber + @"
                     AND `date` >= '" + DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd") + @"'
                     AND `status` = 1
                 ORDER BY `ornumber` DESC LIMIT 1;";
@@ -97,8 +97,8 @@ namespace ETech.cls
                 FROM
                     `saleshead`
                 WHERE
-                    `branchid`=" + cls_globalvariables.BranchCode + @"
-                    AND `terminalno` = " + cls_globalvariables.terminalno_v + @"
+                    `branchid`=" + cls_globalvariables.Branch.Id + @"
+                    AND `terminalno` = " + cls_globalvariables.TerminalNumber + @"
                     AND `date` >= '" + DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd") + @"'
                     AND `ornumber` > " + DT.Rows[0]["ornumber"].ToString() + @"
                     AND `status` = 0";
@@ -356,6 +356,14 @@ namespace ETech.cls
                 }
             }
             return false;
+        }
+        
+        public static string CreateDirectoryIfNotExists(string directory)
+        {
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            return directory;
         }
     }
 }

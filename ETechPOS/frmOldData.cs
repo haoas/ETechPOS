@@ -37,10 +37,10 @@ namespace ETech
         }
         private void frmOldData_Load(object sender, EventArgs e)
         {
-            string terminalno = cls_globalvariables.terminalno_v;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
 
-            textBox1.Text = terminalno;
-            textBox3.Text = cls_globalvariables.BranchCode;
+            textBox1.Text = terminalNumber.ToString();
+            textBox3.Text = cls_globalvariables.Branch.Id.ToString();
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();
@@ -64,7 +64,7 @@ namespace ETech
             string lastdate = this.calLastDate.SelectionRange.Start.ToString("yyyy-MM-dd");
 
             string branchid = textBox3.Text;
-            string terminalno = textBox1.Text;
+            int terminalNumber = Convert.ToInt32(textBox1.Text);
 
             if ((ornumber.Length != 7))
             {
@@ -72,7 +72,7 @@ namespace ETech
                 return;
             }
 
-            ornumber = (branchid + terminalno + ornumber).TrimStart('0');
+            ornumber = (branchid + terminalNumber + ornumber).TrimStart('0');
 
             long next_wid = mysqlclass.GetAndInsertNextSyncId("saleshead");
             string sSQL = @"UPDATE `saleshead` SET
@@ -84,7 +84,7 @@ namespace ETech
                                 `lastmodifieddate` = NOW(), 
                                 `datecreated` = NOW(),  
                                 `ornumber` = '" + ornumber + @"',  
-                                `terminalno` = '" + terminalno + @"',
+                                `terminalno` = '" + terminalNumber + @"',
                                 `status` = 1, `customerid` = 0
                             WHERE `SyncId` = '" + next_wid + @"'";
             mySQLFunc.setdb(sSQL);

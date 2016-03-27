@@ -24,12 +24,13 @@ namespace ETech.Models.Global
                 connectionSettings.Database = settingsElem.Element("Database").Value;
                 connectionSettings.UserId = settingsElem.Element("UserId").Value;
                 connectionSettings.Password = SaltEncryptionFunction.Decrypt(settingsElem.Element("Password").Value);
+                connectionSettings.TerminalNumber = Convert.ToInt32(settingsElem.Element("TerminalNumber").Value);
 
                 return connectionSettings;
             }
             catch (Exception ex)
             {
-                DialogHelper.ShowDialogWithPrintLogs(MessagesVariable.FailedLoadingSettings, ex.ToString());
+                DialogHelper.ShowDialogWithPrintLogs(MessagesVariable.FailedLoadingConnectionSettings, ex.ToString());
                 return null;
             }
         }

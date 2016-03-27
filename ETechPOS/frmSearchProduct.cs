@@ -138,7 +138,7 @@ namespace ETech
             }
 
             string allowZeroPrice = "";
-            if (cls_globalvariables.allowZeroPrice_v != "1")
+            if (!cls_globalvariables.allowZeroPrice_v)
             {
                 allowZeroPrice = " AND B.`sellingprice` > 0 AND B.`wholesaleprice` > 0";
             }
@@ -150,7 +150,7 @@ namespace ETech
                                 B.`wholesaleprice` AS 'wholesaleprice',
                                 P.`description` as 'desc', P.`memo`
                             FROM `product` AS P, `branchprice` AS B 
-                            WHERE B.`branchid` = " + cls_globalvariables.BranchCode + @" AND B.`productid` = P.`SyncId` AND 
+                            WHERE B.`branchid` = " + cls_globalvariables.Branch.Id + @" AND B.`productid` = P.`SyncId` AND
                                 P.`status` = 1 " + allowZeroPrice + @" AND
                                 CONCAT(P.`product`, ' ', P.`barcode`, ' ', P.`stockno`) LIKE @str_param
                             LIMIT 50)A ";

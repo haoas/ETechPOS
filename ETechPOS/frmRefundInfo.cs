@@ -90,7 +90,7 @@ namespace ETech
 
         public decimal get_productCountFromOR(long productid, long ornumber)
         {
-            string branchid = cls_globalvariables.BranchCode;
+            long branchid = cls_globalvariables.Branch.Id;
 
             string sql = @"SELECT COALESCE(SUM(D.`quantity`),0) as `remainqty` 
             FROM Saleshead as H, Salesdetail as D

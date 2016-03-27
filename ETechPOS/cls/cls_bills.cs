@@ -121,8 +121,8 @@ namespace ETech.cls
 
             mySQLClass mysqlclass = new mySQLClass();
 
-            string branchid = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
+            long branchid = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
             long userwid = cashier.getsyncid();
             long SyncId = mysqlclass.GetAndInsertNextSyncId("poscashdenomination");
 
@@ -130,11 +130,11 @@ namespace ETech.cls
             {
                 mySQLFunc.setdb(@"UPDATE `poscashdenomination` SET `type` = 2 
                                     WHERE `type` = 3 AND CAST(`datecreated` AS DATE) = CAST(NOW() AS DATE)
-                                        AND `branchid` = " + branchid + @" AND `terminalno` = " + terminalno);
+                                        AND `branchid` = " + branchid + @" AND `terminalno` = " + terminalNumber);
             }
 
            string sSQL = @"UPDATE `poscashdenomination` SET 
-               `branchid` = " + branchid + ", `terminalno` = " + terminalno + 
+               `branchid` = " + branchid + ", `terminalno` = " + terminalNumber +
                ", `userid` = " + userwid + ", `datecreated` = NOW(), `type` = " + this.get_type() +
                ", `b1000` = " + this.getCash_1000() + ", `b500` = " + this.getCash_500() + 
                ", `b200` = " + this.getCash_200() + ", `b100` = " + this.getCash_100() + 
@@ -151,13 +151,13 @@ namespace ETech.cls
         }
         public void get_cashdenomination(cls_user cashier, int type)
         {
-            string branchid = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
+            long branchid = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
             long userwid = cashier.getsyncid();
 
             string sSQL = @"SELECT * FROM `poscashdenomination` WHERE 
                             `branchid` = " + branchid + @" AND
-                            `terminalno` = " + terminalno + @" AND 
+                            `terminalno` = " + terminalNumber + @" AND
                             DATE(`datecreated`) = DATE(NOW()) AND
                             `type` = " + type + @"
                             ORDER BY `datecreated` DESC

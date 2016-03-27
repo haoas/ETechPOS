@@ -102,6 +102,7 @@
     <Compile Include="ctrl\ctrl_otherinfo.cs" />
     <Compile Include="ctrl\ctrl_payment.cs" />
     <Compile Include="ctrl\ctrl_productgrid.cs" />
+    <Compile Include="Enums\SettingTypeEnum.cs" />
     <Compile Include="fnc\MD5EncryptionFunction.cs" />
     <Compile Include="fnc\SaltEncryptionFunction.cs" />
     <Compile Include="fnc\fncFilter.cs" />
@@ -294,13 +295,18 @@
       <DependentUpon>frmWholesale.cs</DependentUpon>
     </Compile>
     <Compile Include="fnc\UserAuthorizationFunction.cs" />
+    <Compile Include="Helpers\BindingHelper.cs" />
     <Compile Include="Helpers\ControlEventHelper.cs" />
     <Compile Include="Helpers\ControlManipulationHelper.cs" />
     <Compile Include="Helpers\DataValidateHelper.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Helpers\LogsHelper.cs" />
+    <Compile Include="Models\Database\Branch.cs" />
+    <Compile Include="Models\Database\BranchController.cs" />
     <Compile Include="Models\Global\ConnectionSettings.cs" />
     <Compile Include="Models\Global\ConnectionSettingsController.cs" />
+    <Compile Include="Models\Global\Settings.cs" />
+    <Compile Include="Models\Global\SettingsController.cs" />
     <Compile Include="Models\Global\SqlDetail.cs" />
     <Compile Include="Models\Global\SqlParameter.cs" />
     <Compile Include="mySQLClass.cs" />

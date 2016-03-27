@@ -39,8 +39,8 @@ namespace ETech
             pbPreview.Width = origwidth;
             pbPreview.Height = origheight;
 
-            if (!Directory.Exists(cls_globalvariables.mydocumentpath))
-                Directory.CreateDirectory(cls_globalvariables.mydocumentpath);
+            if (!Directory.Exists(cls_globalvariables.MyDocumentApplicationFolderPath))
+                Directory.CreateDirectory(cls_globalvariables.MyDocumentApplicationFolderPath);
         }
 
         private void ORPrintPreview_Load(object sender, EventArgs e)
@@ -48,8 +48,8 @@ namespace ETech
             if (!Check_ReprintReceiptPermission(false))
                 this.Close();
             string sSQL = @"SELECT MAX(`ornumber`) as `ornumber` FROM `saleshead` 
-                            WHERE `terminalno` = " + cls_globalvariables.terminalno_v + @"
-                                AND `branchid` = " + cls_globalvariables.BranchCode + @" AND `status`=1";
+                            WHERE `terminalno` = " + cls_globalvariables.TerminalNumber + @"
+                                AND `branchid` = " + cls_globalvariables.Branch.Id + @" AND `status`=1";
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {
@@ -159,10 +159,10 @@ namespace ETech
             Bitmap bmp = new Bitmap(width, height);
             bmp.SetResolution(zoompercent, zoompercent);
             fncHardware.printpage_receipt(null, null, bmp, temp_tran, isVoid, true);
-            bmp.Save(cls_globalvariables.mydocumentpath + "Receipt.jpg");
+            bmp.Save(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg");
             bmp.Dispose();
             Bitmap bitmap;
-            using (var bmpTemp = new Bitmap(cls_globalvariables.mydocumentpath + "Receipt.jpg"))
+            using (var bmpTemp = new Bitmap(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg"))
                 bitmap = new Bitmap(bmpTemp);
             pbPreview.Image = bitmap;
         }

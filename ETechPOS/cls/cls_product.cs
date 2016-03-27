@@ -133,7 +133,7 @@ namespace ETech.cls
                     COALESCE(B.`sellingprice`, " + price_d + @") AS 'oprice'
                     FROM `product` AS P
                     LEFT JOIN `branchprice` AS B ON B.`productid`=P.`SyncId` AND
-                        B.`branchid` = " + cls_globalvariables.BranchCode + @" 
+                        B.`branchid` = " + cls_globalvariables.Branch.Id + @"
                     WHERE (P.`barcode` = '" + barcode_d + @"')";
 
             Console.WriteLine(sSQL);
@@ -201,7 +201,7 @@ namespace ETech.cls
                             COALESCE(B.`purchaseprice`, 0) AS 'pprice'
                         FROM `product` AS P
                         LEFT JOIN `branchprice` AS B ON B.`productid` = P.`SyncId` 
-                            AND B.`branchid` = " + cls_globalvariables.BranchCode + @" 
+                            AND B.`branchid` = " + cls_globalvariables.Branch.Id + @"
                         WHERE P.`SyncId` = " + syncid_d;
 
             if (cls_globalvariables.allowZeroPrice_v.ToString() != "1")

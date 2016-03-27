@@ -107,8 +107,8 @@ namespace ETech.fnc
         {
             if (isReprint)
             {
-                string terminalno = cls_globalvariables.terminalno_v;
-                string branchid = cls_globalvariables.BranchCode;
+                int terminalNumber = cls_globalvariables.TerminalNumber;
+                long branchid = cls_globalvariables.Branch.Id;
                 string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`status`=0) AND `SyncId` = '" + tran.getSyncId() + @"'";
                 isVoid = Convert.ToBoolean(mySQLFunc.getdb(checkIfVoidSql).Rows[0]["cnt"]);
             }
@@ -184,8 +184,8 @@ namespace ETech.fnc
         public static List<DataTable> get_summary_data(bool isTerminalaccountability, int type, DateTime datetime_d, DateTime datetimeTO_d)
         {
             List<DataTable> dt_list = new List<DataTable>();
-            string sBranchid = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
+            long sBranchid = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
 
             string sdateFROM = datetime_d.ToString("yyyy-MM-dd");
             string stimeFROM = datetime_d.ToString("HH:mm:ss");
@@ -252,7 +252,7 @@ namespace ETech.fnc
                                 IF(`show` = 1 AND `status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
                                 IF(`show` = 0 OR  `status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
                             FROM `saleshead` AS H LEFT JOIN `salesdetail` AS D ON H.`SyncId` = D.`headid` 
-                            WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno +
+                            WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalNumber +
                             zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetimeTO_d) + @"
                         ) A
                         GROUP BY A.`shwid`
@@ -337,7 +337,7 @@ namespace ETech.fnc
 		                        Select C.`salesheadwid`,
 		                        SUM(D.`quantity`*D.`price`) as 'totalamount'
 		                        FROM reprintcount as C, saleshead as H, salesdetail as D
-		                        WHERE C.`salesheadwid` = H.`SyncId` AND C.`terminalnocreate` = " + terminalno + @" AND H.`SyncId` = D.`headid` " +
+		                        WHERE C.`salesheadwid` = H.`SyncId` AND C.`terminalnocreate` = " + terminalNumber + @" AND H.`SyncId` = D.`headid` " +
                                 zreadFunc.GetSQLDateRange("`datecreate`", datetime_d, datetimeTO_d) + @"
 		                        GROUP BY C.`id`, C.`salesheadwid`
 	                        )A
@@ -392,7 +392,7 @@ namespace ETech.fnc
 				                                       `c1` * 1 + `c25c` * 0.25 + `c10c` * 0.1 + `c5c` * 0.05) AS 'amount'
                                     FROM `poscashdenomination` 
                                     WHERE `branchid` = " + sBranchid + @" AND
-	                                    `terminalno` = " + terminalno + @" AND 
+	                                    `terminalno` = " + terminalNumber + @" AND
 	                                    CAST(`datecreated` AS DATE) = '" + sdateFROM + @"'
                                     GROUP BY `type`
                                     ) A").Rows[0];
@@ -408,7 +408,7 @@ namespace ETech.fnc
                                         COALESCE(SUM(D.`quantity` * D.`price`),0) AS 'total_amount'
                                     FROM `saleshead` AS H, `salesdetail` AS D
                                     WHERE H.`SyncId` = D.`headid` AND H.`show` = 1 AND H.`status` = 1
-	                                    AND H.`terminalno` = " + terminalno + @" AND H.`branchid` = " + sBranchid +
+	                                    AND H.`terminalno` = " + terminalNumber + @" AND H.`branchid` = " + sBranchid +
                                         zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetimeTO_d)).Rows[0]["total_amount"]);
 
             decimal new_grand = old_grand + cur_total;
@@ -416,7 +416,7 @@ namespace ETech.fnc
             Console.WriteLine(" " + new_grand + " " + cur_total + " " + old_grand);
             DataTable dt_salessummary1 = new DataTable();
             dt_salessummary1.Columns.Add(); dt_salessummary1.Columns.Add();
-            dt_salessummary1.Rows.Add("TERMINAL", terminalno);
+            dt_salessummary1.Rows.Add("TERMINAL", terminalNumber);
             dt_salessummary1.Rows.Add("BEGIN OR#", ornumber_begin);
             dt_salessummary1.Rows.Add("END OR#", ornumber_end);
             dt_salessummary1.Rows.Add("  ", "  ");
@@ -466,7 +466,7 @@ namespace ETech.fnc
 	                                  `collectiondetail` as D,
 	                                  `paymentmethod` as P
                                 WHERE H.`SyncId`=D.`headid` AND P.`SyncId`=D.`method` 
-	                                AND H.`show`=1 AND H.`status`=1 AND H.`branchid`=" + cls_globalvariables.BranchCode
+	                                AND H.`show`=1 AND H.`status`=1 AND H.`branchid`=" + cls_globalvariables.Branch.Id
                                    + zreadFunc.GetSQLDateRange("H.`collectiondate`", datetime_d, datetimeTO_d) + @"
 	                                AND D.`method` >= 100
                                 GROUP BY D.`method`";
@@ -524,7 +524,7 @@ namespace ETech.fnc
             if (printtype == 2 && cls_globalvariables.CashierAcct_wid != "")
                 cashieracctcond = " WHERE U.`SyncId` = " + cls_globalvariables.CashierAcct_wid + @" ";
 
-            string sBranchid = cls_globalvariables.BranchCode;
+            long sBranchid = cls_globalvariables.Branch.Id;
             string sBusinessName = cls_globalvariables.BusinessName_v;
             string sOwner = cls_globalvariables.Owner_v;
             string sAddress = cls_globalvariables.Address_v;
@@ -533,7 +533,7 @@ namespace ETech.fnc
             string sPermitNo = cls_globalvariables.PermitNo_v;
             string sMIN = cls_globalvariables.MIN_v;
             string sSerial = cls_globalvariables.Serial_v;
-            string terminalno = cls_globalvariables.terminalno_v;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
             string cdate = datetime_d.ToString("yyyy-MM-dd");
             string ctime = datetime_d.ToString("hh:mm:ss");
             string cdateTO = datetimeTO_d.ToString("yyyy-MM-dd");
@@ -553,7 +553,7 @@ namespace ETech.fnc
             {
                 dt_header1.Rows.Add("");
                 dt_header1.Rows.Add("PRINTED: " + DateTime.Now);
-                dt_header1.Rows.Add("Terminal No: " + cls_globalvariables.terminalno_v);
+                dt_header1.Rows.Add("Terminal No: " + cls_globalvariables.TerminalNumber);
                 dt_header1.Rows.Add("");
             }
 
@@ -626,7 +626,7 @@ namespace ETech.fnc
                             IF(`show` = 1 AND `status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
                             IF(`show` = 0 or `status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
                         FROM `saleshead` AS H LEFT JOIN `salesdetail` AS D ON H.`SyncId` = D.`headid` 
-                        WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno +
+                        WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalNumber +
                         zreadFunc.GetSQLDateRange("H.`date`", datetime_d, datetimeTO_d) + @"
                     ) A
                     GROUP BY A.`shwid`
@@ -905,8 +905,8 @@ namespace ETech.fnc
         }
         public static DataRow get_summary_data(DateTime datetime_d)
         {
-            string sBranchid = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
+            long sBranchid = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
             string sdate = datetime_d.ToString("yyyy-MM-dd");
             string stime = datetime_d.ToString("HH:mm:ss");
 
@@ -963,7 +963,7 @@ namespace ETech.fnc
                                 IF(status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
                             FROM `saleshead` AS H 
                             LEFT JOIN `salesdetail` AS D ON H.`SyncId` = D.`headid` 
-                            WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalno + @"
+                            WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalNumber + @"
                                 AND H.`date` >= '" + sdate + @" 00:00:00'
                                 AND H.`date` <= '" + sdate + @" 23:59:59'
                         ) A
@@ -994,8 +994,8 @@ namespace ETech.fnc
         public static DataRow get_cashflow_data(DateTime datetime_d)
         {
 
-            string sBranchid = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
+            long sBranchid = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
             string sdate = datetime_d.ToString("yyyy-MM-dd");
 
             string sql = @"SELECT COALESCE(SUM(IF(`type` = 1,`amount`,0)),0) AS 'begin',
@@ -1008,7 +1008,7 @@ namespace ETech.fnc
 	                                       `c1` * 1 + `c25c` * 0.25 + `c10c` * 0.1 + `c5c` * 0.05) AS 'amount'
                         FROM `poscashdenomination` 
                         WHERE `branchid` = " + sBranchid + @" AND
-                            `terminalno` = " + terminalno +
+                            `terminalno` = " + terminalNumber +
                         zreadFunc.GetSQLDateRange("`datecreated`", datetime_d, datetime_d) + @"
                         GROUP BY `type`
                         ) A";
@@ -1020,8 +1020,8 @@ namespace ETech.fnc
 
         public static decimal get_old_grandtotal(DateTime dDateTime)
         {
-            string terminalno = cls_globalvariables.terminalno_v;
-            string sBranchid = cls_globalvariables.BranchCode;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
+            long sBranchid = cls_globalvariables.Branch.Id;
 
             string prev_date = dDateTime.AddDays(-1).ToString("yyyy-MM-dd");
             string this_date = dDateTime.ToString("yyyy-MM-dd");
@@ -1030,7 +1030,7 @@ namespace ETech.fnc
 
             string prev_new_grand_sql = @"SELECT COALESCE(`newgrandtotal`, 0) AS 'grandtotal' 
                                     FROM `posxyzread`
-                                    WHERE `terminalno` = " + terminalno + @"
+                                    WHERE `terminalno` = " + terminalNumber + @"
                                         AND `branchid` = " + sBranchid +
                         zreadFunc.GetSQLDateRange("`date`", prev_date_d, prev_date_d);
             Console.WriteLine(prev_new_grand_sql);
@@ -1047,7 +1047,7 @@ namespace ETech.fnc
                                         COALESCE(SUM(D.`quantity` * D.`price`),0) AS 'total_amount'
                                     FROM `saleshead` AS H, `salesdetail` AS D
                                     WHERE H.`SyncId` = D.`headid` AND H.`show` = 1 AND H.`status` = 1
-	                                    AND H.`terminalno` = " + terminalno + @" AND H.`branchid` = " + sBranchid + @"
+	                                    AND H.`terminalno` = " + terminalNumber + @" AND H.`branchid` = " + sBranchid + @"
 	                                    AND H.`date` > '2013-01-15 00:00:00' 
 	                                    AND H.`date` < '" + this_date + @" 00:00:00'";
                 dt = mySQLFunc.getdb(old_grand_sql);
@@ -1196,8 +1196,8 @@ namespace ETech.fnc
             DataTable dt_salessummary1 = new DataTable();
             dt_salessummary1.Columns.Add(); dt_salessummary1.Columns.Add();
 
-            string terminalno = cls_globalvariables.terminalno_v;
-            dt_salessummary1.Rows.Add("TERMINAL", terminalno);
+            int terminalNumber = cls_globalvariables.TerminalNumber;
+            dt_salessummary1.Rows.Add("TERMINAL", terminalNumber);
             dt_salessummary1.Rows.Add("BEGIN OR#", ornumber_begin);
             dt_salessummary1.Rows.Add("END OR#", ornumber_end);
             dt_salessummary1.Rows.Add("  ", "  ");
@@ -1405,7 +1405,7 @@ namespace ETech.fnc
             long ornumber = tran.getORnumber();
             string sMIN = cls_globalvariables.MIN_v;
             string sSerial = cls_globalvariables.Serial_v;
-            string terminalno = cls_globalvariables.terminalno_v;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
             DateTime salesdatetime = tran.getdatetime();
             string salesdate = salesdatetime.ToString("MM/dd/yyyy");
             string salestime = salesdatetime.ToString("HH:mm:ss");
@@ -1447,7 +1447,7 @@ namespace ETech.fnc
                 dt_header2.Rows.Add("OR#:", ornumber);
                 dt_header2.Rows.Add("Date:", salesdate);
                 dt_header2.Rows.Add("Time:", salestime);
-                dt_header2.Rows.Add("TRM:", terminalno);
+                dt_header2.Rows.Add("TRM:", terminalNumber);
                 if (cashier != "")
                 {
                     dt_header2.Rows.Add("Cashier:", cashier);
@@ -1478,7 +1478,7 @@ namespace ETech.fnc
                 dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add();
                 dt_header2.Rows.Add("","", "Date:", salesdate);
                 dt_header2.Rows.Add("OR#:", ornumber + "", "Time:", salestime);
-                dt_header2.Rows.Add("TRM:", terminalno + " ", " ", "");
+                dt_header2.Rows.Add("TRM:", terminalNumber + " ", " ", "");
                 if (cashier != "") dt_header2.Rows.Add("Cashier:", cashier + "", "ID#:", cashiercode);
                 if (checker != "") dt_header2.Rows.Add("Checker:", checker + "", "ID#:", checkercode);
                 if (membername != "") dt_header2.Rows.Add("Member:", membername + "", "ID#:", memberidno);
@@ -1904,7 +1904,7 @@ namespace ETech.fnc
             tempDataTable = new DataTable();
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
-            tempDataTable.Rows.Add("TERMINAL#: " + cls_globalvariables.terminalno_v, "");
+            tempDataTable.Rows.Add("TERMINAL#: " + cls_globalvariables.TerminalNumber, "");
             tempDataTable.Rows.Add("SI#: " + tran.getORnumber());
             tempDataTable.Rows.Add("CASHIER: " + tran.getclerk().getfullname(), "ID#: " + tran.getclerk().getusercode());
             tempDataTable.Rows.Add("DATE: " + tran.getdatetime().ToShortDateString(), "TIME: " + tran.getdatetime().ToLongTimeString());
@@ -2285,8 +2285,8 @@ namespace ETech.fnc
             string sPermitNo = cls_globalvariables.PermitNo_v;
             string sSerial = cls_globalvariables.Serial_v;
             string sMIN = cls_globalvariables.MIN_v;
-            string branchid = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
+            long branchid = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
 
             DataTable dt_header1 = new DataTable();
             dt_header1.Columns.Add();
@@ -2300,7 +2300,7 @@ namespace ETech.fnc
             dt_header1.Rows.Add(sMIN);
             dt_header1.Rows.Add(" ");
             dt_header1.Rows.Add("PRINTED: " + DateTime.Now);
-            dt_header1.Rows.Add("Terminal No: " + cls_globalvariables.terminalno_v);
+            dt_header1.Rows.Add("Terminal No: " + cls_globalvariables.TerminalNumber);
             dt_header1.Rows.Add(" ");
             dt_header1.Rows.Add(reportname);
             string sdatefrom = datefrom.ToString("yyyy-MM-dd");
@@ -2504,7 +2504,7 @@ namespace ETech.fnc
 
         private static Graphics printpage_pickupcash(object sender, PrintPageEventArgs e, Bitmap bmp, DateTime datetime_d, long userwid)
         {
-            string sBranchid = cls_globalvariables.BranchCode;
+            long sBranchid = cls_globalvariables.Branch.Id;
             string sBusinessName = cls_globalvariables.BusinessName_v;
             string sOwner = cls_globalvariables.Owner_v;
             string sAddress = cls_globalvariables.Address_v;
@@ -2513,7 +2513,7 @@ namespace ETech.fnc
             string sPermitNo = cls_globalvariables.PermitNo_v;
             string sMIN = cls_globalvariables.MIN_v;
             string sSerial = cls_globalvariables.Serial_v;
-            string terminalno = cls_globalvariables.terminalno_v;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
             string cdate = datetime_d.ToString("MM/dd/yyyy");
             string ctime = datetime_d.ToString("HH:mm:ss");
             cls_user cashier = new cls_user(userwid);

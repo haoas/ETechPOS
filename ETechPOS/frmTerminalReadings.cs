@@ -29,8 +29,8 @@ namespace ETech
             pbPreview.Width = origwidth;
             pbPreview.Height = origheight;
 
-            if (!Directory.Exists(cls_globalvariables.mydocumentpath))
-                Directory.CreateDirectory(cls_globalvariables.mydocumentpath);
+            if (!Directory.Exists(cls_globalvariables.MyDocumentApplicationFolderPath))
+                Directory.CreateDirectory(cls_globalvariables.MyDocumentApplicationFolderPath);
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -59,8 +59,8 @@ namespace ETech
             DateTime Ddateto = dateTimePicker2.Value.Date;
             string datefrom = Ddatefrom.ToString("yyyy-MM-dd 00:00:00");
             string dateto = Ddateto.ToString("yyyy-MM-dd 23:59:59");
-            string terminalno = cls_globalvariables.terminalno_v;
-            string branchid = cls_globalvariables.BranchCode;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
+            long branchid = cls_globalvariables.Branch.Id;
 
             string sql = @"
             SELECT '' as `SyncId`,'ALL' as `fullname`
@@ -70,7 +70,7 @@ namespace ETech
             LEFT JOIN user AS U ON U.syncid = H.`userid`
             WHERE H.`branchid` = " + branchid + @" 
             AND (H.`date` BETWEEN '" + datefrom + @"' AND '" + dateto + @"') 
-            AND H.`terminalno` = " + terminalno + @" 
+            AND H.`terminalno` = " + terminalNumber + @"
             AND H.`status` = 1 ORDER BY `SyncId`";
 
             DataTable DT = mySQLFunc.getdb(sql);
@@ -161,8 +161,8 @@ namespace ETech
                 FROM saleshead as SH, salesdetail as SD
                 WHERE SH.`status` = 1
                 AND SD.price <> 0
-                AND SH.branchid = " + cls_globalvariables.BranchCode + @"
-                AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
+                AND SH.branchid = " + cls_globalvariables.Branch.Id + @"
+                AND SH.terminalno = " + cls_globalvariables.TerminalNumber + @"
                 AND SD.`headid` = SH.`SyncId`
                 AND SH.`date` >= '" + datefrom + @" 00:00:00'
                 AND SH.`date` <= '" + dateto + @" 23:59:59'
@@ -177,8 +177,8 @@ namespace ETech
                 FROM saleshead as SH, salesdetail as SD
                 WHERE SH.`status` = 1
                 AND SD.price <> 0
-                AND SH.branchid = " + cls_globalvariables.BranchCode + @"
-                AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
+                AND SH.branchid = " + cls_globalvariables.Branch.Id + @"
+                AND SH.terminalno = " + cls_globalvariables.TerminalNumber + @"
                 AND SD.`headid` = SH.`SyncId`
                 AND SH.`date` >= '" + datefrom + @" 00:00:00'
                 AND SH.`date` <= '" + dateto + @" 23:59:59'
@@ -198,8 +198,8 @@ namespace ETech
                     LEFT JOIN product as P on P.`SyncId` = SD.`productid`
                     LEFT JOIN department as D on P.`departmentid` = D.`SyncId`
                     WHERE SH.`status` = 1  
-                    AND SH.branchid = " + cls_globalvariables.BranchCode + @"
-                    AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
+                    AND SH.branchid = " + cls_globalvariables.Branch.Id + @"
+                    AND SH.terminalno = " + cls_globalvariables.TerminalNumber + @"
                     AND SD.`headid` = SH.`SyncId`
                     AND SH.`date` >= '" + datefrom + @" 00:00:00'
                     AND SH.`date` <= '" + dateto + @" 23:59:59'
@@ -222,8 +222,8 @@ namespace ETech
 	                        FROM saleshead as SH, salesdetail as SD, product as P
 	                        WHERE SH.`status` = 1  
                             AND SD.price <> 0
-                            AND SH.branchid = " + cls_globalvariables.BranchCode + @"
-	                        AND SH.terminalno = " + cls_globalvariables.terminalno_v + @"
+                            AND SH.branchid = " + cls_globalvariables.Branch.Id + @"
+	                        AND SH.terminalno = " + cls_globalvariables.TerminalNumber + @"
 	                        AND SD.`headid` = SH.`SyncId`
 	                        AND SH.`date` BETWEEN '" + datefrom + @" 00:00:00' AND '" + dateto + @" 23:59:59'
 	                        AND P.`SyncId` = SD.`productid`
@@ -387,10 +387,10 @@ namespace ETech
             Bitmap bmp = new Bitmap(width, height);
             bmp.SetResolution(zoompercent, zoompercent);
             fncHardware.printpage_TerminalReadings(null, null, bmp, reporttype, reportname, DT_report, Ddatefrom, Ddateto);
-            bmp.Save(cls_globalvariables.mydocumentpath + "Receipt.jpg");
+            bmp.Save(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg");
             bmp.Dispose();
             Bitmap bitmap;
-            using (var bmpTemp = new Bitmap(cls_globalvariables.mydocumentpath + "Receipt.jpg"))
+            using (var bmpTemp = new Bitmap(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg"))
                 bitmap = new Bitmap(bmpTemp);
             pbPreview.Image = bitmap;
         }
@@ -401,10 +401,10 @@ namespace ETech
             Bitmap bmp = new Bitmap(width, height);
             bmp.SetResolution(zoompercent, zoompercent);
             fncHardware.printpage_zread(null, null, bmp, printtype, datetime_d, datetimeTO_d);
-            bmp.Save(cls_globalvariables.mydocumentpath + "Receipt.jpg");
+            bmp.Save(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg");
             bmp.Dispose();
             Bitmap bitmap;
-            using (var bmpTemp = new Bitmap(cls_globalvariables.mydocumentpath + "Receipt.jpg"))
+            using (var bmpTemp = new Bitmap(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg"))
                 bitmap = new Bitmap(bmpTemp);
             pbPreview.Image = bitmap;
         }
@@ -415,10 +415,10 @@ namespace ETech
             Bitmap bmp = new Bitmap(width, height);
             bmp.SetResolution(zoompercent, zoompercent);
             fncHardware.printpage_TerminalReadings(null, null, bmp, reporttype, reportname, DT, datefrom, dateto);
-            bmp.Save(cls_globalvariables.mydocumentpath + "Receipt.jpg");
+            bmp.Save(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg");
             bmp.Dispose();
             Bitmap bitmap;
-            using (var bmpTemp = new Bitmap(cls_globalvariables.mydocumentpath + "Receipt.jpg"))
+            using (var bmpTemp = new Bitmap(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg"))
                 bitmap = new Bitmap(bmpTemp);
             pbPreview.Image = bitmap;
         }
@@ -431,10 +431,10 @@ namespace ETech
 
             fncHardware.printpage_zread(null, null, bmp, printtype, datetime_d, datetimeTO_d);
 
-            bmp.Save(cls_globalvariables.mydocumentpath + "Receipt.jpg");
+            bmp.Save(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg");
             bmp.Dispose();
             Bitmap bitmap;
-            using (var bmpTemp = new Bitmap(cls_globalvariables.mydocumentpath + "Receipt.jpg"))
+            using (var bmpTemp = new Bitmap(cls_globalvariables.MyDocumentApplicationFolderPath + "Receipt.jpg"))
                 bitmap = new Bitmap(bmpTemp);
             pbPreview.Image = bitmap;
         }

@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
 using ETech.Models.Global;
+using ETech.Models.Database;
 
 namespace ETech.cls
 {
@@ -27,19 +28,33 @@ namespace ETech.cls
         }
 
         public static string ApplicationFolderPath = Application.StartupPath;
-        public static string ApplicationErrorFolderPath = Application.StartupPath + "/Errors";
-        public static string MyDocumentApplicationFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/" + ApplicationName;
+        public static string ApplicationErrorFolderPath = cls_globalfunc.CreateDirectoryIfNotExists(Application.StartupPath + "/Errors");
+        public static string MyDocumentApplicationFolderPath = cls_globalfunc.CreateDirectoryIfNotExists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/" + ApplicationName);
         public static string ApplicationDataLocalCompanyNameFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/" + CompanyName;
-        public static string ApplicationDataLocalApplicationFolderPath = ApplicationDataLocalCompanyNameFolderPath + "/" + ApplicationName;
+        public static string ApplicationDataLocalApplicationFolderPath = cls_globalfunc.CreateDirectoryIfNotExists(ApplicationDataLocalCompanyNameFolderPath + "/" + ApplicationName);
 
-        public static string ErrorExceptionLogsFilePath = ApplicationFolderPath + "/Errors/ExcemptionErrors.txt";
-        public static string PosTLogsFilePath = MyDocumentApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".T";
-        public static string PosCsvLogsFilePath = ApplicationErrorFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.terminalno_v + ".C";
-        public static string ConnectionSettingsXmlPath = ApplicationFolderPath + "/Connection Settings.xml";
+        public static string ErrorExceptionLogsFilePath
+        {
+            get { return ApplicationFolderPath + "/Errors/ExcemptionErrors.txt"; }
+        }
+        public static string PosTLogsFilePath
+        {
+            get { return MyDocumentApplicationFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.TerminalNumber + ".T"; }
+        }
+        public static string PosCsvLogsFilePath
+        {
+            get { return ApplicationErrorFolderPath + "/" + DateTime.Now.ToString("yyMMdd") + "POS" + cls_globalvariables.TerminalNumber + ".C"; }
+        }
+        public static string ConnectionSettingsXmlPath
+        {
+            get { return ApplicationFolderPath + "/Connection Settings.xml"; }
+        }
 
+        public static Branch Branch = null;
         public static ConnectionSettings ConnectionSettings = null;
+        public static Settings Settings = null;
 
-        public static string MainBranchCode = "1000";
+        public static long MainBranchCode = 1000;
 
         public static decimal vat = 0.12M;
         public static decimal senior = 0.20M;
@@ -65,189 +80,6 @@ namespace ETech.cls
         public static DateTime companystartdate = new DateTime(2016, 1, 1, 0, 0, 0);
         public static DateTime companymaxdate = new DateTime(3000, 12, 31, 0, 0, 0);
 
-        public static string settingspath = Application.StartupPath + "/settings.txt";
-
-        public static string mydocumentpath = createDirIfNotExists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/" + ApplicationName + "/");
-
-        public static string createDirIfNotExists(string directory)
-        {
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            return directory;
-        }
-
-        public static string systemlogpath = mydocumentpath + "ETechPOS_SystemLogs.txt";
-
-        private static string posname = "ETECH POS SYSTEM";
-        public static string posname_v
-        {
-            get { return posname; }
-            set { posname = value; }
-        }
-
-        private static string version = "1.0.0";
-        public static string version_v
-        {
-            get { return version; }
-            set { version = value; }
-        }
-
-        private static string terminalno = "01";
-        public static string terminalno_v
-        {
-            get { return terminalno; }
-            set
-            {
-                if (value.Length != 2)
-                    throw new Exception("Invalid Terminal no");
-                else
-                    terminalno = value;
-            }
-        }
-
-        private static string com = "";
-        public static string com_v
-        {
-            get { return com; }
-            set { com = value; }
-        }
-
-        private static string disp1 = "";
-        public static string disp1_v
-        {
-            get { return disp1; }
-            set { disp1 = value; }
-        }
-
-        private static string disp2 = "";
-        public static string disp2_v
-        {
-            get { return disp2; }
-            set { disp2 = value; }
-        }
-
-        private static string branchcode = "";
-        public static string BranchCode
-        {
-            get { return branchcode; }
-            set
-            {
-                if (value.Length != 4)
-                    throw new Exception("Invalid BranchCode");
-                else
-                {
-                    branchcode = value;
-                    string selectSql = @"SELECT `name` FROM `branch` WHERE Id = '" + value + "'";
-                    DataTable resultDt = mySQLFunc.getdb(selectSql);
-                    if (resultDt == null || resultDt.Rows.Count <= 0)
-                        return;
-                    BranchName = resultDt.Rows[0]["name"].ToString();
-                }
-            }
-        }
-
-        private static string branchname = "";
-        public static string BranchName
-        {
-            get { return branchname; }
-            set { branchname = value; }
-        }
-
-        private static string BusinessName = "";
-        public static string BusinessName_v
-        {
-            get { return BusinessName; }
-            set { BusinessName = value; }
-        }
-
-        private static string Owner = "";
-        public static string Owner_v
-        {
-            get { return Owner; }
-            set { Owner = value; }
-        }
-
-        private static string TIN = "";
-        public static string TIN_v
-        {
-            get { return TIN; }
-            set { TIN = value; }
-        }
-
-        private static string Address = "";
-        public static string Address_v
-        {
-            get { return Address; }
-            set { Address = value; }
-        }
-
-        private static string PermitNo = "";
-        public static string PermitNo_v
-        {
-            get { return PermitNo; }
-            set { PermitNo = value; }
-        }
-
-        private static string ACC = "";
-        public static string ACC_v
-        {
-            get { return ACC; }
-            set { ACC = value; }
-        }
-
-        private static string Serial = "";
-        public static string Serial_v
-        {
-            get { return Serial; }
-            set { Serial = value; }
-        }
-
-        private static string MIN = "";
-        public static string MIN_v
-        {
-            get { return MIN; }
-            set { MIN = value; }
-        }
-
-        public static int qty_places = 2;
-        public static int print_receipt_buffer = 0;
-        public static int print_receipt_actual = 0;
-        public static int print_receipt_limit = 0;
-
-        public static string PosProviderName_v;
-        public static string PosProviderAddress_v;
-        public static string PosProviderTIN_v;
-        public static string ACC_date_v;
-
-        private static string orfooter1 = "";
-        public static string orfooter1_v
-        {
-            get { return orfooter1; }
-            set { orfooter1 = value; }
-        }
-
-        private static string orfooter2 = "";
-        public static string orfooter2_v
-        {
-            get { return orfooter2; }
-            set { orfooter2 = value; }
-        }
-
-        private static string orfooter3 = "";
-        public static string orfooter3_v
-        {
-            get { return orfooter3; }
-            set { orfooter3 = value; }
-        }
-
-        private static string orfooter4 = "";
-        public static string orfooter4_v
-        {
-            get { return orfooter4; }
-            set { orfooter4 = value; }
-        }
-
         private static string colortheme = "";
         public static string colortheme_v
         {
@@ -255,88 +87,179 @@ namespace ETech.cls
             set { colortheme = value; }
         }
 
-        private static string avoidinvalidpprice = "";
-        public static string avoidinvalidpprice_v
-        {
-            get { return avoidinvalidpprice; }
-            set { avoidinvalidpprice = value; }
-        }
+        public static string settingspath = Application.StartupPath + "/settings.txt";
 
-        private static string print_receipt_format = "";
+        public static int TerminalNumber
+        {
+            get { return ConnectionSettings.TerminalNumber; }
+        }
+        public static string com_v
+        {
+            get { return Settings.GetValue1("Com Port Number").ToString(); }
+        }
+        public static string disp1_v
+        {
+            get { return Settings.GetValue1("Customer Display", "Display 1").ToString(); }
+        }
+        public static string disp2_v
+        {
+            get { return Settings.GetValue1("Customer Display", "Display 2").ToString(); }
+        }
+        public static string BusinessName_v
+        {
+            get { return Settings.GetValue1("Business Information", "Business Name").ToString(); }
+        }
+        public static string Owner_v
+        {
+            get { return Settings.GetValue1("Business Information", "Owner").ToString(); }
+        }
+        public static string TIN_v
+        {
+            get { return Settings.GetValue1("Business Information", "TIN").ToString(); }
+        }
+        public static string Address_v
+        {
+            get { return Settings.GetValue1("Business Information", "Address").ToString(); }
+        }
+        public static string PermitNo_v
+        {
+            get { return Settings.GetValue1("Business Information", "Permit Number").ToString(); }
+        }
+        public static string ACC_v
+        {
+            get { return Settings.GetValue1("Business Information", "ACC").ToString(); }
+        }
+        public static string Serial_v
+        {
+            get { return Settings.GetValue1("Business Information", "Serial Number").ToString(); }
+        }
+        public static string MIN_v
+        {
+            get { return Settings.GetValue1("Business Information", "MIN").ToString(); }
+        }
+        public static string orfooter1_v
+        {
+            get { return Settings.GetValue1("Receipt Display", "Footer 1").ToString(); }
+        }
+        public static string orfooter2_v
+        {
+            get { return Settings.GetValue1("Receipt Display", "Footer 2").ToString(); }
+        }
+        public static string orfooter3_v
+        {
+            get { return Settings.GetValue1("Receipt Display", "Footer 3").ToString(); }
+        }
+        public static string orfooter4_v
+        {
+            get { return Settings.GetValue1("Receipt Display", "Footer 4").ToString(); }
+        }
+        public static bool avoidinvalidpprice_v
+        {
+            get { return Settings.GetValue1("Avoid Invalid Purchase Price").ToString() == "1"; }
+        }
         public static string print_receipt_format_v
         {
-            get { return print_receipt_format; }
-            set { print_receipt_format = value; }
+            get { return Settings.GetValue1("Print Receipt Format").ToString(); }
         }
-
-        private static string allowZeroPrice = "";
-        public static string allowZeroPrice_v
+        public static bool allowZeroPrice_v
         {
-            get { return allowZeroPrice; }
-            set { allowZeroPrice = value; }
+            get { return Settings.GetValue1("Allow Zero Price").ToString() == "1"; }
         }
-
-        private static int readDateRange = 1;
-        public static int readDateRange_v
-        {
-            get { return readDateRange; }
-            set { readDateRange = value; }
-        }
-
-        private static string grossmethod = "";
         public static string grossmethod_v
         {
-            get { return grossmethod; }
-            set { grossmethod = value; }
+            get { return Settings.GetValue1("Gross Method").ToString(); }
         }
-
-        private static int ORPrintCount = 1;
-        public static int ORPrintCount_v
-        {
-            get { return ORPrintCount; }
-            set { ORPrintCount = value; }
-        }
-
-        private static decimal ServiceCharge = 0;
-        public static decimal ServiceCharge_v
-        {
-            get { return ServiceCharge; }
-            set { ServiceCharge = value; }
-        }
-
-        private static decimal LocalTax = 0;
-        public static decimal LocalTax_v
-        {
-            get { return LocalTax; }
-            set { LocalTax = value; }
-        }
-
-        private static string showdetailCCinZRead = "";
         public static string showdetailCCinZRead_v
         {
-            get { return showdetailCCinZRead; }
-            set { showdetailCCinZRead = value; }
+            get { return Settings.GetValue1("Show Detail Creditcard in ZRead").ToString(); }
         }
-
-        private static string RefundMemo = "0";
-        public static string RefundMemo_v
+        public static int ORPrintCount_v
         {
-            get { return RefundMemo; }
-            set { RefundMemo = value; }
+            get { return Convert.ToInt32(Settings.GetValue1("OR Print Count")); }
         }
-
-        private static string prodsearchstyle = "0";
+        public static string PosName
+        {
+            get { return Settings.GetValue1("POS Name").ToString(); }
+        }
+        public static int LocalTax_v
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Local Tax")); }
+        }
+        public static int ServiceCharge_v
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Service Charge")); }
+        }
+        public static int RefundMemo_v
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Refund Memo")); }
+        }
+        public static string DefaultPrinter_v
+        {
+            get { return Settings.GetValue1("Default Printer").ToString(); }
+        }
+        public static bool PreviewOR_v
+        {
+            get { return Settings.GetValue1("Preview OR").ToString() == "1"; }
+        }
         public static string prodsearchstyle_v
         {
-            get { return prodsearchstyle; }
-            set { prodsearchstyle = value; }
+            get { return Settings.GetValue1("Product Search Style").ToString(); }
         }
-
-        private static int CustomerDisplayLength = 20;
+        public static string ads_url_v
+        {
+            get { return Settings.GetValue1("Advertising URL").ToString(); }
+        }
+        public static int maximum_cash_collection_v
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Maximum Cash Collection")); }
+        }
+        public static int readDateRange_v
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Read Date Range")); }
+        }
+        public static bool AutoShowKeyboard_v
+        {
+            get { return Settings.GetValue1("Automatic Show Keyboard").ToString() == "1"; }
+        }
+        public static string POSMacAddress_v
+        {
+            get { return Settings.GetValue1("POS Mac Address").ToString(); }
+        }
+        public static int DiscountDetails_v
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Discount Details")); }
+        }
         public static int CustomerDisplayLength_v
         {
-            get { return CustomerDisplayLength; }
-            set { value = CustomerDisplayLength; }
+            get { return Convert.ToInt32(Settings.GetValue1("Customer Display Length")); }
+        }
+        public static string PosProviderName_v
+        {
+            get { return Settings.GetValue1("POS Provider Name").ToString(); }
+        }
+        public static string PosProviderAddress_v
+        {
+            get { return Settings.GetValue1("POS Provider Address").ToString(); }
+        }
+        public static string PosProviderTIN_v
+        {
+            get { return Settings.GetValue1("POS Provider TIN").ToString(); }
+        }
+        public static string ACC_date_v
+        {
+            get { return Settings.GetValue1("ACC Date").ToString(); }
+        }
+        public static int print_receipt_actual
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Print Receipt Actual")); }
+        }
+        public static int print_receipt_limit
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Print Receipt Limit")); }
+        }
+        public static int print_receipt_buffer
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Print Receipt Buffer")); }
         }
 
         //RLC---
@@ -359,38 +282,10 @@ namespace ETech.cls
         { get { return is4By3ratio; } set { is4By3ratio = value; } }
         //------
 
-        private static string DefaultPrinter = "";
-        public static string DefaultPrinter_v
-        { get { return DefaultPrinter; } set { DefaultPrinter = value; } }
-
         public static byte[] OpenDrawerBytes
         {
             get { return new byte[] { 27, 112, 0, 25, 250 }; }
         }
-
-        private static bool PreviewOR = false;
-        public static bool PreviewOR_v
-        { get { return PreviewOR; } set { PreviewOR = value; } }
-
-        private static string ads_url = "";
-        public static string ads_url_v
-        { get { return ads_url; } set { ads_url = value; } }
-
-        private static double maximum_cash_collection = 0;
-        public static double maximum_cash_collection_v
-        { get { return maximum_cash_collection; } set { maximum_cash_collection = value; } }
-
-        private static bool AutoShowKeyboard = false;
-        public static bool AutoShowKeyboard_v
-        { get { return AutoShowKeyboard; } set { AutoShowKeyboard = value; } }
-
-        private static string POSMacAddress = "";
-        public static string POSMacAddress_v
-        { get { return POSMacAddress; } set { POSMacAddress = value; } }
-
-        private static int DiscountDetails = 1;
-        public static int DiscountDetails_v
-        { get { return DiscountDetails; } set { DiscountDetails = value; } }
 
         public static string warning_lack_of_payment = "There's still remaining amount due.";
         public static string warning_refunded_transaction_cannot_be_voided = "This transaction cannot be void because it has refunded item/s. Please void the refund item/s first before void this transaction.";

@@ -7,6 +7,9 @@ using System.Threading;
 using ETech.cls;
 using System.IO;
 using ETech.Helpers;
+using ETech.Models.Global;
+using ETech.fnc;
+using ETech.Models.Database;
 
 namespace ETech
 {
@@ -29,9 +32,12 @@ namespace ETech
                     return;
 
                 }
+                if (!ConnectionSettingsController.TryGetData(out cls_globalvariables.ConnectionSettings))
+                    return;
+                if (!MySqlFunction.HasConnection())
+                    return;
+                cls_globalvariables.Branch = BranchController.GetDataFromConfigurationTable();
                 GC.Collect();
-                if (!Directory.Exists(cls_globalvariables.ApplicationDataLocalApplicationFolderPath))
-                    Directory.CreateDirectory(cls_globalvariables.ApplicationDataLocalApplicationFolderPath);
                 Application.Run(new POSMain());
             }
         }

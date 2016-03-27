@@ -10,114 +10,29 @@ using ETech.cls;
 using System.Net.NetworkInformation;
 using ETech.Models.Global;
 using ETech.Helpers;
+using ETech.Variables;
+using ETech.Enums;
 
 namespace ETech
 {
-    class mySQLFunc
+    public static class mySQLFunc
     {
         public static bool initialize_global_variables()
         {
-            try
+            bool result = true;
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("BranchId", cls_globalvariables.Branch.Id);
+            dictionary.Add("TerminalNumber", cls_globalvariables.ConnectionSettings.TerminalNumber);
+            dictionary.Add("Type", SettingType.Pos);
+            Settings newSettings = SettingsController.GetData(dictionary);
+            if (newSettings == null)
             {
-                string[] setting_lines = File.ReadAllLines(cls_globalvariables.settingspath);
-                IEnumerable<string[]> setting_enu = setting_lines.Select(l => l.Split(new[] { '=' }, 2));
-                var dic = setting_enu.ToDictionary(s => s[0].Trim(), s => s[1].Trim());
-                if (!ConnectionSettingsController.TryGetData(out cls_globalvariables.ConnectionSettings))
-                    return false;
-                cls_globalvariables.terminalno_v = dic["terminal"];
-                cls_globalvariables.com_v = dic["com"];
-                cls_globalvariables.disp1_v = dic["disp1"];
-                cls_globalvariables.disp2_v = dic["disp2"];
-                cls_globalvariables.colortheme_v = dic["colortheme"];
-                cls_globalvariables.BranchCode = dic["branchcode"];
-                cls_globalvariables.BusinessName_v = dic["BusinessName"];
-                cls_globalvariables.Owner_v = dic["Owner"];
-                cls_globalvariables.TIN_v = dic["TIN"];
-                cls_globalvariables.Address_v = dic["Address"];
-                cls_globalvariables.PermitNo_v = dic["PermitNo"];
-                cls_globalvariables.ACC_v = dic["ACC"];
-                cls_globalvariables.Serial_v = dic["Serial"];
-                cls_globalvariables.MIN_v = dic["MIN"];
-                cls_globalvariables.PosProviderName_v = dic["PosProviderName"];
-                cls_globalvariables.PosProviderAddress_v = dic["PosProviderAddress"];
-                cls_globalvariables.PosProviderTIN_v = dic["PosProviderTIN"];
-                try { cls_globalvariables.qty_places = int.Parse(dic["qty_places"]); }
-                catch { cls_globalvariables.qty_places = 2; }
-                try { cls_globalvariables.print_receipt_buffer = int.Parse(dic["print_receipt_buffer"]); }
-                catch { cls_globalvariables.print_receipt_buffer = 0; }
-                try { cls_globalvariables.print_receipt_actual = int.Parse(dic["print_receipt_actual"]); }
-                catch { cls_globalvariables.print_receipt_actual = 0; }
-                try { cls_globalvariables.print_receipt_limit = int.Parse(dic["print_receipt_limit"]); }
-                catch { cls_globalvariables.print_receipt_limit = 0; }
-
-                cls_globalvariables.ACC_date_v = dic["ACC_date"];
-
-                cls_globalvariables.orfooter1_v = dic["orfooter1"];
-                cls_globalvariables.orfooter2_v = dic["orfooter2"];
-                cls_globalvariables.orfooter3_v = dic["orfooter3"];
-                cls_globalvariables.orfooter4_v = dic["orfooter4"];
-                try { cls_globalvariables.posname_v = dic["posname"]; }
-                catch { cls_globalvariables.posname_v = "ETECH POS SYSTEM"; }
-                try { cls_globalvariables.avoidinvalidpprice_v = dic["avoidinvalidpprice"]; }
-                catch { cls_globalvariables.avoidinvalidpprice_v = "0"; }
-                try { cls_globalvariables.print_receipt_format_v = dic["print_receipt_format"]; }
-                catch { cls_globalvariables.print_receipt_format_v = ""; }
-                try { cls_globalvariables.allowZeroPrice_v = dic["allowzeroprice"]; }
-                catch { cls_globalvariables.allowZeroPrice_v = "0"; }
-                try { cls_globalvariables.grossmethod_v = dic["grossmethod"]; }
-                catch { cls_globalvariables.grossmethod_v = "0"; }
-                try { cls_globalvariables.showdetailCCinZRead_v = dic["showdetailCCinZRead"]; }
-                catch { cls_globalvariables.showdetailCCinZRead_v = "0"; }
-                try { cls_globalvariables.readDateRange_v = Convert.ToInt16(dic["readDateRange"]); }
-                catch { cls_globalvariables.readDateRange_v = 1; }
-                try { cls_globalvariables.prodsearchstyle_v = dic["prodsearchstyle"]; }
-                catch { cls_globalvariables.prodsearchstyle_v = "0"; }
-                try { cls_globalvariables.CustomerDisplayLength_v = int.Parse(dic["CustomerDisplayLength"]); }
-                catch { cls_globalvariables.CustomerDisplayLength_v = 20; }
-
-                try { cls_globalvariables.ORPrintCount_v = Convert.ToInt16(dic["ORPrintCount"]); }
-                catch { cls_globalvariables.ORPrintCount_v = 1; }
-                if (cls_globalvariables.ORPrintCount_v <= 1) cls_globalvariables.ORPrintCount_v = 1;
-
-                try { cls_globalvariables.ServiceCharge_v = Convert.ToDecimal(dic["ServiceCharge"]); }
-                catch { }
-                try { cls_globalvariables.LocalTax_v = Convert.ToDecimal(dic["LocalTax"]); }
-                catch { }
-
-                try { cls_globalvariables.RefundMemo_v = dic["RefundMemo"]; }
-                catch { cls_globalvariables.RefundMemo_v = "0"; }
-
-                try { cls_globalvariables.DefaultPrinter_v = dic["DefaultPrinter"]; }
-                catch { cls_globalvariables.DefaultPrinter_v = ""; }
-
-                try { cls_globalvariables.PreviewOR_v = (dic["PreviewOR"] == "1"); }
-                catch { cls_globalvariables.PreviewOR_v = false; }
-
-                try { cls_globalvariables.ads_url_v = dic["Ads_Url"]; }
-                catch { cls_globalvariables.ads_url_v = ""; }
-
-                try { cls_globalvariables.AutoShowKeyboard_v = (dic["AutoShowKeyboard"] == "1"); }
-                catch { cls_globalvariables.AutoShowKeyboard_v = false; }
-
-                try { cls_globalvariables.maximum_cash_collection_v = Convert.ToDouble(dic["MaximumCashCollection"]); }
-                catch { cls_globalvariables.maximum_cash_collection_v = 0; }
-
-                try { cls_globalvariables.POSMacAddress_v = dic["POSMacAddress"]; }
-                catch { cls_globalvariables.POSMacAddress_v = ""; }
-
-                try { cls_globalvariables.DiscountDetails_v = Convert.ToInt16(dic["DiscountDetails"]); }
-                catch { cls_globalvariables.DiscountDetails_v = 1; }
-
-                cls_globalvariables.starttime_v = 0;
-                cls_globalvariables.endtime_v = 0;
+                //newSettings = SettingsController.GetDefaultData();
+                //LogsHelper.WriteToTLog(MessagesVariable.LoadDefaultSettings);
+                result = false;
             }
-            catch (Exception ex)
-            {
-                DialogHelper.ShowDialog("Error in settings \n" + ex.ToString());
-                return false;
-            }
-
-            return true;
+            cls_globalvariables.Settings = newSettings;
+            return result;
         }
 
         public static Boolean setdb(string SQL)
@@ -310,7 +225,7 @@ namespace ETech
 
         public static DataTable getdb_main(string SQL)
         {
-            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
+            if (cls_globalvariables.Branch.Id != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -340,7 +255,7 @@ namespace ETech
 
         public static Boolean setdb_main(string SQL)
         {
-            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
+            if (cls_globalvariables.Branch.Id != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -412,7 +327,7 @@ namespace ETech
         }
         public static bool check_connection_main()
         {
-            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
+            if (cls_globalvariables.Branch.Id != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";

@@ -59,8 +59,8 @@ namespace ETech
         private void frmVoid_Load(object sender, EventArgs e)
         {
             string sSQL = @"SELECT MAX(`ornumber`) as 'ornumber' FROM `saleshead`
-                            WHERE `terminalno` = " + cls_globalvariables.terminalno_v + @"
-                                AND `branchid` = " + cls_globalvariables.BranchCode + @" AND `status`=1";
+                            WHERE `terminalno` = " + cls_globalvariables.TerminalNumber + @"
+                                AND `branchid` = " + cls_globalvariables.Branch.Id + @" AND `status`=1";
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {

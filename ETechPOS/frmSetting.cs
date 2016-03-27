@@ -92,20 +92,20 @@ namespace ETech
             writer.Write(content);
             writer.Close();
 
-            cls_globalvariables.BusinessName_v = this.txtBusinessName.Text;
-            cls_globalvariables.Owner_v = this.txtOwner.Text;
-            cls_globalvariables.Address_v = this.txtAddress.Text;
+            cls_globalvariables.Settings.SetValue1(this.txtBusinessName.Text, "Business Information", "Business Name");
+            cls_globalvariables.Settings.SetValue1(this.txtOwner.Text, "Business Information", "Owner");
+            cls_globalvariables.Settings.SetValue1(this.txtAddress.Text, "Business Information", "Address");
 
-            cls_globalvariables.PermitNo_v = this.txtPermit.Text;
-            cls_globalvariables.ACC_v = this.txtACC.Text;
-            cls_globalvariables.Serial_v = this.txtSerialNo.Text;
-            cls_globalvariables.MIN_v = this.txtMIN.Text;
-            cls_globalvariables.TIN_v = this.txtTIN.Text;
+            cls_globalvariables.Settings.SetValue1(this.txtPermit.Text, "Business Information", "Permit Number");
+            cls_globalvariables.Settings.SetValue1(this.txtACC.Text, "Business Information", "ACC");
+            cls_globalvariables.Settings.SetValue1(this.txtSerialNo.Text, "Business Information", "Serial Number");
+            cls_globalvariables.Settings.SetValue1(this.txtMIN.Text, "Business Information", "MIN");
+            cls_globalvariables.Settings.SetValue1(this.txtTIN.Text, "Business Information", "TIN");
 
-            cls_globalvariables.orfooter1_v = this.txtFooter1.Text;
-            cls_globalvariables.orfooter2_v = this.txtFooter2.Text;
-            cls_globalvariables.orfooter3_v = this.txtFooter3.Text;
-            cls_globalvariables.orfooter4_v = this.txtFooter4.Text;
+            cls_globalvariables.Settings.SetValue1(this.txtFooter1.Text, "Receipt Display", "Footer 1");
+            cls_globalvariables.Settings.SetValue1(this.txtFooter2.Text, "Receipt Display", "Footer 2");
+            cls_globalvariables.Settings.SetValue1(this.txtFooter3.Text, "Receipt Display", "Footer 3");
+            cls_globalvariables.Settings.SetValue1(this.txtFooter4.Text, "Receipt Display", "Footer 4");
 
             DialogHelper.ShowDialog("Saved. Please restart the program.");
             this.Close();

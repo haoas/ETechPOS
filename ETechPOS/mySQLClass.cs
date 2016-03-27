@@ -221,7 +221,7 @@ namespace ETech
 
         public DataTable getdb_main(string SQL)
         {
-            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
+            if (cls_globalvariables.Branch.Id != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -251,7 +251,7 @@ namespace ETech
 
         public Boolean setdb_main(string SQL)
         {
-            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
+            if (cls_globalvariables.Branch.Id != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -281,8 +281,8 @@ namespace ETech
 
         public decimal get_totalcashcollect()
         {
-            string branchid = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
+            long branchid = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
 
             string sSQL = @"SELECT COALESCE(SUM(`amount`),0) AS 'totalcash'
                             FROM
@@ -299,7 +299,7 @@ namespace ETech
 	                            ) AS C
 	                            WHERE C.`saleswid` = H.`SyncId` AND 
 		                            H.`branchid` = " + branchid + @" AND
-		                            `terminalno` = " + terminalno + @" AND 
+		                            `terminalno` = " + terminalNumber + @" AND
 		                            CAST(`date` AS DATE) = CAST(NOW() AS DATE)
 		                            AND `status` = 1
                             ) A";
@@ -309,11 +309,11 @@ namespace ETech
 
         public long get_nextornumber()
         {
-            string branchid = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
+            long branchid = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
 
             string sSQLtransno = @"SELECT COALESCE(MAX(`ornumber`),0) AS 'ornumber' FROM saleshead
-                                WHERE `terminalno` = " + terminalno + @"
+                                WHERE `terminalno` = " + terminalNumber + @"
                                     AND `branchid` = " + branchid;
             DataTable dt = getdb(sSQLtransno);
 
@@ -323,8 +323,8 @@ namespace ETech
         public int create_invoice(cls_POSTransaction trans)
         {
             string datetime_d = trans.getdatetime().ToString("yyyy-MM-dd HH:mm:ss");
-            string branchid = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
+            long branchid = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
 
             long userwid = trans.getclerk().getsyncid();
 
@@ -339,7 +339,7 @@ namespace ETech
                                 `lastmodifieddate` = NOW(), 
                                 `datecreated` = NOW(),  
                                 `ornumber` = '" + next_ornumber + @"',  
-                                `terminalno` = '" + terminalno + @"'
+                                `terminalno` = '" + terminalNumber + @"'
                             WHERE `SyncId` = '" + next_SyncId + @"'";
             setdb(sSQL);
 
@@ -350,7 +350,7 @@ namespace ETech
 
         public void update_synctable(string table_name, long SyncId)
         {
-            if (cls_globalvariables.BranchCode == "10")
+            if (cls_globalvariables.Branch.Id == 1000)
                 return;
 
             //delete old data if exists
@@ -366,7 +366,7 @@ namespace ETech
         public List<string> update_synctable_liststring(string table_name, string syncid)
         {
             List<string> tempStringList = new List<string>();
-            if (cls_globalvariables.BranchCode == "10")
+            if (cls_globalvariables.Branch.Id == 1000)
                 return tempStringList;
             //delete old data if exists
             string sSQL = "DELETE FROM `sync` WHERE `tablename` = '" + table_name + "' AND `SyncId` = " + syncid;
@@ -382,7 +382,7 @@ namespace ETech
         public int save_transaction(cls_POSTransaction trans)
         {
             string datetime_d = trans.getdatetime().ToString("yyyy-MM-dd HH:mm:ss");
-            string branchid = cls_globalvariables.BranchCode;
+            long branchid = cls_globalvariables.Branch.Id;
             long salesheadwid = trans.getSyncId();
             long customerid = trans.getcustomer().getwid();
             string customername = trans.getcustomer().getfullname();
@@ -845,7 +845,7 @@ namespace ETech
         }
         public string exec_trans_main(List<string> SQL, int retryMax)
         {
-            if (cls_globalvariables.BranchCode != cls_globalvariables.MainBranchCode)
+            if (cls_globalvariables.Branch.Id != cls_globalvariables.MainBranchCode)
             {
                 string server = "";
                 string userid = "";
@@ -883,15 +883,15 @@ namespace ETech
         public long GetAndInsertNextSyncId(string Table)
         {
             //Format 1001 01 
-            //1001 = BranchCode
+            //1001 = Branch Id
             //  01 = Terminal
             //MAX = 9999-01-99999999999
             //MIN = 1001-01-00000000000
-            string branchcode = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
-            string minimum = branchcode + terminalno + "000000000000";
-            string first = branchcode + terminalno + "000000000001";
-            string maximum = branchcode + terminalno + "999999999999";
+            long branchId = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
+            string minimum = branchId + terminalNumber + "000000000000";
+            string first = branchId + terminalNumber + "000000000001";
+            string maximum = branchId + terminalNumber + "999999999999";
 
             List<string> SQLS = new List<string>();
             SQLS.Add("SET @SyncId = 0;");
@@ -920,15 +920,15 @@ namespace ETech
         public List<string> GetListStringAndInsertNextSyncId(string Table)
         {
             //Format 1001 01 
-            //1001 = BranchCode
+            //1001 = Branch Id
             //  01 = Terminal
             //MAX = 9999-01-99999999999
             //MIN = 1001-01-00000000000
-            string branchcode = cls_globalvariables.BranchCode;
-            string terminalno = cls_globalvariables.terminalno_v;
-            string minimum = branchcode + terminalno + "000000000000";
-            string first = branchcode + terminalno + "000000000001";
-            string maximum = branchcode + terminalno + "999999999999";
+            long branchId = cls_globalvariables.Branch.Id;
+            int terminalNumber = cls_globalvariables.TerminalNumber;
+            string minimum = branchId + terminalNumber + "000000000000";
+            string first = branchId + terminalNumber + "000000000001";
+            string maximum = branchId + terminalNumber + "999999999999";
 
             List<string> SQLS = new List<string>();
             SQLS.Add("SET @SyncId = 0;");

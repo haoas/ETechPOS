@@ -205,7 +205,7 @@ namespace ETech
                 conn.Open();
                 conn.Close();
 
-                string branchid = cls_globalvariables.BranchCode;
+                long branchid = cls_globalvariables.Branch.Id;
                 string sql = "Select Now() AS `now`, `name` as 'branchname' FROM branch WHERE `Id`=" + branchid;
                 DataTable dt = mySQLFunc.getdb(sql);
                 if (dt != null &&
@@ -214,11 +214,11 @@ namespace ETech
 
                 DateTime dateTime = Convert.ToDateTime(dt.Rows[0]["now"]);
                 string branchName = dt.Rows[0]["branchname"].ToString();
-                string terminalNumber = cls_globalvariables.terminalno_v;
+                int terminalNumber = cls_globalvariables.TerminalNumber;
                 serverDateTime = dateTime.ToString("MMM dd, yyyy hh:mm tt, ") + dateTime.DayOfWeek.ToString();
 
-                lbl_BranchCode.Text = "Branch: " + cls_globalvariables.BranchCode + @"-" + branchName + @"";
-                lbl_Terminalno.Text = "Terminal#: " + cls_globalvariables.terminalno_v + @"";
+                lbl_BranchCode.Text = "Branch: " + cls_globalvariables.Branch.Id + @"-" + branchName + @"";
+                lbl_Terminalno.Text = "Terminal#: " + cls_globalvariables.TerminalNumber + @"";
 
                 return true;
             }

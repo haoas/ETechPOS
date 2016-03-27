@@ -94,7 +94,7 @@ namespace ETech
 
             this.WindowState = FormWindowState.Maximized;
             //this.lblTerminal_d.Text = cls_globalvariables.terminalno_v;
-            this.tsslTerminalNumber.Text = cls_globalvariables.terminalno_v;
+            this.tsslTerminalNumber.Text = cls_globalvariables.TerminalNumber.ToString();
 
             this.cur_trans_index = -1;
 
@@ -154,7 +154,7 @@ namespace ETech
                     isLoadSuccessful = false;
                     return;
                 }
-                if (cls_globalvariables.BranchCode != DT.Rows[0]["value"].ToString())
+                if (cls_globalvariables.Branch.Id != Convert.ToInt64(DT.Rows[0]["value"]))
                 {
                     DialogHelper.ShowDialog("Branchid in Config is not the same in settings!");
                     isLoadSuccessful = false;
@@ -227,7 +227,7 @@ namespace ETech
                 StreamWriter writer = new StreamWriter(cls_globalvariables.settingspath);
                 writer.Write(content);
                 writer.Close();
-                cls_globalvariables.POSMacAddress_v = localMacAddress;
+                cls_globalvariables.Settings.SetValue1(localMacAddress, "POS Mac Address");
             }
             else if (this.processShortCutKey(e))
             {
@@ -260,7 +260,7 @@ namespace ETech
                     wholesalefrm.ShowDialog();
                 }
 
-                if (cls_globalvariables.avoidinvalidpprice_v == "1")
+                if (cls_globalvariables.avoidinvalidpprice_v)
                 {
                     if ((searchedproduct.getPrice() <= searchedproduct.pprice && !tran.get_productlist().get_iswholesale()) ||
                         (searchedproduct.getWholesalePrice() <= searchedproduct.pprice && tran.get_productlist().get_iswholesale()))
@@ -295,8 +295,8 @@ namespace ETech
 
             //Text = cls_globalvariables.ApplicationName;
             tsslApplicationVersion.Text = "v1.0.0.0";
-            tsslBranchCode.Text = cls_globalvariables.BranchCode;
-            tsslBranchName.Text = cls_globalvariables.BranchName;
+            tsslBranchCode.Text = cls_globalvariables.Branch.Id.ToString();
+            tsslBranchName.Text = cls_globalvariables.Branch.Name;
 
             fncFilter.set_theme_color(this);
             fncFilter.set_dgv_inherit(dgvProduct);
@@ -414,7 +414,7 @@ namespace ETech
                             wholesalefrm.ShowDialog();
                         }
 
-                        if (cls_globalvariables.avoidinvalidpprice_v == "1")
+                        if (cls_globalvariables.avoidinvalidpprice_v)
                         {
                             if ((searchedproduct.getPrice() <= searchedproduct.pprice && !tran.get_productlist().get_iswholesale()) ||
                                 (searchedproduct.getWholesalePrice() <= searchedproduct.pprice && tran.get_productlist().get_iswholesale()))
@@ -1002,7 +1002,7 @@ namespace ETech
                         if (tran.get_productlist().get_productlist().Count == 0)
                             return true;
 
-                        if (cls_globalvariables.RefundMemo_v == "1")
+                        if (cls_globalvariables.RefundMemo_v == 1)
                         {
                             for (int i = 0; i < tran.get_productlist().get_productlist().Count; i++)
                             {
@@ -1541,8 +1541,8 @@ namespace ETech
                 FROM
                     `saleshead`
                 WHERE
-                    `branchid` = " + cls_globalvariables.BranchCode + @" AND
-                    `terminalno` = " + cls_globalvariables.terminalno_v;
+                    `branchid` = " + cls_globalvariables.Branch.Id + @" AND
+                    `terminalno` = " + cls_globalvariables.TerminalNumber;
             DataTable x = mySQLFunc.getdb(SQLSelect);
 
             long latestSalesheadOrNumber = 0;
@@ -1559,8 +1559,8 @@ namespace ETech
                 DELETE FROM `saleshead`
                 WHERE
                     `status`=0 AND
-                    `branchid` = " + cls_globalvariables.BranchCode + @" AND
-                    `terminalno` = " + cls_globalvariables.terminalno_v + @" AND 
+                    `branchid` = " + cls_globalvariables.Branch.Id + @" AND
+                    `terminalno` = " + cls_globalvariables.TerminalNumber + @" AND 
                     `SyncId` = '" + tran.getSyncId() + @"' LIMIT 1";
             mySQLFunc.setdb(SQLDelete);
             LogsHelper.WriteToTLog("DELETED1 in saleshead or = " + tran.getORnumber());

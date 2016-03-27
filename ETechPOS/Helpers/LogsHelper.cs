@@ -68,7 +68,7 @@ namespace ETech.Helpers
                 if (!File.Exists(fileInfo.FullName))
                     File.Create(fileInfo.FullName).Dispose();
                 string dataTimeNow = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt");
-                string terminalNumber = cls_globalvariables.terminalno_v.ToString();
+                string terminalNumber = cls_globalvariables.TerminalNumber.ToString();
                 using (StreamWriter w = File.AppendText(fileInfo.FullName))
                 {
                     string logMessage = string.Format("Date: {0}\nTerminal Number: {1}", dataTimeNow, terminalNumber);

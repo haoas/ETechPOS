@@ -125,7 +125,7 @@ namespace ETech
 
                 if (permcheck)
                 {
-                    if (new_qty < 0 && cls_globalvariables.RefundMemo_v == "2")
+                    if (new_qty < 0 && cls_globalvariables.RefundMemo_v == 2)
                     {
                         frmRefundInfo refundinfo = new frmRefundInfo();
                         refundinfo.productid = productid;
