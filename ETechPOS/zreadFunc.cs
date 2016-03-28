@@ -252,7 +252,7 @@ public static class zreadFunc
     {
         string sql =
                 @"SELECT 
-                    COALESCE(MIN(`ornumber`), 0) AS `minornumber`,
+                    COALESCE(MIN(`ornumber`), 0) AS `minornumber`
                 FROM `saleshead`
                 WHERE `ornumber` <> 0
                     AND `branchid` = " + cls_globalvariables.Branch.Id + @"

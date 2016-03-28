@@ -960,7 +960,7 @@ namespace ETech.fnc
                                 IF(`status` = 0, D.`quantity`, 0) AS 'voidqty',
                                 IF(`status` = 1, D.`quantity` * (D.`oprice` - D.`price`),0) AS 'dcamount',
                                 IF(`status` = 1, D.`quantity` * D.`price`,0) AS 'amount',
-                                IF(status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
+                                IF(`status` = 0, D.`quantity` * D.`price`,0) AS 'voidamount'
                             FROM `saleshead` AS H 
                             LEFT JOIN `salesdetail` AS D ON H.`SyncId` = D.`headid` 
                             WHERE H.`branchid` = " + sBranchid + @" AND H.`terminalno` = " + terminalNumber + @"
@@ -1495,13 +1495,13 @@ namespace ETech.fnc
             dt_items.Columns.Add(); dt_items.Columns.Add(); dt_items.Columns.Add(); dt_items.Columns.Add();
             foreach (cls_product prod in tran.get_productlist().get_productlist())
             {
-                string proddesc = prod.getProductName();
+                string proddesc = prod.Name;
                 if ((prod.getSyncId() != 1) && (prod.getSyncId() != 2))
-                    proddesc += " @P" + prod.getPrice().ToString("N2") + "ea\n";
-                if ((prod.getPrice() != prod.getOrigPrice()) && (prod.getOrigPrice() != 0)
+                    proddesc += " @P" + prod.Price.ToString() + "ea\n";
+                if ((prod.Price != prod.OriginalPrice) && (prod.OriginalPrice != 0)
                     && (printformat != 57) && cls_globalvariables.DiscountDetails_v == 1)
-                    proddesc += "(P" + prod.getOrigPrice().ToString("N2") + " - " + ((1 - (prod.getPrice() / prod.getOrigPrice())) * 100).ToString("N2") + "%)";
-                dt_items.Rows.Add(prod.Quantity.ToString("G29"), "", proddesc, prod.amount.ToString());
+                    proddesc += "(P" + prod.OriginalPrice.ToString() + " - " + ((1 - (prod.Price / prod.OriginalPrice)) * 100).ToString("N2") + "%)";
+                dt_items.Rows.Add(prod.Quantity.ToString("G29"), "", proddesc, prod.Amount.ToString());
                 if (prod.Quantity < 0)
                 {
                     dt_items.Rows.Add("", "", "ITEM REFUND!", "");
@@ -1931,13 +1931,13 @@ namespace ETech.fnc
             tempDataTable.Rows.Add("QTY", "", "DESCRIPTION", "AMOUNT");
             foreach (cls_product prod in tran.get_productlist().get_productlist())
             {
-                string proddesc = prod.getProductName();
+                string proddesc = prod.Name;
                 if ((prod.getSyncId() != 1) && (prod.getSyncId() != 2))
-                    proddesc += " @P" + prod.getPrice().ToString("N2") + "ea";
-                tempDataTable.Rows.Add(prod.Quantity.ToString("G29"), "", proddesc, prod.amount.ToString());
-                if ((prod.getPrice() != prod.getOrigPrice()) && (prod.getOrigPrice() != 0)
+                    proddesc += " @P" + prod.Price.ToString() + "ea";
+                tempDataTable.Rows.Add(prod.Quantity.ToString("G29"), "", proddesc, prod.Amount.ToString());
+                if ((prod.Price != prod.OriginalPrice) && (prod.OriginalPrice != 0)
                     && cls_globalvariables.DiscountDetails_v == 1)
-                    tempDataTable.Rows.Add("", "", "(P" + prod.getOrigPrice().ToString("N2") + " - " + ((1 - (prod.getPrice() / prod.getOrigPrice())) * 100).ToString("N2") + "%)", "");
+                    tempDataTable.Rows.Add("", "", "(P" + prod.OriginalPrice.ToString() + " - " + ((1 - (prod.Price / prod.OriginalPrice)) * 100).ToString("N2") + "%)", "");
                 if (prod.Quantity < 0)
                 {
                     tempDataTable.Rows.Add("", "", "ITEM REFUND!", "");

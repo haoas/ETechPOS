@@ -18,5 +18,9 @@ namespace ETech.cls
             _ReturnValue.VALUE = Math.Round(value,2);
             return _ReturnValue;
         }
+        public override string ToString()
+        {
+            return VALUE.ToString();
+        }
     }
 }

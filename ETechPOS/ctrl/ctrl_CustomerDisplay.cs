@@ -51,10 +51,10 @@ namespace ETech.ctrl
 
         public static void refresh_display_addproduct_and_totalamount(cls_product prod, decimal total)
         {
-            string productname = prod.getProductName();
+            string productname = prod.Name;
             if (productname.Length > displayLength)
                 productname = productname.Substring(0, displayLength);
-            string productprice = "P" + prod.getPrice().ToString("N2");
+            string productprice = "P" + prod.Price.ToString();
             string totalamt = "P" + total.ToString("N2");
             int temp = displayLength / 2;
 

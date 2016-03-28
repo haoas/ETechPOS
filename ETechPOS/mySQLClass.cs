@@ -496,10 +496,10 @@ namespace ETech
             foreach (cls_product prod in trans.get_productlist().get_productlist())
             {
                 string qty = Convert.ToString(prod.Quantity);
-                string price = (prod.getPrice()).ToString();
-                string vat = prod.vat.ToString();
+                string price = (prod.Price).ToString();
+                string vat = prod.Vat.ToString();
 
-                cls_user soldby = (cls_user)prod.getSoldBy();
+                cls_user soldby = (cls_user)prod.SoldBy;
                 long soldbywid = 0;
                 try { soldbywid = soldby.getsyncid(); }
                 catch { soldbywid = userid; }
@@ -513,13 +513,13 @@ namespace ETech
                                 `headid` = '" + salesheadwid + @"', 
                                 `productid` = '" + prod.getSyncId().ToString() + @"',  
                                 `quantity` = '" + qty + @"',   
-                                `oprice` = '" + prod.getOrigPrice().ToString() + @"',  
-                                `regularDC` = '" + prod.getDiscount().ToString() + @"', 
+                                `oprice` = '" + prod.OriginalPrice + @"',  
+                                `regularDC` = '" + prod.RegularDiscount.ToString() + @"', 
                                 `price` = '" + price + @"',  
                                 `pprice` = '" + prod.getPurchasePrice().ToString() + @"', 
                                 `vat` = '" + vat + @"',
                                 `soldby` = '" + soldbywid + @"',  
-                                `memo` = '" + prod.memo + @"'
+                                `memo` = '" + prod.Memo + @"'
                             WHERE `SyncId` = @salesdetailwid";
                 //Console.WriteLine(sSQLdetail);
                 //setdb(sSQLdetail);

@@ -40,8 +40,8 @@ namespace ETech
             }
 
             openitem = new cls_product(price, 0, qty);
-            openitem.memo = memo;
-            openitem.setProductName("[OPENITEM]: " + memo);
+            openitem.Memo = memo;
+            openitem.Name = "[OPENITEM]: " + memo;
             this.Close();
             return;
         }

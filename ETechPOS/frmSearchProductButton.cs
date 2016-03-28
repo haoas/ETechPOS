@@ -183,7 +183,7 @@ namespace ETech
 
             foreach (cls_product prod in tempProductlist.get_productlist())
             {
-                DGVTempProd.Rows.Add(prod.getProductName(), prod.Quantity);
+                DGVTempProd.Rows.Add(prod.Name, prod.Quantity);
             }
 
             fncFilter.set_dgv_controls(DGVTempProd);

@@ -25,7 +25,7 @@ namespace ETech
 
         private void frmWholesale_Load(object sender, EventArgs e)
         {
-            lblProduct_d.Text = cproduct.getProductName();
+            lblProduct_d.Text = cproduct.Name;
             lblUnitPrice_d.Text = "0";
             txtQty.Text = "1";
             txtPrice.Text = "0";

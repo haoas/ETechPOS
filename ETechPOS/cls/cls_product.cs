@@ -9,13 +9,7 @@ namespace ETech.cls
     public class cls_product
     {
         private long syncid;
-        private string name;
-
-        private RoundedDecimal price;
-        private decimal origprice;
-        private cls_user soldby;
         private decimal adjust;
-        private decimal discount;
 
         private bool isvat;
         private int issenior;
@@ -23,7 +17,6 @@ namespace ETech.cls
         private decimal wholesaleprice;
 
         public cls_discountlist productdiscount;
-
         private bool is_history;
 
         /*
@@ -36,41 +29,47 @@ namespace ETech.cls
         */
         private string transaction_mode;
 
+        public string Name { get; set; }
+        public RoundedDecimal OriginalPrice { get; set; }
+        public RoundedDecimal RegularDiscount { get; set; }
+        public RoundedDecimal Price { get; set; }
+        public cls_user SoldBy;
+
         public decimal Quantity { get; set; }
-        public decimal pprice { get; set; }
-        public string barcode { get; set; }
-        public string memo { get; set; }
-        public decimal amount { get { return price * Quantity; } }
-        public decimal vat
+        public decimal PurchasePrice { get; set; }
+        public string Barcode { get; set; }
+        public string Memo { get; set; }
+        public decimal Amount { get { return Price * Quantity; } }
+        public decimal Vat
         {
             get
             {
                 if (!isvat)
                     return 0;
                 else
-                    return (price * cls_globalvariables.vat / (1 + cls_globalvariables.vat));
+                    return (Price * cls_globalvariables.vat / (1 + cls_globalvariables.vat));
             }
         }
 
         public void init()
         {
             this.syncid = 0;
-            this.barcode = "";
-            this.name = "";
+            this.Barcode = "";
+            this.Name = "";
             this.Quantity = 1;
-            this.price = 0;
+            this.Price = 0;
             this.wholesaleprice = 0;
-            this.memo = "";
+            this.Memo = "";
 
-            this.price = 0;
+            this.Price = 0;
 
-            this.pprice = 0;
-            this.origprice = 0;
-            this.soldby = new cls_user();
+            this.PurchasePrice = 0;
+            this.OriginalPrice = 0;
+            this.SoldBy = new cls_user();
             this.isvat = true;
             this.issenior = 0;
             this.adjust = 0;
-            this.discount = 0;
+            this.RegularDiscount = 0;
             this.transaction_mode = "vatable_sale";
 
             this.productdiscount = new cls_discountlist(1);
@@ -121,8 +120,8 @@ namespace ETech.cls
             //Required Connection to SQL
             this.init();
 
-            this.barcode = barcode_d;
-            this.price = price_d;
+            this.Barcode = barcode_d;
+            this.Price = price_d;
             this.Quantity = qty_d;
 
             string sSQL = "";
@@ -141,19 +140,19 @@ namespace ETech.cls
             DataRow dr = dt.Rows[0];
 
             this.syncid = Convert.ToInt32(dr["pwid"]);
-            this.origprice = Convert.ToDecimal(dr["oprice"]);
-            this.pprice = Convert.ToDecimal(dr["pprice"]);
+            this.OriginalPrice = Convert.ToDecimal(dr["oprice"]);
+            this.PurchasePrice = Convert.ToDecimal(dr["pprice"]);
         }
 
         public cls_product(decimal price_d, long syncid_d, decimal qty_d)
         {
             this.init();
 
-            this.barcode = "-";
+            this.Barcode = "-";
 
-            this.price = price_d;
-            this.origprice = price_d;
-            this.price = price_d;
+            this.Price = price_d;
+            this.OriginalPrice = price_d;
+            this.Price = price_d;
             this.wholesaleprice = price_d;
             string sql = @"
                 SELECT `product` 
@@ -161,7 +160,7 @@ namespace ETech.cls
                 WHERE `SyncId` = " + syncid;
             DataTable table = mySQLFunc.getdb(sql);
             if (table != null && table.Rows.Count > 0)
-                this.name = table.Rows[0]["product"].ToString();
+                this.Name = table.Rows[0]["product"].ToString();
             this.syncid = syncid_d;
             if (this.syncid == 0)
             {
@@ -170,7 +169,7 @@ namespace ETech.cls
             }
             else if (this.syncid == 1)
             {
-                this.name = "Service Charge: " + cls_globalvariables.ServiceCharge_v + "%";
+                this.Name = "Service Charge: " + cls_globalvariables.ServiceCharge_v + "%";
                 this.isvat = false;
                 this.Quantity = 1;
                 this.isvat = false;
@@ -178,7 +177,7 @@ namespace ETech.cls
             }
             else if (this.syncid == 2)
             {
-                this.name = "Local Tax: " + cls_globalvariables.LocalTax_v + "%";
+                this.Name = "Local Tax: " + cls_globalvariables.LocalTax_v + "%";
                 this.isvat = false;
                 this.Quantity = 1;
                 this.transaction_mode = "nonvat_sale";
@@ -220,49 +219,49 @@ namespace ETech.cls
 
             DataRow dr = dt.Rows[0];
             this.syncid = syncid_d;
-            this.barcode = dr["barcode"].ToString();
-            this.name = dr["productname"].ToString();
-            this.pprice = Convert.ToDecimal(dr["pprice"]);
-            this.price = Convert.ToDecimal(dr["price"]);
+            this.Barcode = dr["barcode"].ToString();
+            this.Name = dr["productname"].ToString();
+            this.PurchasePrice = Convert.ToDecimal(dr["pprice"]);
+            this.Price = Convert.ToDecimal(dr["price"]);
 
             this.isvat = (Convert.ToInt32(dr["isvat"]) == 1);
             this.issenior = Convert.ToInt32(dr["senior"]);
 
-            this.origprice = this.price;
+            this.OriginalPrice = this.Price;
         }
 
         public void reset_data_by_mode(bool nonvattrans, bool issenior_d, bool iswholesale, int pricingtype, decimal pricingrate, cls_customer customer)
         {
-            this.origprice = this.price;
+            this.OriginalPrice = this.Price;
 
             if (iswholesale && this.syncid != 0)
             {
                 if (pricingtype == 0 && customer.getItemPriceDictionary().ContainsKey(syncid))
                 {
-                    this.origprice = wholesaleprice;
-                    this.price = wholesaleprice;
-                    getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[syncid] - this.origprice, false);
+                    this.OriginalPrice = wholesaleprice;
+                    this.Price = wholesaleprice;
+                    getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[syncid] - this.OriginalPrice, false);
                 }
                 else
                 {
-                    if (pricingtype == 2) this.origprice = Math.Round(this.pprice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
-                    else if (pricingtype == 3) this.origprice = Math.Round(this.wholesaleprice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
-                    else if (pricingtype == 9) this.origprice = this.price;
-                    else this.origprice = this.wholesaleprice;
-                    this.price = this.origprice;
+                    if (pricingtype == 2) this.OriginalPrice = Math.Round(this.PurchasePrice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
+                    else if (pricingtype == 3) this.OriginalPrice = Math.Round(this.wholesaleprice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
+                    else if (pricingtype == 9) this.OriginalPrice = this.Price;
+                    else this.OriginalPrice = this.wholesaleprice;
+                    this.Price = this.OriginalPrice;
                 }
             }
 
-            Console.WriteLine("reset_data_by_mode discount : " + this.discount);
+            Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
             Console.WriteLine("reset_data_by_mode adjust : " + this.adjust);
-            Console.WriteLine("reset_data_by_mode 1: oprice: " + this.origprice);
+            Console.WriteLine("reset_data_by_mode 1: oprice: " + this.OriginalPrice);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior5);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
             if (!this.is_history)
                 this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_promoqty);
 
-            Console.WriteLine("reset_data_by_mode 2: oprice: " + this.origprice);
+            Console.WriteLine("reset_data_by_mode 2: oprice: " + this.OriginalPrice);
             if (issenior_d && (this.issenior == 1))
             {
                 this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior, 1 - cls_globalvariables.senior, true);
@@ -278,26 +277,25 @@ namespace ETech.cls
             {
                 this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
             }
-            Console.WriteLine("reset_data_by_mode 3: oprice: " + this.origprice);
+            Console.WriteLine("reset_data_by_mode 3: oprice: " + this.OriginalPrice);
 
             //detail discount
-            decimal tmp_disc = this.productdiscount.get_discounts_percentage(this.origprice);
+            decimal tmp_disc = this.productdiscount.get_discounts_percentage(this.OriginalPrice);
             /*-------------------------------------------------*/
             //ROBI
 
-            Console.WriteLine("reset_data_by_mode price: " + this.price);
-            Console.WriteLine("reset_data_by_mode discount : " + this.discount);
+            Console.WriteLine("reset_data_by_mode price: " + this.Price);
+            Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
             Console.WriteLine("reset_data_by_mode adjust : " + this.adjust);
 
             // COMPUTE PRICE
             //detaildiscount = distributed head discounts and detaildiscount
             //1st run set detail discounts
             //2nd run distribute head discounts
-            this.discount = 1 - (1M - this.discount) * (1M - tmp_disc);
-            setPrice((getPrice() + this.adjust) * (1 - this.discount));
-            this.price = Math.Round(this.price, 2, MidpointRounding.AwayFromZero);
+            this.RegularDiscount = 1 - (1M - this.RegularDiscount) * (1M - tmp_disc);
+            this.Price = (this.Price + this.adjust) * (1 - this.RegularDiscount);
 
-            Console.WriteLine("reset_data_by_mode dc: " + this.price);
+            Console.WriteLine("reset_data_by_mode dc: " + this.Price);
 
             if (nonvattrans || (issenior_d && (this.issenior == 1)))
                 this.isvat = false;
@@ -318,24 +316,19 @@ namespace ETech.cls
                 this.transaction_mode = "vatable_sale";
         }
 
-        public void setProductName(string productname_d)
-        {
-            this.name = productname_d;
-        }
-
         public void reprint_reset_data_by_mode(bool nonvattrans, bool issenior_d, bool iswholesale, int pricingtype)
         {
-            this.origprice = this.price;
+            this.OriginalPrice = this.Price;
 
-            Console.WriteLine("reset_data_by_mode discount : " + this.discount);
+            Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
             Console.WriteLine("reset_data_by_mode adjust : " + this.adjust);
-            Console.WriteLine("reset_data_by_mode 1: oprice: " + this.origprice);
+            Console.WriteLine("reset_data_by_mode 1: oprice: " + this.OriginalPrice);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
             if (!this.is_history)
                 this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_promoqty);
 
-            Console.WriteLine("reset_data_by_mode 2: oprice: " + this.origprice);
+            Console.WriteLine("reset_data_by_mode 2: oprice: " + this.OriginalPrice);
             if (issenior_d && (this.issenior == 1))
             {
                 this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior, 1 - cls_globalvariables.senior, true);
@@ -346,18 +339,18 @@ namespace ETech.cls
             {
                 this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
             }
-            Console.WriteLine("reset_data_by_mode 3: oprice: " + this.origprice);
+            Console.WriteLine("reset_data_by_mode 3: oprice: " + this.OriginalPrice);
 
-            Console.WriteLine("reset_data_by_mode price: " + this.price);
-            Console.WriteLine("reset_data_by_mode discount : " + this.discount);
+            Console.WriteLine("reset_data_by_mode price: " + this.Price);
+            Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
             Console.WriteLine("reset_data_by_mode adjust : " + this.adjust);
 
-            if (this.discount != 0)
-                this.price = this.origprice * (1 - this.discount);
+            if (this.RegularDiscount != 0)
+                this.Price = this.OriginalPrice * (1 - this.RegularDiscount);
             else
-                this.price = this.origprice + this.adjust;
+                this.Price = this.OriginalPrice + this.adjust;
 
-            Console.WriteLine("reset_data_by_mode dc: " + this.price);
+            Console.WriteLine("reset_data_by_mode dc: " + this.Price);
 
             if (nonvattrans || (issenior_d && (this.issenior == 1)))
                 this.isvat = false;
@@ -378,55 +371,14 @@ namespace ETech.cls
                 this.transaction_mode = "vatable_sale";
         }
 
-        public void setRetailPrice(decimal val)
-        {
-            this.price = val;
-        }
-
-        public void setPrice(decimal price_d)
-        {
-            this.price = price_d;
-        }
-
-        public void setOrigPrice(decimal origprice_d)
-        {
-            this.origprice = origprice_d;
-        }
-
-        public void setSoldBy(cls_user soldby_d)
-        {
-            this.soldby = soldby_d;
-        }
-
         public void setAdjust(decimal adjust_d) { this.adjust = adjust_d; }
-        public void setDiscount(decimal discount_d) { this.discount = discount_d; }
 
         //get from attributes
         public long getSyncId() { return this.syncid; }
 
-        public string getProductName()
-        {
-            return (this.name == "" ? this.barcode : this.name);
-        }
-
-        public decimal getPrice()
-        {
-            return Math.Round(this.price, 2, MidpointRounding.AwayFromZero);
-        }
-
-        public decimal getOrigPrice()
-        {
-            return Math.Round(this.origprice, 2, MidpointRounding.AwayFromZero);
-        }
-
         public decimal getWholesalePrice()
         {
             return Math.Round(this.wholesaleprice, 2, MidpointRounding.AwayFromZero);
-        }
-
-        public cls_user getSoldBy()
-        {
-            return this.soldby;
         }
 
         public string getTransaction_Mode()
@@ -434,9 +386,8 @@ namespace ETech.cls
             return this.transaction_mode;
         }
 
-        public decimal getPurchasePrice() { return Math.Round(this.pprice, 2, MidpointRounding.AwayFromZero); }
+        public decimal getPurchasePrice() { return Math.Round(this.PurchasePrice, 2, MidpointRounding.AwayFromZero); }
         public decimal getAdjust() { return Math.Round(this.adjust, 2, MidpointRounding.AwayFromZero); }
-        public decimal getDiscount() { return this.discount; }
 
         public int getIsSenior() { return this.issenior; }
         public bool getIsVat() { return this.isvat; }

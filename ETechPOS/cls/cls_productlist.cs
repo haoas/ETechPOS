@@ -48,10 +48,10 @@ namespace ETech.cls
             try
             {
                 this.dtproducts.Rows[row_index]["VatStatus"] = this.list_product[row_index].VatStatus;
-                this.dtproducts.Rows[row_index]["productname"] = this.list_product[row_index].getProductName();
+                this.dtproducts.Rows[row_index]["productname"] = this.list_product[row_index].Name;
                 this.dtproducts.Rows[row_index]["qty"] = this.list_product[row_index].Quantity.ToString("G29");
-                this.dtproducts.Rows[row_index]["price"] = this.list_product[row_index].getPrice().ToString("N2");
-                this.dtproducts.Rows[row_index]["amount"] = Convert.ToString(this.list_product[row_index].amount);
+                this.dtproducts.Rows[row_index]["price"] = this.list_product[row_index].Price.ToString();
+                this.dtproducts.Rows[row_index]["amount"] = Convert.ToString(this.list_product[row_index].Amount);
             }
             catch (Exception) { }
         }
@@ -71,7 +71,7 @@ namespace ETech.cls
             {
                 if (list_product[i].getSyncId() == prod.getSyncId()
                         && prod.getSyncId() != 0
-                        && prod.barcode != "-")
+                        && prod.Barcode != "-")
                 {
                     decimal qty = list_product[i].Quantity + prod.Quantity;
                     if (qty == 0)
@@ -113,7 +113,7 @@ namespace ETech.cls
             for (int i = 0; i < list_product.Count; i++)
             {
                 list_product[i].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
-                //Console.WriteLine(list_product[i].getPrice());
+                //Console.WriteLine(list_product[i].Price);
                 sync_product_row(i);
             }
             refresh_product_amounts_w_headdisc();
@@ -167,7 +167,7 @@ namespace ETech.cls
                 Console.WriteLine("productwid " + prod.getSyncId() + "\nproductmode " + prod.getTransaction_Mode());
                 if (mode.Equals(prod.getTransaction_Mode()))
                 {
-                    sum += prod.amount;
+                    sum += prod.Amount;
                 }
             }
             return sum;
@@ -245,7 +245,7 @@ namespace ETech.cls
             decimal sum = 0;
             foreach (cls_product prod in list_product)
             {
-                sum += prod.amount;
+                sum += prod.Amount;
             }
             return sum;
         }
@@ -257,7 +257,7 @@ namespace ETech.cls
             decimal sum = 0;
             foreach (cls_product prod in list_product)
             {
-                sum += prod.Quantity * Math.Round(prod.getProductDiscountList().get_amount_after_discount(prod.getOrigPrice()), 2);
+                sum += prod.Quantity * Math.Round(prod.getProductDiscountList().get_amount_after_discount(prod.OriginalPrice), 2);
             }
             return sum;
         }
@@ -268,7 +268,7 @@ namespace ETech.cls
             decimal sum = 0;
             foreach (cls_product prod in list_product)
             {
-                sum += prod.Quantity * prod.getOrigPrice();
+                sum += prod.Amount;
             }
             return sum;
         }
@@ -287,7 +287,7 @@ namespace ETech.cls
             {
                 this.list_product[row_index].Quantity = new_qty;
                 this.list_product[row_index].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
-                //Console.WriteLine(this.list_product[row_index].getPrice() + "");
+                //Console.WriteLine(this.list_product[row_index].Price + "");
                 this.sync_product_row(row_index);
             }
         }
@@ -297,7 +297,7 @@ namespace ETech.cls
             if (row_index < 0 || row_index >= this.list_product.Count)
                 return;
 
-            this.list_product[row_index].memo = memo;
+            this.list_product[row_index].Memo = memo;
             this.sync_product_row(row_index);
         }
 
@@ -312,30 +312,30 @@ namespace ETech.cls
             foreach (cls_product cprod in this.list_product)
             {
                 decimal cadjust = cprod.getAdjust();
-                decimal cdiscount = cprod.getDiscount();
+                decimal cdiscount = cprod.RegularDiscount;
 
                 if (cadjust != 0 && proddiscount != 0)
                 {
                     //add discount to adjust
-                    decimal discountvalue = proddiscount * cprod.getPrice();
+                    decimal discountvalue = proddiscount * cprod.Price;
                     cprod.setAdjust(cadjust - discountvalue);
-                    cprod.setDiscount(0);
+                    cprod.RegularDiscount = 0;
                 }
                 else if (cdiscount != 0 && proddiscount != 0)
                 {
                     //add discount to discount
                     //cprod.setDiscount(cdiscount + proddiscount);
-                    decimal discountvalue = proddiscount * cprod.getPrice();
-                    decimal prevdiscountvalue = cprod.getPrice() * cdiscount / (1 - cdiscount);
+                    decimal discountvalue = proddiscount * cprod.Price;
+                    decimal prevdiscountvalue = cprod.Price * cdiscount / (1 - cdiscount);
 
                     cprod.setAdjust(0 - discountvalue - prevdiscountvalue);
-                    cprod.setDiscount(0);
+                    cprod.RegularDiscount = 0;
                 }
                 else if (proddiscount != 0)
                 {
                     //add discount to discount
                     cprod.setAdjust(0);
-                    cprod.setDiscount(proddiscount);
+                    cprod.RegularDiscount = proddiscount;
                 }
                 cprod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             }
@@ -350,7 +350,7 @@ namespace ETech.cls
             foreach (cls_product cprod in this.list_product)
             {
                 cprod.setAdjust(0);
-                cprod.setDiscount(totaldiscount);
+                cprod.RegularDiscount = totaldiscount;
                 cprod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             }
 
@@ -365,7 +365,7 @@ namespace ETech.cls
                 return;
 
             this.list_product[row_index].setAdjust(prodadjust);
-            this.list_product[row_index].setDiscount(proddiscount);
+            this.list_product[row_index].RegularDiscount =proddiscount;
             this.list_product[row_index].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             this.sync_product_row(row_index);
         }
@@ -390,7 +390,7 @@ namespace ETech.cls
             this.iswholesale = (Convert.ToInt32(dr["iswholesale"]) == 1);
             this.issenior = (dr["seniorno"].ToString() != "");
 
-            sSQL = @"SELECT P.`product`, SD.`SyncId`,SD.`productid`, SD.`quantity`, SD.`oprice`, SD.`price` AS 'aprice', 
+            sSQL = @"SELECT P.`product`, SD.`SyncId`,SD.`productid`, SD.`quantity`, SD.`oprice`, SD.`price` AS 'price', 
 	                    SD.`discount1`, SD.`vat`, SD.`soldby` 
                     FROM `salesdetail` AS SD
                     LEFT JOIN `product` AS P
@@ -408,18 +408,18 @@ namespace ETech.cls
                 if (pwid == 0)
                 {
                     prod = new cls_product(0, false);
-                    prod.setProductName(dr_d["product"].ToString());
+                    prod.Name = dr_d["product"].ToString();
                 }
                 else if (pwid == 1)
                 {
                     prod = new cls_product(1, true);
-                    prod.setProductName("Service Charge: " + cls_globalvariables.ServiceCharge_v + "%");
+                    prod.Name = "Service Charge: " + cls_globalvariables.ServiceCharge_v + "%";
                 }
                 else if (pwid == 2)
                 {
                     prod = new cls_product(2, true);
-                    prod.setProductName("Local Tax: " + cls_globalvariables.LocalTax_v + "%");
-                    prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
+                    prod.Name = "Local Tax: " + cls_globalvariables.LocalTax_v + "%";
+                    prod.OriginalPrice = Convert.ToDecimal(dr_d["oprice"]);
                 }
                 else if (pwid != 0)
                 {
@@ -431,16 +431,14 @@ namespace ETech.cls
                 }
 
                 int tempWid = int.TryParse(dr_d["SyncId"].ToString(), out tempWid) ? tempWid : 0;
-                prod.setRetailPrice(Convert.ToDecimal(dr_d["oprice"]));
-                prod.setOrigPrice(Convert.ToDecimal(dr_d["oprice"]));
+                prod.OriginalPrice =Convert.ToDecimal(dr_d["oprice"]);
                 prod.Quantity = Convert.ToDecimal(dr_d["quantity"]);
-                prod.setSoldBy(new cls_user(Convert.ToInt32(dr_d["soldby"])));
-                prod.setPrice(Convert.ToDecimal(dr_d["aprice"]));
-
-                if (prod.getOrigPrice() != 0)
+                prod.SoldBy = new cls_user(Convert.ToInt32(dr_d["soldby"]));
+                prod.Price = Convert.ToDecimal(dr_d["price"]);
+                if (prod.OriginalPrice != 0)
                 {
-                    decimal dc = decimal.Divide(prod.getPrice(), prod.getOrigPrice());
-                    prod.setDiscount(1M - dc);
+                    decimal dc = decimal.Divide(prod.Price, prod.OriginalPrice);
+                    prod.RegularDiscount = 1M - dc;
                     prod.setAdjust(0);
                 }
 
@@ -466,7 +464,7 @@ namespace ETech.cls
 
                 if (Math.Round(oprice_temp, 3, MidpointRounding.AwayFromZero) != Math.Round(temp_price, 3, MidpointRounding.AwayFromZero) && temp_discount > 0)
                 {
-                    prod.setDiscount(temp_discount);
+                    prod.RegularDiscount =temp_discount;
                 }
                 else if (Math.Round(oprice_temp, 3, MidpointRounding.AwayFromZero) != Math.Round(temp_price, 3, MidpointRounding.AwayFromZero) && temp_discount == 0)
                 {
@@ -478,7 +476,7 @@ namespace ETech.cls
                 this.list_product.Add(prod);
                 this.dtproducts.Rows.Add(dtproducts.NewRow());
 
-                Console.WriteLine(prod.getProductName() + ": " + prod.getPrice());
+                Console.WriteLine(prod.Name + ": " + prod.Price);
             }
 
             this.sync_product_all();
