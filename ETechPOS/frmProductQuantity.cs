@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
-using ETech.Views.Forms.Generics;
+using ETech.Views.Generic_Forms;
 using ETech.Helpers;
 
 namespace ETech
@@ -41,7 +41,6 @@ namespace ETech
             txtNewQty_d.SelectAll();
 
             fncFilter.set_theme_color(this);
-            cls_globalfunc.formaddkbkpevent(this);
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();

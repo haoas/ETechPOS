@@ -37,7 +37,6 @@ namespace ETech
             txt5c.KeyPress += new KeyPressEventHandler(Numeric_KeyPress);
 
             refresh_total_amount();
-            cls_globalfunc.formaddkbkpevent(this);
         }
 
         private void refresh_total_amount()

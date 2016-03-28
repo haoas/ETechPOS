@@ -22,8 +22,6 @@ namespace ETech
             InitializeComponent();
             mySQLFunc.initialize_global_variables();
 
-            cls_globalfunc.formaddkbkpevent(this);
-
             this.dgvCustomer.AutoGenerateColumns = false;
             this.customer = new cls_customer();
         }

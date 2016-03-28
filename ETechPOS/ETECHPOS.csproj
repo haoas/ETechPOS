@@ -12,7 +12,7 @@
     <AssemblyName>ETECHPOS</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>imgsalesorder.ico</ApplicationIcon>
+    <ApplicationIcon>resources\Icons\256x256.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,10 +61,10 @@
     <Compile Include="AddUserForm.Designer.cs">
       <DependentUpon>AddUserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Built In Views\StandardDialogForm.cs">
+    <Compile Include="Standard Views\StandardDialogForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Built In Views\StandardDialogForm.Designer.cs">
+    <Compile Include="Standard Views\StandardDialogForm.Designer.cs">
       <DependentUpon>StandardDialogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="cls\cls_buttonGrid.cs" />
@@ -441,6 +441,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\Generic Forms\KeyboardForm.resx">
+      <DependentUpon>KeyboardForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Generic Forms\NumericKeypadForm.resx">
+      <DependentUpon>NumericKeypadForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -465,13 +473,10 @@
       <DependentUpon>frmTerminalReadings.cs</DependentUpon>
     </Compile>
     <Compile Include="Variables\MessagesVariable.cs" />
-    <Compile Include="Views\Forms\Generics\UserAuthenticationController.cs">
+    <Compile Include="Views\Generic Forms\UserAuthenticationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\Generics\UserAuthenticationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Forms\Generics\UserAuthenticationForm.designer.cs">
+    <Compile Include="Views\Generic Forms\UserAuthenticationForm.designer.cs">
       <DependentUpon>UserAuthenticationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Generic Controls\KeyboardControl.cs">
@@ -480,22 +485,22 @@
     <Compile Include="Views\Generic Controls\KeyboardControl.designer.cs">
       <DependentUpon>KeyboardControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Generic Controls\KeyboardForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Generic Controls\KeyboardForm.designer.cs">
-      <DependentUpon>KeyboardForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Generic Controls\NumericKeypadControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Views\Generic Controls\NumericKeypadControl.designer.cs">
       <DependentUpon>NumericKeypadControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Generic Controls\NumericKeypadForm.cs">
+    <Compile Include="Views\Generic Forms\KeyboardForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Generic Controls\NumericKeypadForm.designer.cs">
+    <Compile Include="Views\Generic Forms\KeyboardForm.designer.cs">
+      <DependentUpon>KeyboardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Generic Forms\NumericKeypadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Generic Forms\NumericKeypadForm.designer.cs">
       <DependentUpon>NumericKeypadForm.cs</DependentUpon>
     </Compile>
     <Compile Include="zreadFunc.cs" />
@@ -504,7 +509,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="imgsalesorder.ico" />
+    <Content Include="resources\Icons\256x256.ico" />
+    <Content Include="resources\images\256x256.jpg" />
+    <Content Include="resources\Icons\48x48.ico" />
+    <Content Include="resources\images\48x48.jpg" />
     <None Include="resources\images\arrow-left.PNG" />
     <None Include="resources\images\arrow-right.PNG" />
     <None Include="resources\images\close-bttn.png" />
@@ -522,19 +530,13 @@
     <Content Include="Connection Settings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="tools\Keypad.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="libs\MySql.Data.dll" />
     <Content Include="libs\MySql.Web.dll" />
-    <Content Include="tools\Keyboard.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="AddUserForm.resx">
       <DependentUpon>AddUserForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Built In Views\StandardDialogForm.resx">
+    <EmbeddedResource Include="Standard Views\StandardDialogForm.resx">
       <DependentUpon>StandardDialogForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -582,7 +584,7 @@
       <DependentUpon>frmTerminalReadings.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Forms\Generics\UserAuthenticationForm.resx">
+    <EmbeddedResource Include="Views\Generic Forms\UserAuthenticationForm.resx">
       <DependentUpon>UserAuthenticationForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -590,18 +592,14 @@
       <DependentUpon>KeyboardControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Generic Controls\KeyboardForm.resx">
-      <DependentUpon>KeyboardForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\Generic Controls\NumericKeypadControl.resx">
       <DependentUpon>NumericKeypadControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Generic Controls\NumericKeypadForm.resx">
-      <DependentUpon>NumericKeypadForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="resources\Jpg Icons\" />
+    <Folder Include="Views\Forms\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

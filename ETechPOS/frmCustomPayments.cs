@@ -28,7 +28,6 @@ namespace ETech
         {
             fncFilter.set_theme_color(this);
             fncFilter.set_dgv_controls(dgvTendCustPayment);
-            cls_globalfunc.formaddkbkpevent(this);
 
             set_customPayments_from_paymentmethod();
             Refresh_listbox_CustomPayments();

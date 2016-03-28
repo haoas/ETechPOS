@@ -17,7 +17,7 @@ using ETech.fnc;
 using ETech.FormatDesigner;
 using ETech.Helpers;
 using ETech;
-using ETech.Views.Forms.Generics;
+using ETech.Views.Generic_Forms;
 
 namespace ETech
 {
@@ -182,7 +182,6 @@ namespace ETech
                         this.cur_cash.save_cashdenomination(this.cur_cashier);
                 }
                 this.Location = new Point(Screen.PrimaryScreen.WorkingArea.Left, Screen.PrimaryScreen.WorkingArea.Top);
-                cls_globalfunc.formaddkbkpevent(this);
 
                 if (cls_globalvariables.ads_url_v.Length > 0)
                     frmposmainext.Show();

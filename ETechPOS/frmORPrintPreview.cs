@@ -31,7 +31,6 @@ namespace ETech
             mySQLFunc.initialize_global_variables();
 
             fncFilter.set_theme_color(this);
-            cls_globalfunc.formaddkbkpevent(this);
 
             this.or_number = 0;
             this.CurrentUserAuthlist = new List<string>();

@@ -1,4 +1,4 @@
-﻿namespace ETech.Views.Forms.Generics
+﻿namespace ETech.Views.Generic_Forms
 {
     partial class UserAuthenticationForm
     {

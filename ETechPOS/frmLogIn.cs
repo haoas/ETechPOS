@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using ETech.cls;
 using System.Security.Cryptography;
 using ETech.fnc;
-using ETech.Built_In_Views;
+using ETech.Standard_Views;
 
 namespace ETech
 {
@@ -26,7 +26,6 @@ namespace ETech
             mySQLFunc.initialize_global_variables();
 
             fncFilter.set_theme_color(this);
-            cls_globalfunc.formaddkbkpevent(this);
         }
 
         private void btnLogIn_Click(object sender, EventArgs e)

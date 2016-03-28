@@ -14,10 +14,12 @@ using ETech.cls;
 using ETech.fnc;
 using ETech;
 using ETech.Helpers;
+using ETech.Standard_Views;
+using ETech.Views.Generic_Forms;
 
 namespace ETech
 {
-    public partial class frmLogInMain : Form
+    public partial class frmLogInMain : StandardDialogForm
     {
         private string serverDateTime;
         //private bool isconnected;
@@ -30,9 +32,6 @@ namespace ETech
             serverDateTime = "";
             //isconnected = false;
             cashier = null;
-
-            //fncFilter.set_theme_color(this);
-            //cls_globalfunc.formaddkbkpevent(this);
         }
 
         private void frmLogInMain_KeyDown(object sender, KeyEventArgs e)

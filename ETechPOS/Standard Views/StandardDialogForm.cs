@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ETech.Built_In_Views
+namespace ETech.Standard_Views
 {
     public partial class StandardDialogForm : Form
     {

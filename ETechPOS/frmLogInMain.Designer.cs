@@ -40,16 +40,17 @@
             this.bgwConnecting = new System.ComponentModel.BackgroundWorker();
             this.lbl_Terminalno = new System.Windows.Forms.Label();
             this.lbl_BranchCode = new System.Windows.Forms.Label();
-            this.keyboardControl1 = new ETech.Views.Generic_Controls.KeyboardControl();
+            this.kcMain = new ETech.Views.Generic_Controls.KeyboardControl();
             this.SuspendLayout();
             // 
             // LBL_Username
             // 
             this.LBL_Username.AutoSize = true;
             this.LBL_Username.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LBL_Username.Location = new System.Drawing.Point(20, 115);
+            this.LBL_Username.Location = new System.Drawing.Point(14, 127);
+            this.LBL_Username.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LBL_Username.Name = "LBL_Username";
-            this.LBL_Username.Size = new System.Drawing.Size(102, 22);
+            this.LBL_Username.Size = new System.Drawing.Size(129, 27);
             this.LBL_Username.TabIndex = 1;
             this.LBL_Username.Text = "Username:";
             // 
@@ -57,38 +58,41 @@
             // 
             this.LBL_Password.AutoSize = true;
             this.LBL_Password.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LBL_Password.Location = new System.Drawing.Point(20, 152);
+            this.LBL_Password.Location = new System.Drawing.Point(14, 172);
+            this.LBL_Password.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LBL_Password.Name = "LBL_Password";
-            this.LBL_Password.Size = new System.Drawing.Size(99, 22);
+            this.LBL_Password.Size = new System.Drawing.Size(124, 27);
             this.LBL_Password.TabIndex = 2;
             this.LBL_Password.Text = "Password:";
             // 
             // txtUsername
             // 
             this.txtUsername.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUsername.Location = new System.Drawing.Point(125, 112);
+            this.txtUsername.Location = new System.Drawing.Point(154, 123);
+            this.txtUsername.Margin = new System.Windows.Forms.Padding(4);
             this.txtUsername.MaxLength = 30;
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(331, 29);
+            this.txtUsername.Size = new System.Drawing.Size(440, 35);
             this.txtUsername.TabIndex = 4;
             this.txtUsername.Tag = "";
             this.txtUsername.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtUsername.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUsername_KeyPress);
             this.txtUsername.Enter += new System.EventHandler(this.txtUsername_Enter);
+            this.txtUsername.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUsername_KeyPress);
             // 
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPassword.Location = new System.Drawing.Point(125, 149);
+            this.txtPassword.Location = new System.Drawing.Point(154, 168);
+            this.txtPassword.Margin = new System.Windows.Forms.Padding(4);
             this.txtPassword.MaxLength = 30;
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(331, 29);
+            this.txtPassword.Size = new System.Drawing.Size(440, 35);
             this.txtPassword.TabIndex = 5;
             this.txtPassword.Tag = "";
             this.txtPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtPassword.UseSystemPasswordChar = true;
-            this.txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
             this.txtPassword.Enter += new System.EventHandler(this.txtPassword_Enter);
+            this.txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
             // 
             // tmrConnecting
             // 
@@ -100,9 +104,10 @@
             this.lblServerDateTime.AutoSize = true;
             this.lblServerDateTime.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblServerDateTime.ForeColor = System.Drawing.Color.Black;
-            this.lblServerDateTime.Location = new System.Drawing.Point(16, 71);
+            this.lblServerDateTime.Location = new System.Drawing.Point(13, 80);
+            this.lblServerDateTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblServerDateTime.Name = "lblServerDateTime";
-            this.lblServerDateTime.Size = new System.Drawing.Size(368, 27);
+            this.lblServerDateTime.Size = new System.Drawing.Size(453, 35);
             this.lblServerDateTime.TabIndex = 12;
             this.lblServerDateTime.Text = "MMM dd, yyyy hh:mm tt, wwwww";
             // 
@@ -111,9 +116,10 @@
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.btnCancel.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnCancel.Location = new System.Drawing.Point(462, 144);
+            this.btnCancel.Location = new System.Drawing.Point(602, 156);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(139, 38);
+            this.btnCancel.Size = new System.Drawing.Size(185, 47);
             this.btnCancel.TabIndex = 32;
             this.btnCancel.Text = "CANCEL";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -124,9 +130,10 @@
             this.btnLogIn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.btnLogIn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogIn.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnLogIn.Location = new System.Drawing.Point(462, 100);
+            this.btnLogIn.Location = new System.Drawing.Point(602, 101);
+            this.btnLogIn.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogIn.Name = "btnLogIn";
-            this.btnLogIn.Size = new System.Drawing.Size(139, 38);
+            this.btnLogIn.Size = new System.Drawing.Size(185, 47);
             this.btnLogIn.TabIndex = 31;
             this.btnLogIn.Text = "Log In";
             this.btnLogIn.UseVisualStyleBackColor = false;
@@ -144,9 +151,10 @@
             this.lbl_Terminalno.AutoSize = true;
             this.lbl_Terminalno.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Terminalno.ForeColor = System.Drawing.Color.Black;
-            this.lbl_Terminalno.Location = new System.Drawing.Point(16, 42);
+            this.lbl_Terminalno.Location = new System.Drawing.Point(13, 45);
+            this.lbl_Terminalno.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Terminalno.Name = "lbl_Terminalno";
-            this.lbl_Terminalno.Size = new System.Drawing.Size(164, 29);
+            this.lbl_Terminalno.Size = new System.Drawing.Size(206, 35);
             this.lbl_Terminalno.TabIndex = 33;
             this.lbl_Terminalno.Text = "Terminal#: 00";
             // 
@@ -155,30 +163,32 @@
             this.lbl_BranchCode.AutoSize = true;
             this.lbl_BranchCode.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_BranchCode.ForeColor = System.Drawing.Color.Black;
-            this.lbl_BranchCode.Location = new System.Drawing.Point(16, 13);
+            this.lbl_BranchCode.Location = new System.Drawing.Point(13, 9);
+            this.lbl_BranchCode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_BranchCode.Name = "lbl_BranchCode";
-            this.lbl_BranchCode.Size = new System.Drawing.Size(314, 29);
+            this.lbl_BranchCode.Size = new System.Drawing.Size(393, 35);
             this.lbl_BranchCode.TabIndex = 34;
             this.lbl_BranchCode.Text = "Branch: 1000-Main Branch";
             // 
-            // keyboardControl1
+            // kcMain
             // 
-            this.keyboardControl1.Capslock = false;
-            this.keyboardControl1.HorizontalButtonSpacing = 0;
-            this.keyboardControl1.Location = new System.Drawing.Point(21, 204);
-            this.keyboardControl1.Name = "keyboardControl1";
-            this.keyboardControl1.Shift = false;
-            this.keyboardControl1.Size = new System.Drawing.Size(580, 202);
-            this.keyboardControl1.Symbols = false;
-            this.keyboardControl1.TabIndex = 35;
-            this.keyboardControl1.VerticalButtonSpacing = 0;
+            this.kcMain.Capslock = false;
+            this.kcMain.HorizontalButtonSpacing = 0;
+            this.kcMain.Location = new System.Drawing.Point(19, 212);
+            this.kcMain.Margin = new System.Windows.Forms.Padding(5);
+            this.kcMain.Name = "kcMain";
+            this.kcMain.Shift = false;
+            this.kcMain.Size = new System.Drawing.Size(768, 242);
+            this.kcMain.Symbols = false;
+            this.kcMain.TabIndex = 35;
+            this.kcMain.VerticalButtonSpacing = 0;
             // 
             // frmLogInMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(613, 426);
-            this.Controls.Add(this.keyboardControl1);
+            this.ClientSize = new System.Drawing.Size(800, 470);
+            this.Controls.Add(this.kcMain);
             this.Controls.Add(this.lbl_BranchCode);
             this.Controls.Add(this.lbl_Terminalno);
             this.Controls.Add(this.btnLogIn);
@@ -188,12 +198,7 @@
             this.Controls.Add(this.txtUsername);
             this.Controls.Add(this.LBL_Password);
             this.Controls.Add(this.LBL_Username);
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
             this.Name = "frmLogInMain";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Log In";
             this.Load += new System.EventHandler(this.frmLogInMain_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmLogInMain_KeyDown);
@@ -215,6 +220,6 @@
         private System.ComponentModel.BackgroundWorker bgwConnecting;
         private System.Windows.Forms.Label lbl_Terminalno;
         private System.Windows.Forms.Label lbl_BranchCode;
-        private ETech.Views.Generic_Controls.KeyboardControl keyboardControl1;
+        private ETech.Views.Generic_Controls.KeyboardControl kcMain;
     }
 }

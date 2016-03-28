@@ -24,7 +24,6 @@ namespace ETech
             mySQLFunc.initialize_global_variables();
 
             fncFilter.set_theme_color(this);
-            cls_globalfunc.formaddkbkpevent(this);
 
             auth_needed = "ALL";
         }

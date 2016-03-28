@@ -24,7 +24,6 @@ namespace ETech
             InitializeComponent();
 
             fncFilter.set_theme_color(this);
-            cls_globalfunc.formaddkbkpevent(this);
 
             pbPreview.Width = origwidth;
             pbPreview.Height = origheight;

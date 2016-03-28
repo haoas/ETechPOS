@@ -1,4 +1,5 @@
-﻿namespace ETech.Views.Generic_Controls
+﻿using ETech.Views.Generic_Controls;
+namespace ETech.Views.Generic_Forms
 {
     partial class KeyboardForm
     {

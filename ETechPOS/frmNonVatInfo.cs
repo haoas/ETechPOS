@@ -22,7 +22,6 @@ namespace ETech
             this.nonvat = new cls_nonvat();
 
             fncFilter.set_theme_color(this);
-            cls_globalfunc.formaddkbkpevent(this);
         }
 
         private void frmNonVatInfo_Load(object sender, EventArgs e)

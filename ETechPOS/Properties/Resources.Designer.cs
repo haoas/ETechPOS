@@ -60,6 +60,18 @@ namespace ETech.Properties {
             }
         }
         
+        internal static System.Drawing.Icon _256x256 {
+            get {
+                object obj = ResourceManager.GetObject("_256x256", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        internal static System.Drawing.Icon _48x48 {
+            get {
+                object obj = ResourceManager.GetObject("_48x48", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
         internal static System.Drawing.Bitmap arrow_left {
             get {
                 object obj = ResourceManager.GetObject("arrow_left", resourceCulture);

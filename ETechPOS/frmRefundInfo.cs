@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using ETech.cls;
 using ETech.fnc;
 using ETech.FormatDesigner;
-using ETech.Views.Forms.Generics;
+using ETech.Views.Generic_Forms;
 
 namespace ETech
 {

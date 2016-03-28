@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace ETech.Views.Generic_Controls
+namespace ETech.Views.Generic_Forms
 {
     public partial class NumericKeypadForm : Form
     {

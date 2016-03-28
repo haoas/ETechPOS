@@ -259,7 +259,6 @@ namespace ETech
             fncfullscreen.ResizeFormsControls();
 
             fncFilter.set_theme_color(this);
-            cls_globalfunc.formaddkbkpevent(this);
         }
 
         private bool HasCustomPayment()

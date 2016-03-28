@@ -31,7 +31,6 @@ namespace ETech
             _cardSwipedString = "";
             this.dgvCardInfo.AutoGenerateColumns = false;
             changeupdated = false;
-            cls_globalfunc.formaddkbkpevent(this);
             _timer = new Timer();
             _timer.Interval = 500;
             _timer.Enabled = true;

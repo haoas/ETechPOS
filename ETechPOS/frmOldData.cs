@@ -19,7 +19,6 @@ namespace ETech
             InitializeComponent();
 
             fncFilter.set_theme_color(this);
-            cls_globalfunc.formaddkbkpevent(this);
         }
 
         private void frmOldData_KeyDown(object sender, KeyEventArgs e)

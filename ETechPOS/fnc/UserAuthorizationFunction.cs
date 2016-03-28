@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ETech.Views.Forms.Generics;
+using ETech.Views.Generic_Forms;
 using ETech.cls;
 
 namespace ETech.fnc

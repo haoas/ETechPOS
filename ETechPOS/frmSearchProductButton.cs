@@ -31,7 +31,6 @@ namespace ETech
 
         private void frmSearchProductButton_Load(object sender, EventArgs e)
         {
-            cls_globalfunc.formaddkbkpevent(this);
 
             buttongridDepartment.setTable("Department");
             buttongridDepartment.setColumnShown("name");
