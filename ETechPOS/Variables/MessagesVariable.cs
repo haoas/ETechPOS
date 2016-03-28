@@ -11,6 +11,7 @@ namespace ETech.Variables
         public const string FailedFetchDataInMySql = "Failed to fetch data.";
         public const string FailedExecuteQueryInMySql = "Failed to execute query.";
         public const string FailedLoadingConnectionSettings = "Failed in loading connection settings file.";
+        public const string FailedLoadingSettingsFromDatabase = "Failed in loading settings from database.";
 
         public const string InvalidUserNameOrPasswod = "Username or password is invalid.";
 

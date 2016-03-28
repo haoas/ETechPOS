@@ -9,11 +9,6 @@ namespace ETech.Models.Global
     [Serializable]
     public class Setting
     {
-        public long Id
-        {
-            get;
-            set;
-        }
         public string Title
         {
             get;
@@ -41,12 +36,11 @@ namespace ETech.Models.Global
         }
 
         public Setting()
-            : this(0, "", "", new object(), new object(), new object())
+            : this("", "", new object(), new object(), new object())
         {
         }
-        public Setting(long id, string title, string subTitle, object value1, object value2, object value3)
+        public Setting(string title, string subTitle, object value1, object value2, object value3)
         {
-            Id = id;
             Title = title;
             SubTitle = subTitle;
             Value1 = value1;

@@ -17,14 +17,13 @@ namespace ETech.Models.Global
         {
             string selectSql =
                 @"SELECT
-                    `SyncId` AS 'Id',
                     `Title` AS 'Title',
                     `Subtitle` AS 'Subtitle',
                     `Value1` AS 'Value 1',
                     `Value2` AS 'Value 2',
                     `Value3` AS 'Value 3'
                 FROM
-                    `settings`
+                    `possettings`
                 WHERE
                     `SyncId` = @id";
             SqlParameters sqlParameters = new SqlParameters();
@@ -35,7 +34,6 @@ namespace ETech.Models.Global
                 return null;
             Setting setting = new Setting();
             DataRow dataRow = resultDt.Rows[0];
-            setting.Id = (long)dataRow["Id"];
             setting.Title = (string)dataRow["Title"];
             setting.SubTitle = dataRow["Subtitle"].ToString();
             setting.Value1 = (object)dataRow["Value 1"];
@@ -68,14 +66,13 @@ namespace ETech.Models.Global
             }
             string selectSql =
                 @"SELECT
-                    `SyncId` AS 'Id',
                     `Title` AS 'Title',
                     `Subtitle` AS 'Subtitle',
                     `Value1` AS 'Value 1',
                     `Value2` AS 'Value 2',
                     `Value3` AS 'Value 3'
                 FROM
-                    `settings`
+                    `possettings`
                 " + whereSql + @"";
             DataTable resultDt = MySqlFunction.GetDataTable(new SqlDetail(selectSql, sqlParameters));
             if (resultDt == null)
@@ -86,7 +83,6 @@ namespace ETech.Models.Global
             foreach (DataRow dataRow in resultDt.Rows)
             {
                 Setting setting = new Setting();
-                setting.Id = (long)dataRow["Id"];
                 setting.Title = (string)dataRow["Title"];
                 setting.SubTitle = dataRow["Subtitle"].ToString();
                 setting.Value1 = (object)dataRow["Value 1"];
@@ -100,50 +96,50 @@ namespace ETech.Models.Global
         public static Settings GetDefaultData()
         {
             Settings settings = new Settings();
-            settings.Add(new Setting(1, "Com Port Number", "", "3", "", ""));
-            settings.Add(new Setting(2, "Customer Display", "Display 1", "WELCOME TO", "", ""));
-            settings.Add(new Setting(3, "Customer Display", "Display 2", "ETECH", "", ""));
-            settings.Add(new Setting(4, "Color Theme", "", "", "", ""));
-            settings.Add(new Setting(5, "Business Information", "Business Name", "ETECH", "", ""));
-            settings.Add(new Setting(6, "Business Information", "Owner", "ETECH", "", ""));
-            settings.Add(new Setting(7, "Business Information", "TIN", "TIN: 000-000-000-000", "", ""));
-            settings.Add(new Setting(8, "Business Information", "Address", "MANILA CITY", "", ""));
-            settings.Add(new Setting(9, "Business Information", "Permit Number", "Permit No.: 12345678901234567890", "", ""));
-            settings.Add(new Setting(10, "Business Information", "ACC", "ACC: 03840000317000054045982", "", ""));
-            settings.Add(new Setting(11, "Business Information", "Serial Number", "SN: NTS00000A0000000", "", ""));
-            settings.Add(new Setting(12, "Business Information", "MIN", "MIN: 12345678901234567890", "", ""));
-            settings.Add(new Setting(13, "Receipt Display", "Footer 1", "THIS SERVES AS AN OFFICIAL RECEIPT. BRING THIS RECEIPT IN CASE OF EXCHANGE OF MERCHANDISE WITHIN 2 DAYS", "", ""));
-            settings.Add(new Setting(14, "Receipt Display", "Footer 2", "THANK YOU AND COME AGAIN!", "", ""));
-            settings.Add(new Setting(15, "Receipt Display", "Footer 3", "", "", ""));
-            settings.Add(new Setting(16, "Receipt Display", "Footer 4", "", "", ""));
-            settings.Add(new Setting(17, "Avoid Invalid Purchase Price", "", "0", "", ""));
-            settings.Add(new Setting(18, "Print Receipt Format", "", "", "", ""));
-            settings.Add(new Setting(19, "Allow Zero Price", "", "1", "", ""));
-            settings.Add(new Setting(20, "Gross Method", "", "1", "", ""));
-            settings.Add(new Setting(21, "Show Detail Creditcard in ZRead", "", "1", "", ""));
-            settings.Add(new Setting(22, "OR Print Count", "", "1", "", ""));
-            settings.Add(new Setting(23, "POS Name", "", "ETECH POS SYSTEM", "", ""));
-            settings.Add(new Setting(25, "Show Complete OR", "", "1", "", ""));
-            settings.Add(new Setting(26, "Local Tax", "", "0", "", ""));
-            settings.Add(new Setting(27, "Service Charge", "", "0", "", ""));
-            settings.Add(new Setting(28, "Refund Memo", "", "2", "", ""));
-            settings.Add(new Setting(29, "Default Printer", "", "", "", ""));
-            settings.Add(new Setting(30, "Preview OR", "", "0", "", ""));
-            settings.Add(new Setting(31, "Product Search Style", "", "", "", ""));
-            settings.Add(new Setting(32, "Advertising URL", "", "", "", ""));
-            settings.Add(new Setting(33, "Maximum Cash Collection", "", "0", "", ""));
-            settings.Add(new Setting(34, "Read Date Range", "", "1", "", ""));
-            settings.Add(new Setting(35, "Automatic Show Keyboard", "", "0", "", ""));
-            settings.Add(new Setting(36, "POS Mac Address", "", "", "", ""));
-            settings.Add(new Setting(37, "Discount Details", "", "0", "", ""));
-            settings.Add(new Setting(38, "Customer Display Length", "", "0", "", ""));
-            settings.Add(new Setting(39, "POS Provider Name", "", "ETECH TECHNOLOGY SERVICE", "", ""));
-            settings.Add(new Setting(40, "POS Provider Address", "", "", "", ""));
-            settings.Add(new Setting(41, "POS Provider TIN", "", "", "", ""));
-            settings.Add(new Setting(42, "ACC Date", "", "", "", ""));
-            settings.Add(new Setting(43, "Print Receipt Actual", "", "0", "", ""));
-            settings.Add(new Setting(44, "Print Receipt Limit", "", "0", "", ""));
-            settings.Add(new Setting(45, "Print Receipt Buffer", "", "0", "", ""));
+            settings.Add(new Setting("Com Port Number", "", "3", "", ""));
+            settings.Add(new Setting("Customer Display", "Display 1", "WELCOME TO", "", ""));
+            settings.Add(new Setting("Customer Display", "Display 2", "ETECH", "", ""));
+            settings.Add(new Setting("Color Theme", "", "", "", ""));
+            settings.Add(new Setting("Business Information", "Business Name", "ETECH", "", ""));
+            settings.Add(new Setting("Business Information", "Owner", "ETECH", "", ""));
+            settings.Add(new Setting("Business Information", "TIN", "TIN: 000-000-000-000", "", ""));
+            settings.Add(new Setting("Business Information", "Address", "MANILA CITY", "", ""));
+            settings.Add(new Setting("Business Information", "Permit Number", "Permit No.: 12345678901234567890", "", ""));
+            settings.Add(new Setting("Business Information", "ACC", "ACC: 03840000317000054045982", "", ""));
+            settings.Add(new Setting("Business Information", "Serial Number", "SN: NTS00000A0000000", "", ""));
+            settings.Add(new Setting("Business Information", "MIN", "MIN: 12345678901234567890", "", ""));
+            settings.Add(new Setting("Receipt Display", "Footer 1", "THIS SERVES AS AN OFFICIAL RECEIPT. BRING THIS RECEIPT IN CASE OF EXCHANGE OF MERCHANDISE WITHIN 2 DAYS", "", ""));
+            settings.Add(new Setting("Receipt Display", "Footer 2", "THANK YOU AND COME AGAIN!", "", ""));
+            settings.Add(new Setting("Receipt Display", "Footer 3", "", "", ""));
+            settings.Add(new Setting("Receipt Display", "Footer 4", "", "", ""));
+            settings.Add(new Setting("Avoid Invalid Purchase Price", "", "0", "", ""));
+            settings.Add(new Setting("Print Receipt Format", "", "", "", ""));
+            settings.Add(new Setting("Allow Zero Price", "", "1", "", ""));
+            settings.Add(new Setting("Gross Method", "", "1", "", ""));
+            settings.Add(new Setting("Show Detail Creditcard in ZRead", "", "1", "", ""));
+            settings.Add(new Setting("OR Print Count", "", "1", "", ""));
+            settings.Add(new Setting("POS Name", "", "ETECH POS SYSTEM", "", ""));
+            settings.Add(new Setting("Show Complete OR", "", "1", "", ""));
+            settings.Add(new Setting("Local Tax", "", "0", "", ""));
+            settings.Add(new Setting("Service Charge", "", "0", "", ""));
+            settings.Add(new Setting("Refund Memo", "", "2", "", ""));
+            settings.Add(new Setting("Default Printer", "", "", "", ""));
+            settings.Add(new Setting("Preview OR", "", "0", "", ""));
+            settings.Add(new Setting("Product Search Style", "", "", "", ""));
+            settings.Add(new Setting("Advertising URL", "", "", "", ""));
+            settings.Add(new Setting("Maximum Cash Collection", "", "0", "", ""));
+            settings.Add(new Setting("Read Date Range", "", "1", "", ""));
+            settings.Add(new Setting("Automatic Show Keyboard", "", "0", "", ""));
+            settings.Add(new Setting("POS Mac Address", "", "", "", ""));
+            settings.Add(new Setting("Discount Details", "", "0", "", ""));
+            settings.Add(new Setting("Customer Display Length", "", "0", "", ""));
+            settings.Add(new Setting("POS Provider Name", "", "ETECH TECHNOLOGY SERVICE", "", ""));
+            settings.Add(new Setting("POS Provider Address", "", "", "", ""));
+            settings.Add(new Setting("POS Provider TIN", "", "", "", ""));
+            settings.Add(new Setting("ACC Date", "", "", "", ""));
+            settings.Add(new Setting("Print Receipt Actual", "", "0", "", ""));
+            settings.Add(new Setting("Print Receipt Limit", "", "0", "", ""));
+            settings.Add(new Setting("Print Receipt Buffer", "", "0", "", ""));
             return settings;
         }
     }

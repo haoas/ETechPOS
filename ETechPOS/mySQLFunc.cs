@@ -11,7 +11,6 @@ using System.Net.NetworkInformation;
 using ETech.Models.Global;
 using ETech.Helpers;
 using ETech.Variables;
-using ETech.Enums;
 
 namespace ETech
 {
@@ -23,12 +22,13 @@ namespace ETech
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("BranchId", cls_globalvariables.Branch.Id);
             dictionary.Add("TerminalNumber", cls_globalvariables.ConnectionSettings.TerminalNumber);
-            dictionary.Add("Type", SettingType.Pos);
             Settings newSettings = SettingsController.GetData(dictionary);
-            if (newSettings == null)
+            if (newSettings == null ||
+                newSettings.Count <= 0)
             {
                 //newSettings = SettingsController.GetDefaultData();
                 //LogsHelper.WriteToTLog(MessagesVariable.LoadDefaultSettings);
+                DialogHelper.ShowDialogWithPrintLogs(MessagesVariable.FailedLoadingSettingsFromDatabase, "");
                 result = false;
             }
             cls_globalvariables.Settings = newSettings;

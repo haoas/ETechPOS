@@ -102,7 +102,6 @@
     <Compile Include="ctrl\ctrl_otherinfo.cs" />
     <Compile Include="ctrl\ctrl_payment.cs" />
     <Compile Include="ctrl\ctrl_productgrid.cs" />
-    <Compile Include="Enums\SettingTypeEnum.cs" />
     <Compile Include="fnc\MD5EncryptionFunction.cs" />
     <Compile Include="fnc\SaltEncryptionFunction.cs" />
     <Compile Include="fnc\fncFilter.cs" />
