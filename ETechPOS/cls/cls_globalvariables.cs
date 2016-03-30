@@ -30,8 +30,10 @@ namespace ETech.cls
         public static string ApplicationFolderPath = Application.StartupPath;
         public static string ApplicationErrorFolderPath = cls_globalfunc.CreateDirectoryIfNotExists(Application.StartupPath + "/Errors");
         public static string MyDocumentApplicationFolderPath = cls_globalfunc.CreateDirectoryIfNotExists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/" + ApplicationName);
-        public static string ApplicationDataLocalCompanyNameFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/" + CompanyName;
+        public static string MyDocumentBackupFolderPath = cls_globalfunc.CreateDirectoryIfNotExists(MyDocumentApplicationFolderPath + "/Database Backup");
+        public static string ApplicationDataLocalCompanyNameFolderPath = cls_globalfunc.CreateDirectoryIfNotExists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/" + CompanyName);
         public static string ApplicationDataLocalApplicationFolderPath = cls_globalfunc.CreateDirectoryIfNotExists(ApplicationDataLocalCompanyNameFolderPath + "/" + ApplicationName);
+        public static string ApplicationToolsFolderPath = ApplicationFolderPath + "/Tools";
 
         public static string ErrorExceptionLogsFilePath
         {
@@ -48,6 +50,10 @@ namespace ETech.cls
         public static string ConnectionSettingsXmlPath
         {
             get { return ApplicationFolderPath + "/Connection Settings.xml"; }
+        }
+        public static string MySqlDumpApplicationPath
+        {
+            get { return ApplicationToolsFolderPath + "/mysqldump"; }
         }
 
         public static Branch Branch = null;
@@ -217,10 +223,6 @@ namespace ETech.cls
         {
             get { return Convert.ToInt32(Settings.GetValue1("Read Date Range")); }
         }
-        public static bool AutoShowKeyboard_v
-        {
-            get { return Settings.GetValue1("Automatic Show Keyboard").ToString() == "1"; }
-        }
         public static string POSMacAddress_v
         {
             get { return Settings.GetValue1("POS Mac Address").ToString(); }
@@ -260,6 +262,21 @@ namespace ETech.cls
         public static int print_receipt_buffer
         {
             get { return Convert.ToInt32(Settings.GetValue1("Print Receipt Buffer")); }
+        }
+        public static List<BackupDatabaseDetail> BackupDatabaseDetailList
+        {
+            get
+            {
+                List<Setting> filteredSettings = Settings.Where(x => x.Title == "Backup Database Detail").ToList();
+                List<BackupDatabaseDetail> backupDatabaseDetailList = new List<BackupDatabaseDetail>();
+                foreach (Setting setting in filteredSettings)
+                    backupDatabaseDetailList.Add(new BackupDatabaseDetail(setting.Title, setting.Value1.ToString(), setting.Value2.ToString()));
+                return backupDatabaseDetailList;
+            }
+        }
+        public static int BackupDatabaseDaysDuration
+        {
+            get { return Convert.ToInt32(Settings.GetValue1("Backup Database Detail", "Days Duration")); }
         }
 
         //RLC---

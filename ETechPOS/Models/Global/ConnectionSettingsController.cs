@@ -30,7 +30,7 @@ namespace ETech.Models.Global
             }
             catch (Exception ex)
             {
-                DialogHelper.ShowDialogWithPrintLogs(MessagesVariable.FailedLoadingConnectionSettings, ex.ToString());
+                DialogHelper.ShowDialogWithPrintLogs(MessagesVariable.FailedLoadConnectionSettings, ex.ToString());
                 return null;
             }
         }

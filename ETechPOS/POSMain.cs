@@ -18,6 +18,9 @@ using ETech.FormatDesigner;
 using ETech.Helpers;
 using ETech;
 using ETech.Views.Generic_Forms;
+using ETech.Models.Database;
+using ETech.Variables;
+using System.Globalization;
 
 namespace ETech
 {
@@ -49,6 +52,8 @@ namespace ETech
 
         int FPage = 0; // 0-Basic 1-Advanced 2-BackOffice
 
+        private string _BackupFolderLocation;
+
         #endregion
 
         #region Declaration
@@ -64,6 +69,7 @@ namespace ETech
 
             LogsHelper.ClearTLog();
             isLoadSuccessful = mySQLFunc.initialize_global_variables();
+            RemoveOldDatabaseBackup(@"C:\Users\Lenovo ThinkPad E460\Documents\ETECHPOS\Database Backup");
 
             if (!isLoadSuccessful)
                 return;
@@ -188,6 +194,12 @@ namespace ETech
 
                 this.create_new_invoice();
             }
+
+            _BackupFolderLocation = "";
+
+            tmrCheckPosdSetting.Enabled = true;
+            tmrUpdateDateTime.Enabled = true;
+            tmrPerMinuteTask.Enabled = true;
         }
         #endregion
 
@@ -326,7 +338,7 @@ namespace ETech
         }
 
         //Do not delete
-        private void TimerRefreshSettings_Tick(object sender, EventArgs e)
+        private void tmrCheckPosdSetting_Tick(object sender, EventArgs e)
         {
             TimerRefreshSettings();
         }
@@ -334,9 +346,37 @@ namespace ETech
         {
             UpdateDateTime();
         }
+        private void tmrPerMinuteTask_Tick(object sender, EventArgs e)
+        {
+            DateTime currentDateTime = DateTime.Now;
+            foreach (BackupDatabaseDetail backupDatabaseDetail in cls_globalvariables.BackupDatabaseDetailList)
+            {
+                if (currentDateTime.ToString("HH:mm") == backupDatabaseDetail.Time)
+                {
+                    tsslMessage.Text = string.Empty;
+                    _BackupFolderLocation = backupDatabaseDetail.FileLocation;
+                    BackupDatabase();
+                }
+            }
+        }
+
+        private void bgwBackupDatabase_DoWork(object sender, DoWorkEventArgs e)
+        {
+            CreateAndZipDatabaseBackup(_BackupFolderLocation);
+            RemoveOldDatabaseBackup(_BackupFolderLocation);
+            LogsHelper.WriteToTLog("Backup Database " + DateTime.Now.ToString("yyyy-MM-dd hh:mm:tt"));
+        }
+        private void bgwBackupDatabase_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+                tsslMessage.Text = MessagesVariable.FailedCreateBackupDatabase;
+            else if (e.Cancelled)
+                tsslMessage.Text = MessagesVariable.CancelledCreatingBackupDatabase;
+            else
+                tsslMessage.Text = MessagesVariable.SuccessCreatedBackupDatabase;
+        }
         #endregion
 
-        #region Return methods
         public bool processShortCutKey(KeyEventArgs e)
         {
             cls_POSTransaction tran = this.get_curtrans();
@@ -425,7 +465,7 @@ namespace ETech
 
                         }
                         //if (searchedproduct != null) {
-                        LogsHelper.WriteToTLog("[Product Added: " + searchedproduct .Name);
+                        LogsHelper.WriteToTLog("[Product Added: " + searchedproduct.Name);
                         lastaddedrownumber = tran.get_productlist().add_product(searchedproduct);
                         refresh_productlist_data(tran);
                         //}
@@ -1261,7 +1301,9 @@ namespace ETech
                     }
                     else if (FPage == 2)
                     {
-
+                        tsslMessage.Text = string.Empty;
+                        _BackupFolderLocation = cls_globalvariables.MyDocumentBackupFolderPath;
+                        BackupDatabase();
                     }
                     break;
                 case Keys.F12:
@@ -1311,9 +1353,7 @@ namespace ETech
             else
                 return true;
         }
-        #endregion
 
-        #region Void methods
         public void refresh_all_display(int mode)
         {
             this.ctrlpaymentlabel.refresh_display();
@@ -1527,7 +1567,6 @@ namespace ETech
         {
             tsslDateTime.Text = DateTime.Now.ToString("MMMMMMMMM dd, yyyy hh:mm:ss tt");
         }
-        #endregion
 
         public void Delete_Unused_saleshead(cls_POSTransaction tran)
         {
@@ -1591,7 +1630,6 @@ namespace ETech
             ButtonF08.Visible = true;
             ButtonF09.Visible = true;
             ButtonF10.Visible = true;
-            ButtonF11.Visible = true;
             if (FPage == 0)
             {
                 FPage = 1;
@@ -1628,8 +1666,7 @@ namespace ETech
                 ButtonF09.Text = "[ F9 ]\r\n \r\n ";
                 ButtonF10.Visible = false;
                 ButtonF10.Text = "[ F10 ]\r\n \r\n ";
-                ButtonF11.Visible = false;
-                ButtonF11.Text = "[ F11 ]\r\n \r\n ";
+                ButtonF11.Text = "[ F11 ]\r\nBACKUP\r\nDATABASE";
                 ButtonF12.Text = "[ F12 ]\r\nBASIC\r\nFUNCS";
             }
             else
@@ -1649,6 +1686,52 @@ namespace ETech
                 ButtonF12.Text = "[ F12 ]\r\nADVANCED\r\nFUNCS";
             }
 
+        }
+
+        private void BackupDatabase()
+        {
+            if (!bgwBackupDatabase.IsBusy)
+            {
+                bgwBackupDatabase.RunWorkerAsync();
+                tsslMessage.Text = MessagesVariable.TaskCreatingBackupDatabase;
+            }
+        }
+        private void CreateAndZipDatabaseBackup(string backupFolderPath)
+        {
+            cls_globalfunc.CreateDirectoryIfNotExists(backupFolderPath);
+            string fileName = cls_globalvariables.ConnectionSettings.Database + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".sql";
+            string zipFileName = cls_globalvariables.ConnectionSettings.Database + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip";
+            string fullFileName = backupFolderPath + "/" + fileName;
+            string fullZipFileName = backupFolderPath + "/" + zipFileName;
+            if (!DatabaseFunction.BackupDatabase(fullFileName))
+                throw new Exception();
+            ZipFunction.ZipFile(fullZipFileName, fullFileName);
+            File.Delete(fullFileName);
+        }
+        private void RemoveOldDatabaseBackup(string backupFolderPath)
+        {
+            string database = cls_globalvariables.ConnectionSettings.Database;
+            string format = "yyyyMMddHHmmss";
+            int daysDurations = cls_globalvariables.BackupDatabaseDaysDuration;
+            List<string> fileList = Directory.GetFiles(backupFolderPath, "*.zip")
+                                     .ToList();
+            List<string> fileToBeDeleteList = new List<string>(fileList);
+            List<DateTime> dateTimeList = fileList
+                                     .Select(x => Path.GetFileName(x))
+                                     .Select(x => x.Replace(database + "_", "").Replace(".zip", ""))
+                                     .Select(x => DateTime.ParseExact(x, format, CultureInfo.InvariantCulture))
+                                     .OrderBy(x => x)
+                                     .ToList();
+            List<DateTime> dateTimeDistinctList = dateTimeList
+                                    .Select(x => x.Date)
+                                    .Distinct()
+                                    .ToList();
+            if (dateTimeDistinctList.Count > daysDurations)
+                dateTimeDistinctList = dateTimeDistinctList.GetRange(dateTimeDistinctList.Count - daysDurations, daysDurations);
+            foreach (DateTime dateTime in dateTimeDistinctList)
+                fileToBeDeleteList.RemoveAll(x => x.Contains(dateTime.Date.ToString("yyyyMMdd")));
+            foreach (string fileName in fileToBeDeleteList)
+                File.Delete(fileName);
         }
     }
 

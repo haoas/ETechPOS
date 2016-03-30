@@ -26,9 +26,7 @@ namespace ETech
             if (newSettings == null ||
                 newSettings.Count <= 0)
             {
-                //newSettings = SettingsController.GetDefaultData();
-                //LogsHelper.WriteToTLog(MessagesVariable.LoadDefaultSettings);
-                DialogHelper.ShowDialogWithPrintLogs(MessagesVariable.FailedLoadingSettingsFromDatabase, "");
+                DialogHelper.ShowDialogWithPrintLogs(MessagesVariable.FailedLoadSettingsFromDatabase, "");
                 result = false;
             }
             cls_globalvariables.Settings = newSettings;

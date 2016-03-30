@@ -169,8 +169,6 @@ namespace ETech.fnc
             //DGV Properties
             int screen_width = Screen.PrimaryScreen.WorkingArea.Width;
             float custom_FontSize = 12F;
-            if (cls_globalvariables.AutoShowKeyboard_v)
-                custom_FontSize = 14F;
 
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Calibri", custom_FontSize, FontStyle.Regular);
             dgv.RowsDefaultCellStyle.Font = new Font("Calibri", custom_FontSize, FontStyle.Regular);
@@ -202,8 +200,6 @@ namespace ETech.fnc
             //DGV Properties
             //int screen_width = Screen.PrimaryScreen.WorkingArea.Width;
             float custom_FontSize = 12F;
-            if (cls_globalvariables.AutoShowKeyboard_v)
-                custom_FontSize = 14F;
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Calibri", custom_FontSize, FontStyle.Regular);
             dgv.RowsDefaultCellStyle.Font = new Font("Calibri", custom_FontSize, FontStyle.Regular);
 
