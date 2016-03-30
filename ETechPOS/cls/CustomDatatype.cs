@@ -15,7 +15,7 @@ namespace ETech.cls
         public static implicit operator RoundedDecimal(Decimal value)
         {
             RoundedDecimal _ReturnValue = new RoundedDecimal();
-            _ReturnValue.VALUE = Math.Round(value,2);
+            _ReturnValue.VALUE = Math.Round(value, 2, MidpointRounding.AwayFromZero);
             return _ReturnValue;
         }
         public override string ToString()

@@ -71,7 +71,6 @@ namespace ETech.cls
         public static int dcdetail_discounttype = 1;
         public static int dcdetail_senior = 2;
         public static int dcdetail_nonvat = 3;
-        public static int dcdetail_promoqty = 4;
         public static int dcdetail_senior5 = 5;
 
         public static int previewmul = 1;

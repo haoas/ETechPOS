@@ -98,11 +98,7 @@ namespace ETech
                                 `discount1` = '0', 
                                 `price` = '" + amount.ToString() + @"',  
                                 `pprice` = '" + amount.ToString() + @"', 
-                                `vat` = '" + (amount*0.12M/1.12M).ToString() + @"', 
-                                `senior` = 0, 
-                                `soldby` = '0',  
-                                `addbackqty` = '0',  
-                                `addbackbigqty` = '0' 
+                                `vat` = '" + (amount*0.12M/1.12M).ToString() + @"'
                             WHERE `SyncId` = " + next_detailwid;
             mySQLFunc.setdb(sSQLdetail);
 

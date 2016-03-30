@@ -497,7 +497,7 @@ namespace ETech
             {
                 string qty = Convert.ToString(prod.Quantity);
                 string price = (prod.Price).ToString();
-                string vat = prod.Vat.ToString();
+                string vat = prod.VatAmount.ToString();
 
                 cls_user soldby = (cls_user)prod.SoldBy;
                 long soldbywid = 0;
@@ -508,16 +508,16 @@ namespace ETech
                 foreach (string str in temp)
                     transactionQueryList.Add(str);
                 transactionQueryList.Add("SET @salesdetailwid := @SyncId");
-                int issenior = (trans.getsenior().get_idnumber().Length >= 1 && prod.getIsSenior() != 0) ? prod.getIsSenior() : 0;
                 string sSQLdetail = @"UPDATE `salesdetail` SET
                                 `headid` = '" + salesheadwid + @"', 
-                                `productid` = '" + prod.getSyncId().ToString() + @"',  
+                                `productid` = '" + prod.SyncId + @"',  
                                 `quantity` = '" + qty + @"',   
                                 `oprice` = '" + prod.OriginalPrice + @"',  
                                 `regularDC` = '" + prod.RegularDiscount.ToString() + @"', 
                                 `price` = '" + price + @"',  
-                                `pprice` = '" + prod.getPurchasePrice().ToString() + @"', 
+                                `pprice` = '" + prod.PurchasePrice + @"', 
                                 `vat` = '" + vat + @"',
+                                `VatStatus` = '" + prod.VatStatus + @"',
                                 `soldby` = '" + soldbywid + @"',  
                                 `memo` = '" + prod.Memo + @"'
                             WHERE `SyncId` = @salesdetailwid";

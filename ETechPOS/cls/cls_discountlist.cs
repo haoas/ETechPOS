@@ -19,7 +19,6 @@ namespace ETech.cls
         private int dcdetail_discounttype = cls_globalvariables.dcdetail_discounttype;
         private int dcdetail_senior = cls_globalvariables.dcdetail_senior;
         private int dcdetail_nonvat = cls_globalvariables.dcdetail_nonvat;
-        private int dcdetail_promoqty = cls_globalvariables.dcdetail_promoqty;
 
         private int dchead_customdiscounttype = cls_globalvariables.dchead_customdiscounttype;
         private int dchead_adjusttype = cls_globalvariables.dchead_adjusttype;
@@ -199,15 +198,11 @@ namespace ETech.cls
                     {
                         if (type == dcdetail_customdiscounttype && discountWid != disc.get_SyncId())
                             continue;
-                        if (type == cls_globalvariables.dcdetail_promoqty && isMultiple)
-                            disc.set_name("Item Discount");
 
                         set_discount_name(disc, type);
                         disc.set_status(true);
                         disc.set_ismultiple(isMultiple);
                         disc.set_value(value);
-                        if (amount == 0 && !isMultiple && type == dcdetail_promoqty)
-                            amount = value * -1;
                         if (isHistory)
                             disc.set_discounted_amount(amount);
                         flag = true;

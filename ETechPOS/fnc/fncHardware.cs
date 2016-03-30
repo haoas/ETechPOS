@@ -245,7 +245,7 @@ namespace ETech.fnc
                         (
                             SELECT H.`SyncId` AS 'shwid', H.`userid`, H.`show`, H.`status`,
                                 IF( D.`vat` = 0, true, false) AS 'isnonvat', H.`iswholesale`,
-                                IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`senior` = 0 OR D.`senior` = 2,false,true) AS 'issenior',
+                                IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`VatStatus` = 'S' OR D.`VatStatus` = 'S5',false,true) AS 'issenior',
                                 IF(`show` = 1 AND `status` = 1, D.`quantity`, 0) AS 'qty',
                                 IF(`show` = 0 OR `status` = 0, D.`quantity`, 0) AS 'voidqty',
                                 IF(`show` = 1 AND `status` = 1, D.`quantity` * (D.`oprice` - D.`price`),0) AS 'dcamount',
@@ -619,7 +619,7 @@ namespace ETech.fnc
                     (
                         SELECT H.`SyncId` AS 'shwid', H.`userid`, H.`show`, H.`status`,
                             IF( D.`vat` = 0, true, false) AS 'isnonvat', H.`iswholesale`,
-                            IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`senior` = 0 OR D.`senior` = 2,false,true) AS 'issenior',
+                            IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`VatStatus` = 'S' OR D.`VatStatus` = 'S5',false,true) AS 'issenior',
                             IF(`show` = 1 AND `status` = 1, D.`quantity`, 0) AS 'qty',
                             IF(`show` = 0 OR `status` = 0, D.`quantity`, 0) AS 'voidqty',
                             IF(`show` = 1 AND `status` = 1, D.`quantity` * (D.`oprice` - D.`price`),0) AS 'dcamount',
@@ -955,7 +955,7 @@ namespace ETech.fnc
                         (
                             SELECT H.`SyncId` AS 'shwid', H.`userid`, H.`show`, H.`status`,
                                 IF( D.`vat` = 0, true, false) AS 'isnonvat', H.`iswholesale`,
-                                IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`senior` = 0 OR D.`senior` = 2,false,true) AS 'issenior',
+                                IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`VatStatus` = 'S' OR D.`VatStatus` = 'S5',false,true) AS 'issenior',
                                 IF(`status` = 1, D.`quantity`, 0) AS 'qty',
                                 IF(`status` = 0, D.`quantity`, 0) AS 'voidqty',
                                 IF(`status` = 1, D.`quantity` * (D.`oprice` - D.`price`),0) AS 'dcamount',
@@ -1476,7 +1476,7 @@ namespace ETech.fnc
             else
             {
                 dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add(); dt_header2.Columns.Add();
-                dt_header2.Rows.Add("","", "Date:", salesdate);
+                dt_header2.Rows.Add("", "", "Date:", salesdate);
                 dt_header2.Rows.Add("OR#:", ornumber + "", "Time:", salestime);
                 dt_header2.Rows.Add("TRM:", terminalNumber + " ", " ", "");
                 if (cashier != "") dt_header2.Rows.Add("Cashier:", cashier + "", "ID#:", cashiercode);
@@ -1496,7 +1496,7 @@ namespace ETech.fnc
             foreach (cls_product prod in tran.get_productlist().get_productlist())
             {
                 string proddesc = prod.Name;
-                if ((prod.getSyncId() != 1) && (prod.getSyncId() != 2))
+                if ((prod.SyncId != 1) && (prod.SyncId != 2))
                     proddesc += " @P" + prod.Price.ToString() + "ea\n";
                 if ((prod.Price != prod.OriginalPrice) && (prod.OriginalPrice != 0)
                     && (printformat != 57) && cls_globalvariables.DiscountDetails_v == 1)
@@ -1511,12 +1511,12 @@ namespace ETech.fnc
             /* Vatable Sale = full amount
              * pre-vat sale = vat sale = less vat sale
              */
-            decimal non_vat_sale = tran.get_productlist().get_nonvatsale();
-            decimal non_vat_return = tran.get_productlist().get_nonvatreturn();
+            decimal non_vat_sale = tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount);
+            decimal non_vat_return = tran.get_productlist().list_product.Sum(P => P.NonVatReturnsAmount);
             decimal senior_discount = tran.get_productlist().get_seniordiscount();
             decimal subtotal_non_vat = tran.get_productlist().get_subtotal_nonvat();
-            decimal vatable_sale = Math.Round(tran.get_productlist().get_vatablesale() / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
-            decimal vatable_return = Math.Round(tran.get_productlist().get_vatablereturn() / (1 + cls_globalvariables.vat), MidpointRounding.AwayFromZero);
+            decimal vatable_sale = Math.Round(tran.get_productlist().list_product.Sum(P => P.VatableSalesAmount) / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
+            decimal vatable_return = Math.Round(tran.get_productlist().list_product.Sum(P => P.VatableReturnsAmount) / (1 + cls_globalvariables.vat), MidpointRounding.AwayFromZero);
             decimal subtotal_vatable = vatable_return + vatable_sale;
             decimal vat = tran.get_productlist().get_subtotal_vat() - vatable_sale - vatable_return;
 
@@ -1932,7 +1932,7 @@ namespace ETech.fnc
             foreach (cls_product prod in tran.get_productlist().get_productlist())
             {
                 string proddesc = prod.Name;
-                if ((prod.getSyncId() != 1) && (prod.getSyncId() != 2))
+                if ((prod.SyncId != 1) && (prod.SyncId != 2))
                     proddesc += " @P" + prod.Price.ToString() + "ea";
                 tempDataTable.Rows.Add(prod.Quantity.ToString("G29"), "", proddesc, prod.Amount.ToString());
                 if ((prod.Price != prod.OriginalPrice) && (prod.OriginalPrice != 0)
@@ -2006,16 +2006,16 @@ namespace ETech.fnc
             tempDataTable.Columns.Add();
             tempDataTable.Rows.Add("Total QTY:", tran.get_productlist().get_totalqty().ToString("G29"));
             // Non-VAT
-            if (tran.get_productlist().get_nonvatsale() != 0)
-                tempDataTable.Rows.Add("VAT EXEMPT SALE:", tran.get_productlist().get_nonvatsale().ToString("N2"));
-            if (tran.get_productlist().get_nonvatreturn() != 0)
-                tempDataTable.Rows.Add("VAT EXEMPT RETURN:", tran.get_productlist().get_nonvatreturn().ToString("N2"));
-            if (tran.get_productlist().get_nonvatsale() != 0 && tran.get_productlist().get_nonvatreturn() != 0)
+            if (tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount) != 0)
+                tempDataTable.Rows.Add("VAT EXEMPT SALE:", tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount).ToString("N2"));
+            if (tran.get_productlist().list_product.Sum(P => P.NonVatReturnsAmount) != 0)
+                tempDataTable.Rows.Add("VAT EXEMPT RETURN:", tran.get_productlist().list_product.Sum(P => P.NonVatReturnsAmount).ToString("N2"));
+            if (tran.get_productlist().list_product.Sum(P => P.NonVatAmount) != 0)
                 tempDataTable.Rows.Add("VAT EXEMPT SUBTOTAL:", tran.get_productlist().get_subtotal_nonvat().ToString("N2"));
 
             // VATable
-            decimal vatable_sale = Math.Round(tran.get_productlist().get_vatablesale() / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
-            decimal vatable_return = Math.Round(tran.get_productlist().get_vatablereturn() / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
+            decimal vatable_sale = Math.Round(tran.get_productlist().list_product.Sum(P => P.VatableSalesAmount) / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
+            decimal vatable_return = Math.Round(tran.get_productlist().list_product.Sum(P => P.VatableReturnsAmount) / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
             decimal vatableSubtotal = vatable_sale + vatable_return;
             if (vatable_sale != 0)
                 tempDataTable.Rows.Add("VATABLE SALE:", vatable_sale.ToString("N2"));

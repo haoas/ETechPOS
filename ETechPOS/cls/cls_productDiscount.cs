@@ -14,7 +14,6 @@ namespace ETech.cls
         private decimal adjustments;
         private decimal seniordisc_value;
         private decimal nonvatdisc_value;
-        private decimal promoqtydisc_value;
         private decimal customDisc_value;
 
         private int dcdetail_customdiscounttype = cls_globalvariables.dcdetail_customdiscounttype;
@@ -22,7 +21,6 @@ namespace ETech.cls
         private int dcdetail_discounttype = cls_globalvariables.dcdetail_discounttype;
         private int dcdetail_senior = cls_globalvariables.dcdetail_senior;
         private int dcdetail_nonvat = cls_globalvariables.dcdetail_nonvat;
-        private int dcdetail_promoqty = cls_globalvariables.dcdetail_promoqty;
 
         public cls_productDiscount()
         {
@@ -30,22 +28,19 @@ namespace ETech.cls
             this.adjustments = 0;
             this.seniordisc_value = 0;
             this.nonvatdisc_value = 0;
-            this.promoqtydisc_value = 0;
             this.customDisc_value = 0;
         }
 
         public DataTable getHierarchyList() { return this.dt; }
         public decimal getAdjustments() { return this.adjustments; }
-        public decimal getDiscounts() { return this.seniordisc_value + this.nonvatdisc_value + this.promoqtydisc_value + this.customDisc_value; }
+        public decimal getDiscounts() { return this.seniordisc_value + this.nonvatdisc_value + this.customDisc_value; }
         public decimal getSeniorDisc() { return this.seniordisc_value; }
         public decimal getNonVatDisc() { return this.nonvatdisc_value; }
-        public decimal getPromoQtyDisc() { return this.promoqtydisc_value; }
         public decimal getCustomDisc() { return this.customDisc_value; }
 
         public void setAdjustments(decimal val) { this.adjustments = val; }
         public void setSeniorDisc(decimal val) { this.seniordisc_value = val; }
         public void setNonVatDisc(decimal val) { this.nonvatdisc_value = val; }
-        public void setPromoQtyDisc(decimal val) { this.promoqtydisc_value = val; }
         public void setCustomDisc(decimal val) { this.customDisc_value = val; }
 
         public void setDiscountAmounts(int type, decimal amount)
@@ -69,10 +64,6 @@ namespace ETech.cls
             else if (type == this.dcdetail_nonvat)
             {
                 setNonVatDisc(amount * -1);
-            }
-            else if (type == this.dcdetail_promoqty)
-            {
-                setPromoQtyDisc(amount * -1);
             }
             else if (type == dcdetail_customdiscounttype)
             {
@@ -182,7 +173,6 @@ namespace ETech.cls
             this.adjustments = 0;
             this.seniordisc_value = 0;
             this.nonvatdisc_value = 0;
-            this.promoqtydisc_value = 0;
             this.customDisc_value = 0;
 
             foreach (DataRow dr in this.dt.Rows)

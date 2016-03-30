@@ -212,7 +212,7 @@ namespace ETech
                     else if (reportname == "NONVAT SALES")
                         GroupByCondition = @" AND SD.vat <= 0 ";
                     else if (reportname == "SENIOR SALES")
-                        GroupByCondition = @" AND LENGTH(SH.seniorname) > 1 AND SD.`senior`=1 ";
+                        GroupByCondition = @" AND LENGTH(SH.seniorname) > 1";
 
                     SQL = @" SELECT COALESCE(P.`product`,'N/A') as 'name',
 	                        FORMAT(SUM(SD.`quantity`),0) as 'Count',

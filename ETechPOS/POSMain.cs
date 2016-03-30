@@ -244,7 +244,7 @@ namespace ETech
                 if (this.txtBarcode.Text.Trim() == "") return;
 
                 cls_product searchedproduct = new cls_product(this.txtBarcode.Text.Trim());
-                if (searchedproduct.getSyncId() == 0)
+                if (searchedproduct.SyncId == 0)
                 {
                     fncFilter.alert(cls_globalvariables.warning_product_notfound);
                     this.txtBarcode.SelectAll();
@@ -262,7 +262,7 @@ namespace ETech
                 if (cls_globalvariables.avoidinvalidpprice_v)
                 {
                     if ((searchedproduct.Price <= searchedproduct.PurchasePrice && !tran.get_productlist().get_iswholesale()) ||
-                        (searchedproduct.getWholesalePrice() <= searchedproduct.PurchasePrice && tran.get_productlist().get_iswholesale()))
+                        (searchedproduct.WholesalePrice <= searchedproduct.PurchasePrice && tran.get_productlist().get_iswholesale()))
                     {
                         fncFilter.alert(cls_globalvariables.warning_price_invalid + "\n Purchase Price is Greater Than Selling Price");
                         this.txtBarcode.SelectAll();
@@ -398,7 +398,7 @@ namespace ETech
                     {
                         cls_product searchedproduct = new cls_product();
                         searchedproduct.setcls_product_by_syncid(productwid, false);
-                        if (searchedproduct.getSyncId() == 0)
+                        if (searchedproduct.SyncId == 0)
                         {
                             fncFilter.alert(cls_globalvariables.warning_product_notfound);
                             this.txtBarcode.SelectAll();
@@ -416,7 +416,7 @@ namespace ETech
                         if (cls_globalvariables.avoidinvalidpprice_v)
                         {
                             if ((searchedproduct.Price <= searchedproduct.PurchasePrice && !tran.get_productlist().get_iswholesale()) ||
-                                (searchedproduct.getWholesalePrice() <= searchedproduct.PurchasePrice && tran.get_productlist().get_iswholesale()))
+                                (searchedproduct.WholesalePrice <= searchedproduct.PurchasePrice && tran.get_productlist().get_iswholesale()))
                             {
                                 fncFilter.alert(cls_globalvariables.warning_price_invalid);
                                 this.txtBarcode.SelectAll();
@@ -425,7 +425,7 @@ namespace ETech
 
                         }
                         //if (searchedproduct != null) {
-                        LogsHelper.WriteToTLog("[Product Added: " + searchedproduct .Name);
+                        LogsHelper.WriteToTLog("[Product Added: " + searchedproduct.Name);
                         lastaddedrownumber = tran.get_productlist().add_product(searchedproduct);
                         refresh_productlist_data(tran);
                         //}
@@ -505,12 +505,12 @@ namespace ETech
                         row_index = this.ctrlproductgridview.get_currentrow().Index;
                         cls_product prod = tran.get_productlist().get_product(row_index);
                         string productname = prod.Name;
-                        if ((prod.getSyncId() == 1) || (prod.getSyncId() == 2)) { isdetected = true; break; }
+                        if ((prod.SyncId == 1) || (prod.SyncId == 2)) { isdetected = true; break; }
                         decimal cur_prodqty = prod.Quantity;
                         string cur_prodmemo = prod.Memo;
 
                         frmProductQuantity frmprodqty = new frmProductQuantity();
-                        frmprodqty.productid = prod.getSyncId();
+                        frmprodqty.productid = prod.SyncId;
                         frmprodqty.productname = productname;
                         frmprodqty.new_qty = cur_prodqty;
                         frmprodqty.delete_auth = permcheck_deleteproduct;
@@ -612,7 +612,7 @@ namespace ETech
                         if (!ctrlproductgridview.hasRows())
                             break;
 
-                        long prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getSyncId();
+                        long prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).SyncId;
                         if (prodWid == 1 || prodWid == 2)
                         {
                             fncFilter.alert(@"Not allowed!");
@@ -721,7 +721,7 @@ namespace ETech
                         if (!ctrlproductgridview.hasRows())
                             break;
 
-                        long prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).getSyncId();
+                        long prodWid = tran.get_productlist().get_product(ctrlproductgridview.get_currentrow().Index).SyncId;
                         if (prodWid == 1 || prodWid == 2)
                         {
                             fncFilter.alert(@"Not allowed!");
@@ -757,7 +757,7 @@ namespace ETech
                             int row_index_discount = this.ctrlproductgridview.get_currentrow().Index;
                             cls_product prod_discount = tran.get_productlist().get_product(row_index_discount);
 
-                            decimal cur_prodadjust = prod_discount.getAdjust();
+                            decimal cur_prodadjust = prod_discount.FixedAdjustment;
                             decimal cur_proddiscount = prod_discount.RegularDiscount;
                             decimal cur_prodprice = prod_discount.Price;
 
@@ -1338,21 +1338,21 @@ namespace ETech
             //remove service charge
             for (int i = 0; i < tran.get_productlist().get_productlist().Count; i++)
             {
-                if (tran.get_productlist().get_product(i).getSyncId() == 1)
+                if (tran.get_productlist().get_product(i).SyncId == 1)
                     tran.get_productlist().remove_product(i);
             }
             //remove local tax
             for (int i = 0; i < tran.get_productlist().get_productlist().Count; i++)
             {
-                if (tran.get_productlist().get_product(i).getSyncId() == 2)
+                if (tran.get_productlist().get_product(i).SyncId == 2)
                     tran.get_productlist().remove_product(i);
             }
             tran.get_productlist().refresh_all_discounts();
 
             if (cls_globalvariables.ServiceCharge_v > 0)
             {
-                decimal nonvatablesale = tran.get_productlist().get_nonvatsale();// get_subtotal_nonvat();
-                decimal vatablesale = tran.get_productlist().get_vatablesale();// get_subtotal_vat();
+                decimal nonvatablesale = tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount);
+                decimal vatablesale = tran.get_productlist().list_product.Sum(P => P.VatableSalesAmount);
                 decimal vat = cls_globalvariables.vat;
                 decimal price = (nonvatablesale + (vatablesale / (1 + vat))) * (cls_globalvariables.ServiceCharge_v / 100);
                 tran.get_productlist().add_product(new cls_product(price, 1, 1));

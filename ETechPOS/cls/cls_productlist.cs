@@ -8,7 +8,7 @@ namespace ETech.cls
 {
     public class cls_productlist
     {
-        private List<cls_product> list_product;
+        public List<cls_product> list_product;
         private DataTable dtproducts;
         private cls_discountlist transDiscount;
 
@@ -69,8 +69,8 @@ namespace ETech.cls
                 return -1;
             for (int i = 0; i < list_product.Count; i++)
             {
-                if (list_product[i].getSyncId() == prod.getSyncId()
-                        && prod.getSyncId() != 0
+                if (list_product[i].SyncId == prod.SyncId
+                        && prod.SyncId != 0
                         && prod.Barcode != "-")
                 {
                     decimal qty = list_product[i].Quantity + prod.Quantity;
@@ -96,7 +96,7 @@ namespace ETech.cls
         public int add_product_by_barcode(string barcode_d)
         {
             cls_product prod = new cls_product(barcode_d);
-            if (prod.getSyncId() == 0)
+            if (prod.SyncId == 0)
                 return -1;
 
             return this.add_product(prod);
@@ -148,47 +148,17 @@ namespace ETech.cls
         }
         public bool get_issenior() { return this.issenior; }
 
-        /*
-        nonvat_sale
-        nonvat_return
-        vatable_sale
-        vatable_return
-        senior_sale
-        senior_return
-        */
-        private decimal get_sales_and_returns(string mode)
-        {
-            decimal sum = 0;
-            //decimal total_noheaddisc = this.get_totalamount_no_head_discount();
-            //decimal total_wheaddisc = this.get_totalamount();
-
-            foreach (cls_product prod in list_product)
-            {
-                Console.WriteLine("productwid " + prod.getSyncId() + "\nproductmode " + prod.getTransaction_Mode());
-                if (mode.Equals(prod.getTransaction_Mode()))
-                {
-                    sum += prod.Amount;
-                }
-            }
-            return sum;
-        }
-        public decimal get_nonvatsale() { return get_sales_and_returns("nonvat_sale"); }
-        public decimal get_nonvatreturn() { return get_sales_and_returns("nonvat_return"); }
-        public decimal get_vatablesale() { return get_sales_and_returns("vatable_sale"); }
-        public decimal get_vatablereturn() { return get_sales_and_returns("vatable_return"); }
-        public decimal get_seniorsale() { return get_sales_and_returns("senior_sale"); }
-        public decimal get_seniorreturn() { return get_sales_and_returns("senior_return"); }
         public decimal get_seniordiscount()
         {
             decimal sum = 0;
             foreach (cls_product prd in list_product)
             {
                 decimal disc = 0;
-                if (prd.getIsSenior() == 1)
+                if (prd.VatStatus == "S")
                 {
                     disc = prd.get_discount_amt(cls_globalvariables.dcdetail_senior);
                 }
-                else if (prd.getIsSenior() == 2)
+                else if (prd.VatStatus == "S5")
                 {
                     disc = prd.get_discount_amt(cls_globalvariables.dcdetail_senior5);
                 }
@@ -198,11 +168,11 @@ namespace ETech.cls
         }
         public decimal get_subtotal_nonvat()
         {
-            return this.get_nonvatsale() + this.get_nonvatreturn() + this.get_seniorsale() + this.get_seniorreturn();
+            return list_product.Sum(P => P.NonVatAmount);
         }
         public decimal get_subtotal_vat()
         {
-            return this.get_vatablesale() + this.get_vatablereturn();
+            return list_product.Sum(P => P.VatableAmount);
         }
         public decimal get_subtotal_pre_vat() //pre-vat sale (less vat)
         {
@@ -311,14 +281,14 @@ namespace ETech.cls
 
             foreach (cls_product cprod in this.list_product)
             {
-                decimal cadjust = cprod.getAdjust();
+                decimal cadjust = cprod.FixedAdjustment;
                 decimal cdiscount = cprod.RegularDiscount;
 
                 if (cadjust != 0 && proddiscount != 0)
                 {
                     //add discount to adjust
                     decimal discountvalue = proddiscount * cprod.Price;
-                    cprod.setAdjust(cadjust - discountvalue);
+                    cprod.FixedAdjustment = cadjust - discountvalue;
                     cprod.RegularDiscount = 0;
                 }
                 else if (cdiscount != 0 && proddiscount != 0)
@@ -328,13 +298,13 @@ namespace ETech.cls
                     decimal discountvalue = proddiscount * cprod.Price;
                     decimal prevdiscountvalue = cprod.Price * cdiscount / (1 - cdiscount);
 
-                    cprod.setAdjust(0 - discountvalue - prevdiscountvalue);
+                    cprod.FixedAdjustment = 0 - discountvalue - prevdiscountvalue;
                     cprod.RegularDiscount = 0;
                 }
                 else if (proddiscount != 0)
                 {
                     //add discount to discount
-                    cprod.setAdjust(0);
+                    cprod.FixedAdjustment = 0;
                     cprod.RegularDiscount = proddiscount;
                 }
                 cprod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
@@ -349,7 +319,7 @@ namespace ETech.cls
             //totaldiscount = percentage
             foreach (cls_product cprod in this.list_product)
             {
-                cprod.setAdjust(0);
+                cprod.FixedAdjustment = 0;
                 cprod.RegularDiscount = totaldiscount;
                 cprod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             }
@@ -364,8 +334,8 @@ namespace ETech.cls
             if (row_index < 0 || row_index >= this.list_product.Count)
                 return;
 
-            this.list_product[row_index].setAdjust(prodadjust);
-            this.list_product[row_index].RegularDiscount =proddiscount;
+            this.list_product[row_index].FixedAdjustment = prodadjust;
+            this.list_product[row_index].RegularDiscount = proddiscount;
             this.list_product[row_index].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             this.sync_product_row(row_index);
         }
@@ -431,7 +401,7 @@ namespace ETech.cls
                 }
 
                 int tempWid = int.TryParse(dr_d["SyncId"].ToString(), out tempWid) ? tempWid : 0;
-                prod.OriginalPrice =Convert.ToDecimal(dr_d["oprice"]);
+                prod.OriginalPrice = Convert.ToDecimal(dr_d["oprice"]);
                 prod.Quantity = Convert.ToDecimal(dr_d["quantity"]);
                 prod.SoldBy = new cls_user(Convert.ToInt32(dr_d["soldby"]));
                 prod.Price = Convert.ToDecimal(dr_d["price"]);
@@ -439,7 +409,7 @@ namespace ETech.cls
                 {
                     decimal dc = decimal.Divide(prod.Price, prod.OriginalPrice);
                     prod.RegularDiscount = 1M - dc;
-                    prod.setAdjust(0);
+                    prod.FixedAdjustment = 0;
                 }
 
                 decimal oprice = Convert.ToDecimal(dr_d["oprice"]);
@@ -448,15 +418,15 @@ namespace ETech.cls
                 decimal temp_discount = Convert.ToDecimal(dr_d["discount1"]);
                 decimal temp_adjust = Convert.ToDecimal(dr_d["aprice"]) - (Convert.ToDecimal(dr_d["oprice"]) * (1 - Convert.ToDecimal(dr_d["discount1"])));
 
-                if (this.issenior && (prod.getIsSenior() == 1))
+                if (this.issenior && (prod.VatStatus == "S"))
                 {
                     oprice_temp = (oprice / (1 + cls_globalvariables.vat)) * (1 - cls_globalvariables.senior);
                 }
-                if (this.issenior && (prod.getIsSenior() == 2))
+                if (this.issenior && (prod.VatStatus == "S5"))
                 {
                     oprice_temp = (oprice * (1 - cls_globalvariables.senior5));
                 }
-                else if (this.isnonvat && prod.getIsVat())
+                else if (this.isnonvat && prod.VatStatus == "V")
                 {
                     oprice_temp = oprice / (1 + cls_globalvariables.vat);
                 }
@@ -464,11 +434,11 @@ namespace ETech.cls
 
                 if (Math.Round(oprice_temp, 3, MidpointRounding.AwayFromZero) != Math.Round(temp_price, 3, MidpointRounding.AwayFromZero) && temp_discount > 0)
                 {
-                    prod.RegularDiscount =temp_discount;
+                    prod.RegularDiscount = temp_discount;
                 }
                 else if (Math.Round(oprice_temp, 3, MidpointRounding.AwayFromZero) != Math.Round(temp_price, 3, MidpointRounding.AwayFromZero) && temp_discount == 0)
                 {
-                    prod.setAdjust(temp_adjust);
+                    prod.FixedAdjustment = temp_adjust;
                 }
                 else { }
 

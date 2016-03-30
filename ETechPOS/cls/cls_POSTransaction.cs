@@ -10,7 +10,7 @@ namespace ETech.cls
 {
     public class cls_POSTransaction
     {
-        private long syncid;
+        private long SyncId;
         private long OfficialReceiptNo;
         private DateTime salesdatetime;
         private cls_user clerk;
@@ -34,7 +34,7 @@ namespace ETech.cls
         //constructor
         public cls_POSTransaction()
         {
-            this.syncid = 0;
+            this.SyncId = 0;
             this.OfficialReceiptNo = 0;
             this.adjust = 0;
             this.discount = 0;
@@ -54,8 +54,8 @@ namespace ETech.cls
             this.status = 0;
         }
 
-        public void setSyncId(long syncid_d) { this.syncid = syncid_d; }
-        public long getSyncId() { return this.syncid; }
+        public void setSyncId(long syncid_d) { this.SyncId = syncid_d; }
+        public long getSyncId() { return this.SyncId; }
 
         public void setORnumber(long ORnumber_d) { this.OfficialReceiptNo = ORnumber_d; }
         public long getORnumber() { return this.OfficialReceiptNo; }
@@ -139,13 +139,13 @@ namespace ETech.cls
 
         public void set_transaction_by_wid(long SyncId, bool status)
         {
-            this.syncid = SyncId;
+            this.SyncId = SyncId;
 
             string sSQL = "SELECT * FROM `saleshead` WHERE `SyncId` = " + SyncId;
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {
-                this.syncid = 0;
+                this.SyncId = 0;
                 return;
             }
 
@@ -179,7 +179,7 @@ namespace ETech.cls
             DataTable dt = mySQLFunc.getdb(sSQL);
             if (dt.Rows.Count <= 0)
             {
-                this.syncid = 0;
+                this.SyncId = 0;
                 return;
             }
 

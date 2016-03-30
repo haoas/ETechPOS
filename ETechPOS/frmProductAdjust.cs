@@ -48,6 +48,7 @@ namespace ETech
             else if (e.KeyCode == Keys.F3) BtnF3.PerformClick();
             else if (e.KeyCode == Keys.F4) BtnF4.PerformClick();
             else if (e.KeyCode == Keys.F11) RemoveButtonClicked();
+            else if (e.KeyCode == Keys.Enter) done_process();
             else if (e.KeyCode == Keys.F12) done_process();
             else return;
         }
