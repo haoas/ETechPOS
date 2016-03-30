@@ -33,6 +33,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BarCode, Version=1.5.2840.25357, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libs\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.6.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="MySql.Web, Version=6.6.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -61,6 +65,9 @@
     <Compile Include="AddUserForm.Designer.cs">
       <DependentUpon>AddUserForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="fnc\DatabaseFunction.cs" />
+    <Compile Include="fnc\ZipFunction.cs" />
+    <Compile Include="Models\Database\BackupDatabaseDetail.cs" />
     <Compile Include="Standard Views\StandardDialogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -509,10 +516,14 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="libs\Ionic.Zip.dll" />
     <Content Include="resources\Icons\256x256.ico" />
     <Content Include="resources\images\256x256.jpg" />
     <Content Include="resources\Icons\48x48.ico" />
     <Content Include="resources\images\48x48.jpg" />
+    <Content Include="Tools\mysqldump.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="resources\images\arrow-left.PNG" />
     <None Include="resources\images\arrow-right.PNG" />
     <None Include="resources\images\close-bttn.png" />

@@ -925,19 +925,19 @@ namespace ETech.fnc
                         COALESCE(ROUND(CAST(SUM(`totalsalesamount`) AS DECIMAL(10,3)),2),0) AS 'totalsalesamount',
                         COALESCE(ROUND(CAST(SUM(`retail_sale`) AS DECIMAL(10,3)),2),0) AS 'total_retail_sale',
                         COALESCE(ROUND(CAST(SUM(`wholesale_sale`) AS DECIMAL(10,3)),2),0) AS 'total_wholesale_sale',
-                        COALESCE(ROUND(CAST(SUM(IF(S.`show` = 1,`cash`,0)) AS DECIMAL(10,3)),2),0) AS 'cash',
-                        COALESCE(ROUND(CAST(SUM(IF(S.`show` = 1,`bankcheque`,0)) AS DECIMAL(10,3)),2),0) AS 'bankcheque',
-                        COALESCE(ROUND(CAST(SUM(IF(S.`show` = 1,`creditcard`,0)) AS DECIMAL(10,3)),2),0) AS 'creditcard',
-                        COALESCE(ROUND(CAST(SUM(IF(S.`show` = 1,`debitcard`,0)) AS DECIMAL(10,3)),2),0) AS 'debitcard',
-                        COALESCE(ROUND(CAST(SUM(IF(S.`show` = 1,`giftcheque`,0)) AS DECIMAL(10,3)),2),0) AS 'giftcheque',
-                        COALESCE(ROUND(CAST(SUM(IF(S.`show` = 1,`memberpoints`,0)) AS DECIMAL(10,3)),2),0) AS 'memberpoints',
+                        COALESCE(ROUND(CAST(SUM(IF(S.`status` = 1,`cash`,0)) AS DECIMAL(10,3)),2),0) AS 'cash',
+                        COALESCE(ROUND(CAST(SUM(IF(S.`status` = 1,`bankcheque`,0)) AS DECIMAL(10,3)),2),0) AS 'bankcheque',
+                        COALESCE(ROUND(CAST(SUM(IF(S.`status` = 1,`creditcard`,0)) AS DECIMAL(10,3)),2),0) AS 'creditcard',
+                        COALESCE(ROUND(CAST(SUM(IF(S.`status` = 1,`debitcard`,0)) AS DECIMAL(10,3)),2),0) AS 'debitcard',
+                        COALESCE(ROUND(CAST(SUM(IF(S.`status` = 1,`giftcheque`,0)) AS DECIMAL(10,3)),2),0) AS 'giftcheque',
+                        COALESCE(ROUND(CAST(SUM(IF(S.`status` = 1,`memberpoints`,0)) AS DECIMAL(10,3)),2),0) AS 'memberpoints',
                         COALESCE(COUNT(*),0) AS 'all_trans',
-                        COALESCE(SUM(IF(S.`show` = 1 AND S.`status` = 1,1,0)),0) AS 'success_trans',
-                        COALESCE(SUM(IF(S.`show` = 0 OR S.`status` = 0,1,0)),0) AS 'void_trans'
+                        COALESCE(SUM(IF(S.`status` = 1 AND S.`status` = 1,1,0)),0) AS 'success_trans',
+                        COALESCE(SUM(IF(S.`status` = 2 OR S.`status` = 0,1,0)),0) AS 'void_trans'
                     FROM
                     (
                         SELECT
-                            `shwid`, `userid`, `show`, `status`,
+                            `shwid`, `userid`, `status`,
                             SUM(IF(`iswholesale` = 0, `amount`, 0)) AS 'retail_sale',
                             SUM(IF(`iswholesale` = 1, `amount`, 0)) AS 'wholesale_sale',
                             SUM(IF(`isnonvat` = 0 AND `issenior` = 0 AND `amount` > 0,`amount`,0)) AS 'vatable_sale',
@@ -953,7 +953,7 @@ namespace ETech.fnc
                             SUM(IF(`voidamount`>0,`voidamount`,0)) AS 'total_void_amount'
                         FROM
                         (
-                            SELECT H.`SyncId` AS 'shwid', H.`userid`, H.`show`, H.`status`,
+                            SELECT H.`SyncId` AS 'shwid', H.`userid`, H.`status`,
                                 IF( D.`vat` = 0, true, false) AS 'isnonvat', H.`iswholesale`,
                                 IF( H.`seniorno` = '0' OR H.`seniorno` = '' OR D.`VatStatus` = 'S' OR D.`VatStatus` = 'S5',false,true) AS 'issenior',
                                 IF(`status` = 1, D.`quantity`, 0) AS 'qty',

@@ -29,12 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvProduct = new System.Windows.Forms.DataGridView();
+            this.dgvcVatStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtBarcode = new System.Windows.Forms.TextBox();
             this.lblMode_d = new System.Windows.Forms.Label();
             this.lblMode = new System.Windows.Forms.Label();
@@ -44,7 +49,7 @@
             this.lblTendered = new System.Windows.Forms.Label();
             this.lblRemaining = new System.Windows.Forms.Label();
             this.spcustdisp = new System.IO.Ports.SerialPort(this.components);
-            this.tmrcheckposdsetting = new System.Windows.Forms.Timer(this.components);
+            this.tmrCheckPosdSetting = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lblTotal = new System.Windows.Forms.Label();
@@ -58,7 +63,7 @@
             this.tsslTransactions = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslOfficialReceiptNumberTxt = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslOfficialReceiptNumber = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslSpace2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslDateTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmrUpdateDateTime = new System.Windows.Forms.Timer(this.components);
             this.ssOtherInformation = new System.Windows.Forms.StatusStrip();
@@ -89,11 +94,8 @@
             this.ButtonF09 = new System.Windows.Forms.Button();
             this.ButtonF08 = new System.Windows.Forms.Button();
             this.ButtonF07 = new System.Windows.Forms.Button();
-            this.dgvcVatStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tmrPerMinuteTask = new System.Windows.Forms.Timer(this.components);
+            this.bgwBackupDatabase = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).BeginInit();
             this.ssApplicationDetails.SuspendLayout();
             this.ssOtherInformation.SuspendLayout();
@@ -114,36 +116,105 @@
             this.price,
             this.amount});
             this.dgvProduct.Enabled = false;
-            this.dgvProduct.Location = new System.Drawing.Point(400, 13);
+            this.dgvProduct.Location = new System.Drawing.Point(533, 16);
+            this.dgvProduct.Margin = new System.Windows.Forms.Padding(4);
             this.dgvProduct.Name = "dgvProduct";
             this.dgvProduct.ReadOnly = true;
             this.dgvProduct.RowHeadersVisible = false;
             this.dgvProduct.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvProduct.Size = new System.Drawing.Size(852, 306);
+            this.dgvProduct.Size = new System.Drawing.Size(1136, 377);
             this.dgvProduct.TabIndex = 1;
             this.dgvProduct.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProduct_CellClick);
+            // 
+            // dgvcVatStatus
+            // 
+            this.dgvcVatStatus.DataPropertyName = "VatStatus";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dgvcVatStatus.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvcVatStatus.FillWeight = 50F;
+            this.dgvcVatStatus.HeaderText = "";
+            this.dgvcVatStatus.MinimumWidth = 50;
+            this.dgvcVatStatus.Name = "dgvcVatStatus";
+            this.dgvcVatStatus.ReadOnly = true;
+            // 
+            // description
+            // 
+            this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.description.DataPropertyName = "productname";
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.description.DefaultCellStyle = dataGridViewCellStyle7;
+            this.description.FillWeight = 200F;
+            this.description.HeaderText = "Description";
+            this.description.MinimumWidth = 300;
+            this.description.Name = "description";
+            this.description.ReadOnly = true;
+            // 
+            // qty
+            // 
+            this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.qty.DataPropertyName = "qty";
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.qty.DefaultCellStyle = dataGridViewCellStyle8;
+            this.qty.FillWeight = 46.81124F;
+            this.qty.HeaderText = "Qty";
+            this.qty.MinimumWidth = 100;
+            this.qty.Name = "qty";
+            this.qty.ReadOnly = true;
+            // 
+            // price
+            // 
+            this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.price.DataPropertyName = "price";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.price.DefaultCellStyle = dataGridViewCellStyle9;
+            this.price.FillWeight = 61.91541F;
+            this.price.HeaderText = "Price";
+            this.price.MinimumWidth = 100;
+            this.price.Name = "price";
+            this.price.ReadOnly = true;
+            // 
+            // amount
+            // 
+            this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.amount.DataPropertyName = "amount";
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.amount.DefaultCellStyle = dataGridViewCellStyle10;
+            this.amount.HeaderText = "Amount";
+            this.amount.MinimumWidth = 100;
+            this.amount.Name = "amount";
+            this.amount.ReadOnly = true;
             // 
             // txtBarcode
             // 
             this.txtBarcode.Enabled = false;
             this.txtBarcode.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBarcode.Location = new System.Drawing.Point(512, 361);
+            this.txtBarcode.Location = new System.Drawing.Point(683, 444);
+            this.txtBarcode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBarcode.MaxLength = 50;
             this.txtBarcode.Name = "txtBarcode";
-            this.txtBarcode.Size = new System.Drawing.Size(408, 35);
+            this.txtBarcode.Size = new System.Drawing.Size(543, 42);
             this.txtBarcode.TabIndex = 0;
             this.txtBarcode.Tag = "";
-            this.txtBarcode.Leave += new System.EventHandler(this.txtBarcode_Leave);
             this.txtBarcode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBarcode_KeyPress);
+            this.txtBarcode.Leave += new System.EventHandler(this.txtBarcode_Leave);
             // 
             // lblMode_d
             // 
             this.lblMode_d.BackColor = System.Drawing.Color.White;
             this.lblMode_d.Font = new System.Drawing.Font("Arial", 24.75F);
             this.lblMode_d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblMode_d.Location = new System.Drawing.Point(1057, 323);
+            this.lblMode_d.Location = new System.Drawing.Point(1409, 398);
+            this.lblMode_d.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMode_d.Name = "lblMode_d";
-            this.lblMode_d.Size = new System.Drawing.Size(169, 39);
+            this.lblMode_d.Size = new System.Drawing.Size(225, 48);
             this.lblMode_d.TabIndex = 5;
             // 
             // lblMode
@@ -152,9 +223,10 @@
             this.lblMode.BackColor = System.Drawing.Color.White;
             this.lblMode.Font = new System.Drawing.Font("Arial", 24.75F);
             this.lblMode.ForeColor = System.Drawing.Color.Black;
-            this.lblMode.Location = new System.Drawing.Point(946, 324);
+            this.lblMode.Location = new System.Drawing.Point(1261, 399);
+            this.lblMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMode.Name = "lblMode";
-            this.lblMode.Size = new System.Drawing.Size(105, 38);
+            this.lblMode.Size = new System.Drawing.Size(136, 47);
             this.lblMode.TabIndex = 4;
             this.lblMode.Text = "Mode:";
             // 
@@ -163,9 +235,10 @@
             this.lblBarcode.AutoSize = true;
             this.lblBarcode.BackColor = System.Drawing.Color.White;
             this.lblBarcode.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBarcode.Location = new System.Drawing.Point(550, 335);
+            this.lblBarcode.Location = new System.Drawing.Point(733, 412);
+            this.lblBarcode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBarcode.Name = "lblBarcode";
-            this.lblBarcode.Size = new System.Drawing.Size(87, 22);
+            this.lblBarcode.Size = new System.Drawing.Size(108, 27);
             this.lblBarcode.TabIndex = 20;
             this.lblBarcode.Text = "Barcode:";
             // 
@@ -174,9 +247,10 @@
             this.lblQty.AutoSize = true;
             this.lblQty.BackColor = System.Drawing.Color.White;
             this.lblQty.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQty.Location = new System.Drawing.Point(975, 370);
+            this.lblQty.Location = new System.Drawing.Point(1300, 455);
+            this.lblQty.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblQty.Name = "lblQty";
-            this.lblQty.Size = new System.Drawing.Size(76, 38);
+            this.lblQty.Size = new System.Drawing.Size(98, 47);
             this.lblQty.TabIndex = 21;
             this.lblQty.Text = "Qty:";
             // 
@@ -184,9 +258,10 @@
             // 
             this.lblQty_d.BackColor = System.Drawing.Color.White;
             this.lblQty_d.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQty_d.Location = new System.Drawing.Point(1057, 370);
+            this.lblQty_d.Location = new System.Drawing.Point(1409, 455);
+            this.lblQty_d.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblQty_d.Name = "lblQty_d";
-            this.lblQty_d.Size = new System.Drawing.Size(169, 39);
+            this.lblQty_d.Size = new System.Drawing.Size(225, 48);
             this.lblQty_d.TabIndex = 22;
             this.lblQty_d.Text = "0";
             this.lblQty_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -196,9 +271,10 @@
             this.lblTendered.BackColor = System.Drawing.Color.White;
             this.lblTendered.Font = new System.Drawing.Font("Arial", 24.75F);
             this.lblTendered.ForeColor = System.Drawing.Color.Black;
-            this.lblTendered.Location = new System.Drawing.Point(1057, 464);
+            this.lblTendered.Location = new System.Drawing.Point(1409, 571);
+            this.lblTendered.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTendered.Name = "lblTendered";
-            this.lblTendered.Size = new System.Drawing.Size(169, 39);
+            this.lblTendered.Size = new System.Drawing.Size(225, 48);
             this.lblTendered.TabIndex = 1;
             this.lblTendered.Text = "0.00";
             this.lblTendered.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -208,9 +284,10 @@
             this.lblRemaining.BackColor = System.Drawing.Color.White;
             this.lblRemaining.Font = new System.Drawing.Font("Arial", 24.75F);
             this.lblRemaining.ForeColor = System.Drawing.Color.Black;
-            this.lblRemaining.Location = new System.Drawing.Point(1057, 511);
+            this.lblRemaining.Location = new System.Drawing.Point(1409, 629);
+            this.lblRemaining.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRemaining.Name = "lblRemaining";
-            this.lblRemaining.Size = new System.Drawing.Size(169, 39);
+            this.lblRemaining.Size = new System.Drawing.Size(225, 48);
             this.lblRemaining.TabIndex = 2;
             this.lblRemaining.Text = "0.00";
             this.lblRemaining.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -219,20 +296,20 @@
             // 
             this.spcustdisp.PortName = "COM3";
             // 
-            // tmrcheckposdsetting
+            // tmrCheckPosdSetting
             // 
-            this.tmrcheckposdsetting.Enabled = true;
-            this.tmrcheckposdsetting.Interval = 5000;
-            this.tmrcheckposdsetting.Tick += new System.EventHandler(this.TimerRefreshSettings_Tick);
+            this.tmrCheckPosdSetting.Interval = 5000;
+            this.tmrCheckPosdSetting.Tick += new System.EventHandler(this.tmrCheckPosdSetting_Tick);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.White;
             this.label1.Font = new System.Drawing.Font("Arial", 24.75F);
-            this.label1.Location = new System.Drawing.Point(901, 465);
+            this.label1.Location = new System.Drawing.Point(1201, 572);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(150, 38);
+            this.label1.Size = new System.Drawing.Size(193, 47);
             this.label1.TabIndex = 29;
             this.label1.Text = "Tendered";
             // 
@@ -241,9 +318,10 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.White;
             this.label3.Font = new System.Drawing.Font("Arial", 24.75F);
-            this.label3.Location = new System.Drawing.Point(881, 512);
+            this.label3.Location = new System.Drawing.Point(1175, 630);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(170, 38);
+            this.label3.Size = new System.Drawing.Size(221, 47);
             this.label3.TabIndex = 30;
             this.label3.Text = "Remaining";
             // 
@@ -252,16 +330,17 @@
             this.lblTotal.BackColor = System.Drawing.Color.White;
             this.lblTotal.Font = new System.Drawing.Font("Arial", 24.75F);
             this.lblTotal.ForeColor = System.Drawing.Color.Black;
-            this.lblTotal.Location = new System.Drawing.Point(1057, 417);
-            this.lblTotal.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.lblTotal.Location = new System.Drawing.Point(1409, 513);
+            this.lblTotal.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(169, 39);
+            this.lblTotal.Size = new System.Drawing.Size(225, 48);
             this.lblTotal.TabIndex = 0;
             this.lblTotal.Text = "0.00";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // ssApplicationDetails
             // 
+            this.ssApplicationDetails.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.ssApplicationDetails.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslApplicationVersion,
             this.tsslBranchCode,
@@ -272,11 +351,12 @@
             this.tsslTransactions,
             this.tsslOfficialReceiptNumberTxt,
             this.tsslOfficialReceiptNumber,
-            this.tsslSpace2,
+            this.tsslMessage,
             this.tsslDateTime});
-            this.ssApplicationDetails.Location = new System.Drawing.Point(0, 706);
+            this.ssApplicationDetails.Location = new System.Drawing.Point(0, 869);
             this.ssApplicationDetails.Name = "ssApplicationDetails";
-            this.ssApplicationDetails.Size = new System.Drawing.Size(1264, 24);
+            this.ssApplicationDetails.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
+            this.ssApplicationDetails.Size = new System.Drawing.Size(1685, 29);
             this.ssApplicationDetails.SizingGrip = false;
             this.ssApplicationDetails.TabIndex = 31;
             this.ssApplicationDetails.Text = "Status";
@@ -286,7 +366,7 @@
             this.tsslApplicationVersion.AutoSize = false;
             this.tsslApplicationVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslApplicationVersion.Name = "tsslApplicationVersion";
-            this.tsslApplicationVersion.Size = new System.Drawing.Size(55, 19);
+            this.tsslApplicationVersion.Size = new System.Drawing.Size(55, 24);
             this.tsslApplicationVersion.Text = "v1.0.0.0";
             this.tsslApplicationVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -296,7 +376,7 @@
             this.tsslBranchCode.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslBranchCode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslBranchCode.Name = "tsslBranchCode";
-            this.tsslBranchCode.Size = new System.Drawing.Size(55, 19);
+            this.tsslBranchCode.Size = new System.Drawing.Size(55, 24);
             this.tsslBranchCode.Text = "0000";
             this.tsslBranchCode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -306,7 +386,7 @@
             this.tsslBranchName.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslBranchName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslBranchName.Name = "tsslBranchName";
-            this.tsslBranchName.Size = new System.Drawing.Size(100, 19);
+            this.tsslBranchName.Size = new System.Drawing.Size(100, 24);
             this.tsslBranchName.Text = "Branch";
             this.tsslBranchName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -317,7 +397,7 @@
             this.tsslTerminalNumberTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsslTerminalNumberTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslTerminalNumberTxt.Name = "tsslTerminalNumberTxt";
-            this.tsslTerminalNumberTxt.Size = new System.Drawing.Size(60, 19);
+            this.tsslTerminalNumberTxt.Size = new System.Drawing.Size(60, 24);
             this.tsslTerminalNumberTxt.Text = "Terminal:";
             this.tsslTerminalNumberTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -327,7 +407,7 @@
             this.tsslTerminalNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsslTerminalNumber.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslTerminalNumber.Name = "tsslTerminalNumber";
-            this.tsslTerminalNumber.Size = new System.Drawing.Size(35, 19);
+            this.tsslTerminalNumber.Size = new System.Drawing.Size(35, 24);
             this.tsslTerminalNumber.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tsslTransactionsTxt
@@ -336,7 +416,7 @@
             this.tsslTransactionsTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsslTransactionsTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslTransactionsTxt.Name = "tsslTransactionsTxt";
-            this.tsslTransactionsTxt.Size = new System.Drawing.Size(82, 19);
+            this.tsslTransactionsTxt.Size = new System.Drawing.Size(105, 24);
             this.tsslTransactionsTxt.Text = "Transactions:";
             this.tsslTransactionsTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -346,7 +426,7 @@
             this.tsslTransactions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsslTransactions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslTransactions.Name = "tsslTransactions";
-            this.tsslTransactions.Size = new System.Drawing.Size(70, 19);
+            this.tsslTransactions.Size = new System.Drawing.Size(70, 24);
             this.tsslTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tsslOfficialReceiptNumberTxt
@@ -356,7 +436,7 @@
             this.tsslOfficialReceiptNumberTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsslOfficialReceiptNumberTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslOfficialReceiptNumberTxt.Name = "tsslOfficialReceiptNumberTxt";
-            this.tsslOfficialReceiptNumberTxt.Size = new System.Drawing.Size(60, 19);
+            this.tsslOfficialReceiptNumberTxt.Size = new System.Drawing.Size(60, 24);
             this.tsslOfficialReceiptNumberTxt.Text = "OR No.:";
             this.tsslOfficialReceiptNumberTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -366,17 +446,17 @@
             this.tsslOfficialReceiptNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsslOfficialReceiptNumber.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslOfficialReceiptNumber.Name = "tsslOfficialReceiptNumber";
-            this.tsslOfficialReceiptNumber.Size = new System.Drawing.Size(90, 19);
+            this.tsslOfficialReceiptNumber.Size = new System.Drawing.Size(90, 24);
             this.tsslOfficialReceiptNumber.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tsslSpace2
+            // tsslMessage
             // 
-            this.tsslSpace2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
-            this.tsslSpace2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tsslSpace2.Name = "tsslSpace2";
-            this.tsslSpace2.Size = new System.Drawing.Size(392, 19);
-            this.tsslSpace2.Spring = true;
-            this.tsslSpace2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.tsslMessage.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslMessage.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsslMessage.Name = "tsslMessage";
+            this.tsslMessage.Size = new System.Drawing.Size(785, 24);
+            this.tsslMessage.Spring = true;
+            this.tsslMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tsslDateTime
             // 
@@ -384,18 +464,18 @@
             this.tsslDateTime.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslDateTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslDateTime.Name = "tsslDateTime";
-            this.tsslDateTime.Size = new System.Drawing.Size(250, 19);
+            this.tsslDateTime.Size = new System.Drawing.Size(250, 24);
             this.tsslDateTime.Text = "JANUARY 01, 2016 08:00:00 AM";
             this.tsslDateTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tmrUpdateDateTime
             // 
-            this.tmrUpdateDateTime.Enabled = true;
             this.tmrUpdateDateTime.Interval = 1000;
             this.tmrUpdateDateTime.Tick += new System.EventHandler(this.tmrUpdateDateTime_Tick);
             // 
             // ssOtherInformation
             // 
+            this.ssOtherInformation.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.ssOtherInformation.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslClerkTxt,
             this.tsslClerk,
@@ -411,9 +491,10 @@
             this.tsslWarning,
             this.toolStripStatusLabel12,
             this.tsslSpace1});
-            this.ssOtherInformation.Location = new System.Drawing.Point(0, 676);
+            this.ssOtherInformation.Location = new System.Drawing.Point(0, 839);
             this.ssOtherInformation.Name = "ssOtherInformation";
-            this.ssOtherInformation.Size = new System.Drawing.Size(1264, 30);
+            this.ssOtherInformation.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
+            this.ssOtherInformation.Size = new System.Drawing.Size(1685, 30);
             this.ssOtherInformation.SizingGrip = false;
             this.ssOtherInformation.TabIndex = 32;
             this.ssOtherInformation.Text = "Status";
@@ -464,7 +545,7 @@
             this.tsslMemberTxt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsslMemberTxt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslMemberTxt.Name = "tsslMemberTxt";
-            this.tsslMemberTxt.Size = new System.Drawing.Size(62, 25);
+            this.tsslMemberTxt.Size = new System.Drawing.Size(77, 25);
             this.tsslMemberTxt.Text = "Member:";
             this.tsslMemberTxt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -553,7 +634,7 @@
             this.tsslSpace1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslSpace1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsslSpace1.Name = "tsslSpace1";
-            this.tsslSpace1.Size = new System.Drawing.Size(1, 25);
+            this.tsslSpace1.Size = new System.Drawing.Size(397, 25);
             this.tsslSpace1.Spring = true;
             this.tsslSpace1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -562,9 +643,10 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.White;
             this.label2.Font = new System.Drawing.Font("Arial", 24.75F);
-            this.label2.Location = new System.Drawing.Point(967, 418);
+            this.label2.Location = new System.Drawing.Point(1289, 514);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 38);
+            this.label2.Size = new System.Drawing.Size(109, 47);
             this.label2.TabIndex = 33;
             this.label2.Text = "Total";
             // 
@@ -574,10 +656,11 @@
             this.ButtonF01.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF01.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF01.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF01.Location = new System.Drawing.Point(13, 97);
+            this.ButtonF01.Location = new System.Drawing.Point(17, 119);
+            this.ButtonF01.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF01.Name = "ButtonF01";
-            this.ButtonF01.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF01.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF01.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF01.Size = new System.Drawing.Size(133, 98);
             this.ButtonF01.TabIndex = 34;
             this.ButtonF01.Text = "[ F1 ]\r\nOPEN\r\nITEM";
             this.ButtonF01.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -589,10 +672,11 @@
             this.ButtonF02.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF02.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF02.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF02.Location = new System.Drawing.Point(13, 183);
+            this.ButtonF02.Location = new System.Drawing.Point(17, 225);
+            this.ButtonF02.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF02.Name = "ButtonF02";
-            this.ButtonF02.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF02.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF02.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF02.Size = new System.Drawing.Size(133, 98);
             this.ButtonF02.TabIndex = 35;
             this.ButtonF02.Text = "[ F2 ]\r\nCHANGE\r\nQUANTITY";
             this.ButtonF02.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -604,10 +688,11 @@
             this.ButtonF04.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF04.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF04.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF04.Location = new System.Drawing.Point(13, 355);
+            this.ButtonF04.Location = new System.Drawing.Point(17, 437);
+            this.ButtonF04.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF04.Name = "ButtonF04";
-            this.ButtonF04.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF04.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF04.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF04.Size = new System.Drawing.Size(133, 98);
             this.ButtonF04.TabIndex = 37;
             this.ButtonF04.Text = "[ F4 ]\r\nCLEAR\r\nTRANS";
             this.ButtonF04.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -619,10 +704,11 @@
             this.ButtonF03.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF03.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF03.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF03.Location = new System.Drawing.Point(13, 269);
+            this.ButtonF03.Location = new System.Drawing.Point(17, 331);
+            this.ButtonF03.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF03.Name = "ButtonF03";
-            this.ButtonF03.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF03.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF03.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF03.Size = new System.Drawing.Size(133, 98);
             this.ButtonF03.TabIndex = 36;
             this.ButtonF03.Text = "[ F3 ]\r\nREMOVE\r\nITEM";
             this.ButtonF03.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -634,10 +720,11 @@
             this.ButtonF06.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF06.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF06.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF06.Location = new System.Drawing.Point(13, 527);
+            this.ButtonF06.Location = new System.Drawing.Point(17, 649);
+            this.ButtonF06.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF06.Name = "ButtonF06";
-            this.ButtonF06.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF06.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF06.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF06.Size = new System.Drawing.Size(133, 98);
             this.ButtonF06.TabIndex = 39;
             this.ButtonF06.Text = "[ F6 ]\r\nTRANS\r\nDISCOUNT";
             this.ButtonF06.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -649,10 +736,11 @@
             this.ButtonF05.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF05.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF05.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF05.Location = new System.Drawing.Point(13, 441);
+            this.ButtonF05.Location = new System.Drawing.Point(17, 543);
+            this.ButtonF05.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF05.Name = "ButtonF05";
-            this.ButtonF05.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF05.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF05.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF05.Size = new System.Drawing.Size(133, 98);
             this.ButtonF05.TabIndex = 38;
             this.ButtonF05.Text = "[ F5 ]\r\nITEM\r\nDISCOUNT";
             this.ButtonF05.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -664,10 +752,11 @@
             this.ButtonF12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF12.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF12.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF12.Location = new System.Drawing.Point(119, 527);
+            this.ButtonF12.Location = new System.Drawing.Point(159, 649);
+            this.ButtonF12.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF12.Name = "ButtonF12";
-            this.ButtonF12.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF12.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF12.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF12.Size = new System.Drawing.Size(133, 98);
             this.ButtonF12.TabIndex = 45;
             this.ButtonF12.Text = "[ F12 ]\r\nADVANCED\r\nFUNCS";
             this.ButtonF12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -679,10 +768,11 @@
             this.ButtonF11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF11.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF11.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF11.Location = new System.Drawing.Point(119, 441);
+            this.ButtonF11.Location = new System.Drawing.Point(159, 543);
+            this.ButtonF11.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF11.Name = "ButtonF11";
-            this.ButtonF11.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF11.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF11.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF11.Size = new System.Drawing.Size(133, 98);
             this.ButtonF11.TabIndex = 44;
             this.ButtonF11.Text = "[ F11 ]\r\nNEXT\r\nTRANS";
             this.ButtonF11.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -694,10 +784,11 @@
             this.ButtonF10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF10.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF10.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF10.Location = new System.Drawing.Point(119, 355);
+            this.ButtonF10.Location = new System.Drawing.Point(159, 437);
+            this.ButtonF10.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF10.Name = "ButtonF10";
-            this.ButtonF10.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF10.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF10.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF10.Size = new System.Drawing.Size(133, 98);
             this.ButtonF10.TabIndex = 43;
             this.ButtonF10.Text = "[ F10 ]\r\nPREV\r\nTRANS";
             this.ButtonF10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -709,10 +800,11 @@
             this.ButtonF09.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF09.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF09.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF09.Location = new System.Drawing.Point(119, 269);
+            this.ButtonF09.Location = new System.Drawing.Point(159, 331);
+            this.ButtonF09.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF09.Name = "ButtonF09";
-            this.ButtonF09.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF09.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF09.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF09.Size = new System.Drawing.Size(133, 98);
             this.ButtonF09.TabIndex = 42;
             this.ButtonF09.Text = "[ F9 ]\r\nNEW\r\nTRANS";
             this.ButtonF09.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -724,10 +816,11 @@
             this.ButtonF08.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF08.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF08.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF08.Location = new System.Drawing.Point(119, 183);
+            this.ButtonF08.Location = new System.Drawing.Point(159, 225);
+            this.ButtonF08.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF08.Name = "ButtonF08";
-            this.ButtonF08.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF08.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF08.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF08.Size = new System.Drawing.Size(133, 98);
             this.ButtonF08.TabIndex = 41;
             this.ButtonF08.Text = "[ F8 ]\r\nADD\r\nNOTES";
             this.ButtonF08.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -739,88 +832,35 @@
             this.ButtonF07.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonF07.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonF07.ForeColor = System.Drawing.Color.Black;
-            this.ButtonF07.Location = new System.Drawing.Point(119, 98);
+            this.ButtonF07.Location = new System.Drawing.Point(159, 121);
+            this.ButtonF07.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonF07.Name = "ButtonF07";
-            this.ButtonF07.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.ButtonF07.Size = new System.Drawing.Size(100, 80);
+            this.ButtonF07.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.ButtonF07.Size = new System.Drawing.Size(133, 98);
             this.ButtonF07.TabIndex = 46;
             this.ButtonF07.Text = "[ F7 ]\r\nTENDER\r\nPAYMENT";
             this.ButtonF07.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.ButtonF07.UseVisualStyleBackColor = false;
             // 
-            // dgvcVatStatus
+            // tmrPerMinuteTask
             // 
-            this.dgvcVatStatus.DataPropertyName = "VatStatus";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dgvcVatStatus.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvcVatStatus.FillWeight = 50F;
-            this.dgvcVatStatus.HeaderText = "";
-            this.dgvcVatStatus.MinimumWidth = 50;
-            this.dgvcVatStatus.Name = "dgvcVatStatus";
-            this.dgvcVatStatus.ReadOnly = true;
+            this.tmrPerMinuteTask.Interval = 60000;
+            this.tmrPerMinuteTask.Tick += new System.EventHandler(this.tmrPerMinuteTask_Tick);
             // 
-            // description
+            // bgwBackupDatabase
             // 
-            this.description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.description.DataPropertyName = "productname";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.description.DefaultCellStyle = dataGridViewCellStyle2;
-            this.description.FillWeight = 200F;
-            this.description.HeaderText = "Description";
-            this.description.MinimumWidth = 300;
-            this.description.Name = "description";
-            this.description.ReadOnly = true;
-            // 
-            // qty
-            // 
-            this.qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.qty.DataPropertyName = "qty";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.qty.DefaultCellStyle = dataGridViewCellStyle3;
-            this.qty.FillWeight = 46.81124F;
-            this.qty.HeaderText = "Qty";
-            this.qty.MinimumWidth = 100;
-            this.qty.Name = "qty";
-            this.qty.ReadOnly = true;
-            // 
-            // price
-            // 
-            this.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.price.DataPropertyName = "price";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.price.DefaultCellStyle = dataGridViewCellStyle4;
-            this.price.FillWeight = 61.91541F;
-            this.price.HeaderText = "Price";
-            this.price.MinimumWidth = 100;
-            this.price.Name = "price";
-            this.price.ReadOnly = true;
-            // 
-            // amount
-            // 
-            this.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.amount.DataPropertyName = "amount";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.amount.DefaultCellStyle = dataGridViewCellStyle5;
-            this.amount.HeaderText = "Amount";
-            this.amount.MinimumWidth = 100;
-            this.amount.Name = "amount";
-            this.amount.ReadOnly = true;
+            this.bgwBackupDatabase.WorkerReportsProgress = true;
+            this.bgwBackupDatabase.WorkerSupportsCancellation = true;
+            this.bgwBackupDatabase.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwBackupDatabase_DoWork);
+            this.bgwBackupDatabase.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwBackupDatabase_RunWorkerCompleted);
             // 
             // POSMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1264, 730);
+            this.ClientSize = new System.Drawing.Size(1685, 898);
             this.Controls.Add(this.ButtonF07);
             this.Controls.Add(this.ButtonF12);
             this.Controls.Add(this.ButtonF11);
@@ -850,12 +890,13 @@
             this.Controls.Add(this.txtBarcode);
             this.DoubleBuffered = true;
             this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "POSMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ETECH POS SYSTEM";
-            this.Load += new System.EventHandler(this.POSMain_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.POSMain_FormClosing);
+            this.Load += new System.EventHandler(this.POSMain_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.POSMain_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).EndInit();
             this.ssApplicationDetails.ResumeLayout(false);
@@ -879,7 +920,7 @@
         private System.IO.Ports.SerialPort spcustdisp;
         public System.Windows.Forms.DataGridView dgvProduct;
         public System.Windows.Forms.TextBox txtBarcode;
-        private System.Windows.Forms.Timer tmrcheckposdsetting;
+        private System.Windows.Forms.Timer tmrCheckPosdSetting;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblTotal;
@@ -895,7 +936,7 @@
         private System.Windows.Forms.Timer tmrUpdateDateTime;
         private System.Windows.Forms.ToolStripStatusLabel tsslApplicationVersion;
         private System.Windows.Forms.ToolStripStatusLabel tsslTerminalNumberTxt;
-        private System.Windows.Forms.ToolStripStatusLabel tsslSpace2;
+        private System.Windows.Forms.ToolStripStatusLabel tsslMessage;
         private System.Windows.Forms.StatusStrip ssOtherInformation;
         private System.Windows.Forms.ToolStripStatusLabel tsslClerk;
         private System.Windows.Forms.ToolStripStatusLabel tsslClerkTxt;
@@ -929,5 +970,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn price;
         private System.Windows.Forms.DataGridViewTextBoxColumn amount;
+        private System.Windows.Forms.Timer tmrPerMinuteTask;
+        private System.ComponentModel.BackgroundWorker bgwBackupDatabase;
     }
 }

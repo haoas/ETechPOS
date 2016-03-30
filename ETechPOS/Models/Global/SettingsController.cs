@@ -92,55 +92,5 @@ namespace ETech.Models.Global
             }
             return settings;
         }
-
-        public static Settings GetDefaultData()
-        {
-            Settings settings = new Settings();
-            settings.Add(new Setting("Com Port Number", "", "3", "", ""));
-            settings.Add(new Setting("Customer Display", "Display 1", "WELCOME TO", "", ""));
-            settings.Add(new Setting("Customer Display", "Display 2", "ETECH", "", ""));
-            settings.Add(new Setting("Color Theme", "", "", "", ""));
-            settings.Add(new Setting("Business Information", "Business Name", "ETECH", "", ""));
-            settings.Add(new Setting("Business Information", "Owner", "ETECH", "", ""));
-            settings.Add(new Setting("Business Information", "TIN", "TIN: 000-000-000-000", "", ""));
-            settings.Add(new Setting("Business Information", "Address", "MANILA CITY", "", ""));
-            settings.Add(new Setting("Business Information", "Permit Number", "Permit No.: 12345678901234567890", "", ""));
-            settings.Add(new Setting("Business Information", "ACC", "ACC: 03840000317000054045982", "", ""));
-            settings.Add(new Setting("Business Information", "Serial Number", "SN: NTS00000A0000000", "", ""));
-            settings.Add(new Setting("Business Information", "MIN", "MIN: 12345678901234567890", "", ""));
-            settings.Add(new Setting("Receipt Display", "Footer 1", "THIS SERVES AS AN OFFICIAL RECEIPT. BRING THIS RECEIPT IN CASE OF EXCHANGE OF MERCHANDISE WITHIN 2 DAYS", "", ""));
-            settings.Add(new Setting("Receipt Display", "Footer 2", "THANK YOU AND COME AGAIN!", "", ""));
-            settings.Add(new Setting("Receipt Display", "Footer 3", "", "", ""));
-            settings.Add(new Setting("Receipt Display", "Footer 4", "", "", ""));
-            settings.Add(new Setting("Avoid Invalid Purchase Price", "", "0", "", ""));
-            settings.Add(new Setting("Print Receipt Format", "", "", "", ""));
-            settings.Add(new Setting("Allow Zero Price", "", "1", "", ""));
-            settings.Add(new Setting("Gross Method", "", "1", "", ""));
-            settings.Add(new Setting("Show Detail Creditcard in ZRead", "", "1", "", ""));
-            settings.Add(new Setting("OR Print Count", "", "1", "", ""));
-            settings.Add(new Setting("POS Name", "", "ETECH POS SYSTEM", "", ""));
-            settings.Add(new Setting("Show Complete OR", "", "1", "", ""));
-            settings.Add(new Setting("Local Tax", "", "0", "", ""));
-            settings.Add(new Setting("Service Charge", "", "0", "", ""));
-            settings.Add(new Setting("Refund Memo", "", "2", "", ""));
-            settings.Add(new Setting("Default Printer", "", "", "", ""));
-            settings.Add(new Setting("Preview OR", "", "0", "", ""));
-            settings.Add(new Setting("Product Search Style", "", "", "", ""));
-            settings.Add(new Setting("Advertising URL", "", "", "", ""));
-            settings.Add(new Setting("Maximum Cash Collection", "", "0", "", ""));
-            settings.Add(new Setting("Read Date Range", "", "1", "", ""));
-            settings.Add(new Setting("Automatic Show Keyboard", "", "0", "", ""));
-            settings.Add(new Setting("POS Mac Address", "", "", "", ""));
-            settings.Add(new Setting("Discount Details", "", "0", "", ""));
-            settings.Add(new Setting("Customer Display Length", "", "0", "", ""));
-            settings.Add(new Setting("POS Provider Name", "", "ETECH TECHNOLOGY SERVICE", "", ""));
-            settings.Add(new Setting("POS Provider Address", "", "", "", ""));
-            settings.Add(new Setting("POS Provider TIN", "", "", "", ""));
-            settings.Add(new Setting("ACC Date", "", "", "", ""));
-            settings.Add(new Setting("Print Receipt Actual", "", "0", "", ""));
-            settings.Add(new Setting("Print Receipt Limit", "", "0", "", ""));
-            settings.Add(new Setting("Print Receipt Buffer", "", "0", "", ""));
-            return settings;
-        }
     }
 }
