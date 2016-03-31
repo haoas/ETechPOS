@@ -180,7 +180,7 @@ namespace ETech.cls
         {
             foreach (cls_POSTransaction temptran in TransactionLists)
             {
-                if (temptran.getORnumber() == ornumber)
+                if (temptran.ORNumber == ornumber)
                 {
                     fncFilter.alert("OR is still in Transaction List!");
                     return true;

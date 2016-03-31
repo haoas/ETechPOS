@@ -69,7 +69,7 @@ namespace ETech
 
             LogsHelper.ClearTLog();
             isLoadSuccessful = mySQLFunc.initialize_global_variables();
-            RemoveOldDatabaseBackup(@"C:\Users\Lenovo ThinkPad E460\Documents\ETECHPOS\Database Backup");
+            //RemoveOldDatabaseBackup(@"C:\Users\Lenovo ThinkPad E460\Documents\ETECHPOS\Database Backup");
 
             if (!isLoadSuccessful)
                 return;
@@ -726,7 +726,7 @@ namespace ETech
                             break;
 
                         Delete_Unused_saleshead(tran);
-                        LogsHelper.WriteToTLog("Invoice Cancelled: " + tran.getORnumber().ToString());
+                        LogsHelper.WriteToTLog("Invoice Cancelled: " + tran.ORNumber.ToString());
                         remove_transaction();
                         create_new_invoice();
                         isdetected = true;
@@ -734,7 +734,7 @@ namespace ETech
                     else if (FPage == 1)
                     {
                         frmMember memberform = new frmMember();
-                        memberform.member = tran.getmember().ShallowCopy();
+                        memberform.member = tran.Member.ShallowCopy();
                         memberform.ShowDialog();
 
                         if (memberform.member.getSyncId() != 0)
@@ -743,8 +743,8 @@ namespace ETech
                         else
                             LogsHelper.WriteToTLog("[F8] Removed Member");
 
-                        tran.setmember(memberform.member);
-                        decimal dcpercent = tran.getmember().get_member_discount_amount(tran.get_productlist().get_totalamount());
+                        tran.Member = memberform.member;
+                        decimal dcpercent = tran.Member.get_member_discount_amount(tran.get_productlist().get_totalamount());
                         tran.get_productlist().append_adjustdiscount_all(0, dcpercent);
 
                         tran.get_productlist().getTransDisc().setMember(memberform.member, 0, 0, false);
@@ -914,7 +914,7 @@ namespace ETech
                                 transdisc.activateDiscount_using_wid(transAdjust.disc.get_SyncId(), 1 - transAdjust.new_discount, true);
                                 refresh_productlist_data(tran);
                                 LogsHelper.WriteToTLog("[F12][F6]Transaction Custom Discount (" + transAdjust.disc.get_name() + " (" + (transAdjust.disc.get_value() * 100) + "%)): OR: "
-                                    + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
+                                    + tran.ORNumber + " " + tran.get_productlist().get_totalamount_gross() +
                                     " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
                             }
                             else if (transAdjust.new_adjust != 0)
@@ -922,7 +922,7 @@ namespace ETech
                                 transdisc.appendDiscount(cls_globalvariables.dchead_adjusttype, transAdjust.new_adjust, false);
                                 refresh_productlist_data(tran);
                                 LogsHelper.WriteToTLog("[F12][F6]Transaction Adjust (" + transAdjust.new_adjust + ")): OR: "
-                                    + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
+                                    + tran.ORNumber + " " + tran.get_productlist().get_totalamount_gross() +
                                     " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
                             }
                             else if (transAdjust.new_discount != 0)
@@ -930,14 +930,14 @@ namespace ETech
                                 transdisc.appendDiscount(cls_globalvariables.dchead_discounttype, 1 - transAdjust.new_discount, true);
                                 refresh_productlist_data(tran);
                                 LogsHelper.WriteToTLog("[F12][F6]Transaction Discount (" + (transAdjust.new_discount * 100) + "%)): OR: "
-                                    + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
+                                    + tran.ORNumber + " " + tran.get_productlist().get_totalamount_gross() +
                                     " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
                             }
                             else
                             {
                                 refresh_productlist_data(tran);
                                 LogsHelper.WriteToTLog("[F12][F6]Transaction Adjust/Discount Removed: OR: "
-                                    + tran.getORnumber() + " " + tran.get_productlist().get_totalamount_gross() +
+                                    + tran.ORNumber + " " + tran.get_productlist().get_totalamount_gross() +
                                     " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
                             }
                         }
@@ -1021,7 +1021,7 @@ namespace ETech
                 //                fncHardware.print_receipt(temp_tran, true, true);
                 //            break;
                 //        }
-                //        if (temp_tran.getmember().MemberButOffline)
+                //        if (temp_tran.Member.MemberButOffline)
                 //        {
                 //            fncFilter.alert("This OR cannot be voided since Member feature is offline.");
                 //            break;
@@ -1048,7 +1048,7 @@ namespace ETech
                                 if (tran.get_productlist().get_product(i).Quantity < 0)
                                 {
                                     frmSalesmemo salesmemo = new frmSalesmemo();
-                                    salesmemo.salesheadwid = tran.getSyncId();
+                                    salesmemo.salesheadwid = tran.SyncId;
                                     salesmemo.ShowDialog();
                                     continue;
                                 }
@@ -1056,15 +1056,15 @@ namespace ETech
                         }
 
                         frmPayment payment = new frmPayment();
-                        payment.paymentdata = tran.getpayments().DeepCopy();
+                        payment.paymentdata = tran.Payments.DeepCopy();
                         payment.totalamtdue = tran.get_productlist().get_totalamount();
-                        payment.totalpoints = tran.getmember().getPreviousPoints();
-                        payment.hasMember = tran.getmember().getSyncId() != 0;
+                        payment.totalpoints = tran.Member.getPreviousPoints();
+                        payment.hasMember = tran.Member.getSyncId() != 0;
                         payment.ShowDialog();
 
                         if (payment.changeupdated)
                         {
-                            tran.setpayments(payment.paymentdata);
+                            tran.Payments = payment.paymentdata;
                         }
 
                         if (tran.get_productlist().get_productlist().Count <= 0)
@@ -1075,7 +1075,7 @@ namespace ETech
 
                         bool ispaymentdone = payment.transactiondone;
                         decimal total_amount_due = tran.get_productlist().get_totalamount();
-                        decimal total_amount_paid = tran.getpayments().get_totalamount();
+                        decimal total_amount_paid = tran.Payments.get_totalamount();
 
                         bool istransactiondone = false;
                         if (ispaymentdone && total_amount_due <= (total_amount_paid))
@@ -1090,12 +1090,7 @@ namespace ETech
                         int temp = 0;
                         if (istransactiondone)
                         {
-                            //save transaction to db
-                            tran.setdatetime(mySQLFunc.DateTimeNow()); // IMPT!
-                            //Thread mythread = new Thread(() => this.save_transaction_thread(tran));
-                            //mythread.Start();
-                            //if (cls_globalvariables.testmode_v)
-                            //    while (mythread.IsAlive) { }
+                            tran.SalesDateTime = mySQLFunc.DateTimeNow();
                             LogsHelper.WriteToTLog("[F8] AMOUNT DUE: " + total_amount_due + " CASH: " + payment.paymentdata.get_cash());
 
                             //print receipt
@@ -1119,7 +1114,7 @@ namespace ETech
 
                             remove_transaction();
 
-                            LogsHelper.WriteToTLog("Transaction Complete: " + tran.getORnumber());
+                            LogsHelper.WriteToTLog("Transaction Complete: " + tran.ORNumber);
 
                             if (fncHardware.PulloutCashCollection())
                             {
@@ -1148,8 +1143,8 @@ namespace ETech
                         tran = this.get_curtrans();
                         if (tran != null)
                         {
-                            reprintfrm.currenttrans_ornumber = tran.getORnumber();
-                            frmorprintpreview.currenttrans_ornumber = tran.getORnumber();
+                            reprintfrm.currenttrans_ornumber = tran.ORNumber;
+                            frmorprintpreview.currenttrans_ornumber = tran.ORNumber;
                         }
 
                         if (cls_globalvariables.PreviewOR_v)
@@ -1174,10 +1169,10 @@ namespace ETech
                             cls_POSTransaction temp_tran = new cls_POSTransaction();
                             temp_tran.set_transaction_by_ornumber(ORNumber);
 
-                            if (temp_tran.getSyncId() == 0)
+                            if (temp_tran.SyncId == 0)
                                 temp_tran.set_transaction_by_ornumber(ORNumber);
 
-                            if (temp_tran.getSyncId() == 0)
+                            if (temp_tran.SyncId == 0)
                             {
                                 fncFilter.alert(cls_globalvariables.warning_ornumber_invalid);
                                 return;
@@ -1195,9 +1190,9 @@ namespace ETech
                     if (FPage == 0)
                     {
                         frmSalesmemo salesnotes = new frmSalesmemo();
-                        salesnotes.salesheadwid = this.get_curtrans().getSyncId();
+                        salesnotes.salesheadwid = this.get_curtrans().SyncId;
                         salesnotes.ShowDialog();
-                        tran.setmemo(salesnotes.txtmemo);
+                        tran.memo = salesnotes.txtmemo;
                         tsslSalesMemo.Text = salesnotes.txtmemo;
                         isdetected = true;
                     }
@@ -1420,15 +1415,15 @@ namespace ETech
         {
             initial_display();
             cls_POSTransaction tran = new cls_POSTransaction();
-            tran.setclerk(this.cur_cashier);
-            tran.setchecker(this.cur_checker);
+            tran.Cashier = this.cur_cashier;
+            tran.Checker = this.cur_checker;
             mySQLClass sqlclass = new mySQLClass();
             sqlclass.create_invoice(tran);
             add_transaction(tran);
 
             refresh_productlist_data(tran);
 
-            LogsHelper.WriteToTLog("Invoice Created: " + tran.getORnumber());
+            LogsHelper.WriteToTLog("Invoice Created: " + tran.ORNumber);
         }
         public void add_transaction(cls_POSTransaction tran)
         {
@@ -1503,9 +1498,9 @@ namespace ETech
         }
         private void display_POStran(cls_POSTransaction tran)
         {
-            LogsHelper.WriteToTLog("CURRENT OR: " + tran.getORnumber());
-            //this.lblORNumber_d.Text = tran.getORnumber().ToString();
-            this.tsslOfficialReceiptNumber.Text = tran.getORnumber().ToString();
+            LogsHelper.WriteToTLog("CURRENT OR: " + tran.ORNumber);
+            //this.lblORNumber_d.Text = tran.ORNumber.ToString();
+            this.tsslOfficialReceiptNumber.Text = tran.ORNumber.ToString();
             this.lblQty_d.Text = tran.get_productlist().get_totalqty().ToString();
 
             this.ctrlproductgridview.set_databinding(tran.get_productlist().get_dtproduct());
@@ -1589,7 +1584,7 @@ namespace ETech
                 return;
 
             long.TryParse(x.Rows[0]["lastornumber"].ToString(), out latestSalesheadOrNumber);
-            currentTransactionOr = tran.getORnumber();
+            currentTransactionOr = tran.ORNumber;
             if (latestSalesheadOrNumber == 0 || latestSalesheadOrNumber > currentTransactionOr)
                 return;
 
@@ -1599,9 +1594,9 @@ namespace ETech
                     `status`=0 AND
                     `branchid` = " + cls_globalvariables.Branch.Id + @" AND
                     `terminalno` = " + cls_globalvariables.TerminalNumber + @" AND 
-                    `SyncId` = '" + tran.getSyncId() + @"' LIMIT 1";
+                    `SyncId` = '" + tran.SyncId + @"' LIMIT 1";
             mySQLFunc.setdb(SQLDelete);
-            LogsHelper.WriteToTLog("DELETED1 in saleshead or = " + tran.getORnumber());
+            LogsHelper.WriteToTLog("DELETED1 in saleshead or = " + tran.ORNumber);
         }
 
         public void Print_Date_Ranged_Zread(DateTime datefrom, DateTime dateto)

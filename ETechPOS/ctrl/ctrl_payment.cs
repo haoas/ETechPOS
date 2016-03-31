@@ -54,11 +54,11 @@ namespace ETech.ctrl
             if (this.POSTrans == null)
                 return;
 
-            decimal totalamt = POSTrans.getpayments().get_totalamount();
+            decimal totalamt = POSTrans.Payments.get_totalamount();
             decimal totalamtdue = POSTrans.get_productlist().get_totalamount();
 
             this.lblTotal.Text = this.POSTrans.get_productlist().get_totalamount().ToString("N2");
-            this.lblTender.Text = this.POSTrans.getpayments().get_totalamount().ToString("N2");
+            this.lblTender.Text = this.POSTrans.Payments.get_totalamount().ToString("N2");
             this.lblRemaining.Text = (totalamtdue - totalamt).ToString("N2");
 
             if (this.POSTrans.get_productlist().getTransDisc() == null)

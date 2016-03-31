@@ -76,7 +76,7 @@ namespace ETech
             dgvProduct.DataSource = null;
             lblTender.Text = "P 0.00";
             lblChange.Text = "P 0.00";
-            lblORNumber_d.Text = tran.getORnumber().ToString();
+            lblORNumber_d.Text = tran.ORNumber.ToString();
             ctrl_productgrid ctrlprod = new ctrl_productgrid(dgvProduct);
             ctrlprod.set_databinding(tran.get_productlist().get_dtproduct());
             dgvProduct.DataSource = ctrlprod.get_productgrid().DataSource;
@@ -94,7 +94,7 @@ namespace ETech
         }
         public void UpdateTenderChange(cls_POSTransaction tran)
         {
-            lblTender.Text = "P " + tran.getpayments().get_totalamount().ToString("N2");
+            lblTender.Text = "P " + tran.Payments.get_totalamount().ToString("N2");
             lblChange.Text = "P " + tran.get_changeamount().ToString("N2");
         }
     }

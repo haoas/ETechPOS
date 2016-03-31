@@ -404,7 +404,6 @@ namespace ETech.cls
                 prod.OriginalPrice = Convert.ToDecimal(dr_d["oprice"]);
                 prod.Quantity = Convert.ToDecimal(dr_d["quantity"]);
                 prod.SoldBy = new cls_user(Convert.ToInt32(dr_d["soldby"]));
-                prod.Price = Convert.ToDecimal(dr_d["price"]);
                 if (prod.OriginalPrice != 0)
                 {
                     decimal dc = decimal.Divide(prod.Price, prod.OriginalPrice);

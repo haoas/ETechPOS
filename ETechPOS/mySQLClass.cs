@@ -322,11 +322,11 @@ namespace ETech
 
         public int create_invoice(cls_POSTransaction trans)
         {
-            string datetime_d = trans.getdatetime().ToString("yyyy-MM-dd HH:mm:ss");
+            string datetime_d = trans.SalesDateTime.ToString("yyyy-MM-dd HH:mm:ss");
             long branchid = cls_globalvariables.Branch.Id;
             int terminalNumber = cls_globalvariables.TerminalNumber;
 
-            long userwid = trans.getclerk().getsyncid();
+            long userwid = trans.Cashier.getsyncid();
 
             long next_ornumber = get_nextornumber();
 
@@ -343,8 +343,8 @@ namespace ETech
                             WHERE `SyncId` = '" + next_SyncId + @"'";
             setdb(sSQL);
 
-            trans.setORnumber(next_ornumber);
-            trans.setSyncId(next_SyncId);
+            trans.ORNumber = next_ornumber;
+            trans.SyncId = next_SyncId;
             return 0;
         }
 
@@ -381,39 +381,39 @@ namespace ETech
 
         public int save_transaction(cls_POSTransaction trans)
         {
-            string datetime_d = trans.getdatetime().ToString("yyyy-MM-dd HH:mm:ss");
+            string datetime_d = trans.SalesDateTime.ToString("yyyy-MM-dd HH:mm:ss");
             long branchid = cls_globalvariables.Branch.Id;
-            long salesheadwid = trans.getSyncId();
+            long salesheadwid = trans.SyncId;
             long customerid = trans.getcustomer().getwid();
             string customername = trans.getcustomer().getfullname();
-            decimal adjust = trans.getadjust();
+            decimal adjust = trans.Adjustment;
             string seniorno = trans.getsenior().get_idnumber();
             string seniorname = trans.getsenior().get_fullname();
-            long userid = trans.getclerk().getsyncid();
-            long memberid = trans.getmember().getSyncId();
-            long checkerid = trans.getchecker().getsyncid();
+            long userid = trans.Cashier.getsyncid();
+            long memberid = trans.Member.getSyncId();
+            long checkerid = trans.Checker.getsyncid();
             decimal totalamt = trans.get_productlist().get_totalamount();
             bool iswholesale = trans.get_productlist().get_iswholesale();
             bool isnonvat = trans.get_productlist().get_isnonvat();
-            decimal discount = trans.getdiscount();
-            decimal totalpaidamt = trans.getpayments().get_totalamount();
+            decimal discount = trans.Discount;
+            decimal totalpaidamt = trans.Payments.get_totalamount();
 
             decimal t = trans.get_productlist().get_totalamount();
             decimal t2 = trans.get_productlist().get_totalamount_no_head_discount();
             decimal headDiscountPercentage = (t2 == 0) ? 0 : (t / t2);
 
-            decimal cash = trans.getpayments().get_cash();
-            decimal mem_points = trans.getpayments().get_points();
+            decimal cash = trans.Payments.get_cash();
+            decimal mem_points = trans.Payments.get_points();
             decimal change = trans.get_changeamount();
-            List<cls_cardinfo> creditcards = trans.getpayments().get_creditcard();
-            List<cls_cardinfo> debitcards = trans.getpayments().get_debitcard();
-            List<cls_giftcheque> giftchequesnew = trans.getpayments().get_giftchequenew();
-            List<cls_CustomPaymentsInfo> custompaymentsinfo = trans.getpayments().get_custompayments();
+            List<cls_cardinfo> creditcards = trans.Payments.get_creditcard();
+            List<cls_cardinfo> debitcards = trans.Payments.get_debitcard();
+            List<cls_giftcheque> giftchequesnew = trans.Payments.get_giftchequenew();
+            List<cls_CustomPaymentsInfo> custompaymentsinfo = trans.Payments.get_custompayments();
             string sSQLcd = "";
             List<string> tempStringList = new List<string>();
             //              DO NOT DELETE
             //            //MEMBER (Priority since it will be run on main branch)
-            //            if (trans.getmember().getwid() != 0)
+            //            if (trans.Member.getwid() != 0)
             //            {
             //                List<string> memberTransactionListString = new List<string>();
             //                if (mem_points != 0)
@@ -422,7 +422,7 @@ namespace ETech
             //                    foreach (string str in tempStringList)
             //                        memberTransactionListString.Add(str);
             //                    string sSQLmemberpoint_d = @"UPDATE `memberpointtrans` SET
-            //                                            `memberid` = " + trans.getmember().getwid() + @",
+            //                                            `memberid` = " + trans.Member.getwid() + @",
             //                                            `branchid` = " + branchid + @",
             //                                            `type` = 3,
             //                                            `referencewid` = " + salesheadwid.ToString() + @",
@@ -437,14 +437,14 @@ namespace ETech
             //                                           WHERE `SyncId` = @syncid_d;";
             //                    memberTransactionListString.Add(sSQLmemberpoint_d);
             //                }
-            //                if (trans.getmember().getwid() != 0)
+            //                if (trans.Member.getwid() != 0)
             //                {
             //                    decimal point_earn = trans.get_memberpoint_earn();
             //                    List<string> temp = get_next_wid_withlock_main_liststring("memberpointtrans");
             //                    foreach (string str in temp)
             //                        memberTransactionListString.Add(str);
             //                    string sSQLmemberpoint = @"UPDATE `memberpointtrans` SET
-            //                                            `memberid` = " + trans.getmember().getwid() + @",
+            //                                            `memberid` = " + trans.Member.getwid() + @",
             //                                            `branchid` = " + branchid + @",
             //                                            `type` = 1,
             //                                            `referencewid` = " + salesheadwid.ToString() + @",
@@ -478,7 +478,7 @@ namespace ETech
                         `discount1` = " + discount + @",
                         `seniorno` = '" + seniorno + @"', 
                         `seniorname` = '" + escapeString(seniorname) + @"',
-                        `ornumber` = '" + trans.getORnumber() + @"',
+                        `ornumber` = '" + trans.ORNumber + @"',
                         `userid` = '" + userid + @"',
                         `branchid` = '" + branchid + @"',                     
                         `lastmodifiedby` = " + userid + @", 
@@ -539,7 +539,7 @@ namespace ETech
                                 `lastmodifieddate` = NOW(), 
                                 `lastmodifiedby` = " + userid + @", 
                                 `datecreated` = NOW(),
-                                `memo` = '" + trans.getpayments().get_memo() + @"',
+                                `memo` = '" + trans.Payments.get_memo() + @"',
                                 `show` = 1
                             WHERE `SyncId` = @collectionheadwid";
 

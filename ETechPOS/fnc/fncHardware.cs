@@ -109,7 +109,7 @@ namespace ETech.fnc
             {
                 int terminalNumber = cls_globalvariables.TerminalNumber;
                 long branchid = cls_globalvariables.Branch.Id;
-                string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`status`=0) AND `SyncId` = '" + tran.getSyncId() + @"'";
+                string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE `status`=0 AND `SyncId` = '" + tran.SyncId + @"'";
                 isVoid = Convert.ToBoolean(mySQLFunc.getdb(checkIfVoidSql).Rows[0]["cnt"]);
             }
             RawPrinterHelper.OpenCashDrawer(true);
@@ -123,13 +123,13 @@ namespace ETech.fnc
         {
             long lastmodifiedby = tran.get_UserAuthorizer_SyncId();
 
-            mySQLFunc.setdb(@"UPDATE collectionhead SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status`=2 WHERE SyncId = ( SELECT `headid` FROM collectionsales where `saleswid` = '" + tran.getSyncId() + "') LIMIT 1");
-            mySQLFunc.setdb(@"UPDATE saleshead SET `VoidedOn`=NOW(),`VoidedBy`='" + lastmodifiedby + @"' `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status` = 2 WHERE `SyncId` = '" + tran.getSyncId() + "' LIMIT 1");
-            mySQLFunc.setdb_main(@"UPDATE memberpointtrans SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `show` = 0 WHERE `referencewid` = '" + tran.getSyncId() + "'");
+            mySQLFunc.setdb(@"UPDATE collectionhead SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status`=2 WHERE SyncId = ( SELECT `headid` FROM collectionsales where `saleswid` = '" + tran.SyncId + "') LIMIT 1");
+            mySQLFunc.setdb(@"UPDATE saleshead SET `VoidedOn`=NOW(),`VoidedBy`='" + lastmodifiedby + @"' `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `status` = 2 WHERE `SyncId` = '" + tran.SyncId + "' LIMIT 1");
+            mySQLFunc.setdb_main(@"UPDATE memberpointtrans SET `lastmodifieddate`=NOW(), `lastmodifiedby`=" + lastmodifiedby + ", `show` = 0 WHERE `referencewid` = '" + tran.SyncId + "'");
 
 
             //void gift check
-            string collectionsales_headid = @"SELECT `headid` FROM collectionsales WHERE `saleswid` = " + tran.getSyncId();
+            string collectionsales_headid = @"SELECT `headid` FROM collectionsales WHERE `saleswid` = " + tran.SyncId;
             string collectiondetail_wid = @"SELECT `SyncId` FROM collectiondetail WHERE `method` = 7 AND `headid` = (" + collectionsales_headid + ")";
             List<string> collectiondetail_wids = new List<string>();
 
@@ -139,7 +139,7 @@ namespace ETech.fnc
                 collectiondetail_wids.Add(row[0].ToString());
 
             mySQLClass mysqlclass = new mySQLClass();
-            mysqlclass.update_synctable("saleshead", tran.getSyncId());
+            mysqlclass.update_synctable("saleshead", tran.SyncId);
         }
 
         public static void print_zread(DateTime datetime_d)
@@ -1402,31 +1402,31 @@ namespace ETech.fnc
             string sACC = cls_globalvariables.ACC_v;
             string sPermitNo = cls_globalvariables.PermitNo_v;
 
-            long ornumber = tran.getORnumber();
+            long ornumber = tran.ORNumber;
             string sMIN = cls_globalvariables.MIN_v;
             string sSerial = cls_globalvariables.Serial_v;
             int terminalNumber = cls_globalvariables.TerminalNumber;
-            DateTime salesdatetime = tran.getdatetime();
+            DateTime salesdatetime = tran.SalesDateTime;
             string salesdate = salesdatetime.ToString("MM/dd/yyyy");
             string salestime = salesdatetime.ToString("HH:mm:ss");
 
-            string cashier = tran.getclerk().getfullname();
-            string cashierid = tran.getclerk().getsyncid().ToString();
-            string cashiercode = tran.getclerk().getusercode().ToString();
-            string checker = tran.getchecker().getfullname();
-            string checkerid = tran.getchecker().getsyncid().ToString();
-            string checkercode = tran.getchecker().getusercode().ToString();
+            string cashier = tran.Cashier.getfullname();
+            string cashierid = tran.Cashier.getsyncid().ToString();
+            string cashiercode = tran.Cashier.getusercode().ToString();
+            string checker = tran.Checker.getfullname();
+            string checkerid = tran.Checker.getsyncid().ToString();
+            string checkercode = tran.Checker.getusercode().ToString();
             string customername = tran.getcustomer().getfullname();
             string customercode = tran.getcustomer().getCode().ToString();
             string customerid = tran.getcustomer().getwid().ToString();
-            string membername = tran.getmember().MemberButOffline ? "Offline" : tran.getmember().getfullname();
-            string memberidno = tran.getmember().MemberButOffline ? "Offline" : tran.getmember().getcardid();
+            string membername = tran.Member.MemberButOffline ? "Offline" : tran.Member.getfullname();
+            string memberidno = tran.Member.MemberButOffline ? "Offline" : tran.Member.getcardid();
             string seniorname = tran.getsenior().get_fullname();
             string senioridno = tran.getsenior().get_idnumber();
             string isnonvat = tran.get_productlist().get_isnonvat() ? "NON VAT" : "";
 
             if (cashierid == "2")
-                cashier = tran.getpayments().get_memo();
+                cashier = tran.Payments.get_memo();
 
             DataTable dt_header1 = new DataTable();
             dt_header1.Columns.Add();
@@ -1583,22 +1583,22 @@ namespace ETech.fnc
             dt_total.Columns.Add(); dt_total.Columns.Add();
             dt_total.Rows.Add("Amount Due:", total_sale.ToString("N2"));
 
-            decimal tendered_cash = tran.getpayments().get_cash();
-            decimal tendered_credit = tran.getpayments().get_creditamount();
-            decimal tendered_debit = tran.getpayments().get_debitamount();
-            decimal tendered_gift = tran.getpayments().get_giftchequenewamount();
-            decimal tendered_mempoints = tran.getpayments().get_points();
-            decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
-            decimal tendered_total = tran.getpayments().get_totalamount();
+            decimal tendered_cash = tran.Payments.get_cash();
+            decimal tendered_credit = tran.Payments.get_creditamount();
+            decimal tendered_debit = tran.Payments.get_debitamount();
+            decimal tendered_gift = tran.Payments.get_giftchequenewamount();
+            decimal tendered_mempoints = tran.Payments.get_points();
+            decimal tendered_custompayments = tran.Payments.get_custompaymentamount();
+            decimal tendered_total = tran.Payments.get_totalamount();
             decimal changeamt = tran.get_changeamount();
             DataTable dt_tendered = new DataTable();
             dt_tendered.Columns.Add(); dt_tendered.Columns.Add();
             int cnt_item_t = 0;
             if (tendered_cash != 0) { dt_tendered.Rows.Add("Cash:", tendered_cash.ToString("N2")); cnt_item_t++; }
-            if (tendered_credit != 0 || tran.getpayments().get_creditcard().Count > 0)
+            if (tendered_credit != 0 || tran.Payments.get_creditcard().Count > 0)
             {
                 dt_tendered.Rows.Add("Credit Card(s):", tendered_credit.ToString("N2")); cnt_item_t++;
-                foreach (cls_cardinfo card in tran.getpayments().get_creditcard())
+                foreach (cls_cardinfo card in tran.Payments.get_creditcard())
                 {
                     dt_tendered.Rows.Add(card.getcardname().ToString(), card.getamount().ToString("N2"));
                     dt_tendered.Rows.Add("    Card Holder: ", card.getname().ToString());
@@ -1608,10 +1608,10 @@ namespace ETech.fnc
                 }
                 cnt_item_t++;
             }
-            if (tendered_debit != 0 || tran.getpayments().get_debitcard().Count > 0)
+            if (tendered_debit != 0 || tran.Payments.get_debitcard().Count > 0)
             {
                 dt_tendered.Rows.Add("Debit Card(s):", tendered_debit.ToString("N2")); cnt_item_t++;
-                foreach (cls_cardinfo card in tran.getpayments().get_debitcard())
+                foreach (cls_cardinfo card in tran.Payments.get_debitcard())
                 {
                     dt_tendered.Rows.Add(card.getcardname().ToString(), card.getamount().ToString("N2"));
                     dt_tendered.Rows.Add("    Card Holder: ", card.getname().ToString());
@@ -1621,10 +1621,10 @@ namespace ETech.fnc
                 }
                 cnt_item_t++;
             }
-            if (tendered_gift != 0 || (tran.getpayments().get_giftchequenew().Count > 0))
+            if (tendered_gift != 0 || (tran.Payments.get_giftchequenew().Count > 0))
             {
                 dt_tendered.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2")); cnt_item_t++;
-                foreach (cls_giftcheque giftcheque in tran.getpayments().get_giftchequenew())
+                foreach (cls_giftcheque giftcheque in tran.Payments.get_giftchequenew())
                 {
                     dt_tendered.Rows.Add(giftcheque.get_referenceno().ToString(), giftcheque.getamount().ToString("N2"));
                     dt_tendered.Rows.Add("    Expiry Date: ", giftcheque.getexpdate().ToString("MM-yyyy"));
@@ -1634,10 +1634,10 @@ namespace ETech.fnc
             }
             if (tendered_mempoints != 0) { dt_tendered.Rows.Add("Mem. Pts:", tendered_mempoints.ToString("N2")); cnt_item_t++; }
 
-            if (tendered_custompayments != 0 || tran.getpayments().get_custompayments().Count > 0)
+            if (tendered_custompayments != 0 || tran.Payments.get_custompayments().Count > 0)
             {
                 dt_tendered.Rows.Add("Custom Payments:", tendered_custompayments.ToString("N2")); cnt_item_t++;
-                foreach (cls_CustomPaymentsInfo custompaymentsinfo in tran.getpayments().get_custompayments())
+                foreach (cls_CustomPaymentsInfo custompaymentsinfo in tran.Payments.get_custompayments())
                 {
                     dt_tendered.Rows.Add("    " + custompaymentsinfo.get_paymentname(), custompaymentsinfo.get_amount().ToString("N2"));
                 }
@@ -1653,7 +1653,7 @@ namespace ETech.fnc
 
             DataTable dt_memberpoints = new DataTable();
             dt_memberpoints.Columns.Add(); dt_memberpoints.Columns.Add();
-            if (tran.getmember().MemberButOffline)
+            if (tran.Member.MemberButOffline)
             {
                 dt_memberpoints.Rows.Add("Previous points:", "Offline");
                 dt_memberpoints.Rows.Add("Points use:", "Offline");
@@ -1662,10 +1662,10 @@ namespace ETech.fnc
             }
             else
             {
-                dt_memberpoints.Rows.Add("Previous points:", tran.getmember().getPreviousPoints().ToString("N2"));
-                dt_memberpoints.Rows.Add("Points use:", tran.getpayments().get_points().ToString("N2"));
+                dt_memberpoints.Rows.Add("Previous points:", tran.Member.getPreviousPoints().ToString("N2"));
+                dt_memberpoints.Rows.Add("Points use:", tran.Payments.get_points().ToString("N2"));
                 dt_memberpoints.Rows.Add("Points earned:", tran.get_memberpoint_earn().ToString("N2"));
-                dt_memberpoints.Rows.Add("Total Points:", (tran.getmember().getPreviousPoints() - tran.getpayments().get_points() + tran.get_memberpoint_earn()).ToString("N2"));
+                dt_memberpoints.Rows.Add("Total Points:", (tran.Member.getPreviousPoints() - tran.Payments.get_points() + tran.get_memberpoint_earn()).ToString("N2"));
             }
 
             DataTable dt_footer = new DataTable();
@@ -1732,11 +1732,11 @@ namespace ETech.fnc
             }
 
             //header salelsmemo
-            if (tran.getmemo() != "")
+            if (tran.memo != "")
             {
                 DataTable dt_salesmemo = new DataTable();
                 dt_salesmemo.Columns.Add();
-                dt_salesmemo.Rows.Add("MEMO: " + tran.getmemo());
+                dt_salesmemo.Rows.Add("MEMO: " + tran.memo);
 
                 List<Rectangle> rect_headersalesmemo = fncHardware.create_rect_list(nX, nY, new int[] { maxwidth });
                 List<StringFormat> sf_headersalesmemo = fncHardware.create_stringformat_list(new int[] { 1 });
@@ -1842,7 +1842,7 @@ namespace ETech.fnc
             List<Font> font_voidprint = fncHardware.create_font_list(new int[] { 4 });
             nY = DrawStringDataTable(g, dt_addedprints, font_voidprint, rect_payment, fncHardware.brush_Black, sf_addedprints);
 
-            if ((tran.getmember().getSyncId() != 0 || tran.getmember().MemberButOffline) && !isreprint && !isvoid)
+            if ((tran.Member.getSyncId() != 0 || tran.Member.MemberButOffline) && !isreprint && !isvoid)
             {
                 //-----------line-------------
                 nY += 5; g.DrawLine(new Pen(fncHardware.brush_Black), nX, nY, maxwidth * cls_globalvariables.previewmul, nY); nY += 5;
@@ -1905,9 +1905,9 @@ namespace ETech.fnc
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
             tempDataTable.Rows.Add("TERMINAL#: " + cls_globalvariables.TerminalNumber, "");
-            tempDataTable.Rows.Add("SI#: " + tran.getORnumber());
-            tempDataTable.Rows.Add("CASHIER: " + tran.getclerk().getfullname(), "ID#: " + tran.getclerk().getusercode());
-            tempDataTable.Rows.Add("DATE: " + tran.getdatetime().ToShortDateString(), "TIME: " + tran.getdatetime().ToLongTimeString());
+            tempDataTable.Rows.Add("SI#: " + tran.ORNumber);
+            tempDataTable.Rows.Add("CASHIER: " + tran.Cashier.getfullname(), "ID#: " + tran.Cashier.getusercode());
+            tempDataTable.Rows.Add("DATE: " + tran.SalesDateTime.ToShortDateString(), "TIME: " + tran.SalesDateTime.ToLongTimeString());
 
             printer.WriteRepeatingCharacterLine('=');
             printer.WriteTable(
@@ -1915,9 +1915,9 @@ namespace ETech.fnc
                 new StringAlignment[] { StringAlignment.Near, StringAlignment.Near },
                 new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
             );
-            if (tran.getmemo() != "")
+            if (tran.memo != "")
                 printer.WriteRow(
-                  new string[] { "MEMO: ", tran.getmemo() },
+                  new string[] { "MEMO: ", tran.memo },
                   new StringAlignment[] { StringAlignment.Near, StringAlignment.Near },
                   new int[] { 6, printer.StringWidth }
                 );
@@ -2043,23 +2043,23 @@ namespace ETech.fnc
             printer.CPI12();
 
             // Payment
-            decimal tendered_cash = tran.getpayments().get_cash();
-            decimal tendered_credit = tran.getpayments().get_creditamount();
-            decimal tendered_debit = tran.getpayments().get_debitamount();
-            decimal tendered_gift = tran.getpayments().get_giftchequenewamount();
-            decimal tendered_mempoints = tran.getpayments().get_points();
-            decimal tendered_custompayments = tran.getpayments().get_custompaymentamount();
-            decimal tendered_total = tran.getpayments().get_totalamount();
+            decimal tendered_cash = tran.Payments.get_cash();
+            decimal tendered_credit = tran.Payments.get_creditamount();
+            decimal tendered_debit = tran.Payments.get_debitamount();
+            decimal tendered_gift = tran.Payments.get_giftchequenewamount();
+            decimal tendered_mempoints = tran.Payments.get_points();
+            decimal tendered_custompayments = tran.Payments.get_custompaymentamount();
+            decimal tendered_total = tran.Payments.get_totalamount();
             decimal changeamt = tran.get_changeamount();
             tempDataTable = new DataTable();
             tempDataTable.Columns.Add(); tempDataTable.Columns.Add();
             int cnt_item_t = 0;
             if (tendered_cash != 0)
                 tempDataTable.Rows.Add("Cash:", tendered_cash.ToString("N2")); cnt_item_t++;
-            if (tendered_credit != 0 || tran.getpayments().get_creditcard().Count > 0)
+            if (tendered_credit != 0 || tran.Payments.get_creditcard().Count > 0)
             {
                 tempDataTable.Rows.Add("Credit Card(s):", tendered_credit.ToString("N2")); cnt_item_t++;
-                foreach (cls_cardinfo card in tran.getpayments().get_creditcard())
+                foreach (cls_cardinfo card in tran.Payments.get_creditcard())
                 {
                     tempDataTable.Rows.Add(card.getcardname().ToString(), card.getamount().ToString("N2"));
                     tempDataTable.Rows.Add("    Card Holder: ", card.getname().ToString());
@@ -2069,10 +2069,10 @@ namespace ETech.fnc
                 }
                 cnt_item_t++;
             }
-            if (tendered_debit != 0 || tran.getpayments().get_debitcard().Count > 0)
+            if (tendered_debit != 0 || tran.Payments.get_debitcard().Count > 0)
             {
                 tempDataTable.Rows.Add("Debit Card(s):", tendered_debit.ToString("N2")); cnt_item_t++;
-                foreach (cls_cardinfo card in tran.getpayments().get_debitcard())
+                foreach (cls_cardinfo card in tran.Payments.get_debitcard())
                 {
                     tempDataTable.Rows.Add(card.getcardname().ToString(), card.getamount().ToString("N2"));
                     tempDataTable.Rows.Add("    Card Holder: ", card.getname().ToString());
@@ -2082,10 +2082,10 @@ namespace ETech.fnc
                 }
                 cnt_item_t++;
             }
-            if (tendered_gift != 0 || (tran.getpayments().get_giftchequenew().Count > 0))
+            if (tendered_gift != 0 || (tran.Payments.get_giftchequenew().Count > 0))
             {
                 tempDataTable.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2")); cnt_item_t++;
-                foreach (cls_giftcheque giftcheque in tran.getpayments().get_giftchequenew())
+                foreach (cls_giftcheque giftcheque in tran.Payments.get_giftchequenew())
                 {
                     tempDataTable.Rows.Add(giftcheque.get_referenceno().ToString(), giftcheque.getamount().ToString("N2"));
                     tempDataTable.Rows.Add("    Expiry Date: ", giftcheque.getexpdate().ToString("MM-yyyy"));
@@ -2098,10 +2098,10 @@ namespace ETech.fnc
                 tempDataTable.Rows.Add("Mem. Pts:", tendered_mempoints.ToString("N2"));
                 cnt_item_t++;
             }
-            if (tendered_custompayments != 0 || tran.getpayments().get_custompayments().Count > 0)
+            if (tendered_custompayments != 0 || tran.Payments.get_custompayments().Count > 0)
             {
                 tempDataTable.Rows.Add("Custom Payments:", tendered_custompayments.ToString("N2")); cnt_item_t++;
-                foreach (cls_CustomPaymentsInfo custompaymentsinfo in tran.getpayments().get_custompayments())
+                foreach (cls_CustomPaymentsInfo custompaymentsinfo in tran.Payments.get_custompayments())
                     tempDataTable.Rows.Add("    " + custompaymentsinfo.get_paymentname(), custompaymentsinfo.get_amount().ToString("N2"));
                 cnt_item_t++;
             }
@@ -2117,7 +2117,7 @@ namespace ETech.fnc
 
             // Customer/Member/Senior Info
             printer.WriteRepeatingCharacterLine('=');
-            if (tran.getmember().getSyncId() != 0)
+            if (tran.Member.getSyncId() != 0)
                 printer.WriteLines("MEMBER INFORMATION");
             else if (tran.getsenior().get_fullname() != "")
                 printer.WriteLines("SENIOR INFORMATION");
@@ -2126,8 +2126,8 @@ namespace ETech.fnc
             else
                 printer.WriteLines("CUSTOMER INFORMATION");
 
-            if (tran.getmember().getSyncId() != 0)
-                printer.WriteLines("Name: " + tran.getmember().getfullname(), StringAlignment.Near);
+            if (tran.Member.getSyncId() != 0)
+                printer.WriteLines("Name: " + tran.Member.getfullname(), StringAlignment.Near);
             else if (tran.getsenior().get_fullname() != "")
                 printer.WriteLines("Name: " + tran.getsenior().get_fullname(), StringAlignment.Near);
             else if (tran.getcustomer().getwid() != 0)
@@ -2135,12 +2135,12 @@ namespace ETech.fnc
             else
                 printer.WriteLines("Name: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 6));
 
-            if (tran.getmember().getSyncId() != 0)
-                printer.WriteLines("Card#: " + tran.getmember().getcardid(), StringAlignment.Near);
+            if (tran.Member.getSyncId() != 0)
+                printer.WriteLines("Card#: " + tran.Member.getcardid(), StringAlignment.Near);
             else if (tran.getsenior().get_fullname() != "")
                 printer.WriteLines("ID#: " + tran.getsenior().get_idnumber(), StringAlignment.Near);
-            if (tran.getmember().getSyncId() != 0)
-                printer.WriteLines("Address: " + tran.getmember().getaddress(), StringAlignment.Near);
+            if (tran.Member.getSyncId() != 0)
+                printer.WriteLines("Address: " + tran.Member.getaddress(), StringAlignment.Near);
             else
                 printer.WriteLines("Address: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 9));
             printer.WriteLines("TIN: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 5));
@@ -2148,15 +2148,15 @@ namespace ETech.fnc
             //printer.Write("\n\r\n\r\n\rSIGNATURE: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 11));
 
             // Member Points (Only appears on original OR)
-            if (tran.getmember().getSyncId() != 0 && !tran.getmember().MemberButOffline && !isvoid && !isreprint)
+            if (tran.Member.getSyncId() != 0 && !tran.Member.MemberButOffline && !isvoid && !isreprint)
             {
                 tempDataTable = new DataTable();
                 tempDataTable.Columns.Add();
                 tempDataTable.Columns.Add();
-                tempDataTable.Rows.Add("Previous points:", tran.getmember().getPreviousPoints().ToString("N2"));
-                tempDataTable.Rows.Add("Points use:", tran.getpayments().get_points().ToString("N2"));
+                tempDataTable.Rows.Add("Previous points:", tran.Member.getPreviousPoints().ToString("N2"));
+                tempDataTable.Rows.Add("Points use:", tran.Payments.get_points().ToString("N2"));
                 tempDataTable.Rows.Add("Points earned:", tran.get_memberpoint_earn().ToString("N2"));
-                tempDataTable.Rows.Add("Total Points:", (tran.getmember().getPreviousPoints() - tran.getpayments().get_points() + tran.get_memberpoint_earn()).ToString("N2"));
+                tempDataTable.Rows.Add("Total Points:", (tran.Member.getPreviousPoints() - tran.Payments.get_points() + tran.get_memberpoint_earn()).ToString("N2"));
 
                 printer.WriteRepeatingCharacterLine('=');
                 printer.WriteTable(

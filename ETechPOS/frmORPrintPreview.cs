@@ -139,14 +139,14 @@ namespace ETech
             temp_tran.set_transaction_by_ornumber(or_num);
 
             if (((temp_tran.getShow() == 0) && (temp_tran.getStatus() == 0)) ||
-                (temp_tran.getSyncId() == 0))
+                (temp_tran.SyncId == 0))
             {
                 ClearGraphics(pbPreview);
                 fncFilter.alert(cls_globalvariables.warning_ornumber_invalid);
                 return;
             }
 
-            string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`status`=0) AND `SyncId` = '" + temp_tran.getSyncId() + @"'";
+            string checkIfVoidSql = @"SELECT Count(*) as cnt FROM Saleshead WHERE (`status`=0) AND `SyncId` = '" + temp_tran.SyncId + @"'";
             bool isVoid = Convert.ToBoolean(mySQLFunc.getdb(checkIfVoidSql).Rows[0]["cnt"]);
 
             SaveBitmap(temp_tran, isVoid);

@@ -16,7 +16,7 @@ namespace ETech.cls
         public RoundedDecimal OriginalPrice { get; set; }
         public RoundedDecimal RegularDiscount { get; set; }
         public RoundedDecimal FixedAdjustment { get; set; }
-        public RoundedDecimal Price { get; set; }
+
         public cls_user SoldBy { get; set; }
 
         public decimal Quantity { get; set; }
@@ -26,9 +26,10 @@ namespace ETech.cls
         public string VatStatus { get; set; }
 
         //TransactionFields
-        public string TransactionVatStatus { get; set; }
+        public string TransactionVatStatus { get { return "V"; } set { } }
 
         //Computed Get Fields
+        public RoundedDecimal Price { get { return OriginalPrice - RegularDiscount - FixedAdjustment; } }
         public decimal Amount { get { return Price * Quantity; } }
         public decimal VatAmount
         {
@@ -52,12 +53,12 @@ namespace ETech.cls
         public bool HasNonVatAmount { get { return (TransactionVatStatus == "NV" || TransactionVatStatus == "S" || VatStatus == "NV"); } }
         public decimal NonVatSalesAmount { get { return (Quantity > 0 && HasNonVatAmount) ? Amount : 0; } }
         public decimal NonVatReturnsAmount { get { return (Quantity < 0 && HasNonVatAmount) ? Amount : 0; } }
-        public decimal NonVatAmount { get { return NonVatSalesAmount + NonVatReturnsAmount; } } 
+        public decimal NonVatAmount { get { return NonVatSalesAmount + NonVatReturnsAmount; } }
 
         public bool HasVatableAmount { get { return (TransactionVatStatus == "V" && VatStatus != "NV"); } }
         public decimal VatableSalesAmount { get { return (Quantity > 0 && HasVatableAmount) ? Amount : 0; } }
         public decimal VatableReturnsAmount { get { return (Quantity < 0 && HasVatableAmount) ? Amount : 0; } }
-        public decimal VatableAmount { get { return VatableSalesAmount + VatableReturnsAmount; } } 
+        public decimal VatableAmount { get { return VatableSalesAmount + VatableReturnsAmount; } }
 
 
         public void init()
@@ -66,10 +67,8 @@ namespace ETech.cls
             this.Barcode = "";
             this.Name = "";
             this.Quantity = 1;
-            this.Price = 0;
             this.WholesalePrice = 0;
             this.Memo = "";
-            this.Price = 0;
 
             this.PurchasePrice = 0;
             this.OriginalPrice = 0;
@@ -125,7 +124,6 @@ namespace ETech.cls
             this.init();
 
             this.Barcode = barcode_d;
-            this.Price = price_d;
             this.Quantity = qty_d;
 
             string sSQL = "";
@@ -153,10 +151,7 @@ namespace ETech.cls
             this.init();
 
             this.Barcode = "-";
-
-            this.Price = price_d;
             this.OriginalPrice = price_d;
-            this.Price = price_d;
             this.WholesalePrice = price_d;
             string sql = @"
                 SELECT `product` 
@@ -225,11 +220,11 @@ namespace ETech.cls
             this.PurchasePrice = Convert.ToDecimal(dr["pprice"]);
             this.OriginalPrice = Convert.ToDecimal(dr["oprice"]);
             this.VatStatus = dr["VatStatus"].ToString();
-            this.Price = this.OriginalPrice;
         }
 
         public void reset_data_by_mode(bool nonvattrans, bool issenior_d, bool iswholesale, int pricingtype, decimal pricingrate, cls_customer customer)
         {
+            return;
             this.OriginalPrice = this.Price;
 
             if (iswholesale && this.SyncId != 0)
@@ -237,7 +232,6 @@ namespace ETech.cls
                 if (pricingtype == 0 && customer.getItemPriceDictionary().ContainsKey(SyncId))
                 {
                     this.OriginalPrice = WholesalePrice;
-                    this.Price = WholesalePrice;
                     getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[SyncId] - this.OriginalPrice, false);
                 }
                 else
@@ -246,7 +240,6 @@ namespace ETech.cls
                     else if (pricingtype == 3) this.OriginalPrice = Math.Round(this.WholesalePrice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
                     else if (pricingtype == 9) this.OriginalPrice = this.Price;
                     else this.OriginalPrice = this.WholesalePrice;
-                    this.Price = this.OriginalPrice;
                 }
             }
 
@@ -287,14 +280,15 @@ namespace ETech.cls
             //detaildiscount = distributed head discounts and detaildiscount
             //1st run set detail discounts
             //2nd run distribute head discounts
-            this.RegularDiscount = 1 - (1M - this.RegularDiscount) * (1M - tmp_disc);
-            this.Price = (this.Price + this.FixedAdjustment) * (1 - this.RegularDiscount);
+            //this.RegularDiscount = 1 - (1M - this.RegularDiscount) * (1M - tmp_disc);
+            //this.Price = (this.Price + this.FixedAdjustment) * (1 - this.RegularDiscount);
 
             Console.WriteLine("reset_data_by_mode dc: " + this.Price);
         }
 
         public void reprint_reset_data_by_mode(bool nonvattrans, bool issenior_d, bool iswholesale, int pricingtype)
         {
+            return;
             this.OriginalPrice = this.Price;
 
             Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
@@ -319,10 +313,10 @@ namespace ETech.cls
             Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
             Console.WriteLine("reset_data_by_mode adjust : " + this.FixedAdjustment);
 
-            if (this.RegularDiscount != 0)
-                this.Price = this.OriginalPrice * (1 - this.RegularDiscount);
-            else
-                this.Price = this.OriginalPrice + this.FixedAdjustment;
+            //if (this.RegularDiscount != 0)
+            //    this.Price = this.OriginalPrice * (1 - this.RegularDiscount);
+            //else
+            //    this.Price = this.OriginalPrice + this.FixedAdjustment;
 
             Console.WriteLine("reset_data_by_mode dc: " + this.Price);
         }
