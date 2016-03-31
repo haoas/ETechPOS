@@ -31,7 +31,7 @@ namespace ETech.cls
         //Computed Get Fields
         public RoundedDecimal Price { get { return OriginalPrice - RegularDiscount - FixedAdjustment; } }
         public decimal Amount { get { return Price * Quantity; } }
-        public decimal VatAmount
+        public decimal Vat
         {
             //Do not change this computation without approval
             get

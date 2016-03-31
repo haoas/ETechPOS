@@ -46,7 +46,7 @@ namespace ETech.ctrl
 
             if (this.POSTran.get_productlist().get_productlist().Count <= row_index)
                 return;
-            refresh_display_addproduct_and_totalamount(POSTran.get_productlist().get_product(row_index), POSTran.get_productlist().get_totalamount());
+            refresh_display_addproduct_and_totalamount(POSTran.get_productlist().get_product(row_index), POSTran.TotalAmount);
         }
 
         public static void refresh_display_addproduct_and_totalamount(cls_product prod, decimal total)

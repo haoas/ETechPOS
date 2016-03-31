@@ -70,7 +70,7 @@ namespace ETech
             LogsHelper.ClearTLog();
             isLoadSuccessful = mySQLFunc.initialize_global_variables();
 
-            RemoveOldDatabaseBackup(@"C:\Users\Lenovo ThinkPad E460\Documents\ETECHPOS\Database Backup");
+            //RemoveOldDatabaseBackup(@"C:\Users\Lenovo ThinkPad E460\Documents\ETECHPOS\Database Backup");
 
             if (!isLoadSuccessful)
                 return;
@@ -413,24 +413,6 @@ namespace ETech
                     tran = this.get_curtrans();
                     if (tran == null) return true;
 
-                    if (cls_globalvariables.prodsearchstyle_v == "2")
-                    {
-                        cls_product tempprod2 = (lastaddedrownumber == -1 || Trans[cur_trans_index].get_productlist().get_productlist().Count == 0)
-                            ? null : Trans[cur_trans_index].get_productlist().get_product(lastaddedrownumber);
-                        frmSearchProductButton searchprodbtn = new frmSearchProductButton(tran, tempprod2);
-                        searchprodbtn.ShowDialog();
-
-                        foreach (cls_product tempprod in searchprodbtn.tempProductlist.get_productlist())
-                        {
-                            lastaddedrownumber = tran.get_productlist().add_product(tempprod);
-                            LogsHelper.WriteToTLog("Product Added (" + tempprod.Quantity + "): " + tempprod.Name);
-                        }
-
-                        refresh_productlist_data(tran);
-                        isdetected = true;
-                        break;
-                    }
-
                     frmSearchProduct prodform = new frmSearchProduct();
                     prodform.ShowDialog();
 
@@ -679,7 +661,7 @@ namespace ETech
                             if (permcheck_delete)
                             {
                                 UserAuthorizer.setcls_user_by_wid(userAuthenticationForm.User.syncid, false);
-                                tran.set_UserAuthorizer(UserAuthorizer);
+                                tran.UserAuthorizer = UserAuthorizer;
                             }
                         }
 
@@ -745,7 +727,7 @@ namespace ETech
                             LogsHelper.WriteToTLog("[F8] Removed Member");
 
                         tran.Member = memberform.member;
-                        decimal dcpercent = tran.Member.get_member_discount_amount(tran.get_productlist().get_totalamount());
+                        decimal dcpercent = tran.Member.get_member_discount_amount(tran.TotalAmount);
                         tran.get_productlist().append_adjustdiscount_all(0, dcpercent);
 
                         tran.get_productlist().getTransDisc().setMember(memberform.member, 0, 0, false);
@@ -789,7 +771,7 @@ namespace ETech
                             if (permcheck_discountproduct)
                             {
                                 UserAuthorizer.setcls_user_by_wid(userAuthenticationForm.User.syncid, false);
-                                tran.set_UserAuthorizer(UserAuthorizer);
+                                tran.UserAuthorizer = UserAuthorizer;
                             }
                         }
 
@@ -876,7 +858,7 @@ namespace ETech
                     if (FPage == 0)
                     {
                         LogsHelper.WriteToTLog("[F6] Transaction Discount/Adjust");
-                        if (tran.get_productlist().get_totalqty() == 0)
+                        if (tran.TotalQuantity == 0)
                         {
                             fncFilter.alert("No Products to Adjust!");
                             return true;
@@ -893,7 +875,7 @@ namespace ETech
                             if (permcheck_discounttransaction)
                             {
                                 UserAuthorizer.setcls_user_by_wid(userAuthenticationForm.User.syncid, false);
-                                tran.set_UserAuthorizer(UserAuthorizer);
+                                tran.UserAuthorizer = UserAuthorizer;
                             }
                         }
 
@@ -902,7 +884,7 @@ namespace ETech
                             frmTransactionAdjust transAdjust = new frmTransactionAdjust();
                             transAdjust.orig_price = tran.get_productlist().get_totalamount_no_head_discount();
                             transAdjust.disclist = tran.get_productlist().getTransDisc();
-                            transAdjust.new_price = tran.get_productlist().get_totalamount();
+                            transAdjust.new_price = tran.TotalAmount;
                             transAdjust.ShowDialog();
 
 
@@ -915,31 +897,31 @@ namespace ETech
                                 transdisc.activateDiscount_using_wid(transAdjust.disc.get_SyncId(), 1 - transAdjust.new_discount, true);
                                 refresh_productlist_data(tran);
                                 LogsHelper.WriteToTLog("[F12][F6]Transaction Custom Discount (" + transAdjust.disc.get_name() + " (" + (transAdjust.disc.get_value() * 100) + "%)): OR: "
-                                    + tran.ORNumber + " " + tran.get_productlist().get_totalamount_gross() +
-                                    " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
+                                    + tran.ORNumber + " " + tran.TotalGrossAmount +
+                                    " -> " + tran.TotalAmount + " BY " + tran.get_permissiongiver_fullname());
                             }
                             else if (transAdjust.new_adjust != 0)
                             {
                                 transdisc.appendDiscount(cls_globalvariables.dchead_adjusttype, transAdjust.new_adjust, false);
                                 refresh_productlist_data(tran);
                                 LogsHelper.WriteToTLog("[F12][F6]Transaction Adjust (" + transAdjust.new_adjust + ")): OR: "
-                                    + tran.ORNumber + " " + tran.get_productlist().get_totalamount_gross() +
-                                    " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
+                                    + tran.ORNumber + " " + tran.TotalGrossAmount +
+                                    " -> " + tran.TotalAmount + " BY " + tran.get_permissiongiver_fullname());
                             }
                             else if (transAdjust.new_discount != 0)
                             {
                                 transdisc.appendDiscount(cls_globalvariables.dchead_discounttype, 1 - transAdjust.new_discount, true);
                                 refresh_productlist_data(tran);
                                 LogsHelper.WriteToTLog("[F12][F6]Transaction Discount (" + (transAdjust.new_discount * 100) + "%)): OR: "
-                                    + tran.ORNumber + " " + tran.get_productlist().get_totalamount_gross() +
-                                    " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
+                                    + tran.ORNumber + " " + tran.TotalGrossAmount +
+                                    " -> " + tran.TotalAmount + " BY " + tran.get_permissiongiver_fullname());
                             }
                             else
                             {
                                 refresh_productlist_data(tran);
                                 LogsHelper.WriteToTLog("[F12][F6]Transaction Adjust/Discount Removed: OR: "
-                                    + tran.ORNumber + " " + tran.get_productlist().get_totalamount_gross() +
-                                    " -> " + tran.get_productlist().get_totalamount() + " BY " + tran.get_permissiongiver_fullname());
+                                    + tran.ORNumber + " " + tran.TotalGrossAmount +
+                                    " -> " + tran.TotalAmount + " BY " + tran.get_permissiongiver_fullname());
                             }
                         }
                     }
@@ -1058,7 +1040,7 @@ namespace ETech
 
                         frmPayment payment = new frmPayment();
                         payment.paymentdata = tran.Payments.DeepCopy();
-                        payment.totalamtdue = tran.get_productlist().get_totalamount();
+                        payment.totalamtdue = tran.TotalAmount;
                         payment.totalpoints = tran.Member.getPreviousPoints();
                         payment.hasMember = tran.Member.getSyncId() != 0;
                         payment.ShowDialog();
@@ -1075,7 +1057,7 @@ namespace ETech
                         }
 
                         bool ispaymentdone = payment.transactiondone;
-                        decimal total_amount_due = tran.get_productlist().get_totalamount();
+                        decimal total_amount_due = tran.TotalAmount;
                         decimal total_amount_paid = tran.Payments.get_totalamount();
 
                         bool istransactiondone = false;
@@ -1367,7 +1349,7 @@ namespace ETech
             cls_POSTransaction tran = this.get_curtrans();
             if (tran == null) return;
 
-            this.lblQty_d.Text = tran.get_productlist().get_totalqty().ToString();
+            this.lblQty_d.Text = tran.TotalQuantity.ToString();
         }
         public void refresh_productlist_data(cls_POSTransaction tran)
         {
@@ -1502,7 +1484,7 @@ namespace ETech
             LogsHelper.WriteToTLog("CURRENT OR: " + tran.ORNumber);
             //this.lblORNumber_d.Text = tran.ORNumber.ToString();
             this.tsslOfficialReceiptNumber.Text = tran.ORNumber.ToString();
-            this.lblQty_d.Text = tran.get_productlist().get_totalqty().ToString();
+            this.lblQty_d.Text = tran.TotalQuantity.ToString();
 
             this.ctrlproductgridview.set_databinding(tran.get_productlist().get_dtproduct());
             this.ctrlpaymentlabel.set_databinding(tran);

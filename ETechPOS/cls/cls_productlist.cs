@@ -131,6 +131,7 @@ namespace ETech.cls
         }
         public cls_customer get_customer() { return this.customer; }
         public void set_customer(cls_customer customer) { this.customer = customer; }
+
         public bool get_iswholesale() { return this.iswholesale; }
 
         public void set_pricingtype_rate(int pricingtype_d, decimal pricingrate_d)
@@ -179,25 +180,9 @@ namespace ETech.cls
             return get_subtotal_vat() / (1 + cls_globalvariables.vat);
         }
 
-        public decimal get_vat()
-        {
-            return this.get_subtotal_vat() * cls_globalvariables.vat / (1 + cls_globalvariables.vat);
-        }
-
         public decimal get_totalsale()
         {
             return this.get_subtotal_nonvat() + this.get_subtotal_vat();
-        }
-
-        //get totalqty
-        public decimal get_totalqty()
-        {
-            decimal sum = 0;
-            foreach (cls_product prod in list_product)
-            {
-                sum += prod.Quantity;
-            }
-            return sum;
         }
 
         public cls_discountlist getTransDisc() { return this.transDiscount; }
@@ -209,17 +194,6 @@ namespace ETech.cls
             this.distribute_head_discount(total_head_disc_perc);
         }
 
-        //get totalamount w/ discount
-        public decimal get_totalamount()
-        {
-            decimal sum = 0;
-            foreach (cls_product prod in list_product)
-            {
-                sum += prod.Amount;
-            }
-            return sum;
-        }
-
         //get totalamount w/o discount
         //ROBI
         public decimal get_totalamount_no_head_discount()
@@ -228,17 +202,6 @@ namespace ETech.cls
             foreach (cls_product prod in list_product)
             {
                 sum += prod.Quantity * Math.Round(prod.getProductDiscountList().get_amount_after_discount(prod.OriginalPrice), 2);
-            }
-            return sum;
-        }
-
-        //get total gross amount
-        public decimal get_totalamount_gross()
-        {
-            decimal sum = 0;
-            foreach (cls_product prod in list_product)
-            {
-                sum += prod.Amount;
             }
             return sum;
         }
@@ -276,7 +239,7 @@ namespace ETech.cls
             decimal proddiscount = totaldiscount;
             if (totaladjust != 0)
             {
-                proddiscount = totaladjust * -1 / this.get_totalamount();
+                proddiscount = totaladjust * -1 / list_product.Sum(S => S.Amount);
             }
 
             foreach (cls_product cprod in this.list_product)

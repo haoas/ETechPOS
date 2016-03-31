@@ -55,9 +55,9 @@ namespace ETech.ctrl
                 return;
 
             decimal totalamt = POSTrans.Payments.get_totalamount();
-            decimal totalamtdue = POSTrans.get_productlist().get_totalamount();
+            decimal totalamtdue = POSTrans.TotalAmount;
 
-            this.lblTotal.Text = this.POSTrans.get_productlist().get_totalamount().ToString("N2");
+            this.lblTotal.Text = this.POSTrans.TotalAmount.ToString("N2");
             this.lblTender.Text = this.POSTrans.Payments.get_totalamount().ToString("N2");
             this.lblRemaining.Text = (totalamtdue - totalamt).ToString("N2");
 

@@ -1416,9 +1416,9 @@ namespace ETech.fnc
             string checker = tran.Checker.getfullname();
             string checkerid = tran.Checker.getsyncid().ToString();
             string checkercode = tran.Checker.getusercode().ToString();
-            string customername = tran.getcustomer().getfullname();
-            string customercode = tran.getcustomer().getCode().ToString();
-            string customerid = tran.getcustomer().getwid().ToString();
+            string customername = tran.Customer.getfullname();
+            string customercode = tran.Customer.getCode().ToString();
+            string customerid = tran.Customer.getwid().ToString();
             string membername = tran.Member.MemberButOffline ? "Offline" : tran.Member.getfullname();
             string memberidno = tran.Member.MemberButOffline ? "Offline" : tran.Member.getcardid();
             string seniorname = tran.getsenior().get_fullname();
@@ -1522,15 +1522,15 @@ namespace ETech.fnc
 
             DataTable dt_subtotal = new DataTable();
             dt_subtotal.Columns.Add(); dt_subtotal.Columns.Add();
-            dt_subtotal.Rows.Add("Total QTY:", tran.get_productlist().get_totalqty());
+            dt_subtotal.Rows.Add("Total QTY:", tran.TotalQuantity);
 
-            decimal total_sale = tran.get_productlist().get_totalamount();
+            decimal total_sale = tran.TotalAmount;
             decimal trans_adjust = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_adjusttype);
             decimal trans_memberdiscount = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_membertype);
             decimal trans_pospromo = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_pospromotype);
             decimal trans_customdiscount = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_customdiscounttype);
 
-            decimal total_gross = tran.get_productlist().get_totalamount_gross();
+            decimal total_gross = tran.TotalGrossAmount;
             decimal total_discount = total_gross - total_sale;
             decimal total_detail_discount = total_gross - tran.get_productlist().get_totalamount_no_head_discount();
             decimal total_head_discount = total_discount - total_detail_discount;
@@ -1951,13 +1951,13 @@ namespace ETech.fnc
             );
 
             // Discount Breakdown
-            decimal total_sale = tran.get_productlist().get_totalamount();
+            decimal total_sale = tran.TotalAmount;
             decimal trans_adjust = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_adjusttype);
             decimal trans_memberdiscount = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_membertype);
             decimal trans_pospromo = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_pospromotype);
             decimal trans_customdiscount = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_customdiscounttype);
 
-            decimal total_gross = tran.get_productlist().get_totalamount_gross();
+            decimal total_gross = tran.TotalGrossAmount;
             decimal total_discount = total_gross - total_sale;
             decimal total_detail_discount = total_gross - tran.get_productlist().get_totalamount_no_head_discount();
             decimal total_head_discount = total_discount - total_detail_discount;
@@ -2004,7 +2004,7 @@ namespace ETech.fnc
             tempDataTable = new DataTable();
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
-            tempDataTable.Rows.Add("Total QTY:", tran.get_productlist().get_totalqty().ToString("G29"));
+            tempDataTable.Rows.Add("Total QTY:", tran.TotalQuantity.ToString("G29"));
             // Non-VAT
             if (tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount) != 0)
                 tempDataTable.Rows.Add("VAT EXEMPT SALE:", tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount).ToString("N2"));
@@ -2130,8 +2130,8 @@ namespace ETech.fnc
                 printer.WriteLines("Name: " + tran.Member.getfullname(), StringAlignment.Near);
             else if (tran.getsenior().get_fullname() != "")
                 printer.WriteLines("Name: " + tran.getsenior().get_fullname(), StringAlignment.Near);
-            else if (tran.getcustomer().getwid() != 0)
-                printer.WriteLines("Name: " + tran.getcustomer().getfullname(), StringAlignment.Near);
+            else if (tran.Customer.getwid() != 0)
+                printer.WriteLines("Name: " + tran.Customer.getfullname(), StringAlignment.Near);
             else
                 printer.WriteLines("Name: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 6));
 

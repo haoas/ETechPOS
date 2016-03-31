@@ -379,21 +379,21 @@ namespace ETech
             string datetime_d = trans.SalesDateTime.ToString("yyyy-MM-dd HH:mm:ss");
             long branchid = cls_globalvariables.Branch.Id;
             long salesheadwid = trans.SyncId;
-            long customerid = trans.getcustomer().getwid();
-            string customername = trans.getcustomer().getfullname();
+            long customerid = trans.Customer.getwid();
+            string customername = trans.Customer.getfullname();
             decimal adjust = trans.Adjustment;
             string seniorno = trans.getsenior().get_idnumber();
             string seniorname = trans.getsenior().get_fullname();
             long userid = trans.Cashier.getsyncid();
             long memberid = trans.Member.getSyncId();
             long checkerid = trans.Checker.getsyncid();
-            decimal totalamt = trans.get_productlist().get_totalamount();
+            decimal totalamt = trans.TotalAmount;
             bool iswholesale = trans.get_productlist().get_iswholesale();
             bool isnonvat = trans.get_productlist().get_isnonvat();
             decimal discount = trans.Discount;
             decimal totalpaidamt = trans.Payments.get_totalamount();
 
-            decimal t = trans.get_productlist().get_totalamount();
+            decimal t = trans.TotalAmount;
             decimal t2 = trans.get_productlist().get_totalamount_no_head_discount();
             decimal headDiscountPercentage = (t2 == 0) ? 0 : (t / t2);
 
@@ -464,7 +464,7 @@ namespace ETech
             string sSQL = "";
 
             sSQL = @"UPDATE `saleshead` SET
-                        `salesman` = " + trans.getsalesman().getsyncid().ToString() + @",
+                        `salesman` = " + trans.SalesAgent.getsyncid().ToString() + @",
                         `status` = 1, 
                         `customerid` = " + customerid + @", 
                         `customername` = '" + escapeString(customername) + @"',
@@ -492,7 +492,7 @@ namespace ETech
             {
                 string qty = Convert.ToString(prod.Quantity);
                 string price = (prod.Price).ToString();
-                string vat = prod.VatAmount.ToString();
+                string vat = prod.Vat.ToString();
 
                 cls_user soldby = (cls_user)prod.SoldBy;
                 long soldbywid = 0;

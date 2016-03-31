@@ -55,8 +55,8 @@ namespace ETech.ctrl
             this.tsslclerkname.Text = this.POSTrans.Cashier.getfullname();
             this.tsslcheckername.Text = this.POSTrans.Checker.getfullname();
             this.lblmode.Text = this.POSTrans.getmode_str();
-            this.tsslcustomer.Text = this.POSTrans.getcustomer().getfullname();
-            this.tsslcustomermemo.Text = this.POSTrans.getcustomer().getMemo();
+            this.tsslcustomer.Text = this.POSTrans.Customer.getfullname();
+            this.tsslcustomermemo.Text = this.POSTrans.Customer.getMemo();
             this.tsslmember.Text = this.POSTrans.Member.getfullname();
         }
 

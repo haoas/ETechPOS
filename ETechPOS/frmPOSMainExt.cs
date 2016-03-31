@@ -80,7 +80,7 @@ namespace ETech
             ctrl_productgrid ctrlprod = new ctrl_productgrid(dgvProduct);
             ctrlprod.set_databinding(tran.get_productlist().get_dtproduct());
             dgvProduct.DataSource = ctrlprod.get_productgrid().DataSource;
-            lblTotalAmount.Text = "P " + tran.get_productlist().get_totalamount().ToString("N2");
+            lblTotalAmount.Text = "P " + tran.TotalAmount.ToString("N2");
             lblItemCount.Text = tran.get_productlist().get_productlist().Count.ToString();
         }
         public void AfterTran()

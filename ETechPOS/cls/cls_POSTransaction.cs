@@ -10,15 +10,10 @@ namespace ETech.cls
 {
     public class cls_POSTransaction
     {
-        private cls_user salesman;
-        private cls_customer customer;
-        
-        
         private cls_senior senior;
         private cls_nonvat nonvat;
         private int show;
         private int status;
-        private cls_user UserAuthorizer;
         private cls_productlist productlist;
 
         public DateTime SalesDateTime { get; set; }
@@ -29,9 +24,12 @@ namespace ETech.cls
         public string memo { get; set; }
         public cls_user Cashier { get; set; }
         public cls_user Checker { get; set; }
+        public cls_user UserAuthorizer { get; set; }
         public string VatStatus { get; set; }
         public cls_payment Payments { get; set; }
         public cls_member Member { get; set; }
+        public cls_customer Customer { get; set; }
+        public cls_user SalesAgent { get; set; }
 
         //constructor
         public cls_POSTransaction()
@@ -44,8 +42,8 @@ namespace ETech.cls
             this.productlist = new cls_productlist();
             this.Cashier = new cls_user();
             this.Checker = new cls_user();
-            this.salesman = new cls_user();
-            this.customer = new cls_customer();
+            this.SalesAgent = new cls_user();
+            this.Customer = new cls_customer();
             this.Member = new cls_member();
             this.Payments = new cls_payment();
             this.senior = new cls_senior();
@@ -90,12 +88,6 @@ namespace ETech.cls
             return sbmode.ToString();
         }
 
-        public void setsalesman(cls_user salesman_d) { this.salesman = salesman_d; }
-        public cls_user getsalesman() { return this.salesman; }
-
-        public void setcustomer(cls_customer customer_d) { this.customer = customer_d; this.productlist.set_customer(customer_d); }
-        public cls_customer getcustomer() { return this.customer; }
-
         public cls_productlist get_productlist() { return this.productlist; }
 
         public int getShow() { return this.show; }
@@ -104,9 +96,8 @@ namespace ETech.cls
         //get changeamount
         public decimal get_changeamount()
         {
-            decimal totalamt = Math.Round(this.productlist.get_totalamount(), 2, MidpointRounding.AwayFromZero);
             decimal totalpaymentamt = this.Payments.get_totalamount();
-            decimal change = totalpaymentamt - totalamt;
+            decimal change = totalpaymentamt - TotalAmount;
             return (change > 0) ? change : 0;
         }
 
@@ -135,7 +126,7 @@ namespace ETech.cls
 
             this.Cashier = new cls_user(Convert.ToInt32(dr["userid"]), status);
             this.Checker = new cls_user(Convert.ToInt32(dr["checkerid"]), status);
-            this.customer = new cls_customer(Convert.ToInt32(dr["customerid"]), status);
+            this.Customer = new cls_customer(Convert.ToInt32(dr["customerid"]), status);
             this.Member = new cls_member(Convert.ToInt32(dr["memberid"]), status);
             this.Payments = new cls_payment(SyncId);
 
@@ -164,7 +155,7 @@ namespace ETech.cls
         {
             if (this.Member.getSyncId() == 0)
                 return 0;
-            decimal totalamt = this.get_productlist().get_totalamount() - Payments.get_points();
+            decimal totalamt = this.TotalAmount - Payments.get_points();
             bool isNegative = totalamt < 0;
             totalamt = Math.Abs(totalamt);
             int rateid = this.Member.get_memberrate_id();
@@ -218,29 +209,24 @@ namespace ETech.cls
             return totalamt / ratio;
         }
 
-        public cls_user get_UserAuthorizer()
-        {
-            return this.UserAuthorizer;
-        }
-        public void set_UserAuthorizer(cls_user permissiongiver_d)
-        {
-            this.UserAuthorizer = permissiongiver_d;
-        }
-
         public long get_UserAuthorizer_SyncId()
         {
-            long permissiongiverwid = this.get_UserAuthorizer().getsyncid();
+            long permissiongiverwid = this.UserAuthorizer.getsyncid();
             long clerkwid = this.Cashier.getsyncid();
             return (permissiongiverwid != 0) ? permissiongiverwid : clerkwid;
         }
 
         public string get_permissiongiver_fullname()
         {
-            string permissiongiverfullname = this.get_UserAuthorizer().getfullname();
+            string permissiongiverfullname = this.UserAuthorizer.getfullname();
             string clerkfullname = this.Cashier.getfullname();
 
             return (permissiongiverfullname != "") ? permissiongiverfullname : clerkfullname;
         }
 
+        public Decimal TotalGrossAmount { get { return productlist.list_product.Sum(Q => Q.OriginalPrice * Q.Quantity); } }
+        public Decimal TotalQuantity { get { return productlist.list_product.Sum(Q => Q.Quantity); } }
+        public Decimal TotalAmount { get { return productlist.list_product.Sum(Q => Q.Amount); } }
+        public Decimal TotalVat { get { return productlist.list_product.Sum(V => V.Quantity * V.Vat); } }
     }
 }
