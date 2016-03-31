@@ -1887,34 +1887,41 @@ namespace ETech.fnc
             printer.NormalFont();
             printer.CPI12();
 
+
             // Header
             if (cls_globalvariables.BusinessName_v != "")
-                printer.WriteLines(cls_globalvariables.BusinessName_v);
+                printer.WriteLines(cls_globalvariables.BusinessName_v, StringAlignment.Near);
             if (cls_globalvariables.Owner_v != "")
-                printer.WriteLines(cls_globalvariables.Owner_v);
-            printer.WriteLines("VAT REG. " + cls_globalvariables.TIN_v);
+                printer.WriteLines(cls_globalvariables.Owner_v, StringAlignment.Near);
+            printer.WriteLines("VAT REG. " + cls_globalvariables.TIN_v, StringAlignment.Near);
             if (cls_globalvariables.MIN_v != "")
-                printer.WriteLines(cls_globalvariables.MIN_v);
+                printer.WriteLines(cls_globalvariables.MIN_v, StringAlignment.Near);
             if (cls_globalvariables.Serial_v != "")
-                printer.WriteLines(cls_globalvariables.Serial_v);
+                printer.WriteLines(cls_globalvariables.Serial_v, StringAlignment.Near);
             if (cls_globalvariables.Address_v != "")
-                printer.WriteLines(cls_globalvariables.Address_v);
+                printer.WriteLines(cls_globalvariables.Address_v, StringAlignment.Near);
 
             // Transaction Info
             tempDataTable = new DataTable();
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
-            tempDataTable.Rows.Add("TERMINAL#: " + cls_globalvariables.TerminalNumber, "");
-            tempDataTable.Rows.Add("SI#: " + tran.ORNumber);
-            tempDataTable.Rows.Add("CASHIER: " + tran.Cashier.getfullname(), "ID#: " + tran.Cashier.getusercode());
-            tempDataTable.Rows.Add("DATE: " + tran.SalesDateTime.ToShortDateString(), "TIME: " + tran.SalesDateTime.ToLongTimeString());
+            //tempDataTable.Rows.Add("TERMINAL#: " + cls_globalvariables.TerminalNumber, "");
+            printer.WriteLines("TERMINAL#: " + cls_globalvariables.TerminalNumber, StringAlignment.Near);
+            //tempDataTable.Rows.Add("SI#: " + tran.ORNumber);
+            printer.WriteLines("SI#: " + tran.ORNumber, StringAlignment.Near);
+            //tempDataTable.Rows.Add("CASHIER: " + tran.Cashier.getfullname(), "ID#: " + tran.Cashier.getusercode());
+            printer.WriteLines("CASHIER: " + tran.Cashier.getfullname(), StringAlignment.Near);
+            printer.WriteLines("ID#: " + tran.Cashier.getusercode(), StringAlignment.Near);
+            //tempDataTable.Rows.Add("DATE: " + tran.SalesDateTime.ToShortDateString(), "TIME: " + tran.SalesDateTime.ToLongTimeString());
+            printer.WriteLines("DATE: " + tran.SalesDateTime.ToShortDateString(), StringAlignment.Near);
+            printer.WriteLines("TIME: " + tran.SalesDateTime.ToLongTimeString(), StringAlignment.Near);
 
             printer.WriteRepeatingCharacterLine('=');
-            printer.WriteTable(
-                tempDataTable,
-                new StringAlignment[] { StringAlignment.Near, StringAlignment.Near },
-                new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
-            );
+            //printer.WriteTable(
+            //    tempDataTable,
+            //    new StringAlignment[] { StringAlignment.Near, StringAlignment.Near },
+            //    new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
+            //);
             if (tran.memo != "")
                 printer.WriteRow(
                   new string[] { "MEMO: ", tran.memo },
@@ -1928,27 +1935,35 @@ namespace ETech.fnc
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
-            tempDataTable.Rows.Add("QTY", "", "DESCRIPTION", "AMOUNT");
+            //tempDataTable.Rows.Add("QTY", "", "DESCRIPTION", "AMOUNT");
+            printer.WriteLines("QTY", StringAlignment.Near);
+            printer.WriteLines("DESCRIPTION", StringAlignment.Near);
+            printer.WriteLines("AMOUNT", StringAlignment.Near);
             foreach (cls_product prod in tran.get_productlist().get_productlist())
             {
                 string proddesc = prod.Name;
                 if ((prod.SyncId != 1) && (prod.SyncId != 2))
                     proddesc += " @P" + prod.Price.ToString() + "ea";
-                tempDataTable.Rows.Add(prod.Quantity.ToString("G29"), "", proddesc, prod.Amount.ToString());
+                //tempDataTable.Rows.Add(prod.Quantity.ToString("G29"), "", proddesc, prod.Amount.ToString());
+                printer.WriteLines(prod.Quantity.ToString("G29"), StringAlignment.Near);
+                printer.WriteLines(proddesc, StringAlignment.Near);
+                printer.WriteLines(prod.Amount.ToString(), StringAlignment.Near);
                 if ((prod.Price != prod.OriginalPrice) && (prod.OriginalPrice != 0)
                     && cls_globalvariables.DiscountDetails_v == 1)
-                    tempDataTable.Rows.Add("", "", "(P" + prod.OriginalPrice.ToString() + " - " + ((1 - (prod.Price / prod.OriginalPrice)) * 100).ToString("N2") + "%)", "");
+                    //tempDataTable.Rows.Add("", "", "(P" + prod.OriginalPrice.ToString() + " - " + ((1 - (prod.Price / prod.OriginalPrice)) * 100).ToString("N2") + "%)", "");
+                    printer.WriteLines("(P" + prod.OriginalPrice.ToString() + " - " + ((1 - (prod.Price / prod.OriginalPrice)) * 100).ToString("N2") + "%)", StringAlignment.Near);
                 if (prod.Quantity < 0)
                 {
-                    tempDataTable.Rows.Add("", "", "ITEM REFUND!", "");
+                    //tempDataTable.Rows.Add("", "", "ITEM REFUND!", "");
+                    printer.WriteLines("ITEM REFUND!", StringAlignment.Near);
                 }
             }
             printer.WriteRepeatingCharacterLine('=');
-            printer.WriteTable(
-                tempDataTable,
-                new StringAlignment[] { StringAlignment.Far, StringAlignment.Far, StringAlignment.Near, StringAlignment.Far },
-                new int[] { (int)(printer.StringWidth * 0.15), 1, (int)(printer.StringWidth * 0.6), (int)(printer.StringWidth * 0.25) }
-            );
+            //printer.WriteTable(
+            //    tempDataTable,
+            //    new StringAlignment[] { StringAlignment.Far, StringAlignment.Far, StringAlignment.Near, StringAlignment.Far },
+            //    new int[] { (int)(printer.StringWidth * 0.15), 1, (int)(printer.StringWidth * 0.6), (int)(printer.StringWidth * 0.25) }
+            //);
 
             // Discount Breakdown
             decimal total_sale = tran.TotalAmount;
@@ -1969,76 +1984,94 @@ namespace ETech.fnc
 
             if (total_discount > 0.01M)
             {
-                tempDataTable.Rows.Add("Total gross value:", "", total_gross.ToString("N2"));
+                //tempDataTable.Rows.Add("Total gross value:", "", total_gross.ToString("N2"));
+                printer.WriteLines("Total gross value: " + total_gross.ToString("N2"), StringAlignment.Near);
                 if (total_detail_discount > 0.01M)
                 {
-                    tempDataTable.Rows.Add("Prod. Discounts:", "", total_detail_discount.ToString("N2"));
+                    //tempDataTable.Rows.Add("Prod. Discounts:", "", total_detail_discount.ToString("N2"));
+                    printer.WriteLines("Prod. Discounts: " + total_detail_discount.ToString("N2"), StringAlignment.Near);
                     DataTable dt_ddiscs = tran.get_productlist().get_discount_amt_summary(1);
                     foreach (DataRow dr_ddiscs in dt_ddiscs.Rows)
                     {
                         string dvalue = (Convert.ToDecimal(dr_ddiscs["value"]) == 0) ? "" : fncFilter.getDecimalValue(dr_ddiscs["value"].ToString()).ToString("N2") + "%";
                         string damount = fncFilter.getDecimalValue(dr_ddiscs["amt"].ToString()).ToString("N2");
-                        tempDataTable.Rows.Add("   " + dr_ddiscs["name"], dvalue, damount);
+                        //tempDataTable.Rows.Add("   " + dr_ddiscs["name"], dvalue, damount);
+                        printer.WriteLines("   " + dr_ddiscs["name"], StringAlignment.Near);
+                        printer.WriteLines(dvalue, StringAlignment.Near);
+                        printer.WriteLines(damount, StringAlignment.Near);
                     }
                 }
                 if (total_head_discount > 0.01M)
                 {
-                    tempDataTable.Rows.Add("Tran. Discounts:", "", total_head_discount.ToString("N2"));
+                    //tempDataTable.Rows.Add("Tran. Discounts:", "", total_head_discount.ToString("N2"));
+                    printer.WriteLines("Tran. Discounts: " + total_head_discount.ToString("N2"), StringAlignment.Near);
                     DataTable dt_ddiscs = tran.get_productlist().get_discount_amt_summary(0);
                     foreach (DataRow dr_ddiscs in dt_ddiscs.Rows)
                     {
                         string dvalue = (Convert.ToDecimal(dr_ddiscs["value"]) == 0) ? "" : fncFilter.getDecimalValue(dr_ddiscs["value"].ToString()).ToString("N2") + "%";
                         string damount = fncFilter.getDecimalValue(dr_ddiscs["amt"].ToString()).ToString("N2");
-                        tempDataTable.Rows.Add("   " + dr_ddiscs["name"], dvalue, damount);
+                        //tempDataTable.Rows.Add("   " + dr_ddiscs["name"], dvalue, damount);
+                        printer.WriteLines("   " + dr_ddiscs["name"], StringAlignment.Near);
+                        printer.WriteLines(dvalue, StringAlignment.Near);
+                        printer.WriteLines(damount, StringAlignment.Near);
                     }
                 }
                 printer.WriteRepeatingCharacterLine('=');
-                printer.WriteTable(
-                    tempDataTable,
-                    new StringAlignment[] { StringAlignment.Near, StringAlignment.Far, StringAlignment.Far },
-                    new int[] { printer.StringWidth / 2, printer.StringWidth / 4, printer.StringWidth / 4 }
-                );
+                //printer.WriteTable(
+                //    tempDataTable,
+                //    new StringAlignment[] { StringAlignment.Near, StringAlignment.Far, StringAlignment.Far },
+                //    new int[] { printer.StringWidth / 2, printer.StringWidth / 4, printer.StringWidth / 4 }
+                //);
             }
 
             // Sub-Total Info
             tempDataTable = new DataTable();
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
-            tempDataTable.Rows.Add("Total QTY:", tran.TotalQuantity.ToString("G29"));
+            //tempDataTable.Rows.Add("Total QTY:", tran.TotalQuantity.ToString("G29"));
+            printer.WriteLines("Total QTY: " + tran.TotalQuantity.ToString("G29"), StringAlignment.Near);
             // Non-VAT
             if (tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount) != 0)
-                tempDataTable.Rows.Add("VAT EXEMPT SALE:", tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount).ToString("N2"));
+                //tempDataTable.Rows.Add("VAT EXEMPT SALE:", tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount).ToString("N2"));
+                printer.WriteLines("VAT EXEMPT SALE: " + tran.get_productlist().list_product.Sum(P => P.NonVatSalesAmount).ToString("N2"), StringAlignment.Near);
             if (tran.get_productlist().list_product.Sum(P => P.NonVatReturnsAmount) != 0)
-                tempDataTable.Rows.Add("VAT EXEMPT RETURN:", tran.get_productlist().list_product.Sum(P => P.NonVatReturnsAmount).ToString("N2"));
+                //tempDataTable.Rows.Add("VAT EXEMPT RETURN:", tran.get_productlist().list_product.Sum(P => P.NonVatReturnsAmount).ToString("N2"));
+                printer.WriteLines("VAT EXEMPT RETURN: " + tran.get_productlist().list_product.Sum(P => P.NonVatReturnsAmount).ToString("N2"), StringAlignment.Near);
             if (tran.get_productlist().list_product.Sum(P => P.NonVatAmount) != 0)
-                tempDataTable.Rows.Add("VAT EXEMPT SUBTOTAL:", tran.get_productlist().get_subtotal_nonvat().ToString("N2"));
+                //tempDataTable.Rows.Add("VAT EXEMPT SUBTOTAL:", tran.get_productlist().get_subtotal_nonvat().ToString("N2"));
+                printer.WriteLines("VAT EXEMPT SUBTOTAL: " + tran.get_productlist().get_subtotal_nonvat().ToString("N2"), StringAlignment.Near);
 
             // VATable
             decimal vatable_sale = Math.Round(tran.get_productlist().list_product.Sum(P => P.VatableSalesAmount) / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
             decimal vatable_return = Math.Round(tran.get_productlist().list_product.Sum(P => P.VatableReturnsAmount) / (1 + cls_globalvariables.vat), 2, MidpointRounding.AwayFromZero);
             decimal vatableSubtotal = vatable_sale + vatable_return;
             if (vatable_sale != 0)
-                tempDataTable.Rows.Add("VATABLE SALE:", vatable_sale.ToString("N2"));
+                //tempDataTable.Rows.Add("VATABLE SALE:", vatable_sale.ToString("N2"));
+                printer.WriteLines("VATABLE SALE: " + vatable_sale.ToString("N2"), StringAlignment.Near);
             if (vatable_return != 0)
-                tempDataTable.Rows.Add("VATABLE RETURN:", vatable_return.ToString("N2"));
+                //tempDataTable.Rows.Add("VATABLE RETURN:", vatable_return.ToString("N2"));
+                printer.WriteLines("VATABLE RETURN: " + vatable_return.ToString("N2"), StringAlignment.Near);
             if (vatable_sale != 0 && vatable_return != 0)
-                tempDataTable.Rows.Add("VATABLE SUBTOTAL:", vatableSubtotal.ToString("N2"));
+                //tempDataTable.Rows.Add("VATABLE SUBTOTAL:", vatableSubtotal.ToString("N2"));
+                printer.WriteLines("VATABLE SUBTOTAL: " + vatableSubtotal.ToString("N2"), StringAlignment.Near);
             printer.WriteRepeatingCharacterLine('=');
             // VAT
-            tempDataTable.Rows.Add("VAT 12%:", (tran.get_productlist().get_subtotal_vat() - vatableSubtotal).ToString("N2"));
+            //tempDataTable.Rows.Add("VAT 12%:", (tran.get_productlist().get_subtotal_vat() - vatableSubtotal).ToString("N2"));
+            printer.WriteLines("VAT 12%: " + (tran.get_productlist().get_subtotal_vat() - vatableSubtotal).ToString("N2"), StringAlignment.Near);
 
-            printer.WriteTable(
-                tempDataTable,
-                new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
-                new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
-            );
+            //printer.WriteTable(
+            //    tempDataTable,
+            //    new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
+            //    new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
+            //);
             printer.LargeFont();
             printer.CPI12();
-            printer.WriteRow(
-                new string[] { "AMOUNT DUE:", tran.get_productlist().get_totalsale().ToString("N2") },
-                new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
-                new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
-            );
+            //printer.WriteRow(
+            //    new string[] { "AMOUNT DUE:", tran.get_productlist().get_totalsale().ToString("N2") },
+            //    new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
+            //    new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
+            //);
+            printer.WriteLines("AMOUNT DUE: " + tran.get_productlist().get_totalsale().ToString("N2"), StringAlignment.Near);
             printer.NormalFont();
             printer.CPI12();
 
@@ -2052,79 +2085,109 @@ namespace ETech.fnc
             decimal tendered_total = tran.Payments.get_totalamount();
             decimal changeamt = tran.get_changeamount();
             tempDataTable = new DataTable();
-            tempDataTable.Columns.Add(); tempDataTable.Columns.Add();
+            tempDataTable.Columns.Add();
+            tempDataTable.Columns.Add();
             int cnt_item_t = 0;
             if (tendered_cash != 0)
-                tempDataTable.Rows.Add("Cash:", tendered_cash.ToString("N2")); cnt_item_t++;
+                //tempDataTable.Rows.Add("Cash:", tendered_cash.ToString("N2"));
+                printer.WriteLines("Cash: " + tendered_cash.ToString("N2"), StringAlignment.Near);
+            cnt_item_t++;
             if (tendered_credit != 0 || tran.Payments.get_creditcard().Count > 0)
             {
-                tempDataTable.Rows.Add("Credit Card(s):", tendered_credit.ToString("N2")); cnt_item_t++;
+                //tempDataTable.Rows.Add("Credit Card(s):", tendered_credit.ToString("N2"));
+                cnt_item_t++;
+                printer.WriteLines("Credit Card(s): " + tendered_credit.ToString("N2"), StringAlignment.Near);
                 foreach (cls_cardinfo card in tran.Payments.get_creditcard())
                 {
-                    tempDataTable.Rows.Add(card.getcardname().ToString(), card.getamount().ToString("N2"));
-                    tempDataTable.Rows.Add("    Card Holder: ", card.getname().ToString());
-                    tempDataTable.Rows.Add("    Card No: ", card.getcardno().ToString());
-                    tempDataTable.Rows.Add("    Expiry Date: ", card.getexpdate().ToString("MM-yyyy"));
-                    tempDataTable.Rows.Add("    Approval Code: ", card.getapprovalcode().ToString());
+                    //tempDataTable.Rows.Add(card.getcardname().ToString(), card.getamount().ToString("N2"));
+                    printer.WriteLines(card.getcardname().ToString(), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Card Holder: ", card.getname());
+                    printer.WriteLines("    Card Holder: " + card.getname(), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Card No: ", card.getcardno());
+                    printer.WriteLines("    Card No: " + card.getcardno(), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Expiry Date: ", card.getexpdate().ToString("MM-yyyy"));
+                    printer.WriteLines("    Expiry Date: " + card.getexpdate().ToString("MM-yyyy"), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Approval Code: ", card.getapprovalcode());
+                    printer.WriteLines("    Approval Code: " + card.getapprovalcode(), StringAlignment.Near);
                 }
                 cnt_item_t++;
             }
             if (tendered_debit != 0 || tran.Payments.get_debitcard().Count > 0)
             {
-                tempDataTable.Rows.Add("Debit Card(s):", tendered_debit.ToString("N2")); cnt_item_t++;
+                //tempDataTable.Rows.Add("Debit Card(s):", tendered_debit.ToString("N2"));
+                printer.WriteLines("Debit Card(s): " + tendered_debit.ToString("N2"), StringAlignment.Near);
+                cnt_item_t++;
                 foreach (cls_cardinfo card in tran.Payments.get_debitcard())
                 {
-                    tempDataTable.Rows.Add(card.getcardname().ToString(), card.getamount().ToString("N2"));
-                    tempDataTable.Rows.Add("    Card Holder: ", card.getname().ToString());
-                    tempDataTable.Rows.Add("    Card No: ", card.getcardno().ToString());
-                    tempDataTable.Rows.Add("    Expiry Date: ", card.getexpdate().ToString("MM-yyyy"));
-                    tempDataTable.Rows.Add("    Approval Code: ", card.getapprovalcode().ToString());
+                    //tempDataTable.Rows.Add(card.getcardname(), card.getamount().ToString("N2"));
+                    printer.WriteLines(card.getcardname(), StringAlignment.Near);
+                    printer.WriteLines(card.getamount().ToString("N2"), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Card Holder: ", card.getname());
+                    printer.WriteLines("    Card Holder: " + card.getname(), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Card No: ", card.getcardno());
+                    printer.WriteLines("    Card No: " + card.getcardno(), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Expiry Date: ", card.getexpdate().ToString("MM-yyyy"));
+                    printer.WriteLines("    Expiry Date: " + card.getexpdate().ToString("MM-yyyy"), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Approval Code: ", card.getapprovalcode());
+                    printer.WriteLines("    Approval Code: " + card.getapprovalcode(), StringAlignment.Near);
                 }
                 cnt_item_t++;
             }
             if (tendered_gift != 0 || (tran.Payments.get_giftchequenew().Count > 0))
             {
-                tempDataTable.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2")); cnt_item_t++;
+                //tempDataTable.Rows.Add("Gift Cheque:", tendered_gift.ToString("N2"));
+                printer.WriteLines("Gift Cheque: " + tendered_gift.ToString("N2"), StringAlignment.Near);
+                cnt_item_t++;
                 foreach (cls_giftcheque giftcheque in tran.Payments.get_giftchequenew())
                 {
-                    tempDataTable.Rows.Add(giftcheque.get_referenceno().ToString(), giftcheque.getamount().ToString("N2"));
-                    tempDataTable.Rows.Add("    Expiry Date: ", giftcheque.getexpdate().ToString("MM-yyyy"));
-                    tempDataTable.Rows.Add("    Memo: ", giftcheque.get_memo().ToString());
+                    //tempDataTable.Rows.Add(giftcheque.get_referenceno(), giftcheque.getamount().ToString("N2"));
+                    printer.WriteLines(giftcheque.get_referenceno(), StringAlignment.Near);
+                    printer.WriteLines(giftcheque.getamount().ToString("N2"), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Expiry Date: ", giftcheque.getexpdate().ToString("MM-yyyy"));
+                    printer.WriteLines("    Expiry Date: " + giftcheque.getexpdate().ToString("MM-yyyy"), StringAlignment.Near);
+                    //tempDataTable.Rows.Add("    Memo: ", giftcheque.get_memo());
+                    printer.WriteLines("    Memo: " + giftcheque.get_memo(), StringAlignment.Near);
                 }
                 cnt_item_t++;
             }
             if (tendered_mempoints != 0)
             {
-                tempDataTable.Rows.Add("Mem. Pts:", tendered_mempoints.ToString("N2"));
+                //tempDataTable.Rows.Add("Mem. Pts:", tendered_mempoints.ToString("N2"));
+                printer.WriteLines("Mem. Pts: " + tendered_mempoints.ToString("N2"), StringAlignment.Near);
                 cnt_item_t++;
             }
             if (tendered_custompayments != 0 || tran.Payments.get_custompayments().Count > 0)
             {
-                tempDataTable.Rows.Add("Custom Payments:", tendered_custompayments.ToString("N2")); cnt_item_t++;
+                //tempDataTable.Rows.Add("Custom Payments:", tendered_custompayments.ToString("N2"));
+                printer.WriteLines("Custom Payments: " + tendered_custompayments.ToString("N2"), StringAlignment.Near);
+                cnt_item_t++;
                 foreach (cls_CustomPaymentsInfo custompaymentsinfo in tran.Payments.get_custompayments())
-                    tempDataTable.Rows.Add("    " + custompaymentsinfo.get_paymentname(), custompaymentsinfo.get_amount().ToString("N2"));
+                    //tempDataTable.Rows.Add("    " + custompaymentsinfo.get_paymentname(), custompaymentsinfo.get_amount().ToString("N2"));
+                    printer.WriteLines("    " + custompaymentsinfo.get_paymentname() + " " + custompaymentsinfo.get_amount().ToString("N2"), StringAlignment.Near);
                 cnt_item_t++;
             }
             if (cnt_item_t >= 2)
-                tempDataTable.Rows.Add("Total Tendered:", tendered_total.ToString("N2"));
+                //tempDataTable.Rows.Add("Total Tendered:", tendered_total.ToString("N2"));
+                printer.WriteLines("Total Tendered: " + tendered_total.ToString("N2"), StringAlignment.Near);
 
-            tempDataTable.Rows.Add("Change:", changeamt.ToString("N2"));
-            printer.WriteTable(
-                tempDataTable,
-                new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
-                new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
-            );
+            //tempDataTable.Rows.Add("Change:", changeamt.ToString("N2"));
+            printer.WriteLines("Change: " + changeamt.ToString("N2"), StringAlignment.Near);
+            //printer.WriteTable(
+            //    tempDataTable,
+            //    new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
+            //    new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
+            //);
 
             // Customer/Member/Senior Info
             printer.WriteRepeatingCharacterLine('=');
             if (tran.Member.getSyncId() != 0)
-                printer.WriteLines("MEMBER INFORMATION");
+                printer.WriteLines("MEMBER INFORMATION", StringAlignment.Near);
             else if (tran.getsenior().get_fullname() != "")
-                printer.WriteLines("SENIOR INFORMATION");
+                printer.WriteLines("SENIOR INFORMATION", StringAlignment.Near);
             else if (tran.get_productlist().get_isnonvat())
-                printer.WriteLines("VAT EXEMPT INFORMATION");
+                printer.WriteLines("VAT EXEMPT INFORMATION", StringAlignment.Near);
             else
-                printer.WriteLines("CUSTOMER INFORMATION");
+                printer.WriteLines("CUSTOMER INFORMATION", StringAlignment.Near);
 
             if (tran.Member.getSyncId() != 0)
                 printer.WriteLines("Name: " + tran.Member.getfullname(), StringAlignment.Near);
@@ -2133,7 +2196,7 @@ namespace ETech.fnc
             else if (tran.Customer.getwid() != 0)
                 printer.WriteLines("Name: " + tran.Customer.getfullname(), StringAlignment.Near);
             else
-                printer.WriteLines("Name: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 6));
+                printer.WriteLines("Name: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 6), StringAlignment.Near);
 
             if (tran.Member.getSyncId() != 0)
                 printer.WriteLines("Card#: " + tran.Member.getcardid(), StringAlignment.Near);
@@ -2142,8 +2205,8 @@ namespace ETech.fnc
             if (tran.Member.getSyncId() != 0)
                 printer.WriteLines("Address: " + tran.Member.getaddress(), StringAlignment.Near);
             else
-                printer.WriteLines("Address: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 9));
-            printer.WriteLines("TIN: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 5));
+                printer.WriteLines("Address: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 9), StringAlignment.Near);
+            printer.WriteLines("TIN: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 5), StringAlignment.Near);
             //printer.Write("BUS. TYPE: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 11));
             //printer.Write("\n\r\n\r\n\rSIGNATURE: " + printer.GetRepeatingCharacter('_', printer.StringWidth - 11));
 
@@ -2153,64 +2216,68 @@ namespace ETech.fnc
                 tempDataTable = new DataTable();
                 tempDataTable.Columns.Add();
                 tempDataTable.Columns.Add();
-                tempDataTable.Rows.Add("Previous points:", tran.Member.getPreviousPoints().ToString("N2"));
-                tempDataTable.Rows.Add("Points use:", tran.Payments.get_points().ToString("N2"));
-                tempDataTable.Rows.Add("Points earned:", tran.get_memberpoint_earn().ToString("N2"));
-                tempDataTable.Rows.Add("Total Points:", (tran.Member.getPreviousPoints() - tran.Payments.get_points() + tran.get_memberpoint_earn()).ToString("N2"));
+                //tempDataTable.Rows.Add("Previous points:", tran.Member.getPreviousPoints().ToString("N2"));
+                printer.WriteLines("Previous points: " + tran.Member.getPreviousPoints().ToString("N2"), StringAlignment.Near);
+                //tempDataTable.Rows.Add("Points use:", tran.Payments.get_points().ToString("N2"));
+                printer.WriteLines("Points use: " + tran.Payments.get_points().ToString("N2"), StringAlignment.Near);
+                //tempDataTable.Rows.Add("Points earned:", tran.get_memberpoint_earn().ToString("N2"));
+                printer.WriteLines("Points earned: " + tran.get_memberpoint_earn().ToString("N2"), StringAlignment.Near);
+                //tempDataTable.Rows.Add("Total Points:", (tran.Member.getPreviousPoints() - tran.Payments.get_points() + tran.get_memberpoint_earn()).ToString("N2"));
+                printer.WriteLines("Total Points: " + (tran.Member.getPreviousPoints() - tran.Payments.get_points() + tran.get_memberpoint_earn()).ToString("N2"), StringAlignment.Near);
 
                 printer.WriteRepeatingCharacterLine('=');
-                printer.WriteTable(
-                    tempDataTable,
-                    new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
-                    new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
-                );
+                //printer.WriteTable(
+                //    tempDataTable,
+                //    new StringAlignment[] { StringAlignment.Near, StringAlignment.Far },
+                //    new int[] { printer.StringWidth / 2, printer.StringWidth / 2 }
+                //);
             }
 
             // POS Provider Info
             // Based on BIR Revenue Regulations No. 10-2015
             printer.WriteRepeatingCharacterLine('=');
             if (cls_globalvariables.PosProviderName_v != "")
-                printer.WriteLines(cls_globalvariables.PosProviderName_v);
+                printer.WriteLines(cls_globalvariables.PosProviderName_v, StringAlignment.Near);
             if (cls_globalvariables.PosProviderAddress_v != "")
-                printer.WriteLines(cls_globalvariables.PosProviderAddress_v);
+                printer.WriteLines(cls_globalvariables.PosProviderAddress_v, StringAlignment.Near);
             if (cls_globalvariables.PosProviderTIN_v != "")
-                printer.WriteLines(cls_globalvariables.PosProviderTIN_v);
+                printer.WriteLines(cls_globalvariables.PosProviderTIN_v, StringAlignment.Near);
             if (cls_globalvariables.ACC_v != "")
-                printer.WriteLines(cls_globalvariables.ACC_v);
+                printer.WriteLines(cls_globalvariables.ACC_v, StringAlignment.Near);
             if (cls_globalvariables.ACC_date_v != "")
-                printer.WriteLines(cls_globalvariables.ACC_date_v);
+                printer.WriteLines(cls_globalvariables.ACC_date_v, StringAlignment.Near);
             if (cls_globalvariables.PermitNo_v != "")
-                printer.WriteLines(cls_globalvariables.PermitNo_v);
-            printer.WriteLines("THIS INVOICE/RECEIPT SHALL BE VALID FOR FIVE(5) YEARS FROM THE DATE OF THE PERMIT TO USE.");
+                printer.WriteLines(cls_globalvariables.PermitNo_v, StringAlignment.Near);
+            printer.WriteLines("THIS INVOICE/RECEIPT SHALL BE VALID FOR FIVE(5) YEARS FROM THE DATE OF THE PERMIT TO USE.", StringAlignment.Near);
 
             // Footers
             printer.WriteRepeatingCharacterLine('=');
             if (cls_globalvariables.orfooter1_v != "")
-                printer.WriteLines(cls_globalvariables.orfooter1_v);
+                printer.WriteLines(cls_globalvariables.orfooter1_v, StringAlignment.Near);
             if (cls_globalvariables.orfooter2_v != "")
-                printer.WriteLines(cls_globalvariables.orfooter2_v);
+                printer.WriteLines(cls_globalvariables.orfooter2_v, StringAlignment.Near);
             if (cls_globalvariables.orfooter3_v != "")
-                printer.WriteLines(cls_globalvariables.orfooter3_v);
+                printer.WriteLines(cls_globalvariables.orfooter3_v, StringAlignment.Near);
             if (cls_globalvariables.orfooter4_v != "")
-                printer.WriteLines(cls_globalvariables.orfooter4_v);
+                printer.WriteLines(cls_globalvariables.orfooter4_v, StringAlignment.Near);
 
             // Based on BIR Revenue Regulations No. 10-2015
             printer.LargeFont();
             printer.CPI12();
             if (tran.get_productlist().get_isnonvat())
-                printer.WriteLines("THIS DOCUMENT IS NOT VALID FOR CLAIM OF INPUT TAX.");
+                printer.WriteLines("THIS DOCUMENT IS NOT VALID FOR CLAIM OF INPUT TAX.", StringAlignment.Near);
             printer.NormalFont();
             printer.CPI12();
 
             // Reprint/Voided Tag
             if (isvoid)
-                printer.WriteLines("VOIDED RECEIPT!");
+                printer.WriteLines("VOIDED RECEIPT!", StringAlignment.Near);
             if (isreprint)
             {
-                printer.WriteLines("REPRINTED RECEIPT!");
+                printer.WriteLines("REPRINTED RECEIPT!", StringAlignment.Near);
             }
             DateTime now = DateTime.Now;
-            printer.WriteLines("PRINTED: " + now.ToShortDateString() + " " + now.ToLongTimeString());
+            printer.WriteLines("PRINTED: " + now.ToShortDateString() + " " + now.ToLongTimeString(), StringAlignment.Near);
 
             printer.Print();
             printer.ActivateCutter();
