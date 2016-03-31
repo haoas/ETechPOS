@@ -13,13 +13,8 @@ using ETech.Helpers;
 
 namespace ETech
 {
-    class mySQLClass
+    public class mySQLClass
     {
-        public mySQLClass()
-        {
-            
-        }
-
         private MySqlConnection connecttoSQL()
         {
             string server = cls_globalvariables.ConnectionSettings.Server;

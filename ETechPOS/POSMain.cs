@@ -69,7 +69,6 @@ namespace ETech
 
             LogsHelper.ClearTLog();
             isLoadSuccessful = mySQLFunc.initialize_global_variables();
-            RemoveOldDatabaseBackup(@"C:\Users\Lenovo ThinkPad E460\Documents\ETECHPOS\Database Backup");
 
             if (!isLoadSuccessful)
                 return;
