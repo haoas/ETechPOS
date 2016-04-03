@@ -108,7 +108,7 @@ namespace ETech.fnc
                 form.ControlBox = false;
                 form.FormBorderStyle = FormBorderStyle.None;
                 form.BackgroundImageLayout = ImageLayout.Stretch;
-                form.BackgroundImage = Properties.Resources.etechposbg;
+                //form.BackgroundImage = Properties.Resources.etechposbg;
                 form.Icon = Properties.Resources._48x48;
 
                 if (cls_globalvariables.colortheme_v == "-1")

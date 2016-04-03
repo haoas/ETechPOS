@@ -102,7 +102,7 @@
             this.txtAdjustTo.MaxLength = 20;
             this.txtAdjustTo.Name = "txtAdjustTo";
             this.txtAdjustTo.Size = new System.Drawing.Size(203, 44);
-            this.txtAdjustTo.TabIndex = 0;
+            this.txtAdjustTo.TabIndex = 1;
             this.txtAdjustTo.Tag = "num";
             this.txtAdjustTo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtAdjustTo.TextChanged += new System.EventHandler(this.txtAdjustTo_TextChanged);
@@ -265,9 +265,10 @@
             this.txtDiscount.MaxLength = 10;
             this.txtDiscount.Name = "txtDiscount";
             this.txtDiscount.Size = new System.Drawing.Size(151, 44);
-            this.txtDiscount.TabIndex = 117;
+            this.txtDiscount.TabIndex = 0;
             this.txtDiscount.Tag = "num";
             this.txtDiscount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtDiscount.TextChanged += new System.EventHandler(this.txtDiscount_TextChanged);
             // 
             // lblDiscount
             // 

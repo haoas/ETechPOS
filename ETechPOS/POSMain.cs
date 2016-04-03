@@ -811,6 +811,7 @@ namespace ETech
                                 {
                                     prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, cur_prodadjust, false);
                                     refresh_productlist_data(tran);
+                                    prod_discount.FixedAdjustment = cur_prodadjust;
                                     tran.get_productlist().sync_product_row(row_index_discount);
                                     LogsHelper.WriteToTLog("[F11]Product Adjusted (" + (cur_prodadjust * 100) + "): " + frmprodadjust.productname + " " + prod_discount.OriginalPrice + " -> " + prod_discount.Price +
                                         " BY " + tran.get_permissiongiver_fullname());
@@ -819,6 +820,7 @@ namespace ETech
                                 {
                                     prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_discounttype, 1 - cur_proddiscount, true);
                                     refresh_productlist_data(tran);
+
                                     tran.get_productlist().sync_product_row(row_index_discount);
                                     LogsHelper.WriteToTLog("[F11]Product Discounted (" + (cur_proddiscount * 100) + "%): " + frmprodadjust.productname + " " + prod_discount.OriginalPrice + " -> " + prod_discount.Price +
                                         " BY " + tran.get_permissiongiver_fullname());

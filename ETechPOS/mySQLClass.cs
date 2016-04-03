@@ -480,8 +480,7 @@ namespace ETech
                         `lastmodifieddate` = NOW(), 
                         `memberid` = " + memberid + @", 
                         `checkerid` = " + checkerid + @",
-                        `iswholesale` = " + iswholesale + @",
-                        `isnonvat` = " + isnonvat.ToString() + @"
+                        `iswholesale` = " + iswholesale + @"
                         WHERE `SyncId` = " + salesheadwid;
 
             //Console.WriteLine(sSQL);
