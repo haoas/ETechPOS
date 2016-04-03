@@ -8,7 +8,7 @@ namespace ETech.cls
 {
     public class cls_product
     {
-        public cls_discountlist productdiscount;
+        //public cls_discountlist productdiscount;
 
         public long SyncId { get; private set; }
         public string Name { get; set; }
@@ -46,10 +46,23 @@ namespace ETech.cls
 
         //TransactionFields
         public string TransactionVatStatus { get { return "V"; } set { } }
+        public RoundedDecimal TransactionRegularDiscountPercentage { get; set; }
+        public RoundedDecimal TransactionRegularFixedDiscount { get; set; }
+        public RoundedDecimal TransactionRegularDiscountValue { get { return OriginalPrice * (TransactionRegularDiscountPercentage / 100); } }
 
         //Computed Get Fields
         public RoundedDecimal RegularDiscountValue { get { return OriginalPrice * (RegularDiscountPercentage / 100); } }
-        public RoundedDecimal Price { get { return OriginalPrice - RegularDiscountValue - RegularFixedDiscount; } }
+        public RoundedDecimal Price
+        {
+            get
+            {
+                return OriginalPrice
+                    - TransactionRegularDiscountValue
+                    - TransactionRegularFixedDiscount
+                    - RegularDiscountValue
+                    - RegularFixedDiscount;
+            }
+        }
         public decimal Amount { get { return Price * Quantity; } }
         public decimal Vat
         {
@@ -80,6 +93,13 @@ namespace ETech.cls
         public decimal VatableReturnsAmount { get { return (Quantity < 0 && HasVatableAmount) ? Amount : 0; } }
         public decimal VatableAmount { get { return VatableSalesAmount + VatableReturnsAmount; } }
 
+        public bool HasItemDiscounts
+        {
+            get
+            {
+                return (RegularDiscountPercentage != 0 || RegularFixedDiscount != 0);
+            }
+        }
 
         public void init()
         {
@@ -95,8 +115,6 @@ namespace ETech.cls
             this.SoldBy = new cls_user();
             this.RegularFixedDiscount = 0;
             this.VatStatus = "V";
-
-            this.productdiscount = new cls_discountlist(1);
         }
 
         //constructor
@@ -251,7 +269,7 @@ namespace ETech.cls
                 if (pricingtype == 0 && customer.getItemPriceDictionary().ContainsKey(SyncId))
                 {
                     this.OriginalPrice = WholesalePrice;
-                    getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[SyncId] - this.OriginalPrice, false);
+                    //getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[SyncId] - this.OriginalPrice, false);
                 }
                 else
                 {
@@ -262,29 +280,29 @@ namespace ETech.cls
                 }
             }
 
-            this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
-            this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior5);
-            this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
+            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
+            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior5);
+            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
 
             Console.WriteLine("reset_data_by_mode 2: oprice: " + this.OriginalPrice);
             if (TransactionVatStatus == "S" && VatStatus == "S")
             {
-                this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior, 1 - cls_globalvariables.senior, true);
-                this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
+                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior, 1 - cls_globalvariables.senior, true);
+                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
             }
             if (TransactionVatStatus == "S" && VatStatus == "S5")
             {
                 //Senior Transaction, Senior 5% item
-                this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior5, 1 - cls_globalvariables.senior5, true);
+                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior5, 1 - cls_globalvariables.senior5, true);
             }
             else if (TransactionVatStatus == "NV" && VatStatus == "V")
             {
-                this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
+                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
             }
             Console.WriteLine("reset_data_by_mode 3: oprice: " + this.OriginalPrice);
 
             //detail discount
-            decimal tmp_disc = this.productdiscount.get_discounts_percentage(this.OriginalPrice);
+            //decimal tmp_disc = this.productdiscount.get_discounts_percentage(this.OriginalPrice);
             /*-------------------------------------------------*/
 
             // COMPUTE PRICE
@@ -302,18 +320,18 @@ namespace ETech.cls
             return;
             this.OriginalPrice = this.Price;
 
-            this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
-            this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
+            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
+            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
 
             Console.WriteLine("reset_data_by_mode 2: oprice: " + this.OriginalPrice);
             if (TransactionVatStatus == "S" && VatStatus == "S")
             {
-                this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior, 1 - cls_globalvariables.senior, true);
-                this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
+                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior, 1 - cls_globalvariables.senior, true);
+                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
             }
             else if (TransactionVatStatus == "NV" && VatStatus == "V")
             {
-                this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
+                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
             }
 
             //if (this.RegularDiscount != 0)
@@ -324,7 +342,7 @@ namespace ETech.cls
             Console.WriteLine("reset_data_by_mode dc: " + this.Price);
         }
 
-        public cls_discountlist getProductDiscountList() { return this.productdiscount; }
-        public decimal get_discount_amt(int type) { return this.productdiscount.get_all_discount_amount_of_type(type); }
+        //public cls_discountlist getProductDiscountList() { return this.productdiscount; }
+        //public decimal get_discount_amt(int type) { return this.productdiscount.get_all_discount_amount_of_type(type); }
     }
 }

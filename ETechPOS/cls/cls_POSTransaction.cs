@@ -31,6 +31,39 @@ namespace ETech.cls
         public cls_customer Customer { get; set; }
         public cls_user SalesAgent { get; set; }
 
+        private RoundedDecimal _RegularDiscountPercentage;
+        public RoundedDecimal RegularDiscountPercentage
+        {
+            get { return _RegularDiscountPercentage; }
+            set
+            {
+                _RegularDiscountPercentage = value;
+                _RegularFixedDiscount = 0;
+                foreach (cls_product prod in productlist.list_product)
+                {
+                    prod.TransactionRegularDiscountPercentage = value;
+                }
+            }
+        }
+        private RoundedDecimal _RegularFixedDiscount;
+        public RoundedDecimal RegularFixedDiscount
+        {
+            get { return _RegularFixedDiscount; }
+            set
+            {
+                _RegularFixedDiscount = value;
+                _RegularDiscountPercentage = 0;
+                foreach (cls_product prod in productlist.list_product)
+                {
+                    prod.TransactionRegularFixedDiscount = (value == 0) ? 0 : 
+                        ((TotalOriginalPrice - value) / TotalOriginalPrice) * prod.OriginalPrice;
+                }
+            }
+        }
+
+        //Computed Get Fields
+
+
         //constructor
         public cls_POSTransaction()
         {
@@ -224,9 +257,11 @@ namespace ETech.cls
             return (permissiongiverfullname != "") ? permissiongiverfullname : clerkfullname;
         }
 
-        public Decimal TotalGrossAmount { get { return productlist.list_product.Sum(Q => Q.OriginalPrice * Q.Quantity); } }
+        public Decimal TotalOriginalPrice { get { return productlist.list_product.Sum(Q => Q.OriginalPrice * Q.Quantity); } }
         public Decimal TotalQuantity { get { return productlist.list_product.Sum(Q => Q.Quantity); } }
         public Decimal TotalAmount { get { return productlist.list_product.Sum(Q => Q.Amount); } }
         public Decimal TotalVat { get { return productlist.list_product.Sum(V => V.Quantity * V.Vat); } }
+
+        public bool HasItemDiscounts { get { return productlist.list_product.Where(P => P.HasItemDiscounts).Any(); } }
     }
 }

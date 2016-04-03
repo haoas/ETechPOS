@@ -810,11 +810,14 @@ namespace ETech
                     if (FPage == 0)
                     {
                         LogsHelper.WriteToTLog("[F6] Transaction Discount/Adjust");
-                        if (tran.TotalQuantity == 0)
+                        if (tran.TotalQuantity == 0) return true;
+
+                        if (tran.HasItemDiscounts)
                         {
-                            fncFilter.alert("No Products to Adjust!");
+                            fncFilter.alert("Cannot add Transaction Discount If there are itm discounts");
                             return true;
                         }
+
                         bool permcheck_discounttransaction = false;
                         if (this.cur_cashier.CheckAuth("DISCOUNT"))
                             permcheck_discounttransaction = true;
@@ -834,47 +837,9 @@ namespace ETech
                         if (permcheck_discounttransaction)
                         {
                             frmTransactionAdjust transAdjust = new frmTransactionAdjust();
-                            transAdjust.orig_price = tran.get_productlist().get_totalamount_no_head_discount();
-                            transAdjust.disclist = tran.get_productlist().getTransDisc();
-                            transAdjust.new_price = tran.TotalAmount;
+                            transAdjust.tran = tran;
                             transAdjust.ShowDialog();
-
-
-                            if (!transAdjust.iscomplete)
-                                break;
-
-                            cls_discountlist transdisc = tran.get_productlist().getTransDisc();
-                            if (transAdjust.disc.get_SyncId() != 0)
-                            {
-                                transdisc.activateDiscount_using_wid(transAdjust.disc.get_SyncId(), 1 - transAdjust.new_discount, true);
-                                refresh_productlist_data(tran);
-                                LogsHelper.WriteToTLog("[F12][F6]Transaction Custom Discount (" + transAdjust.disc.get_name() + " (" + (transAdjust.disc.get_value() * 100) + "%)): OR: "
-                                    + tran.ORNumber + " " + tran.TotalGrossAmount +
-                                    " -> " + tran.TotalAmount + " BY " + tran.get_permissiongiver_fullname());
-                            }
-                            else if (transAdjust.new_adjust != 0)
-                            {
-                                transdisc.appendDiscount(cls_globalvariables.dchead_adjusttype, transAdjust.new_adjust, false);
-                                refresh_productlist_data(tran);
-                                LogsHelper.WriteToTLog("[F12][F6]Transaction Adjust (" + transAdjust.new_adjust + ")): OR: "
-                                    + tran.ORNumber + " " + tran.TotalGrossAmount +
-                                    " -> " + tran.TotalAmount + " BY " + tran.get_permissiongiver_fullname());
-                            }
-                            else if (transAdjust.new_discount != 0)
-                            {
-                                transdisc.appendDiscount(cls_globalvariables.dchead_discounttype, 1 - transAdjust.new_discount, true);
-                                refresh_productlist_data(tran);
-                                LogsHelper.WriteToTLog("[F12][F6]Transaction Discount (" + (transAdjust.new_discount * 100) + "%)): OR: "
-                                    + tran.ORNumber + " " + tran.TotalGrossAmount +
-                                    " -> " + tran.TotalAmount + " BY " + tran.get_permissiongiver_fullname());
-                            }
-                            else
-                            {
-                                refresh_productlist_data(tran);
-                                LogsHelper.WriteToTLog("[F12][F6]Transaction Adjust/Discount Removed: OR: "
-                                    + tran.ORNumber + " " + tran.TotalGrossAmount +
-                                    " -> " + tran.TotalAmount + " BY " + tran.get_permissiongiver_fullname());
-                            }
+                            refresh_productlist_data(tran);
                         }
                     }
                     else if (FPage == 1)
@@ -1246,8 +1211,7 @@ namespace ETech
                 //    break;
             }
 
-            if (isdetected == true)
-                this.refresh_all_display(mode);
+            this.refresh_all_display(mode);
 
             this.txtBarcode.Focus();
             return isdetected;

@@ -32,8 +32,8 @@ namespace ETech
             else if (e.KeyCode == Keys.F3) BtnF3.PerformClick();
             else if (e.KeyCode == Keys.F4) BtnF4.PerformClick();
             else if (e.KeyCode == Keys.F11) RemoveButtonClicked();
-            else if (e.KeyCode == Keys.Enter) done_process();
-            else if (e.KeyCode == Keys.F12) done_process();
+            else if (e.KeyCode == Keys.Enter) Proceed();
+            else if (e.KeyCode == Keys.F12) Proceed();
             else return;
         }
 
@@ -42,7 +42,7 @@ namespace ETech
             if (e.KeyChar == 13)
             {
                 if (txtDiscount.Enabled == false)
-                    done_process();
+                    Proceed();
                 else
                     txtDiscount.Focus();
                 e.Handled = true;
@@ -63,7 +63,7 @@ namespace ETech
                     }
                     else
                     {
-                        done_process();
+                        Proceed();
                     }
 
                 }
@@ -117,7 +117,7 @@ namespace ETech
             }
         }
 
-        public void done_process()
+        public void Proceed()
         {
             decimal prodadjust = (this.txtAdjustTo.Enabled) ? fncFilter.getDecimalValue(this.txtAdjustTo.Text) : 0;
             decimal discount = (this.txtDiscount.Enabled) ? fncFilter.getDecimalValue(this.txtDiscount.Text) : 0;
@@ -202,7 +202,7 @@ namespace ETech
 
         private void BtnProceed_Click(object sender, EventArgs e)
         {
-            done_process();
+            Proceed();
         }
 
         private void Btn11_Click(object sender, EventArgs e)
@@ -214,28 +214,28 @@ namespace ETech
         {
             txtAdjustTo.Clear();
             txtDiscount.Text = "5";
-            done_process();
+            Proceed();
         }
 
         private void BtnF2_Click(object sender, EventArgs e)
         {
             txtAdjustTo.Clear();
             txtDiscount.Text = "10";
-            done_process();
+            Proceed();
         }
 
         private void BtnF3_Click(object sender, EventArgs e)
         {
             txtAdjustTo.Clear();
             txtDiscount.Text = "15";
-            done_process();
+            Proceed();
         }
 
         private void BtnF4_Click(object sender, EventArgs e)
         {
             txtAdjustTo.Clear();
             txtDiscount.Text = "20";
-            done_process();
+            Proceed();
         }
     }
 }

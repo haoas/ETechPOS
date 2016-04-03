@@ -116,7 +116,7 @@ namespace ETech.cls
                 //Console.WriteLine(list_product[i].Price);
                 sync_product_row(i);
             }
-            refresh_product_amounts_w_headdisc();
+            //refresh_product_amounts_w_headdisc();
         }
         public void set_isnonvat(bool isnonvat_d)
         {
@@ -157,11 +157,11 @@ namespace ETech.cls
                 decimal disc = 0;
                 if (prd.VatStatus == "S")
                 {
-                    disc = prd.get_discount_amt(cls_globalvariables.dcdetail_senior);
+                    //disc = prd.get_discount_amt(cls_globalvariables.dcdetail_senior);
                 }
                 else if (prd.VatStatus == "S5")
                 {
-                    disc = prd.get_discount_amt(cls_globalvariables.dcdetail_senior5);
+                    //disc = prd.get_discount_amt(cls_globalvariables.dcdetail_senior5);
                 }
                 sum += prd.Quantity * disc;
             }
@@ -201,7 +201,7 @@ namespace ETech.cls
             decimal sum = 0;
             foreach (cls_product prod in list_product)
             {
-                sum += prod.Quantity * Math.Round(prod.getProductDiscountList().get_amount_after_discount(prod.OriginalPrice), 2);
+                //sum += prod.Quantity * Math.Round(prod.getProductDiscountList().get_amount_after_discount(prod.OriginalPrice), 2);
             }
             return sum;
         }
@@ -406,7 +406,7 @@ namespace ETech.cls
         public decimal get_discount_percentage() { return this.transDiscount.get_discounts_percentage(this.get_totalamount_no_head_discount()); }
         public void refresh_all_discounts()
         {
-            this.refresh_discountlist();
+            //this.refresh_discountlist();
             this.refresh_product_data_by_mode();
         }
         public DataTable get_discount_amt_summary(int choice)
@@ -421,7 +421,7 @@ namespace ETech.cls
             {
                 foreach (cls_product prod in this.get_productlist())
                 {
-                    get_summary(prod.Quantity, dt, prod.getProductDiscountList().get_discount_list(), choice);
+                    //get_summary(prod.Quantity, dt, prod.getProductDiscountList().get_discount_list(), choice);
                 }
             }
             else

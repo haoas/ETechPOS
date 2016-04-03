@@ -1530,7 +1530,7 @@ namespace ETech.fnc
             decimal trans_pospromo = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_pospromotype);
             decimal trans_customdiscount = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_customdiscounttype);
 
-            decimal total_gross = tran.TotalGrossAmount;
+            decimal total_gross = tran.TotalOriginalPrice;
             decimal total_discount = total_gross - total_sale;
             decimal total_detail_discount = total_gross - tran.get_productlist().get_totalamount_no_head_discount();
             decimal total_head_discount = total_discount - total_detail_discount;
@@ -1972,7 +1972,7 @@ namespace ETech.fnc
             decimal trans_pospromo = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_pospromotype);
             decimal trans_customdiscount = tran.get_productlist().getTransDisc().get_all_discount_amount_of_type(cls_globalvariables.dchead_customdiscounttype);
 
-            decimal total_gross = tran.TotalGrossAmount;
+            decimal total_gross = tran.TotalOriginalPrice;
             decimal total_discount = total_gross - total_sale;
             decimal total_detail_discount = total_gross - tran.get_productlist().get_totalamount_no_head_discount();
             decimal total_head_discount = total_discount - total_detail_discount;
