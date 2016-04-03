@@ -1538,31 +1538,21 @@ namespace ETech.fnc
             DataTable dt_discounts = new DataTable();
             dt_discounts.Columns.Add(); dt_discounts.Columns.Add(); dt_discounts.Columns.Add();
 
-            if (total_discount > 0.01M)
+            List<cls_product> ProductsWithItemDiscount = tran.get_productlist().list_product
+                .Where(P => P.HasItemDiscounts || P.HasTransactionDiscount).ToList();
+
+            foreach (cls_product prod in ProductsWithItemDiscount)
             {
-                dt_discounts.Rows.Add("Total gross value:", "", total_gross.ToString("N2"));
-                if (total_detail_discount > 0.01M)
-                {
-                    dt_discounts.Rows.Add("Prod. Discounts:", "", total_detail_discount.ToString("N2"));
-                    DataTable dt_ddiscs = tran.get_productlist().get_discount_amt_summary(1);
-                    foreach (DataRow dr_ddiscs in dt_ddiscs.Rows)
-                    {
-                        string dvalue = (Convert.ToDecimal(dr_ddiscs["value"]) == 0) ? "" : fncFilter.getDecimalValue(dr_ddiscs["value"].ToString()).ToString("N2") + "%";
-                        string damount = fncFilter.getDecimalValue(dr_ddiscs["amt"].ToString()).ToString("N2");
-                        dt_discounts.Rows.Add("   " + dr_ddiscs["name"], dvalue, damount);
-                    }
-                }
-                if (total_head_discount > 0.01M)
-                {
-                    dt_discounts.Rows.Add("Tran. Discounts:", "", total_head_discount.ToString("N2"));
-                    DataTable dt_ddiscs = tran.get_productlist().get_discount_amt_summary(0);
-                    foreach (DataRow dr_ddiscs in dt_ddiscs.Rows)
-                    {
-                        string dvalue = (Convert.ToDecimal(dr_ddiscs["value"]) == 0) ? "" : fncFilter.getDecimalValue(dr_ddiscs["value"].ToString()).ToString("N2") + "%";
-                        string damount = fncFilter.getDecimalValue(dr_ddiscs["amt"].ToString()).ToString("N2");
-                        dt_discounts.Rows.Add("   " + dr_ddiscs["name"], dvalue, damount);
-                    }
-                }
+                if (prod.TransactionMemberDiscountValue != 0)
+                    dt_discounts.Rows.Add("   Member Discount", prod.TransactionMemberDiscountPercentage, prod.TransactionMemberDiscountValue);
+                if (prod.TransactionRegularDiscountValue != 0)
+                    dt_discounts.Rows.Add("   Transaction Discount", prod.TransactionRegularDiscountPercentage, prod.TransactionRegularDiscountValue);
+                if (prod.TransactionRegularFixedDiscount != 0)
+                    dt_discounts.Rows.Add("   Transaction Discount", "", prod.TransactionRegularFixedDiscount);
+                if (prod.RegularDiscountValue != 0)
+                    dt_discounts.Rows.Add("   Product Discount", prod.RegularDiscountPercentage, prod.RegularDiscountValue);
+                if (prod.RegularFixedDiscount != 0)
+                    dt_discounts.Rows.Add("   Product Discount", "", prod.RegularFixedDiscount);
             }
 
             int cnt_item_nv = 0;
@@ -1982,46 +1972,40 @@ namespace ETech.fnc
             tempDataTable.Columns.Add();
             tempDataTable.Columns.Add();
 
-            if (total_discount > 0.01M)
+            List<cls_product> ProductsWithItemDiscount = tran.get_productlist().list_product.Where(P => P.HasItemDiscounts || P.HasTransactionDiscount).ToList();
+
+            foreach (cls_product prod in ProductsWithItemDiscount)
             {
-                //tempDataTable.Rows.Add("Total gross value:", "", total_gross.ToString("N2"));
-                printer.WriteLines("Total gross value: " + total_gross.ToString("N2"), StringAlignment.Near);
-                if (total_detail_discount > 0.01M)
+                printer.WriteLines(prod.Name);
+                if (prod.TransactionMemberDiscountValue != 0)
                 {
-                    //tempDataTable.Rows.Add("Prod. Discounts:", "", total_detail_discount.ToString("N2"));
-                    printer.WriteLines("Prod. Discounts: " + total_detail_discount.ToString("N2"), StringAlignment.Near);
-                    DataTable dt_ddiscs = tran.get_productlist().get_discount_amt_summary(1);
-                    foreach (DataRow dr_ddiscs in dt_ddiscs.Rows)
-                    {
-                        string dvalue = (Convert.ToDecimal(dr_ddiscs["value"]) == 0) ? "" : fncFilter.getDecimalValue(dr_ddiscs["value"].ToString()).ToString("N2") + "%";
-                        string damount = fncFilter.getDecimalValue(dr_ddiscs["amt"].ToString()).ToString("N2");
-                        //tempDataTable.Rows.Add("   " + dr_ddiscs["name"], dvalue, damount);
-                        printer.WriteLines("   " + dr_ddiscs["name"], StringAlignment.Near);
-                        printer.WriteLines(dvalue, StringAlignment.Near);
-                        printer.WriteLines(damount, StringAlignment.Near);
-                    }
+                    printer.WriteLines("Member Discount");
+                    printer.WriteLines(prod.TransactionMemberDiscountPercentage.ToString());
+                    printer.WriteLines(prod.TransactionMemberDiscountValue.ToString());
                 }
-                if (total_head_discount > 0.01M)
+
+                if (prod.TransactionRegularDiscountValue != 0)
                 {
-                    //tempDataTable.Rows.Add("Tran. Discounts:", "", total_head_discount.ToString("N2"));
-                    printer.WriteLines("Tran. Discounts: " + total_head_discount.ToString("N2"), StringAlignment.Near);
-                    DataTable dt_ddiscs = tran.get_productlist().get_discount_amt_summary(0);
-                    foreach (DataRow dr_ddiscs in dt_ddiscs.Rows)
-                    {
-                        string dvalue = (Convert.ToDecimal(dr_ddiscs["value"]) == 0) ? "" : fncFilter.getDecimalValue(dr_ddiscs["value"].ToString()).ToString("N2") + "%";
-                        string damount = fncFilter.getDecimalValue(dr_ddiscs["amt"].ToString()).ToString("N2");
-                        //tempDataTable.Rows.Add("   " + dr_ddiscs["name"], dvalue, damount);
-                        printer.WriteLines("   " + dr_ddiscs["name"], StringAlignment.Near);
-                        printer.WriteLines(dvalue, StringAlignment.Near);
-                        printer.WriteLines(damount, StringAlignment.Near);
-                    }
+                    printer.WriteLines("Transaction Discount");
+                    printer.WriteLines(prod.TransactionRegularDiscountPercentage.ToString());
+                    printer.WriteLines(prod.TransactionRegularDiscountValue.ToString());
                 }
-                printer.WriteRepeatingCharacterLine('=');
-                //printer.WriteTable(
-                //    tempDataTable,
-                //    new StringAlignment[] { StringAlignment.Near, StringAlignment.Far, StringAlignment.Far },
-                //    new int[] { printer.StringWidth / 2, printer.StringWidth / 4, printer.StringWidth / 4 }
-                //);
+                if (prod.TransactionRegularFixedDiscount != 0)
+                {
+                    printer.WriteLines("Transaction Discount");
+                    printer.WriteLines(prod.TransactionRegularFixedDiscount.ToString());
+                }
+                if (prod.RegularDiscountValue != 0)
+                {
+                    printer.WriteLines("Product Discount");
+                    printer.WriteLines(prod.RegularDiscountPercentage.ToString());
+                    printer.WriteLines(prod.RegularDiscountValue.ToString());
+                }
+                if (prod.RegularFixedDiscount != 0)
+                {
+                    printer.WriteLines("Product Discount");
+                    printer.WriteLines(prod.RegularFixedDiscount.ToString());
+                }
             }
 
             // Sub-Total Info

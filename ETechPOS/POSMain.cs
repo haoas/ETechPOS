@@ -716,6 +716,13 @@ namespace ETech
                     }
                     else if (FPage == 1)
                     {
+                        //Temporary
+                        if (tran.MemberDiscountPercentage == 0)
+                            tran.MemberDiscountPercentage = 10;
+                        else
+                            tran.MemberDiscountPercentage = 0;
+                        refresh_productlist_data(tran);
+                        break;
                         frmMember memberform = new frmMember();
                         memberform.member = tran.Member.ShallowCopy();
                         memberform.ShowDialog();

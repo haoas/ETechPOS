@@ -46,17 +46,26 @@ namespace ETech.cls
 
         //TransactionFields
         public string TransactionVatStatus { get { return "V"; } set { } }
+
+        public RoundedDecimal PriceAfterSenior5Discount { get { return OriginalPrice; } }
+
+        public RoundedDecimal TransactionMemberDiscountPercentage { get; set; }
+        public RoundedDecimal TransactionMemberDiscountValue { get { return PriceAfterSenior5Discount * (TransactionMemberDiscountPercentage / 100); } }
+        public RoundedDecimal PriceAfterMemberDiscount { get { return PriceAfterSenior5Discount - TransactionMemberDiscountValue; } }
+
         public RoundedDecimal TransactionRegularDiscountPercentage { get; set; }
         public RoundedDecimal TransactionRegularFixedDiscount { get; set; }
-        public RoundedDecimal TransactionRegularDiscountValue { get { return OriginalPrice * (TransactionRegularDiscountPercentage / 100); } }
+        public RoundedDecimal TransactionRegularDiscountValue { get { return PriceAfterMemberDiscount * (TransactionRegularDiscountPercentage / 100); } }
+        public RoundedDecimal PriceAfterTransactionRegularDiscount { get { return PriceAfterMemberDiscount - TransactionRegularDiscountValue - TransactionRegularFixedDiscount; } }
 
         //Computed Get Fields
-        public RoundedDecimal RegularDiscountValue { get { return OriginalPrice * (RegularDiscountPercentage / 100); } }
+        public RoundedDecimal RegularDiscountValue { get { return PriceAfterTransactionRegularDiscount * (RegularDiscountPercentage / 100); } }
         public RoundedDecimal Price
         {
             get
             {
                 return OriginalPrice
+                    - TransactionMemberDiscountValue
                     - TransactionRegularDiscountValue
                     - TransactionRegularFixedDiscount
                     - RegularDiscountValue
@@ -93,11 +102,12 @@ namespace ETech.cls
         public decimal VatableReturnsAmount { get { return (Quantity < 0 && HasVatableAmount) ? Amount : 0; } }
         public decimal VatableAmount { get { return VatableSalesAmount + VatableReturnsAmount; } }
 
-        public bool HasItemDiscounts
+        public bool HasItemDiscounts { get { return (RegularDiscountPercentage != 0 || RegularFixedDiscount != 0); } }
+        public bool HasTransactionDiscount
         {
             get
             {
-                return (RegularDiscountPercentage != 0 || RegularFixedDiscount != 0);
+                return (TransactionMemberDiscountValue != 0 || TransactionRegularDiscountValue != 0 || TransactionRegularFixedDiscount != 0);
             }
         }
 

@@ -64,7 +64,7 @@
             this.lblNewPrice_d.Name = "lblNewPrice_d";
             this.lblNewPrice_d.Size = new System.Drawing.Size(201, 51);
             this.lblNewPrice_d.TabIndex = 16;
-            this.lblNewPrice_d.Text = "0,000,000.00";
+            this.lblNewPrice_d.Text = "0.00";
             this.lblNewPrice_d.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblOrigPrice_d

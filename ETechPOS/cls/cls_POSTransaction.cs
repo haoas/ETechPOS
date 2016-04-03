@@ -31,6 +31,19 @@ namespace ETech.cls
         public cls_customer Customer { get; set; }
         public cls_user SalesAgent { get; set; }
 
+        private RoundedDecimal _MemberDiscountPercentage;
+        public RoundedDecimal MemberDiscountPercentage
+        {
+            get { return _MemberDiscountPercentage; }
+            set
+            {
+                _MemberDiscountPercentage = value;
+                foreach (cls_product prod in productlist.list_product)
+                {
+                    prod.TransactionMemberDiscountPercentage = value;
+                }
+            }
+        }
         private RoundedDecimal _RegularDiscountPercentage;
         public RoundedDecimal RegularDiscountPercentage
         {
@@ -55,7 +68,7 @@ namespace ETech.cls
                 _RegularDiscountPercentage = 0;
                 foreach (cls_product prod in productlist.list_product)
                 {
-                    prod.TransactionRegularFixedDiscount = (value == 0) ? 0 : 
+                    prod.TransactionRegularFixedDiscount = (value == 0) ? 0 :
                         ((TotalOriginalPrice - value) / TotalOriginalPrice) * prod.OriginalPrice;
                 }
             }
@@ -263,5 +276,12 @@ namespace ETech.cls
         public Decimal TotalVat { get { return productlist.list_product.Sum(V => V.Quantity * V.Vat); } }
 
         public bool HasItemDiscounts { get { return productlist.list_product.Where(P => P.HasItemDiscounts).Any(); } }
+        public bool HasTransactionDiscounts
+        {
+            get
+            {
+                return (MemberDiscountPercentage != 0 || RegularDiscountPercentage != 0 || RegularFixedDiscount != 0);
+            }
+        }
     }
 }

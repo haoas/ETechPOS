@@ -28,27 +28,27 @@ namespace ETech
         private void frmTransactionAdjust_Load(object sender, EventArgs e)
         {
             lblOrigPrice_d.Text = tran.TotalOriginalPrice.ToString("N2");
-            if (tran.RegularFixedDiscount != 0)
-            {
-                txtAdjustTo.Enabled = true;
-                txtDiscount.Enabled = false;
-                txtAdjustTo.Text = tran.RegularFixedDiscount.ToString();
-                txtAdjustTo.Focus();
-                txtAdjustTo.SelectAll();
-            }
-            else if (tran.RegularDiscountPercentage != 0)
-            {
-                txtAdjustTo.Enabled = false;
-                txtDiscount.Enabled = true;
-                txtDiscount.Text = tran.RegularDiscountPercentage.ToString();
-                txtDiscount.Focus();
-                txtDiscount.SelectAll();
-            }
-            else
-            {
-                txtDiscount.Text = string.Empty;
-                txtDiscount.Focus();
-            }
+            //if (tran.RegularFixedDiscount != 0)
+            //{
+            //    txtAdjustTo.Enabled = true;
+            //    txtDiscount.Enabled = false;
+            //    txtAdjustTo.Text = tran.RegularFixedDiscount.ToString();
+            //    txtAdjustTo.Focus();
+            //    txtAdjustTo.SelectAll();
+            //}
+            //else if (tran.RegularDiscountPercentage != 0)
+            //{
+            //    txtAdjustTo.Enabled = false;
+            //    txtDiscount.Enabled = true;
+            //    txtDiscount.Text = tran.RegularDiscountPercentage.ToString();
+            //    txtDiscount.Focus();
+            //    txtDiscount.SelectAll();
+            //}
+            //else
+            //{
+            txtDiscount.Text = string.Empty;
+            txtDiscount.Focus();
+            //}
 
             fncFullScreen fncfullscreen = new fncFullScreen(this);
             fncfullscreen.ResizeFormsControls();

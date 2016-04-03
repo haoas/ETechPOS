@@ -30,6 +30,9 @@ namespace ETech.cls
             this.dtproducts.Columns.Add("productname");
             this.dtproducts.Columns.Add("qty");
             this.dtproducts.Columns.Add("price");
+            this.dtproducts.Columns.Add("MemDisc");
+            this.dtproducts.Columns.Add("RegDisc");
+            this.dtproducts.Columns.Add("TransRegDisc");
             this.dtproducts.Columns.Add("amount");
 
             this.isnonvat = false;
@@ -51,6 +54,11 @@ namespace ETech.cls
                 this.dtproducts.Rows[row_index]["productname"] = this.list_product[row_index].Name;
                 this.dtproducts.Rows[row_index]["qty"] = this.list_product[row_index].Quantity.ToString("G29");
                 this.dtproducts.Rows[row_index]["price"] = this.list_product[row_index].Price.ToString();
+                this.dtproducts.Rows[row_index]["MemDisc"] = this.list_product[row_index].TransactionMemberDiscountValue.ToString();
+                this.dtproducts.Rows[row_index]["RegDisc"]
+                    = (this.list_product[row_index].RegularDiscountValue + this.list_product[row_index].RegularFixedDiscount).ToString();
+                this.dtproducts.Rows[row_index]["TransRegDisc"] 
+                    = (this.list_product[row_index].TransactionRegularDiscountValue + this.list_product[row_index].TransactionRegularFixedDiscount).ToString();
                 this.dtproducts.Rows[row_index]["amount"] = Convert.ToString(this.list_product[row_index].Amount);
             }
             catch (Exception) { }
@@ -195,7 +203,6 @@ namespace ETech.cls
         }
 
         //get totalamount w/o discount
-        //ROBI
         public decimal get_totalamount_no_head_discount()
         {
             decimal sum = 0;
@@ -408,58 +415,6 @@ namespace ETech.cls
         {
             //this.refresh_discountlist();
             this.refresh_product_data_by_mode();
-        }
-        public DataTable get_discount_amt_summary(int choice)
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("name");
-            dt.Columns.Add("type");
-            dt.Columns.Add("value");
-            dt.Columns.Add("amt");
-
-            if (choice == 1)
-            {
-                foreach (cls_product prod in this.get_productlist())
-                {
-                    //get_summary(prod.Quantity, dt, prod.getProductDiscountList().get_discount_list(), choice);
-                }
-            }
-            else
-            {
-                get_summary(1, dt, this.transDiscount.get_discount_list(), choice);
-            }
-            return dt;
-        }
-
-        public void get_summary(decimal qty, DataTable dt, List<cls_discount> dclist, int choice)
-        {
-            foreach (cls_discount disc in dclist)
-            {
-                if (!disc.get_status())
-                    continue;
-
-                bool newType = true;
-                decimal disc_value = (disc.get_ismultiple()) ? ((1 - disc.get_value()) * 100) : 0;
-
-                // RIGEL: Commented out to split Promo QTY per product on receipt
-                foreach (DataRow dr in dt.Rows)
-                {
-                    int type = Convert.ToInt32(dr["type"]);
-                    decimal value = (disc.get_ismultiple()) ? ((1 - Convert.ToDecimal(dr["value"])) * 100) : 0;
-                    decimal amt = Convert.ToDecimal(dr["amt"]);
-                    string name = dr["name"].ToString();
-
-                    if (type == disc.get_type()
-                        && ((type != cls_globalvariables.dcdetail_customdiscounttype && choice == 1) || name.Equals(disc.get_name())))
-                    {
-                        dr["value"] = 0;
-                        dr["amt"] = amt + Math.Round((disc.get_discounted_amount() * qty), 2);
-                        newType = false;
-                    }
-                }
-                if (newType)
-                    dt.Rows.Add(disc.get_name(), disc.get_type(), disc_value, Math.Round((disc.get_discounted_amount() * qty), 2));
-            }
         }
     }
 }
