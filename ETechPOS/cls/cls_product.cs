@@ -14,8 +14,27 @@ namespace ETech.cls
         public string Name { get; set; }
         public RoundedDecimal WholesalePrice { get; private set; }
         public RoundedDecimal OriginalPrice { get; set; }
-        public RoundedDecimal RegularDiscount { get; set; }
-        public RoundedDecimal FixedAdjustment { get; set; }
+
+        private RoundedDecimal _RegularDiscountPercentage;
+        public RoundedDecimal RegularDiscountPercentage
+        {
+            get { return _RegularDiscountPercentage; }
+            set
+            {
+                _RegularDiscountPercentage = value;
+                _RegularFixedDiscount = 0;
+            }
+        }
+        private RoundedDecimal _RegularFixedDiscount;
+        public RoundedDecimal RegularFixedDiscount
+        {
+            get { return _RegularFixedDiscount; }
+            set
+            {
+                _RegularFixedDiscount = value;
+                _RegularDiscountPercentage = 0;
+            }
+        }
 
         public cls_user SoldBy { get; set; }
 
@@ -29,7 +48,8 @@ namespace ETech.cls
         public string TransactionVatStatus { get { return "V"; } set { } }
 
         //Computed Get Fields
-        public RoundedDecimal Price { get { return OriginalPrice - RegularDiscount - FixedAdjustment; } }
+        public RoundedDecimal RegularDiscountValue { get { return OriginalPrice * (RegularDiscountPercentage / 100); } }
+        public RoundedDecimal Price { get { return OriginalPrice - RegularDiscountValue - RegularFixedDiscount; } }
         public decimal Amount { get { return Price * Quantity; } }
         public decimal Vat
         {
@@ -73,8 +93,7 @@ namespace ETech.cls
             this.PurchasePrice = 0;
             this.OriginalPrice = 0;
             this.SoldBy = new cls_user();
-            this.FixedAdjustment = 0;
-            this.RegularDiscount = 0;
+            this.RegularFixedDiscount = 0;
             this.VatStatus = "V";
 
             this.productdiscount = new cls_discountlist(1);
@@ -243,9 +262,6 @@ namespace ETech.cls
                 }
             }
 
-            Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
-            Console.WriteLine("reset_data_by_mode adjust : " + this.FixedAdjustment);
-            Console.WriteLine("reset_data_by_mode 1: oprice: " + this.OriginalPrice);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior5);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
@@ -270,11 +286,6 @@ namespace ETech.cls
             //detail discount
             decimal tmp_disc = this.productdiscount.get_discounts_percentage(this.OriginalPrice);
             /*-------------------------------------------------*/
-            //ROBI
-
-            Console.WriteLine("reset_data_by_mode price: " + this.Price);
-            Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
-            Console.WriteLine("reset_data_by_mode adjust : " + this.FixedAdjustment);
 
             // COMPUTE PRICE
             //detaildiscount = distributed head discounts and detaildiscount
@@ -291,9 +302,6 @@ namespace ETech.cls
             return;
             this.OriginalPrice = this.Price;
 
-            Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
-            Console.WriteLine("reset_data_by_mode adjust : " + this.FixedAdjustment);
-            Console.WriteLine("reset_data_by_mode 1: oprice: " + this.OriginalPrice);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
             this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
 
@@ -307,11 +315,6 @@ namespace ETech.cls
             {
                 this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
             }
-            Console.WriteLine("reset_data_by_mode 3: oprice: " + this.OriginalPrice);
-
-            Console.WriteLine("reset_data_by_mode price: " + this.Price);
-            Console.WriteLine("reset_data_by_mode discount : " + this.RegularDiscount);
-            Console.WriteLine("reset_data_by_mode adjust : " + this.FixedAdjustment);
 
             //if (this.RegularDiscount != 0)
             //    this.Price = this.OriginalPrice * (1 - this.RegularDiscount);

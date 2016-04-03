@@ -506,13 +506,15 @@ namespace ETech
                                 `headid` = '" + salesheadwid + @"', 
                                 `productid` = '" + prod.SyncId + @"',  
                                 `quantity` = '" + qty + @"',   
-                                `oprice` = '" + prod.OriginalPrice + @"',  
-                                `regularDC` = '" + prod.RegularDiscount.ToString() + @"', 
-                                `price` = '" + price + @"',  
-                                `pprice` = '" + prod.PurchasePrice + @"', 
+                                `oprice` = '" + prod.OriginalPrice + @"', 
+                                `RegularDCPer` = '" + prod.RegularDiscountPercentage.ToString() + @"',
+                                `RegularDCVal` = '" + prod.RegularDiscountValue .ToString() + @"',
+                                `FixedDCValue` = '" + prod.RegularFixedDiscount.ToString() + @"',
+                                `price` = '" + price + @"',
+                                `pprice` = '" + prod.PurchasePrice + @"',
                                 `vat` = '" + vat + @"',
                                 `VatStatus` = '" + prod.VatStatus + @"',
-                                `soldby` = '" + soldbywid + @"',  
+                                `soldby` = '" + soldbywid + @"',
                                 `memo` = '" + prod.Memo + @"'
                             WHERE `SyncId` = @salesdetailwid";
                 //Console.WriteLine(sSQLdetail);

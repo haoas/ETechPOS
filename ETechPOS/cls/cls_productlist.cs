@@ -244,15 +244,15 @@ namespace ETech.cls
 
             foreach (cls_product cprod in this.list_product)
             {
-                decimal cadjust = cprod.FixedAdjustment;
-                decimal cdiscount = cprod.RegularDiscount;
+                decimal cadjust = cprod.RegularFixedDiscount;
+                decimal cdiscount = cprod.RegularDiscountValue;
 
                 if (cadjust != 0 && proddiscount != 0)
                 {
                     //add discount to adjust
                     decimal discountvalue = proddiscount * cprod.Price;
-                    cprod.FixedAdjustment = cadjust - discountvalue;
-                    cprod.RegularDiscount = 0;
+                    cprod.RegularFixedDiscount = cadjust - discountvalue;
+                    /////cprod.RegularDiscountValue = 0;
                 }
                 else if (cdiscount != 0 && proddiscount != 0)
                 {
@@ -261,14 +261,14 @@ namespace ETech.cls
                     decimal discountvalue = proddiscount * cprod.Price;
                     decimal prevdiscountvalue = cprod.Price * cdiscount / (1 - cdiscount);
 
-                    cprod.FixedAdjustment = 0 - discountvalue - prevdiscountvalue;
-                    cprod.RegularDiscount = 0;
+                    cprod.RegularFixedDiscount = 0 - discountvalue - prevdiscountvalue;
+                    /////cprod.RegularDiscountValue = 0;
                 }
                 else if (proddiscount != 0)
                 {
                     //add discount to discount
-                    cprod.FixedAdjustment = 0;
-                    cprod.RegularDiscount = proddiscount;
+                    cprod.RegularFixedDiscount = 0;
+                    /////cprod.RegularDiscountValue = proddiscount;
                 }
                 cprod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             }
@@ -282,25 +282,13 @@ namespace ETech.cls
             //totaldiscount = percentage
             foreach (cls_product cprod in this.list_product)
             {
-                cprod.FixedAdjustment = 0;
-                cprod.RegularDiscount = totaldiscount;
+                cprod.RegularFixedDiscount = 0;
+                /////cprod.RegularDiscountValue = totaldiscount;
                 cprod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             }
 
             this.sync_product_all();
 
-        }
-
-        //update product adjustment and discounts
-        public void set_adjustdiscount(int row_index, decimal prodadjust, decimal proddiscount)
-        {
-            if (row_index < 0 || row_index >= this.list_product.Count)
-                return;
-
-            this.list_product[row_index].FixedAdjustment = prodadjust;
-            this.list_product[row_index].RegularDiscount = proddiscount;
-            this.list_product[row_index].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
-            this.sync_product_row(row_index);
         }
 
         //remove product
@@ -370,8 +358,8 @@ namespace ETech.cls
                 if (prod.OriginalPrice != 0)
                 {
                     decimal dc = decimal.Divide(prod.Price, prod.OriginalPrice);
-                    prod.RegularDiscount = 1M - dc;
-                    prod.FixedAdjustment = 0;
+                    /////prod.RegularDiscountValue = 1M - dc;
+                    prod.RegularFixedDiscount = 0;
                 }
 
                 decimal oprice = Convert.ToDecimal(dr_d["oprice"]);
@@ -396,11 +384,11 @@ namespace ETech.cls
 
                 if (Math.Round(oprice_temp, 3, MidpointRounding.AwayFromZero) != Math.Round(temp_price, 3, MidpointRounding.AwayFromZero) && temp_discount > 0)
                 {
-                    prod.RegularDiscount = temp_discount;
+                    /////prod.RegularDiscountValue = temp_discount;
                 }
                 else if (Math.Round(oprice_temp, 3, MidpointRounding.AwayFromZero) != Math.Round(temp_price, 3, MidpointRounding.AwayFromZero) && temp_discount == 0)
                 {
-                    prod.FixedAdjustment = temp_adjust;
+                    prod.RegularFixedDiscount = temp_adjust;
                 }
                 else { }
 

@@ -15,29 +15,13 @@ namespace ETech
 {
     public partial class frmProductAdjust : Form
     {
-        public bool iscomplete = false;
-        public decimal new_price;
-        public decimal new_adjust;
-        public decimal new_discount;
-        public int customDiscWID;
-        public string productname;
-
-        public decimal orig_price;
-        public cls_discountlist disclist;
-        public cls_discount disc;
+        public cls_product prod;
 
         public frmProductAdjust()
         {
             InitializeComponent();
             mySQLFunc.initialize_global_variables();
-
             fncFilter.set_theme_color(this);
-
-            this.customDiscWID = 0;
-
-            this.orig_price = 0;
-            this.disclist = new cls_discountlist(0);
-            this.disc = new cls_discount();
         }
 
         private void frmProductAdjust_KeyDown(object sender, KeyEventArgs e)
@@ -55,11 +39,6 @@ namespace ETech
 
         private void txtAdjustTo_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (disc.get_SyncId() != 0)
-            {
-                DialogHelper.ShowDialog("Please remove custom discount first.");
-                e.Handled = true;
-            }
             if (e.KeyChar == 13)
             {
                 if (txtDiscount.Enabled == false)
@@ -100,17 +79,14 @@ namespace ETech
         {
             decimal adjust = fncFilter.getDecimalValue(txtAdjustTo.Text);
             decimal discount = fncFilter.getDecimalValue(txtDiscount.Text);
+
             if (adjust != 0 && txtAdjustTo.Enabled == true)
             {
                 lblNewPrice_d.Text = adjust.ToString("N2");
             }
             else if (discount != 0 && txtDiscount.Enabled == true)
             {
-                lblNewPrice_d.Text = (this.new_price * (1 - (discount / 100))).ToString("N2");
-            }
-            else
-            {
-                lblNewPrice_d.Text = this.new_price.ToString("N2");
+                lblNewPrice_d.Text = (prod.OriginalPrice * (1 - discount / 100)).ToString("N2");
             }
         }
 
@@ -153,49 +129,46 @@ namespace ETech
                     fncFilter.alert(cls_globalvariables.warning_price_invalid);
                     return;
                 }
-                this.new_adjust = prodadjust - this.new_price;
-                this.new_discount = 0;
-                //this.new_discount = 1 - (prodadjust / this.new_price);
-                //this.new_adjust = 0;
+                prod.RegularFixedDiscount = prod.OriginalPrice - prodadjust;
             }
             else if (discount != 0)
             {
-                this.new_adjust = 0;
-                this.new_discount = Math.Round(discount / 100, 6);
+                prod.RegularDiscountPercentage = discount;
             }
             else
             {
-                this.new_adjust = 0;
-                this.new_discount = 0;
+                prod.RegularFixedDiscount = 0;
+                prod.RegularDiscountPercentage = 0;
             }
-            iscomplete = true;
             this.Close();
             return;
         }
 
         private void frmProductAdjust_Load(object sender, EventArgs e)
         {
-            lblProductName.Text = this.productname;
-            lblOrigPrice_d.Text = this.new_price.ToString("N2");
-            if (new_adjust != 0)
+            lblProductName.Text = prod.Name;
+            lblOrigPrice_d.Text = prod.OriginalPrice.ToString();
+
+            if (prod.RegularFixedDiscount != 0)
             {
                 txtAdjustTo.Enabled = true;
                 txtDiscount.Enabled = false;
-                txtAdjustTo.Text = (this.new_price + this.new_adjust).ToString("N2");
+                txtAdjustTo.Text = (prod.OriginalPrice - prod.RegularFixedDiscount).ToString("N2");
+                txtAdjustTo.Focus();
                 txtAdjustTo.SelectAll();
             }
-            else if (new_discount != 0)
+            else if (prod.RegularDiscountPercentage != 0)
             {
                 txtAdjustTo.Enabled = false;
                 txtDiscount.Enabled = true;
+                txtDiscount.Text = prod.RegularDiscountPercentage.ToString();
                 txtDiscount.Focus();
-                txtDiscount.Text = (this.new_discount * 100).ToString();
                 txtDiscount.SelectAll();
             }
             else
             {
-                txtAdjustTo.Enabled = true;
-                this.txtAdjustTo.Focus();
+                txtDiscount.Text = string.Empty;
+                txtDiscount.Focus();
             }
 
             refresh_new_price();
@@ -211,11 +184,8 @@ namespace ETech
         {
             if (DialogHelper.ShowDialog("Are you sure you want to clear product discount?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                this.new_discount = 0;
-                this.new_adjust = 0;
-                this.disc = new cls_discount();
-                this.disclist.disable_all_discounts();
-                this.iscomplete = true;
+                prod.RegularDiscountPercentage = 0;
+                prod.RegularFixedDiscount = 0;
                 this.Close();
             }
         }
@@ -242,24 +212,28 @@ namespace ETech
 
         private void BtnF1_Click(object sender, EventArgs e)
         {
+            txtAdjustTo.Clear();
             txtDiscount.Text = "5";
             done_process();
         }
 
         private void BtnF2_Click(object sender, EventArgs e)
         {
+            txtAdjustTo.Clear();
             txtDiscount.Text = "10";
             done_process();
         }
 
         private void BtnF3_Click(object sender, EventArgs e)
         {
+            txtAdjustTo.Clear();
             txtDiscount.Text = "15";
             done_process();
         }
 
         private void BtnF4_Click(object sender, EventArgs e)
         {
+            txtAdjustTo.Clear();
             txtDiscount.Text = "20";
             done_process();
         }

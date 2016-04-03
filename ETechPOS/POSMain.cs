@@ -780,63 +780,13 @@ namespace ETech
                             int row_index_discount = this.ctrlproductgridview.get_currentrow().Index;
                             cls_product prod_discount = tran.get_productlist().get_product(row_index_discount);
 
-                            decimal cur_prodadjust = prod_discount.FixedAdjustment;
-                            decimal cur_proddiscount = prod_discount.RegularDiscount;
-                            decimal cur_prodprice = prod_discount.Price;
-
                             frmProductAdjust frmprodadjust = new frmProductAdjust();
-                            frmprodadjust.orig_price = prod_discount.OriginalPrice;
-                            frmprodadjust.disclist = prod_discount.getProductDiscountList();
-                            frmprodadjust.productname = prod_discount.Name;
-                            frmprodadjust.new_price = cur_prodprice;
-                            //frmprodadjust.new_adjust = cur_prodadjust;
-                            //frmprodadjust.new_discount = cur_proddiscount;
+                            frmprodadjust.prod = prod_discount;
                             frmprodadjust.ShowDialog();
 
-                            cur_prodadjust = frmprodadjust.new_adjust;
-                            cur_proddiscount = frmprodadjust.new_discount;
-
-                            if (frmprodadjust.iscomplete)
-                            {
-                                if (frmprodadjust.disc.get_SyncId() != 0)
-                                {
-                                    prod_discount.getProductDiscountList().activateDiscount_using_wid(frmprodadjust.disc.get_SyncId(), 1 - cur_proddiscount, true);
-                                    refresh_productlist_data(tran);
-                                    tran.get_productlist().sync_product_row(row_index_discount);
-                                    LogsHelper.WriteToTLog("[F11]Product Custom Discount (" + frmprodadjust.disc.get_name() + "(" + frmprodadjust.disc.get_value() + "%)): " +
-                                        frmprodadjust.productname + " " + prod_discount.OriginalPrice + " -> " + prod_discount.Price +
-                                        " BY " + tran.get_permissiongiver_fullname());
-                                }
-                                else if (cur_prodadjust != 0)
-                                {
-                                    prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, cur_prodadjust, false);
-                                    refresh_productlist_data(tran);
-                                    prod_discount.FixedAdjustment = cur_prodadjust;
-                                    tran.get_productlist().sync_product_row(row_index_discount);
-                                    LogsHelper.WriteToTLog("[F11]Product Adjusted (" + (cur_prodadjust * 100) + "): " + frmprodadjust.productname + " " + prod_discount.OriginalPrice + " -> " + prod_discount.Price +
-                                        " BY " + tran.get_permissiongiver_fullname());
-                                }
-                                else if (cur_proddiscount != 0)
-                                {
-                                    prod_discount.getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_discounttype, 1 - cur_proddiscount, true);
-                                    refresh_productlist_data(tran);
-
-                                    tran.get_productlist().sync_product_row(row_index_discount);
-                                    LogsHelper.WriteToTLog("[F11]Product Discounted (" + (cur_proddiscount * 100) + "%): " + frmprodadjust.productname + " " + prod_discount.OriginalPrice + " -> " + prod_discount.Price +
-                                        " BY " + tran.get_permissiongiver_fullname());
-                                }
-                                else
-                                {
-                                    refresh_productlist_data(tran);
-                                    tran.get_productlist().sync_product_row(row_index_discount);
-                                    LogsHelper.WriteToTLog("[F11]Product Adjust/Discount Removed: " + frmprodadjust.productname + " " + prod_discount.OriginalPrice + " -> " + prod_discount.Price +
-                                           " BY " + tran.get_permissiongiver_fullname());
-                                }
-                                lastaddedrownumber = row_index_discount;
-                            }
+                            tran.get_productlist().sync_product_row(row_index_discount);
+                            lastaddedrownumber = row_index_discount;
                         }
-
-                        //frmposmainext.UpdateDGV(tran);
                         isdetected = true;
                     }
                     else if (FPage == 1)
