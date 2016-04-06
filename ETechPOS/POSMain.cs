@@ -21,6 +21,7 @@ using ETech.Views.Generic_Forms;
 using ETech.Models.Database;
 using ETech.Variables;
 using System.Globalization;
+using ETech.Views.Forms;
 
 namespace ETech
 {
@@ -61,8 +62,7 @@ namespace ETech
         {
             InitializeComponent();
 
-            if (0 > FPage || FPage > 2)
-                FPage = 0;
+            FPage = 2;
 
             dgvProduct.Standardize();
             dgvProduct.FillColumn(new List<string> { "Description" });
@@ -227,7 +227,7 @@ namespace ETech
             }
             e.Cancel = true;
         }
-        public void POSMain_KeyDown(object sender, KeyEventArgs e)
+        private void POSMain_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Alt && e.KeyCode == Keys.F9)
             {
@@ -299,6 +299,8 @@ namespace ETech
                 Application.Exit();
                 return;
             }
+
+            SwitchFunctionPage();
 
             if (cur_cashier.getsyncid() == 0)
                 this.Close();
@@ -709,7 +711,7 @@ namespace ETech
                             break;
 
                         Delete_Unused_saleshead(tran);
-                        LogsHelper.WriteToTLog("Invoice Cancelled: " + tran.ORNumber.ToString());
+                        LogsHelper.WriteToTLog("Invoice Cancelled: " + tran.OfficialReceiptNumber.ToString());
                         remove_transaction();
                         create_new_invoice();
                         isdetected = true;
@@ -1021,7 +1023,7 @@ namespace ETech
 
                             remove_transaction();
 
-                            LogsHelper.WriteToTLog("Transaction Complete: " + tran.ORNumber);
+                            LogsHelper.WriteToTLog("Transaction Complete: " + tran.OfficialReceiptNumber);
 
                             if (fncHardware.PulloutCashCollection())
                             {
@@ -1050,8 +1052,8 @@ namespace ETech
                         tran = this.get_curtrans();
                         if (tran != null)
                         {
-                            reprintfrm.currenttrans_ornumber = tran.ORNumber;
-                            frmorprintpreview.currenttrans_ornumber = tran.ORNumber;
+                            reprintfrm.currenttrans_ornumber = tran.OfficialReceiptNumber;
+                            frmorprintpreview.currenttrans_ornumber = tran.OfficialReceiptNumber;
                         }
 
                         if (cls_globalvariables.PreviewOR_v)
@@ -1160,8 +1162,8 @@ namespace ETech
                 case Keys.F10:
                     if (FPage == 0)
                     {
-                        LogsHelper.WriteToTLog("[F10] Previous Transaction");
-                        this.view_previoustransaction();
+                        //LogsHelper.WriteToTLog("[F10] Previous Transaction");
+                        //this.view_previoustransaction();
                         isdetected = true;
                     }
                     else if (FPage == 1)
@@ -1191,8 +1193,13 @@ namespace ETech
                 case Keys.F11:
                     if (FPage == 0)
                     {
-                        LogsHelper.WriteToTLog("[F11] Next Transaction");
-                        this.view_nexttransaction();
+                        LogsHelper.WriteToTLog("[F11] View Transactions");
+                        cls_POSTransaction currentTransaction = get_curtrans();
+                        List<cls_POSTransaction> allTransactionsExceptCurrent = new List<cls_POSTransaction>();
+                        allTransactionsExceptCurrent.AddRange(Trans);
+                        allTransactionsExceptCurrent.Remove(currentTransaction);
+                        TransactionsForm transactionsForm = new TransactionsForm(allTransactionsExceptCurrent, currentTransaction);
+                        transactionsForm.ShowDialog();
                         isdetected = true;
                     }
                     else if (FPage == 1)
@@ -1329,7 +1336,7 @@ namespace ETech
 
             refresh_productlist_data(tran);
 
-            LogsHelper.WriteToTLog("Invoice Created: " + tran.ORNumber);
+            LogsHelper.WriteToTLog("Invoice Created: " + tran.OfficialReceiptNumber);
         }
         public void add_transaction(cls_POSTransaction tran)
         {
@@ -1404,9 +1411,9 @@ namespace ETech
         }
         private void display_POStran(cls_POSTransaction tran)
         {
-            LogsHelper.WriteToTLog("CURRENT OR: " + tran.ORNumber);
+            LogsHelper.WriteToTLog("CURRENT OR: " + tran.OfficialReceiptNumber);
             //this.lblORNumber_d.Text = tran.ORNumber.ToString();
-            this.tsslOfficialReceiptNumber.Text = tran.ORNumber.ToString();
+            this.tsslOfficialReceiptNumber.Text = tran.OfficialReceiptNumber.ToString();
             this.lblQty_d.Text = tran.TotalQuantity.ToString();
 
             this.ctrlproductgridview.set_databinding(tran.get_productlist().get_dtproduct());
@@ -1490,7 +1497,7 @@ namespace ETech
                 return;
 
             long.TryParse(x.Rows[0]["lastornumber"].ToString(), out latestSalesheadOrNumber);
-            currentTransactionOr = tran.ORNumber;
+            currentTransactionOr = tran.OfficialReceiptNumber;
             if (latestSalesheadOrNumber == 0 || latestSalesheadOrNumber > currentTransactionOr)
                 return;
 
@@ -1502,7 +1509,7 @@ namespace ETech
                     `terminalno` = " + cls_globalvariables.TerminalNumber + @" AND 
                     `SyncId` = '" + tran.SyncId + @"' LIMIT 1";
             mySQLFunc.setdb(SQLDelete);
-            LogsHelper.WriteToTLog("DELETED1 in saleshead or = " + tran.ORNumber);
+            LogsHelper.WriteToTLog("DELETED1 in saleshead or = " + tran.OfficialReceiptNumber);
         }
 
         public void Print_Date_Ranged_Zread(DateTime datefrom, DateTime dateto)
@@ -1531,7 +1538,23 @@ namespace ETech
             ButtonF08.Visible = true;
             ButtonF09.Visible = true;
             ButtonF10.Visible = true;
-            if (FPage == 0)
+            if (FPage == 2)
+            {
+                FPage = 0;
+                ButtonF01.Text = "[ F1 ]\r\nOPEN\r\nITEM";
+                ButtonF02.Text = "[ F2 ]\r\nCHANGE\r\nQUANTITY";
+                ButtonF03.Text = "[ F3 ]\r\nREMOVE\r\nITEM";
+                ButtonF04.Text = "[ F4 ]\r\nCLEAR\r\nTRANS";
+                ButtonF05.Text = "[ F5 ]\r\nITEM\r\nDISCOUNT";
+                ButtonF06.Text = "[ F6 ]\r\nTRANS\r\nDISCOUNT";
+                ButtonF07.Text = "[ F7 ]\r\nTENDER\r\nPAYMENT";
+                ButtonF08.Text = "[ F8 ]\r\nADD\r\nNOTES";
+                ButtonF09.Text = "[ F9 ]\r\nNEW\r\nTRANS";
+                ButtonF10.Text = "[ F10 ]";
+                ButtonF11.Text = "[ F11 ]\r\nVIEW\r\nTRANS";
+                ButtonF12.Text = "[ F12 ]\r\nADVANCED\r\nFUNCS";
+            }
+            else if (FPage == 0)
             {
                 FPage = 1;
                 ButtonF01.Text = "[ F1 ]\r\nOPEN\r\nDRAWER";
@@ -1570,23 +1593,6 @@ namespace ETech
                 ButtonF11.Text = "[ F11 ]\r\nBACKUP\r\nDATABASE";
                 ButtonF12.Text = "[ F12 ]\r\nBASIC\r\nFUNCS";
             }
-            else
-            {
-                FPage = 0;
-                ButtonF01.Text = "[ F1 ]\r\nOPEN\r\nITEM";
-                ButtonF02.Text = "[ F2 ]\r\nCHANGE\r\nQUANTITY";
-                ButtonF03.Text = "[ F3 ]\r\nREMOVE\r\nITEM";
-                ButtonF04.Text = "[ F4 ]\r\nCLEAR\r\nTRANS";
-                ButtonF05.Text = "[ F5 ]\r\nITEM\r\nDISCOUNT";
-                ButtonF06.Text = "[ F6 ]\r\nTRANS\r\nDISCOUNT";
-                ButtonF07.Text = "[ F7 ]\r\nTENDER\r\nPAYMENT";
-                ButtonF08.Text = "[ F8 ]\r\nADD\r\nNOTES";
-                ButtonF09.Text = "[ F9 ]\r\nNEW\r\nTRANS";
-                ButtonF10.Text = "[ F10 ]\r\nPREV\r\nTRANS";
-                ButtonF11.Text = "[ F11 ]\r\nNEXT\r\nTRANS";
-                ButtonF12.Text = "[ F12 ]\r\nADVANCED\r\nFUNCS";
-            }
-
         }
 
         private void BackupDatabase()

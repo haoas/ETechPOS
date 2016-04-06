@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Windows.Forms;
 using ETech.ctrl;
+using ETech.Extensions;
 
 namespace ETech.cls
 {
@@ -18,7 +19,7 @@ namespace ETech.cls
 
         public DateTime SalesDateTime { get; set; }
         public long SyncId { get; set; }
-        public long ORNumber { get; set; }
+        public long OfficialReceiptNumber { get; set; }
         public decimal Discount { get; set; }
         public decimal Adjustment { get; set; }
         public string memo { get; set; }
@@ -81,7 +82,7 @@ namespace ETech.cls
         public cls_POSTransaction()
         {
             this.SyncId = 0;
-            this.ORNumber = 0;
+            this.OfficialReceiptNumber = 0;
             this.Adjustment = 0;
             this.Discount = 0;
             this.SalesDateTime = DateTime.Now;
@@ -160,7 +161,7 @@ namespace ETech.cls
             }
 
             DataRow dr = dt.Rows[0];
-            this.ORNumber = long.Parse(dr["ornumber"].ToString());
+            this.OfficialReceiptNumber = long.Parse(dr["ornumber"].ToString());
             this.Adjustment = Convert.ToDecimal(dr["adjust"]);
             this.Discount = Convert.ToDecimal(dr["discount1"]);
             this.SalesDateTime = DateTime.Parse(dr["date"].ToString());

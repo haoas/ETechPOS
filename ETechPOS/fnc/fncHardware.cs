@@ -1402,7 +1402,7 @@ namespace ETech.fnc
             string sACC = cls_globalvariables.ACC_v;
             string sPermitNo = cls_globalvariables.PermitNo_v;
 
-            long ornumber = tran.ORNumber;
+            long ornumber = tran.OfficialReceiptNumber;
             string sMIN = cls_globalvariables.MIN_v;
             string sSerial = cls_globalvariables.Serial_v;
             int terminalNumber = cls_globalvariables.TerminalNumber;
@@ -1898,7 +1898,7 @@ namespace ETech.fnc
             //tempDataTable.Rows.Add("TERMINAL#: " + cls_globalvariables.TerminalNumber, "");
             printer.WriteLines("TERMINAL#: " + cls_globalvariables.TerminalNumber, StringAlignment.Near);
             //tempDataTable.Rows.Add("SI#: " + tran.ORNumber);
-            printer.WriteLines("SI#: " + tran.ORNumber, StringAlignment.Near);
+            printer.WriteLines("SI#: " + tran.OfficialReceiptNumber, StringAlignment.Near);
             //tempDataTable.Rows.Add("CASHIER: " + tran.Cashier.getfullname(), "ID#: " + tran.Cashier.getusercode());
             printer.WriteLines("CASHIER: " + tran.Cashier.getfullname(), StringAlignment.Near);
             printer.WriteLines("ID#: " + tran.Cashier.getusercode(), StringAlignment.Near);

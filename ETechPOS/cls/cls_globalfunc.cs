@@ -25,13 +25,6 @@ namespace ETech.cls
 
         private static extern bool IsWindowVisible(IntPtr hWnd);
 
-        //private static int Keyboard_Width = 695;
-        //private static int Keyboard_Height = 250;
-        //private static int Keypad_Width = 188;
-        //private static int Keypad_Height = 254;
-        private static double keyboard_ratio = 2.76;
-        private static double keypad_ratio = 0.7076923076923077;
-
         public static int getCreditDebiCardInfo(string cardno)
         {
             string tempstr = string.Empty;
@@ -180,7 +173,7 @@ namespace ETech.cls
         {
             foreach (cls_POSTransaction temptran in TransactionLists)
             {
-                if (temptran.ORNumber == ornumber)
+                if (temptran.OfficialReceiptNumber == ornumber)
                 {
                     fncFilter.alert("OR is still in Transaction List!");
                     return true;
