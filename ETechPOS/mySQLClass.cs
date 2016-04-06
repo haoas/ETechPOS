@@ -338,7 +338,7 @@ namespace ETech
                             WHERE `SyncId` = '" + next_SyncId + @"'";
             setdb(sSQL);
 
-            trans.ORNumber = next_ornumber;
+            trans.OfficialReceiptNumber = next_ornumber;
             trans.SyncId = next_SyncId;
             return 0;
         }
@@ -473,7 +473,7 @@ namespace ETech
                         `discount1` = " + discount + @",
                         `seniorno` = '" + seniorno + @"', 
                         `seniorname` = '" + escapeString(seniorname) + @"',
-                        `ornumber` = '" + trans.ORNumber + @"',
+                        `ornumber` = '" + trans.OfficialReceiptNumber + @"',
                         `userid` = '" + userid + @"',
                         `branchid` = '" + branchid + @"',                     
                         `lastmodifiedby` = " + userid + @", 

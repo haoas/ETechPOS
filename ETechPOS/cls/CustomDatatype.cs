@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ETech.Extensions;
 
 namespace ETech.cls
 {
@@ -40,6 +41,14 @@ namespace ETech.cls
         public override string ToString()
         {
             return VALUE.ToString();
+        }
+        public string ToStringN2()
+        {
+            return VALUE.ToStringN2();
+        }
+        public string ToStringG29()
+        {
+            return VALUE.ToStringG29();
         }
     }
 }

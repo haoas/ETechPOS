@@ -76,7 +76,7 @@ namespace ETech
             dgvProduct.DataSource = null;
             lblTender.Text = "P 0.00";
             lblChange.Text = "P 0.00";
-            lblORNumber_d.Text = tran.ORNumber.ToString();
+            lblORNumber_d.Text = tran.OfficialReceiptNumber.ToString();
             ctrl_productgrid ctrlprod = new ctrl_productgrid(dgvProduct);
             ctrlprod.set_databinding(tran.get_productlist().get_dtproduct());
             dgvProduct.DataSource = ctrlprod.get_productgrid().DataSource;
