@@ -489,6 +489,7 @@ namespace ETech
 
             foreach (cls_product prod in trans.get_productlist().get_productlist())
             {
+                trans.VatStatus = trans.VatStatus;
                 string qty = Convert.ToString(prod.Quantity);
                 string price = (prod.Price).ToString();
                 string vat = prod.Vat.ToString();

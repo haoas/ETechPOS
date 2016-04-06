@@ -796,10 +796,19 @@ namespace ETech
                         }
                         isdetected = true;
                     }
-                    else if (FPage == 1)
+                    else if (FPage == 1) //Senior
                     {
                         if (_UserAuthorizationFunction.IsVerifiedAuthorization("SENIORTRANS"))
                         {
+                            //Temporary
+                            if (tran.VatStatus == "S")
+                                tran.VatStatus = "V";
+                            else
+                                tran.VatStatus = "S";
+
+                            refresh_productlist_data(tran);
+                            break;
+
                             frmSenior seniorform = new frmSenior();
                             seniorform.senior = tran.getsenior();
                             seniorform.ShowDialog();
@@ -814,7 +823,7 @@ namespace ETech
                     break;
 
                 case Keys.F6:
-                    if (FPage == 0)
+                    if (FPage == 0) //Transaction Discount
                     {
                         LogsHelper.WriteToTLog("[F6] Transaction Discount/Adjust");
                         if (tran.TotalQuantity == 0) return true;
@@ -943,24 +952,10 @@ namespace ETech
                 //isdetected = true; break;
 
                 case Keys.F7:
-                    if (FPage == 0)
+                    if (FPage == 0) // Payment
                     {
                         if (tran.get_productlist().get_productlist().Count == 0)
                             return true;
-
-                        if (cls_globalvariables.RefundMemo_v == 1)
-                        {
-                            for (int i = 0; i < tran.get_productlist().get_productlist().Count; i++)
-                            {
-                                if (tran.get_productlist().get_product(i).Quantity < 0)
-                                {
-                                    frmSalesmemo salesmemo = new frmSalesmemo();
-                                    salesmemo.salesheadwid = tran.SyncId;
-                                    salesmemo.ShowDialog();
-                                    continue;
-                                }
-                            }
-                        }
 
                         frmPayment payment = new frmPayment();
                         payment.paymentdata = tran.Payments.DeepCopy();
@@ -1094,7 +1089,7 @@ namespace ETech
                     }
                     break;
                 case Keys.F8:
-                    if (FPage == 0)
+                    if (FPage == 0) //Sales Memo
                     {
                         frmSalesmemo salesnotes = new frmSalesmemo();
                         salesnotes.salesheadwid = this.get_curtrans().SyncId;
@@ -1103,7 +1098,7 @@ namespace ETech
                         tsslSalesMemo.Text = salesnotes.txtmemo;
                         isdetected = true;
                     }
-                    else if (FPage == 1)
+                    else if (FPage == 1) // Terminal Readings
                     {
                         tran = this.get_curtrans();
                         if (tran != null)

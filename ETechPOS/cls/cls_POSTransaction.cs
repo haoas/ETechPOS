@@ -25,14 +25,25 @@ namespace ETech.cls
         public cls_user Cashier { get; set; }
         public cls_user Checker { get; set; }
         public cls_user UserAuthorizer { get; set; }
-        public string VatStatus { get; set; }
         public cls_payment Payments { get; set; }
         public cls_member Member { get; set; }
         public cls_customer Customer { get; set; }
         public cls_user SalesAgent { get; set; }
 
-        private RoundedDecimal _MemberDiscountPercentage;
-        public RoundedDecimal MemberDiscountPercentage
+        private string _VatStatus { get; set; }
+        public string VatStatus
+        {
+            get { return _VatStatus; }
+            set
+            {
+                _VatStatus = value;
+                foreach (cls_product prod in productlist.list_product)
+                    prod.TransactionVatStatus = value;
+            }
+        }
+
+        private TruncatedDecimal _MemberDiscountPercentage;
+        public TruncatedDecimal MemberDiscountPercentage
         {
             get { return _MemberDiscountPercentage; }
             set
@@ -44,8 +55,8 @@ namespace ETech.cls
                 }
             }
         }
-        private RoundedDecimal _RegularDiscountPercentage;
-        public RoundedDecimal RegularDiscountPercentage
+        private TruncatedDecimal _RegularDiscountPercentage;
+        public TruncatedDecimal RegularDiscountPercentage
         {
             get { return _RegularDiscountPercentage; }
             set

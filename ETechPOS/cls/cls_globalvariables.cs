@@ -63,8 +63,9 @@ namespace ETech.cls
         public static long MainBranchCode = 1000;
 
         public static decimal vat = 0.12M;
-        public static decimal senior = 0.20M;
-        public static decimal senior5 = 0.05M;
+        public static decimal nonvat = 12M;
+        public static decimal senior = 20M;
+        public static decimal senior5 = 5M;
 
         public static int dchead_customdiscounttype = -1;
         public static int dchead_adjusttype = 0;

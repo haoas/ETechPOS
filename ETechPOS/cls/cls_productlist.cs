@@ -29,10 +29,15 @@ namespace ETech.cls
             this.dtproducts.Columns.Add("VatStatus");
             this.dtproducts.Columns.Add("productname");
             this.dtproducts.Columns.Add("qty");
-            this.dtproducts.Columns.Add("price");
+            this.dtproducts.Columns.Add("oprice");
+            this.dtproducts.Columns.Add("NonVatDisc");
+            this.dtproducts.Columns.Add("SeniorDisc");
+            this.dtproducts.Columns.Add("Senior5Disc");
             this.dtproducts.Columns.Add("MemDisc");
             this.dtproducts.Columns.Add("RegDisc");
             this.dtproducts.Columns.Add("TransRegDisc");
+            this.dtproducts.Columns.Add("price");
+            this.dtproducts.Columns.Add("vat");
             this.dtproducts.Columns.Add("amount");
 
             this.isnonvat = false;
@@ -53,12 +58,17 @@ namespace ETech.cls
                 this.dtproducts.Rows[row_index]["VatStatus"] = this.list_product[row_index].VatStatus;
                 this.dtproducts.Rows[row_index]["productname"] = this.list_product[row_index].Name;
                 this.dtproducts.Rows[row_index]["qty"] = this.list_product[row_index].Quantity.ToString("G29");
-                this.dtproducts.Rows[row_index]["price"] = this.list_product[row_index].Price.ToString();
+                this.dtproducts.Rows[row_index]["oprice"] = this.list_product[row_index].OriginalPrice.ToString();
+                this.dtproducts.Rows[row_index]["NonVatDisc"] = this.list_product[row_index].TransactionNonVatDiscountValue.ToString();
+                this.dtproducts.Rows[row_index]["SeniorDisc"] = this.list_product[row_index].TransactionSeniorDiscountValue.ToString();
+                this.dtproducts.Rows[row_index]["Senior5Disc"] = this.list_product[row_index].TransactionSenior5DiscountValue.ToString();
                 this.dtproducts.Rows[row_index]["MemDisc"] = this.list_product[row_index].TransactionMemberDiscountValue.ToString();
                 this.dtproducts.Rows[row_index]["RegDisc"]
                     = (this.list_product[row_index].RegularDiscountValue + this.list_product[row_index].RegularFixedDiscount).ToString();
                 this.dtproducts.Rows[row_index]["TransRegDisc"] 
                     = (this.list_product[row_index].TransactionRegularDiscountValue + this.list_product[row_index].TransactionRegularFixedDiscount).ToString();
+                this.dtproducts.Rows[row_index]["price"] = this.list_product[row_index].Price.ToString();
+                this.dtproducts.Rows[row_index]["vat"] = this.list_product[row_index].Vat.ToString();
                 this.dtproducts.Rows[row_index]["amount"] = Convert.ToString(this.list_product[row_index].Amount);
             }
             catch (Exception) { }
@@ -67,7 +77,6 @@ namespace ETech.cls
         public void reset_product_data(int row_index)
         {
             cls_product prod = this.list_product[row_index];
-            prod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
         }
 
         public int add_product(cls_product prod)
@@ -88,7 +97,6 @@ namespace ETech.cls
                         return i;
                     }
                     list_product[i].Quantity = qty;
-                    list_product[i].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
                     this.sync_product_row(i);
                     return i;
                 }
@@ -120,7 +128,6 @@ namespace ETech.cls
 
             for (int i = 0; i < list_product.Count; i++)
             {
-                list_product[i].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
                 //Console.WriteLine(list_product[i].Price);
                 sync_product_row(i);
             }
@@ -226,7 +233,6 @@ namespace ETech.cls
             else
             {
                 this.list_product[row_index].Quantity = new_qty;
-                this.list_product[row_index].reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
                 //Console.WriteLine(this.list_product[row_index].Price + "");
                 this.sync_product_row(row_index);
             }
@@ -277,7 +283,6 @@ namespace ETech.cls
                     cprod.RegularFixedDiscount = 0;
                     /////cprod.RegularDiscountValue = proddiscount;
                 }
-                cprod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             }
 
             this.sync_product_all();
@@ -291,7 +296,6 @@ namespace ETech.cls
             {
                 cprod.RegularFixedDiscount = 0;
                 /////cprod.RegularDiscountValue = totaldiscount;
-                cprod.reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype, this.pricingrate, this.customer);
             }
 
             this.sync_product_all();
@@ -399,7 +403,6 @@ namespace ETech.cls
                 }
                 else { }
 
-                prod.reprint_reset_data_by_mode(this.isnonvat, this.issenior, this.iswholesale, this.pricingtype);
                 this.list_product.Add(prod);
                 this.dtproducts.Rows.Add(dtproducts.NewRow());
 

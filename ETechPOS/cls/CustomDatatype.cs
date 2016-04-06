@@ -15,7 +15,25 @@ namespace ETech.cls
         public static implicit operator RoundedDecimal(Decimal value)
         {
             RoundedDecimal _ReturnValue = new RoundedDecimal();
-            //_ReturnValue.VALUE = Math.Round(value, 2, MidpointRounding.AwayFromZero);
+            _ReturnValue.VALUE = Math.Round(value, 2, MidpointRounding.AwayFromZero);
+            return _ReturnValue;
+        }
+        public override string ToString()
+        {
+            return VALUE.ToString();
+        }
+    }
+
+    public struct TruncatedDecimal
+    {
+        private Decimal VALUE;
+        public static implicit operator Decimal(TruncatedDecimal value)
+        {
+            return value.VALUE;
+        }
+        public static implicit operator TruncatedDecimal(Decimal value)
+        {
+            TruncatedDecimal _ReturnValue = new TruncatedDecimal();
             _ReturnValue.VALUE = Math.Truncate(value * 100) / 100;
             return _ReturnValue;
         }

@@ -42,29 +42,55 @@ namespace ETech.cls
         public decimal PurchasePrice { get; set; }
         public string Barcode { get; set; }
         public string Memo { get; set; }
-        public string VatStatus { get; set; }
+        //public string VatStatus { get; set; }
+        public string VatStatus { get { return "V"; } set { } }
 
         //TransactionFields
-        public string TransactionVatStatus { get { return "V"; } set { } }
+        private string _TransactionVatStatus = "V";
+        public string TransactionVatStatus
+        {
+            get { return _TransactionVatStatus; }
+            set
+            {
+                _TransactionVatStatus = value;
+                TransactionSeniorDiscountPercentage = (TransactionVatStatus == "S" && (VatStatus == "S" || VatStatus == "NV")) ? cls_globalvariables.senior : 0;
+                TransactionNonVatDiscountPercentage = (TransactionVatStatus == "NV" || VatStatus == "NV" ||
+                    (TransactionVatStatus == "S" && (VatStatus == "S" || VatStatus == "NV"))) ? 100M * (cls_globalvariables.nonvat / (100M + cls_globalvariables.nonvat)) : 0;
+                TransactionSenior5DiscountPercentage = (TransactionVatStatus == "S" && VatStatus == "S5") ? cls_globalvariables.senior5 : 0;
+            }
+        }
 
-        public RoundedDecimal PriceAfterSenior5Discount { get { return OriginalPrice; } }
+        public TruncatedDecimal TransactionNonVatDiscountPercentage { get; private set; }
+        public RoundedDecimal TransactionNonVatDiscountValue { get { return OriginalPrice * (TransactionNonVatDiscountPercentage / 100M); } }
+        private RoundedDecimal PriceAfterNonVatDiscount { get { return OriginalPrice - TransactionNonVatDiscountValue; } }
 
-        public RoundedDecimal TransactionMemberDiscountPercentage { get; set; }
-        public RoundedDecimal TransactionMemberDiscountValue { get { return PriceAfterSenior5Discount * (TransactionMemberDiscountPercentage / 100); } }
-        public RoundedDecimal PriceAfterMemberDiscount { get { return PriceAfterSenior5Discount - TransactionMemberDiscountValue; } }
+        public TruncatedDecimal TransactionSeniorDiscountPercentage { get; private set; }
+        public RoundedDecimal TransactionSeniorDiscountValue { get { return PriceAfterNonVatDiscount * (TransactionSeniorDiscountPercentage / 100M); } }
+        private RoundedDecimal PriceAfterSeniorDiscount { get { return PriceAfterNonVatDiscount - TransactionSeniorDiscountValue; } }
 
-        public RoundedDecimal TransactionRegularDiscountPercentage { get; set; }
+        public TruncatedDecimal TransactionSenior5DiscountPercentage { get; private set; }
+        public RoundedDecimal TransactionSenior5DiscountValue { get { return PriceAfterSeniorDiscount * (TransactionSenior5DiscountPercentage / 100M); } }
+        private RoundedDecimal PriceAfterSenior5Discount { get { return PriceAfterSeniorDiscount - TransactionSenior5DiscountValue; } }
+
+        public TruncatedDecimal TransactionMemberDiscountPercentage { get; set; }
+        public RoundedDecimal TransactionMemberDiscountValue { get { return PriceAfterSenior5Discount * (TransactionMemberDiscountPercentage / 100M); } }
+        private RoundedDecimal PriceAfterMemberDiscount { get { return PriceAfterSenior5Discount - TransactionMemberDiscountValue; } }
+
+        public TruncatedDecimal TransactionRegularDiscountPercentage { get; set; }
         public RoundedDecimal TransactionRegularFixedDiscount { get; set; }
-        public RoundedDecimal TransactionRegularDiscountValue { get { return PriceAfterMemberDiscount * (TransactionRegularDiscountPercentage / 100); } }
-        public RoundedDecimal PriceAfterTransactionRegularDiscount { get { return PriceAfterMemberDiscount - TransactionRegularDiscountValue - TransactionRegularFixedDiscount; } }
+        public RoundedDecimal TransactionRegularDiscountValue { get { return PriceAfterMemberDiscount * (TransactionRegularDiscountPercentage / 100M); } }
+        private RoundedDecimal PriceAfterTransactionRegularDiscount { get { return PriceAfterMemberDiscount - TransactionRegularDiscountValue - TransactionRegularFixedDiscount; } }
 
         //Computed Get Fields
-        public RoundedDecimal RegularDiscountValue { get { return PriceAfterTransactionRegularDiscount * (RegularDiscountPercentage / 100); } }
+        public RoundedDecimal RegularDiscountValue { get { return PriceAfterTransactionRegularDiscount * (RegularDiscountPercentage / 100M); } }
         public RoundedDecimal Price
         {
             get
             {
                 return OriginalPrice
+                    - TransactionNonVatDiscountValue
+                    - TransactionSeniorDiscountValue
+                    - TransactionSenior5DiscountValue
                     - TransactionMemberDiscountValue
                     - TransactionRegularDiscountValue
                     - TransactionRegularFixedDiscount
@@ -73,22 +99,13 @@ namespace ETech.cls
             }
         }
         public decimal Amount { get { return Price * Quantity; } }
-        public decimal Vat
+        public TruncatedDecimal Vat
         {
-            //Do not change this computation without approval
             get
             {
-                if (TransactionVatStatus == "NV" || TransactionVatStatus == "S")
-                    return 0;
-                else if (TransactionVatStatus == "V")
-                {
-                    if (VatStatus == "NV")
-                        return 0;
-                    else
-                        return (Price * cls_globalvariables.vat / (1 + cls_globalvariables.vat));
-                }
-                else
-                    throw new Exception("Error in TransactionVatStatus");
+                return (TransactionVatStatus == "NV" || TransactionVatStatus == "S" ||
+                    (TransactionVatStatus == "V" && VatStatus == "NV")) ?
+                    0 : (Price * cls_globalvariables.vat / (1 + cls_globalvariables.vat));
             }
         }
 
@@ -154,7 +171,7 @@ namespace ETech.cls
             if (dt.Rows.Count > 0)
             {
                 int syncid = Convert.ToInt32(dt.Rows[0]["SyncId"]);
-                this.setcls_product_by_wid(syncid);
+                this.SetProducyBySyncId(syncid);
                 return;
             }
         }
@@ -162,7 +179,7 @@ namespace ETech.cls
         public cls_product(long syncid_d)
         {
             this.init();
-            this.setcls_product_by_wid(syncid_d);
+            this.SetProducyBySyncId(syncid_d);
         }
 
         public cls_product(string barcode_d, decimal price_d, decimal qty_d)
@@ -228,7 +245,7 @@ namespace ETech.cls
 
         }
 
-        public void setcls_product_by_wid(long syncid_d)
+        public void SetProducyBySyncId(long syncid_d)
         {
             setcls_product_by_syncid(syncid_d, false);
         }
@@ -245,11 +262,6 @@ namespace ETech.cls
                         LEFT JOIN `branchprice` AS B ON B.`productid` = P.`SyncId` 
                             AND B.`branchid` = " + cls_globalvariables.Branch.Id + @"
                         WHERE P.`SyncId` = " + syncid_d;
-
-            if (cls_globalvariables.allowZeroPrice_v.ToString() != "1")
-            {
-                sSQL += " AND B.`sellingprice` > 0 AND B.`wholesaleprice` > 0 ";
-            }
 
             if (!is_history)
             {
@@ -268,91 +280,5 @@ namespace ETech.cls
             this.OriginalPrice = Convert.ToDecimal(dr["oprice"]);
             this.VatStatus = dr["VatStatus"].ToString();
         }
-
-        public void reset_data_by_mode(bool nonvattrans, bool issenior_d, bool iswholesale, int pricingtype, decimal pricingrate, cls_customer customer)
-        {
-            return;
-            this.OriginalPrice = this.Price;
-
-            if (iswholesale && this.SyncId != 0)
-            {
-                if (pricingtype == 0 && customer.getItemPriceDictionary().ContainsKey(SyncId))
-                {
-                    this.OriginalPrice = WholesalePrice;
-                    //getProductDiscountList().appendDiscount(cls_globalvariables.dcdetail_adjusttype, customer.getItemPriceDictionary()[SyncId] - this.OriginalPrice, false);
-                }
-                else
-                {
-                    if (pricingtype == 2) this.OriginalPrice = Math.Round(this.PurchasePrice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
-                    else if (pricingtype == 3) this.OriginalPrice = Math.Round(this.WholesalePrice * (1 + (pricingrate / 100)), 2, MidpointRounding.AwayFromZero);
-                    else if (pricingtype == 9) this.OriginalPrice = this.Price;
-                    else this.OriginalPrice = this.WholesalePrice;
-                }
-            }
-
-            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
-            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior5);
-            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
-
-            Console.WriteLine("reset_data_by_mode 2: oprice: " + this.OriginalPrice);
-            if (TransactionVatStatus == "S" && VatStatus == "S")
-            {
-                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior, 1 - cls_globalvariables.senior, true);
-                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
-            }
-            if (TransactionVatStatus == "S" && VatStatus == "S5")
-            {
-                //Senior Transaction, Senior 5% item
-                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior5, 1 - cls_globalvariables.senior5, true);
-            }
-            else if (TransactionVatStatus == "NV" && VatStatus == "V")
-            {
-                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
-            }
-            Console.WriteLine("reset_data_by_mode 3: oprice: " + this.OriginalPrice);
-
-            //detail discount
-            //decimal tmp_disc = this.productdiscount.get_discounts_percentage(this.OriginalPrice);
-            /*-------------------------------------------------*/
-
-            // COMPUTE PRICE
-            //detaildiscount = distributed head discounts and detaildiscount
-            //1st run set detail discounts
-            //2nd run distribute head discounts
-            //this.RegularDiscount = 1 - (1M - this.RegularDiscount) * (1M - tmp_disc);
-            //this.Price = (this.Price + this.FixedAdjustment) * (1 - this.RegularDiscount);
-
-            Console.WriteLine("reset_data_by_mode dc: " + this.Price);
-        }
-
-        public void reprint_reset_data_by_mode(bool nonvattrans, bool issenior_d, bool iswholesale, int pricingtype)
-        {
-            return;
-            this.OriginalPrice = this.Price;
-
-            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_senior);
-            //this.productdiscount.deactivateDiscount(cls_globalvariables.dcdetail_nonvat);
-
-            Console.WriteLine("reset_data_by_mode 2: oprice: " + this.OriginalPrice);
-            if (TransactionVatStatus == "S" && VatStatus == "S")
-            {
-                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_senior, 1 - cls_globalvariables.senior, true);
-                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
-            }
-            else if (TransactionVatStatus == "NV" && VatStatus == "V")
-            {
-                //this.productdiscount.activateDiscount(cls_globalvariables.dcdetail_nonvat, 1 / (1 + cls_globalvariables.vat), true);
-            }
-
-            //if (this.RegularDiscount != 0)
-            //    this.Price = this.OriginalPrice * (1 - this.RegularDiscount);
-            //else
-            //    this.Price = this.OriginalPrice + this.FixedAdjustment;
-
-            Console.WriteLine("reset_data_by_mode dc: " + this.Price);
-        }
-
-        //public cls_discountlist getProductDiscountList() { return this.productdiscount; }
-        //public decimal get_discount_amt(int type) { return this.productdiscount.get_all_discount_amount_of_type(type); }
     }
 }
